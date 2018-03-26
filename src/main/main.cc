@@ -1,8 +1,8 @@
 #include "../infra/types.hh"
-#include "document.hh"
-#include "document_collection.hh"
-#include "posting.hh"
-#include "inverted_index.hh"
+#include "../document.hh"
+#include "../document_collection.hh"
+#include "../posting.hh"
+#include "../inverted_index.hh"
 
 int main(const int argc, const char* argv[])
 {
