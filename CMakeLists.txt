@@ -8,7 +8,11 @@ project(evsr VERSION 0.0.1)
 include(CTest)
 enable_testing()
 
-add_executable(evsr src/main/main.cc src/infra/types.hh)
+
+SET(SOURCES src/main/main.cc src/document.cc src/document_collection.cc src/inverted_index.cc src/posting.cc)
+SET(HEADERS src/infra/types.hh src/document.hh src/document_collection.hh src/inverted_index.hh src/posting.hh)
+
+add_executable(evsr ${SOURCES} ${HEADERS})
 
 #For Packaging
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
