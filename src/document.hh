@@ -21,13 +21,17 @@ class Document
         /* preprocess document (maybe overwrite old doc or store in new pre processed document */
         void    preprocess();
 
-    public:
-        //getter
-        inline size_t       getID(){ return _ID; }
-        inline std::string  getPath(){ return _path; }
-        //setter, if needed
+ public:
+  // todo: helper functions to read document content into memory
+  // todo: helper function to process content of a document
 
-    private:
-       size_t       _ID;
-       std::string  _path;
+ public:
+  // getter
+  inline size_t getID() { return _ID; }
+  inline std::string getPath() { return _path; }
+  // setter, if needed
+
+ private:
+  size_t _ID;
+  std::string _path;
 };

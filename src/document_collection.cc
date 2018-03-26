@@ -3,5 +3,4 @@
 size_t DocumentCollection::_countID = 0;
 
 
-
 //todo

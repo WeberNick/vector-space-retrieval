@@ -6,7 +6,6 @@
 #include <string>
 #include <map>
 
-
 class DocumentCollection
 {
     public:

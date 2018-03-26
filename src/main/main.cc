@@ -1,5 +1,4 @@
-#include "infra/types.hh"
-
+#include "../infra/types.hh"
 #include "document.hh"
 #include "document_collection.hh"
 #include "posting.hh"
@@ -24,6 +23,6 @@ int main(const int argc, const char* argv[])
      * }
      */ 
 
-
+    std::cout << "Hello CMake" << std::endl;
     return 0;
 }

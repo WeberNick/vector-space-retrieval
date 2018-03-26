@@ -50,5 +50,4 @@ class InvertedIndex
 
     private:
         PostingMap  _postingLists;
-
 };
