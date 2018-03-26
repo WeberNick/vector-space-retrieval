@@ -16,8 +16,10 @@ class Document
         ~Document();
     
     public:
-        //todo: helper functions to read document content into memory
-        //todo: helper function to process content of a document
+        /* read document/file into main memory */
+        byte*   read();
+        /* preprocess document (maybe overwrite old doc or store in new pre processed document */
+        void    preprocess();
 
     public:
         //getter

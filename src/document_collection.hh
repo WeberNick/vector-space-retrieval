@@ -25,6 +25,11 @@ class DocumentCollection
         ~DocumentCollection();
     
     public:
+        /* start the scan for files at the root directory and add all found docs to map */
+        void collect();
+
+
+    public:
         /* The following are just wrapper functions for the respective map container calls */
 
         /* insert element into collection (by std::pair element) */
@@ -38,6 +43,8 @@ class DocumentCollection
         /* erase by iterator */
         bool            erase(const DocMapIterator aIterator);
 
+
+
     public:
         //getter
         inline const DocMap&    getCollection(){ return _docs; }
@@ -45,5 +52,6 @@ class DocumentCollection
         //setter, if needed
 
     private:
-        DocMap      _docs;
+        static size_t   _countID;
+        DocMap          _docs;
 };

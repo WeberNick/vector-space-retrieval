@@ -27,7 +27,6 @@ class InvertedIndex
 
         /* if term is not in inverted index yet: create an empty posting list for the term (key) */
         bool                insert(const std::string& aTerm); 
-        /* for each term in the list, add the doc ID to the posting list */
         /* find element in collection */
         PostingMapIterator  find(const std::string& aKey);
         /* erase by key */
