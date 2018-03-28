@@ -1,8 +1,6 @@
 #include "../infra/types.hh"
-#include "document.hh"
-#include "document_collection.hh"
-#include "posting.hh"
-#include "inverted_index.hh"
+#include "../document.hh"
+#include "../document_manager.hh"
 
 int main(const int argc, const char* argv[])
 {
@@ -22,7 +20,9 @@ int main(const int argc, const char* argv[])
      *      terms.clear();
      * }
      */ 
-
+    
+    // doc parser here, replace "dev.txt"
+    //DocumentManager* docManager = new DocumentManager("dev.txt");
     std::cout << "Hello CMake" << std::endl;
     return 0;
 }

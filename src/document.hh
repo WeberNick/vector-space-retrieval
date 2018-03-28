@@ -2,36 +2,28 @@
 
 #include "infra/types.hh"
 
+#include <map>
 #include <string>
 
-class Document
-{
-    public:
-        explicit Document() = delete;
-        explicit Document(const size_t aDocID, const std::string& aPath);
-        Document(const Document&) = delete;
-        Document(Document&&) = delete;
-        Document& operator=(const Document&) = delete;
-        Document& operator=(Document&&) = delete;
-        ~Document();
-    
-    public:
-        /* read document/file into main memory */
-        byte*   read();
-        /* preprocess document (maybe overwrite old doc or store in new pre processed document */
-        void    preprocess();
+class Document {
+public:
+  explicit Document(const size_t aDocID, const std::string& aPath);
+  explicit Document() = delete;
+  Document(const Document&) = delete;
+  Document(Document&&) = delete;
+  Document& operator=(const Document&) = delete;
+  Document& operator=(Document&&) = delete;
+  ~Document();
 
- public:
-  // todo: helper functions to read document content into memory
+public:
   // todo: helper function to process content of a document
 
- public:
-  // getter
+public:
   inline size_t getID() { return _ID; }
-  inline std::string getPath() { return _path; }
-  // setter, if needed
+  inline std::string getContent() { return _content; }
 
- private:
+private:
   size_t _ID;
-  std::string _path;
+  std::string _content;
+  float_map& _tfidf; // stores tfidf values
 };
