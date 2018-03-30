@@ -1,6 +1,6 @@
 #pragma once
 
-#include "infra/types.hh"
+#include "types.hh"
 
 #include <map>
 #include <string>

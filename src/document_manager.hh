@@ -1,7 +1,7 @@
 #pragma once
 
 #include "document.hh"
-#include "infra/types.hh"
+#include "types.hh"
 #include "inverted_index.hh"
 #include "tiered_index.hh"
 
