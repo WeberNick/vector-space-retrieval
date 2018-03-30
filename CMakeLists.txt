@@ -26,7 +26,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib)
 
 
 # Doxygen Build
-option(BUILD_DOC "Build Documentation" ON)
+option(BUILD_DOC "Build Documentation" OFF)
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
