@@ -1,8 +1,8 @@
 #include <cstddef>
 #include <cstdint>
 #include <iostream>
-#include <vector>
 #include <map>
+#include <vector>
 
 typedef std::size_t size_t;
 typedef std::vector<size_t> size_t_vt;
