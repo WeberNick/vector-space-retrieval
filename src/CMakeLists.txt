@@ -9,6 +9,7 @@ set(HEADER_FILES
         measure.hh
         tiered_index.hh
         infra/similarity_measures.hh
+        infra/random_projection.h
         infra/types.hh
         util/utils.hh
 )
@@ -20,6 +21,7 @@ set(SOURCE_FILES
         inverted_index.cc
         tiered_index.cc
         infra/similarity_measures.cc
+        infra/random_projection.cc
         util/utils.cc
 )
  
