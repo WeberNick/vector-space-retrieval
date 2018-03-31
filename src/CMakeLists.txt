@@ -11,7 +11,7 @@ set(HEADER_FILES
         infra/similarity_measures.hh
         infra/types.hh
         util/utils.hh
-        )
+)
  
 set(SOURCE_FILES
         args.cc
@@ -21,7 +21,7 @@ set(SOURCE_FILES
         tiered_index.cc
         infra/similarity_measures.cc
         util/utils.cc
-        )
+)
  
 #if (EXISTS ${SOURCE_FILES})
 # The library contains header and source files.
