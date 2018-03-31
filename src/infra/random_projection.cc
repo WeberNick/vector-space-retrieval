@@ -30,6 +30,3 @@ int random_projection::dimension(int &sample, float eps = 0.1) {
 void random_projection::create_random_matrix(int rows, int cols, bool JLT, double eps = 0.1, std::string projection = "gaussian") {
 
 }
-
-
-š
