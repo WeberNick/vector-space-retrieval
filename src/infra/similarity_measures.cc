@@ -1,6 +1,6 @@
 
 #include "similarity_measures.hh"
-#include "utils.hh"
+#include "util/utils.hh"
 #include <algorithm>
 #include <cmath>
 #include <document_manager.hh>
@@ -8,31 +8,6 @@
 #include <sstream>
 #include <string>
 
-/**
- * @brief Calculates the appearance of a single word inside a string
- *
- * @param str the sentence to check for the word
- * @param word the word to count
- * @param case_insensitive delare if the search should be case insensitive or not
- * @return the number of occurences
- */
-unsigned long similarity_measures::count_word_in_string(std::string const& str, std::string const& word, bool const case_insensitive) {
-  if (case_insensitive) {
-
-    std::string word_lower = utils::to_lower(word);
-    std::string string_lower = utils::to_lower(str);
-    std::istringstream ss(string_lower);
-
-    return static_cast<unsigned long>(std::count_if(std::istream_iterator<std::string>(ss), std::istream_iterator<std::string>(),
-                                                    [word_lower](const std::string& s) { return s == word_lower; }));
-  } else {
-
-    std::istringstream ss(str);
-
-    return static_cast<unsigned long>(
-        std::count_if(std::istream_iterator<std::string>(ss), std::istream_iterator<std::string>(), [word](const std::string& s) { return s == word; }));
-  }
-}
 
 /**
  * @brief Calculates the term frequency of a given term inside a given document
@@ -45,7 +20,7 @@ double similarity_measures::tf(const std::string& term, std::string& content) {
 
   // TODO: max frequency of any word in the dox instead of the 10 here
 
-  return ((1 + log10(count_word_in_string(content, term, false))) / (1 + log10(10)));
+  return ((1 + log10(utils::count_word_in_string(content, term, false))) / (1 + log10(10)));
 }
 
 /**
@@ -136,12 +111,3 @@ double similarity_measures::euclidean_distance_normalized(std::vector<double> do
 
   return similarity_measures::euclidean_distance(doc_a, doc_b);
 }
-
-/**
- * @brief Projects a vector down to an n dimensional space
- *
- * @param tf_vec a vector
- * @param dimension a document
- * @return a new n dimensional space vector
- */
-std::vector<double> similarity_measures::random_projection(const std::vector<double>& tf_vec, int dimension) {}

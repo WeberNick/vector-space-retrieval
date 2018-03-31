@@ -1,26 +1,28 @@
 project(${CMAKE_PROJECT_NAME}_lib)
-
+ 
 set(HEADER_FILES
-        document.hh
+        argbase.hh
+        args.hh
         document_manager.hh
+        document.hh
         inverted_index.hh
-        posting.hh
+        measure.hh
         tiered_index.hh
         infra/similarity_measures.hh
         infra/types.hh
-        infra/utils.hh
+        util/utils.hh
         )
-
+ 
 set(SOURCE_FILES
-        document.cc
+        args.cc
         document_manager.cc
+        document.cc
         inverted_index.cc
-        posting.cc
         tiered_index.cc
         infra/similarity_measures.cc
-        infra/utils.cc
+        util/utils.cc
         )
-
+ 
 #if (EXISTS ${SOURCE_FILES})
 # The library contains header and source files.
     add_library(${CMAKE_PROJECT_NAME}_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

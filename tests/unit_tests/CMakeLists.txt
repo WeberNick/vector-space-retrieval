@@ -1,6 +1,6 @@
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
-add_executable(Unit_Tests_run test_similarity_measures.cpp)
+add_executable(Unit_Tests_run test_similarity_measures.cpp test_utils.cpp)
 add_test(TEST Unit_Tests_run)
 
 
