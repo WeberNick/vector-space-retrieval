@@ -24,8 +24,6 @@ add_subdirectory(tests)
  
 target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib)
 
-
-
 # Doxygen Build
 #option(BUILD_DOC "Build Documentation" ON)
 

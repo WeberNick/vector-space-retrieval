@@ -6,13 +6,13 @@
 // Created by Alexander Weiß on 30.03.18.
 //
 
-#include "util/utils.hh"
+#include "utils.hh"
 #include <algorithm>
 #include <functional>
-#include <random>
-#include <string>
-#include <sstream>
 #include <iterator>
+#include <random>
+#include <sstream>
+#include <string>
 
 /**
  * @brief Lower case a given string
@@ -26,8 +26,7 @@ std::string utils::to_lower(std::string string) {
   return data;
 }
 
-
- /**
+/**
  * @brief Calculates the appearance of a single word inside a string
  *
  * @param str the sentence to check for the word
@@ -46,11 +45,8 @@ unsigned long utils::count_word_in_string(std::string const& str, std::string co
     return static_cast<unsigned long>(std::count_if(std::istream_iterator<std::string>(ss), std::istream_iterator<std::string>(),
                                                     [word_lower](const std::string& s) { return s == word_lower; }));
   } else {
-
     std::istringstream ss(str);
-
-    return static_cast<unsigned long>(
-        std::count_if(std::istream_iterator<std::string>(ss), std::istream_iterator<std::string>(), [word](const std::string& s) { return s == word; }));
+    return static_cast<unsigned long>(std::count_if(std::istream_iterator<std::string>(ss), std::istream_iterator<std::string>(), [word](const std::string& s) { return s == word; }));
   }
 }
 
