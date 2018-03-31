@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.9)
 
 find_program(CMAKE_C_COMPILER NAMES $ENV{CC} gcc PATHS ENV PATH NO_DEFAULT_PATH)
 find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PATH)
@@ -13,16 +13,20 @@ enable_testing()
 
 include_directories(src/infra)
 
+SET(SOURCE_FILES main.cpp)
+add_executable(${CMAKE_PROJECT_NAME}_run ${SOURCE_FILES})
 
+include_directories(src)
 
-SET(SOURCES src/main/main.cc src/document.cc src/document_manager.cc src/inverted_index.cc src/posting.cc )
-SET(HEADERS src/infra/types.hh src/document.hh src/document_manager.hh src/inverted_index.hh src/posting.hh src/infra/similarity_measures.hh)
+add_subdirectory(src)
+add_subdirectory(tests)
 
-add_executable(evsr ${SOURCES} ${HEADERS})
+target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib)
+
 
 
 # Doxygen Build
-option(BUILD_DOC "Build Documentation" ON)
+option(BUILD_DOC "Build Documentation" OFF)
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
@@ -35,7 +39,7 @@ if(DOXYGEN_FOUND)
     set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
     configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
 
-    message("Doxygen buld started")
+    message("Doxygen build started")
     add_custom_target(Doxygen ALL
             COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
