@@ -1,5 +1,5 @@
 # EfficientVectorSpaceRetrieval
-Project for the course Information Retrieval
+An efficient Vector Space Model (VSM) implementation for retrieving medical data, built within the team project of the course Information Retrieval & Web Search.
 
 
 # Project Structure
@@ -15,6 +15,9 @@ Project for the course Information Retrieval
 * CMakeLists.txt builds the `evsr_lib` executable which is linked to the `evsr_run` and the unit tests later on
 * Files and directories for our efficient vector space retrieval IR
 
+## ./preprocessing
+
+* preprocess.py - aggregate queries and document collection from [nfcorpus](http://www.cl.uni-heidelberg.de/statnlpgroup/nfcorpus/)
 ## ./tests
 
 * CMakeLists.txt downloads googletest library if not already installed and builds googletest and our own unit tests

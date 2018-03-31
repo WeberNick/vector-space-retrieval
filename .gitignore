@@ -151,3 +151,4 @@ build/
 ### Own Stuff ###
 docs/html
 docs/latex
+data/nfcorpus
