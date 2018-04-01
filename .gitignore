@@ -152,3 +152,5 @@ build/
 docs/html
 docs/latex
 data/nfcorpus
+tests/lib/
+tests/lib/**
