@@ -1,4 +1,32 @@
 #!/bin/bash
+
+#================================================================
+# HEADER
+#================================================================
+#% SYNOPSIS
+#+    ${SCRIPT_NAME} [-h] [-c[compiler_path]]  [-cxx[compiler_path]]
+#%
+#% DESCRIPTION
+#%    Setting up CMake, directory structure and compile everything to start the main evsr executable
+#%
+#% OPTIONS
+#%    -c [path], --c [path]         Set a custom C compiler path
+#%    -cxx [path], --cxx [path]     Set a custom C++ compiler path
+#%
+#% EXAMPLES
+#%    ${SCRIPT_NAME} -c "/usr/local/Cellar/gcc/7.3.0_1/bin/gcc-7 -cxx /usr/local/Cellar/gcc/7.3.0_1/bin/g++-7
+#%
+#================================================================
+
+
+#== needed variables ==#
+SCRIPT_HEADSIZE=$(head -200 ${0} |grep -n "^# END_OF_HEADER" | cut -f1 -d:)
+SCRIPT_NAME="$(basename ${0})"
+
+  #== usage functions ==#
+usage() { printf "Usage: "; head -${SCRIPT_HEADSIZE:-99} ${0} | grep -e "^#+" | sed -e "s/^#+[ ]*//g" -e "s/\${SCRIPT_NAME}/${SCRIPT_NAME}/g" ; }
+usagefull() { head -${SCRIPT_HEADSIZE:-99} ${0} | grep -e "^#[%+-]" | sed -e "s/^#[%+-]//g" -e "s/\${SCRIPT_NAME}/${SCRIPT_NAME}/g" ; }
+
 POSITIONAL=()
 while [[ $# -gt 0 ]]
 do
@@ -15,6 +43,11 @@ case $key in
     shift # past argument
     shift # past value
     ;;
+    -h|--help)
+    HELP="$2"
+    shift # past argument
+    shift # past value
+    ;;
     *)    # unknown option
     POSITIONAL+=("$1") # save it in an array for later
     shift # past argument
@@ -22,6 +55,13 @@ case $key in
 esac
 done
 set -- "${POSITIONAL[@]}" # restore positional parameters
+
+
+if [ ! -z ${HELP+x} ]
+then 
+  usagefull
+  exit 1
+fi
 
 
 if [ -d ./build ]; 

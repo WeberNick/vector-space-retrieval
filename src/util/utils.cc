@@ -21,9 +21,9 @@
  * @return lowercased string
  */
 std::string utils::to_lower(std::string string) {
-  std::string data = string;
-  std::transform(data.begin(), data.end(), data.begin(), ::tolower);
-  return data;
+    std::string data = string;
+    std::transform(data.begin(), data.end(), data.begin(), ::tolower);
+    return data;
 }
 
 /**
@@ -36,18 +36,19 @@ std::string utils::to_lower(std::string string) {
  */
 
 unsigned long utils::count_word_in_string(std::string const& str, std::string const& word, bool const case_insensitive) {
-  if (case_insensitive) {
+    if (case_insensitive) {
 
-    std::string word_lower = utils::to_lower(word);
-    std::string string_lower = utils::to_lower(str);
-    std::istringstream ss(string_lower);
+        std::string word_lower = utils::to_lower(word);
+        std::string string_lower = utils::to_lower(str);
+        std::istringstream ss(string_lower);
 
-    return static_cast<unsigned long>(std::count_if(std::istream_iterator<std::string>(ss), std::istream_iterator<std::string>(),
-                                                    [word_lower](const std::string& s) { return s == word_lower; }));
-  } else {
-    std::istringstream ss(str);
-    return static_cast<unsigned long>(std::count_if(std::istream_iterator<std::string>(ss), std::istream_iterator<std::string>(), [word](const std::string& s) { return s == word; }));
-  }
+        return static_cast<unsigned long>(std::count_if(std::istream_iterator<std::string>(ss), std::istream_iterator<std::string>(),
+                                                        [word_lower](const std::string& s) { return s == word_lower; }));
+    } else {
+        std::istringstream ss(str);
+        return static_cast<unsigned long>(
+            std::count_if(std::istream_iterator<std::string>(ss), std::istream_iterator<std::string>(), [word](const std::string& s) { return s == word; }));
+    }
 }
 
 /**
@@ -60,13 +61,13 @@ unsigned long utils::count_word_in_string(std::string const& str, std::string co
  */
 std::vector<double> utils::generate_random_vector(int dimension, int min, int max) {
 
-  std::random_device rnd_device;
-  // Specify the engine and distribution.
-  std::mt19937 mersenne_engine(rnd_device());
-  std::uniform_real_distribution<double> dist(min, max);
+    std::random_device rnd_device;
+    // Specify the engine and distribution.
+    std::mt19937 mersenne_engine(rnd_device());
+    std::uniform_real_distribution<double> dist(min, max);
 
-  auto gen = std::bind(dist, mersenne_engine);
-  std::vector<double> vec(dimension);
-  generate(begin(vec), end(vec), gen);
-  return vec;
+    auto gen = std::bind(dist, mersenne_engine);
+    std::vector<double> vec(dimension);
+    generate(begin(vec), end(vec), gen);
+    return vec;
 }
