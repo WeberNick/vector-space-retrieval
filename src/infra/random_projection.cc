@@ -4,11 +4,34 @@
 
 #include "random_projection.h"
 #include "cmath"
+#include <Eigen/Dense>
 #include <iostream>
 #include <vector>
-#include <lib/eigen/Eigen/src/Core/Matrix.h>
 
-using Eigen::MatrixXd;
+double rand_normal(double mean, double stddev) { // Box muller method
+    static double n2 = 0.0;
+    static int n2_cached = 0;
+    if (!n2_cached) {
+        double x, y, r;
+        do {
+            x = 2.0 * rand() / RAND_MAX - 1;
+            y = 2.0 * rand() / RAND_MAX - 1;
+
+            r = x * x + y * y;
+        } while (r == 0.0 || r > 1.0);
+        {
+            double d = sqrt(-2.0 * log(r) / r);
+            double n1 = x * d;
+            n2 = y * d;
+            double result = n1 * stddev + mean;
+            n2_cached = 1;
+            return result;
+        }
+    } else {
+        n2_cached = 0;
+        return n2 * stddev + mean;
+    }
+}
 
 /**
  * @brief  Find the minimum dimension required to project the data from high dimensional space to low dimensional space
@@ -38,10 +61,27 @@ int random_projection::dimension(int& sample, float eps) {
  * @param projection projection function with default value "gaussian"
  */
 void random_projection::create_random_matrix(int rows, int cols, bool JLT, double eps = 0.1, std::string projection = "gaussian") {
-    MatrixXd m(2,2);
-    m(0,0) = 3;
-    m(1,0) = 2.5;
-    m(0,1) = -1;
-    m(1,1) = m(1,0) + m(0,1);
+
+    std::vector<double> randoms;
+
+    double t = (1 / sqrt(cols));
+    std::cout << t << std::endl;
+
+    for (int i = 0; i < cols * rows; ++i) {
+        // TODO check rand normal return
+        double rand = (rand_normal(0, t));
+        randoms.push_back(rand);
+    }
+
+    Eigen::MatrixXd m(rows, cols);
+    int k = 0;
+    for (int j = 0; j < rows; ++j) {
+        for (int i = 0; i < cols; ++i) {
+            double rand = randoms[k];
+            m(j, i) = randoms[k];
+            k++;
+        }
+    }
+
     std::cout << m << std::endl;
 }

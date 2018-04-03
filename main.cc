@@ -2,11 +2,11 @@
 // Created by Alexander Weiß on 30.03.18.
 //
 
-#include <args.hh>
+#include "src/args.hh"
+#include "src/infra/random_projection.h"
+#include "src/infra/similarity_measures.hh"
+#include "src/measure.hh"
 #include <iostream>
-#include <measure.hh>
-#include <random_projection.h>
-#include <similarity_measures.hh>
 #include <vector>
 /**
  * @brief Starts everything
@@ -59,7 +59,7 @@ int main(const int argc, const char* argv[]) {
     // doc parser here, replace "dev.txt"
     // DocumentManager* docManager = new DocumentManager("dev.txt");
 
-    std::vector<double> doc_a = { 1, 3, 5, 8, 100, 100 };
+    /*std::vector<double> doc_a = { 1, 3, 5, 8, 100, 100 };
     std::vector<double> doc_b = { 2, 4, 5, 1, 2, 0 };
 
     std::cout << similarity_measures::tf_idf(5.0, 10.0) << std::endl;
@@ -73,8 +73,9 @@ int main(const int argc, const char* argv[]) {
     std::cout << cos_sim << std::endl;
     int dimension = 1;
     std::cout << random_projection::dimension(dimension, 0.1) << std::endl;
-    std::cout << "Hello CMake" << std::endl;
-    
+    std::cout << "Hello CMake" << std::endl;*/
+
+    random_projection::create_random_matrix(100, 500, true, 0.1, "gaussian");
 
     return 0;
 }

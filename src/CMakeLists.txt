@@ -9,6 +9,10 @@ if(NOT EXISTS ${EIGEN_DIR})
     )
 endif()
 
+include_directories(./infra)
+include_directories(./util)
+include_directories(${CMAKE_SOURCE_DIR}/src/lib/eigen/)
+
 set(HEADER_FILES
         argbase.hh
         args.hh
@@ -33,15 +37,6 @@ set(SOURCE_FILES
         infra/random_projection.cc
         util/utils.cc
 )
-
-include_directories(infra)
-include_directories(util)
-include_directories(${CMAKE_SOURCE_DIR}/src/lib/eigen/Eigen)
-
-#add_subdirectory(${CMAKE_SOURCE_DIR}/src/lib/eigen)
-
-#find_package (Eigen3 3.3 REQUIRED NO_MODULE)
-
 
 add_library(${CMAKE_PROJECT_NAME}_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
 
