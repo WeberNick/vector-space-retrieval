@@ -67,10 +67,14 @@ int main(const int argc, const char* argv[]) {
     double euclid_sim = similarity_measures::euclidean_distance_normalized(doc_a, doc_b);
     double cos_sim = similarity_measures::cosine_similarity(doc_a, doc_b);
 
+    random_projection::create_random_matrix(0, 1, true, 0.1, "gaussian");
+
     std::cout << euclid_sim << std::endl;
     std::cout << cos_sim << std::endl;
-    int dimension = 1000;
+    int dimension = 1;
     std::cout << random_projection::dimension(dimension, 0.1) << std::endl;
     std::cout << "Hello CMake" << std::endl;
+    
+
     return 0;
 }

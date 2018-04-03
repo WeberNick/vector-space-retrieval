@@ -70,6 +70,12 @@ then
   rm -rf ./build 
 fi 
 
+if [ -d ./bin ]; 
+then
+  echo "Deleting ./bin directory"
+  rm -rf ./bin 
+fi 
+
 if [ -d ./tests/lib ];
 then
   echo "Deleting ./tests/lib directory"

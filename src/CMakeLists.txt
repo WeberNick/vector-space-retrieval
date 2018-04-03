@@ -1,5 +1,14 @@
 project(${CMAKE_PROJECT_NAME}_lib)
- 
+
+# Clone Eigen
+set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/src/lib/)
+if(NOT EXISTS ${EIGEN_DIR})
+    find_package(Git REQUIRED)
+    execute_process(
+            COMMAND ${GIT_EXECUTABLE} clone https://github.com/eigenteam/eigen-git-mirror ${EXTERNAL_DIR}eigen
+    )
+endif()
+
 set(HEADER_FILES
         argbase.hh
         args.hh
@@ -13,7 +22,7 @@ set(HEADER_FILES
         infra/types.hh
         util/utils.hh
 )
- 
+
 set(SOURCE_FILES
         args.cc
         document_manager.cc
@@ -24,11 +33,20 @@ set(SOURCE_FILES
         infra/random_projection.cc
         util/utils.cc
 )
- 
-#if (EXISTS ${SOURCE_FILES})
-# The library contains header and source files.
-    add_library(${CMAKE_PROJECT_NAME}_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
-#else()
-# The library only contains header files.
-#   add_library(${CMAKE_PROJECT_NAME}_lib INTERFACE)
-#endif()
+
+include_directories(infra)
+include_directories(util)
+include_directories(${CMAKE_SOURCE_DIR}/src/lib/eigen/Eigen)
+
+#add_subdirectory(${CMAKE_SOURCE_DIR}/src/lib/eigen)
+
+#find_package (Eigen3 3.3 REQUIRED NO_MODULE)
+
+
+add_library(${CMAKE_PROJECT_NAME}_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
+
+
+
+
+
+

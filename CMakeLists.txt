@@ -1,27 +1,30 @@
 cmake_minimum_required(VERSION 3.9)
- 
+
 find_program(CMAKE_C_COMPILER NAMES $ENV{CC} gcc PATHS ENV PATH NO_DEFAULT_PATH)
 find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PATH)
- 
+
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin)
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/build)
+
+set (CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
- 
+
 project(evsr VERSION 0.0.1)
- 
+
 #For Testing
 include(CTest)
 enable_testing()
- 
-include_directories(src/infra)
-include_directories(src/util)
- 
+
 SET(SOURCE_FILES main.cc)
 add_executable(${CMAKE_PROJECT_NAME}_run ${SOURCE_FILES})
- 
+
 include_directories(src)
- 
+
 add_subdirectory(src)
 add_subdirectory(tests)
- 
+
 target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib)
 
 # Doxygen Build
