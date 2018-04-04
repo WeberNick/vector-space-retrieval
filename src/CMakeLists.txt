@@ -8,6 +8,19 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
 project(${CMAKE_PROJECT_NAME}_lib)
 
+# Clone Eigen
+set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/src/lib/)
+if(NOT EXISTS ${EIGEN_DIR})
+    find_package(Git REQUIRED)
+    execute_process(
+            COMMAND ${GIT_EXECUTABLE} clone https://github.com/eigenteam/eigen-git-mirror ${EXTERNAL_DIR}eigen
+    )
+endif()
+
+include_directories(./infra)
+include_directories(./util)
+include_directories(${CMAKE_SOURCE_DIR}/src/lib/eigen/)
+
 set(HEADER_FILES
         argbase.hh
         args.hh

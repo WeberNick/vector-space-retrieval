@@ -7,7 +7,7 @@
 #include <string>
 namespace random_projection {
 
-int dimension(int &sample, float eps);
-void create_random_matrix(int rows, int cols, bool JLT, double eps, std::string projection);
+    int dimension(int& sample, float eps = 0.1);
+    void create_random_matrix(int rows, int cols, bool JLT, double eps, std::string projection);
 
-}
+} // namespace random_projection

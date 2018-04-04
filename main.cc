@@ -2,11 +2,18 @@
 // Created by Alexander Weiß on 30.03.18.
 //
 
+<<<<<<< HEAD
 #include "args.hh"
 #include "measure.hh"
 #include "random_projection.hh"
 #include "similarity_measures.hh"
 
+=======
+#include "src/args.hh"
+#include "src/infra/random_projection.h"
+#include "src/infra/similarity_measures.hh"
+#include "src/measure.hh"
+>>>>>>> random-projection
 #include <iostream>
 #include <vector>
 
@@ -44,7 +51,7 @@ int main(const int argc, const char* argv[]) {
     DocumentManager::createInstance(lArgs.path());
     DocumentManager* docManager = DocumentManager::getInstance();
 
-    std::vector<double> doc_a = { 1, 3, 5, 8, 100, 100 };
+    /*std::vector<double> doc_a = { 1, 3, 5, 8, 100, 100 };
     std::vector<double> doc_b = { 2, 4, 5, 1, 2, 0 };
 
     std::cout << similarity_measures::tf_idf(5.0, 10.0) << std::endl;
@@ -52,10 +59,15 @@ int main(const int argc, const char* argv[]) {
     double euclid_sim = similarity_measures::euclidean_distance_normalized(doc_a, doc_b);
     double cos_sim = similarity_measures::cosine_similarity(doc_a, doc_b);
 
+    random_projection::create_random_matrix(0, 1, true, 0.1, "gaussian");
+
     std::cout << euclid_sim << std::endl;
     std::cout << cos_sim << std::endl;
-    int dimension = 1000;
+    int dimension = 1;
     std::cout << random_projection::dimension(dimension, 0.1) << std::endl;
-    std::cout << "Hello CMake" << std::endl;
+    std::cout << "Hello CMake" << std::endl;*/
+
+    random_projection::create_random_matrix(100, 500, true, 0.1, "gaussian");
+
     return 0;
 }
