@@ -12,9 +12,6 @@ project(evsr VERSION 0.0.1)
 include(CTest)
 enable_testing()
  
-include_directories(src/infra)
-include_directories(src/util)
- 
 SET(SOURCE_FILES main.cc)
 add_executable(${CMAKE_PROJECT_NAME}_run ${SOURCE_FILES})
  

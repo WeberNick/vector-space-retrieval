@@ -1,5 +1,13 @@
-project(${CMAKE_PROJECT_NAME}_lib)
+cmake_minimum_required(VERSION 3.9)
  
+find_program(CMAKE_C_COMPILER NAMES $ENV{CC} gcc PATHS ENV PATH NO_DEFAULT_PATH)
+find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PATH)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+
+project(${CMAKE_PROJECT_NAME}_lib)
+
 set(HEADER_FILES
         argbase.hh
         args.hh
@@ -8,10 +16,10 @@ set(HEADER_FILES
         inverted_index.hh
         measure.hh
         tiered_index.hh
-        infra/similarity_measures.hh
-        infra/types.hh
-        util/utils.hh
-        infra/random_projection.hh
+        similarity_measures.hh
+        types.hh
+        utils.hh
+        random_projection.hh
 )
  
 set(SOURCE_FILES
@@ -20,9 +28,9 @@ set(SOURCE_FILES
         document.cc
         inverted_index.cc
         tiered_index.cc
-        infra/similarity_measures.cc
-        util/utils.cc
-        infra/random_projection.cc
+        similarity_measures.cc
+        utils.cc
+        random_projection.cc
 )
  
 #if (EXISTS ${SOURCE_FILES})

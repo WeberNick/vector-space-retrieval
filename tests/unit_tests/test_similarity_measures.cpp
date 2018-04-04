@@ -3,8 +3,8 @@
 //
 
 #include "gtest/gtest.h"
-#include <similarity_measures.hh>
-#include <util/utils.hh>
+#include "similarity_measures.hh"
+#include "utils.hh"
 
 TEST(Euclidean_Distance_Equals_Test, Equals) {
 

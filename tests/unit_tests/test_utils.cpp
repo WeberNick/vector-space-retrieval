@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include <util/utils.hh>
+#include "utils.hh"
 
 TEST(To_Lower_Equals_Test, Equals) {
 
