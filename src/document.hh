@@ -25,5 +25,5 @@ class Document {
   private:
     size_t _ID;
     std::string _content;
-    float_map& _tfidf; // stores tfidf values
+    float_map* _tfidf; // stores tfidf values
 };
