@@ -11,6 +11,7 @@ set(HEADER_FILES
         infra/similarity_measures.hh
         infra/types.hh
         util/utils.hh
+        infra/random_projection.hh
 )
  
 set(SOURCE_FILES
@@ -21,6 +22,7 @@ set(SOURCE_FILES
         tiered_index.cc
         infra/similarity_measures.cc
         util/utils.cc
+        infra/random_projection.cc
 )
  
 #if (EXISTS ${SOURCE_FILES})

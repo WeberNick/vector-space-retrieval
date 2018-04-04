@@ -3,7 +3,7 @@
 //
 
 #include <vector>
-#include "random_projection.h"
+#include "random_projection.hh"
 
 
 /**

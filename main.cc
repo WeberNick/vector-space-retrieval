@@ -2,12 +2,14 @@
 // Created by Alexander Weiß on 30.03.18.
 //
 
-#include <args.hh>
-#include <iostream>
-#include <measure.hh>
-#include <random_projection.h>
-#include <similarity_measures.hh>
+#include "args.hh"
+#include "measure.hh"
+#include "random_projection.hh"
+#include "similarity_measures.hh"
+
 #include <vector>
+#include <iostream>
+
 /**
  * @brief Starts everything
  *
