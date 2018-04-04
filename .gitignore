@@ -155,3 +155,5 @@ data/nfcorpus
 tests/lib/
 tests/lib/**
 bin/**
+src/lib/
+src/lib/**

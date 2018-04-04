@@ -64,12 +64,8 @@ void random_projection::create_random_matrix(int rows, int cols, bool JLT, doubl
 
     std::vector<double> randoms;
 
-    double t = (1 / sqrt(cols));
-    std::cout << t << std::endl;
-
     for (int i = 0; i < cols * rows; ++i) {
-        // TODO check rand normal return
-        double rand = (rand_normal(0, t));
+        double rand = (rand_normal(0, (1 / sqrt(cols))));
         randoms.push_back(rand);
     }
 
@@ -84,4 +80,5 @@ void random_projection::create_random_matrix(int rows, int cols, bool JLT, doubl
     }
 
     std::cout << m << std::endl;
+    std::cout << m(99, 499) << std::endl;
 }
