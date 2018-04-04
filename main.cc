@@ -59,7 +59,7 @@ int main(const int argc, const char* argv[]) {
      */
 
     // doc parser here, replace "dev.txt"
-    // DocumentManager* docManager = new DocumentManager("dev.txt");
+    DocumentManager* docManager = new DocumentManager(lArgs.path());
 
     std::vector<double> doc_a = { 1, 3, 5, 8, 100, 100 };
     std::vector<double> doc_b = { 2, 4, 5, 1, 2, 0 };
