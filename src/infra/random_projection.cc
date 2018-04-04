@@ -52,13 +52,13 @@ int random_projection::dimension(int& sample, float eps) {
 }
 
 /**
- * @brief Generates a random matrix based on different projection algorithms
+ * @brief
  *
- * @param rows number of rows
- * @param cols number of columns
+ * @param rows
+ * @param cols
  * @param JLT
- * @param eps error tolerance level with default value 0.1
- * @param projection projection function with default value "gaussian"
+ * @param eps
+ * @param projection
  */
 void random_projection::create_random_matrix(int rows, int cols, bool JLT, double eps = 0.1, std::string projection = "gaussian") {
 

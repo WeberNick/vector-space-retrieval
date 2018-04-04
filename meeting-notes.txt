@@ -1,0 +1,6 @@
+ClassNames: Camel Case
+method names: start small then CamelCase
+const vor den datentyp
+erstmal keine namespaces
+
+eigene sachen in ansfürhungszeichen 
