@@ -1,9 +1,0 @@
-ClassNames: Camel Case
-method names: start small then CamelCase
-const vor den datentyp
-erstmal keine namespaces
-
-eigene sachen in ansfürhungszeichen 
-double into float
-cosine aus nlp stanford - https://nlp.stanford.edu/IR-book/html/htmledition/computing-vector-scores-1.html#sec:pseudocode
-methoden paranmeter name kleines a und dann CamelCase 

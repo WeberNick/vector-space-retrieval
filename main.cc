@@ -2,18 +2,11 @@
 // Created by Alexander Weiß on 30.03.18.
 //
 
-<<<<<<< HEAD
 #include "args.hh"
 #include "measure.hh"
 #include "random_projection.hh"
 #include "similarity_measures.hh"
 
-=======
-#include "src/args.hh"
-#include "src/infra/random_projection.h"
-#include "src/infra/similarity_measures.hh"
-#include "src/measure.hh"
->>>>>>> random-projection
 #include <iostream>
 #include <vector>
 

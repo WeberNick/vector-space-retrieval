@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include <random_projection.h>
+#include <random_projection.hh>
 
 TEST(Dimension_Estimation_Equals_Test, Equals) {
 

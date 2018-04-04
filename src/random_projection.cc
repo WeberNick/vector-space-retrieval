@@ -2,7 +2,7 @@
 // Created by Alexander Weiß on 31.03.18.
 //
 
-#include "random_projection.h"
+#include "random_projection.hh"
 #include "cmath"
 #include <Eigen/Dense>
 #include <iostream>

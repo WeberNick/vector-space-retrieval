@@ -1,4 +1,4 @@
-#include "infra/args.hh"
+#include "args.hh"
 
 void construct_arg_desc(argdesc_vt& x) {
     typedef argdesc_t<Args, char> carg_t;

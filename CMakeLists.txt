@@ -28,6 +28,7 @@ include_directories(src/util)
 add_subdirectory(src)
 add_subdirectory(tests)
 
+
 target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib)
 
 # Doxygen Build
