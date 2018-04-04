@@ -20,8 +20,10 @@ set(HEADER_FILES
         types.hh
         utils.hh
         random_projection.hh
+        index_manager.hh
+        posting_list.hh
 )
- 
+
 set(SOURCE_FILES
         args.cc
         document_manager.cc
@@ -31,6 +33,8 @@ set(SOURCE_FILES
         similarity_measures.cc
         utils.cc
         random_projection.cc
+        index_manager.cc
+        posting_list.cc
 )
  
 #if (EXISTS ${SOURCE_FILES})

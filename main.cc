@@ -7,8 +7,8 @@
 #include "random_projection.hh"
 #include "similarity_measures.hh"
 
-#include <vector>
 #include <iostream>
+#include <vector>
 
 /**
  * @brief Starts everything
@@ -41,25 +41,8 @@ int main(const int argc, const char* argv[]) {
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
 
-    /**
-     * Basic Idea to create inverted index (pseudo code):
-     *
-     * DocumentCollection docCol("path/to/root/directory")
-     * docCol.collect();
-     * InvertedIndex invInd();
-     * vector<string> terms;
-     * for each Document d in docCol{
-     *      d.preprocess();
-     *      for each term t in d{
-     *          terms.push_back(t);
-     *      }
-     *      invInd.addTerm(terms, d.getID());
-     *      terms.clear();
-     * }
-     */
-
-    // doc parser here, replace "dev.txt"
-    DocumentManager* docManager = new DocumentManager(lArgs.path());
+    DocumentManager::createInstance(lArgs.path());
+    DocumentManager* docManager = DocumentManager::getInstance();
 
     std::vector<double> doc_a = { 1, 3, 5, 8, 100, 100 };
     std::vector<double> doc_b = { 2, 4, 5, 1, 2, 0 };

@@ -11,3 +11,4 @@ typedef unsigned int uint;
 typedef std::vector<uint> uint_vt;
 typedef std::vector<std::string> string_vt;
 typedef std::map<std::string, float> float_map;
+typedef std::map<std::string, uint> int_map;

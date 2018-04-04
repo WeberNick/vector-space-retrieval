@@ -1,8 +1,7 @@
 #pragma once
 
 #include "document.hh"
-#include "inverted_index.hh"
-#include "tiered_index.hh"
+#include "index_manager.hh"
 #include "types.hh"
 
 #include <map>
@@ -16,7 +15,7 @@ class DocumentManager {
     // typedef std::pair<DocMapIterator, bool> ...;
 
   public:
-    explicit DocumentManager(const std::string& aFile);
+    explicit DocumentManager(const std::string& aPath);
     explicit DocumentManager() = delete;
     DocumentManager(const DocumentManager&) = delete;
     DocumentManager(DocumentManager&&) = delete;
@@ -28,9 +27,7 @@ class DocumentManager {
     /* start the scan for files at the root directory and add all found docs to map */
     void read(const std::string& aFile);
 
-  public:
-    /* The following are just wrapper functions for the respective map container calls */
-
+  public:  /* Wrapper functions for the respective map container calls */
     /* insert element into manager (by std::pair element) */
     bool insert(const DocumentMapElem& aElement);
     /* insert element into manager (by values) */
@@ -43,16 +40,34 @@ class DocumentManager {
     bool erase(const DocMapIterator aIterator);
 
   public:
-    // getter
-    inline const DocumentMap& getDocumentManager() { return _docs; }
+    inline const DocumentMap& getDocumentMap() { return _docs; }
     inline size_t getNoDocuments() { return _docs.size(); }
-    // setter, if needed
+
+    inline static void createInstance(const std::string& aPath) {
+        if (!DocumentManager::_isCreated) {
+            DocumentManager::_isCreated = true;
+            DocumentManager::_instance = new DocumentManager(aPath);
+        }
+    }
+
+    inline static void destroyInstance() {
+        if (DocumentManager::_isCreated) { delete DocumentManager::_instance; }
+    }
+
+    inline static DocumentManager* getInstance() {
+        if (DocumentManager::_isCreated) {
+            return DocumentManager::_instance;
+        } else {
+            return NULL;
+        }
+    }
 
   private:
+    static DocumentManager* _instance;
+    static bool _isCreated;
     static size_t _countID;
-    static std::string _dataDir;
-    float_map _idf; // stores idf values
+    static std::string _collectionFile;
+
     DocumentMap _docs;
-    InvertedIndex _invertedIndex;
-    TieredIndex _tieredIndex;
+    IndexManager _indexMgr;
 };
