@@ -2,10 +2,14 @@
 
 #include "types.hh"
 
+#include <vector>
 #include <map>
 #include <string>
 
 class Document {
+    public:
+        typedef std::vector<Document> doc_vt;
+
   public:
     explicit Document(const size_t aDocID, const std::string& aPath);
     explicit Document() = delete;

@@ -10,26 +10,28 @@ project(${CMAKE_PROJECT_NAME}_lib)
 
 set(HEADER_FILES
         argbase.hh
+        types.hh
         args.hh
-        document_manager.hh
-        document.hh
-        inverted_index.hh
+        exception.hh
         measure.hh
+        utils.hh
+        document.hh
+        document_manager.hh
+        inverted_index.hh
         tiered_index.hh
         similarity_measures.hh
-        types.hh
-        utils.hh
         random_projection.hh
 )
  
 set(SOURCE_FILES
         args.cc
-        document_manager.cc
+        exception.cc
+        utils.cc
         document.cc
+        document_manager.cc
         inverted_index.cc
         tiered_index.cc
         similarity_measures.cc
-        utils.cc
         random_projection.cc
 )
  
