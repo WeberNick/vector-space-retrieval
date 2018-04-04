@@ -60,7 +60,7 @@ int main(const int argc, const char* argv[]) {
     std::cout << random_projection::dimension(dimension, 0.1) << std::endl;
     std::cout << "Hello CMake" << std::endl;*/
 
-    random_projection::create_random_matrix(100, 500, true, 0.1, "gaussian");
+    // random_projection::create_random_matrix(100, 500, true, 0.1, "gaussian");
 
     return 0;
 }
