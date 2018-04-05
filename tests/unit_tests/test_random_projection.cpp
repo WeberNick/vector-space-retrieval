@@ -2,8 +2,8 @@
 // Created by Alexander Weiß on 31.03.18.
 //
 
+#include "random_projection.hh"
 #include "gtest/gtest.h"
-#include <random_projection.hh>
 
 TEST(Dimension_Estimation_Equals_Test, Equals) {
 

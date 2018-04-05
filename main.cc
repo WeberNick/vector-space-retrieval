@@ -5,9 +5,10 @@
 #include "args.hh"
 #include "measure.hh"
 #include "random_projection.hh"
-#include "similarity_measures.hh"
+#include "utility.hh"
 
 #include <iostream>
+#include <query_processing_engine.hh>
 #include <vector>
 
 /**
@@ -49,8 +50,8 @@ int main(const int argc, const char* argv[]) {
 
     std::cout << similarity_measures::tf_idf(5.0, 10.0) << std::endl;
 
-    double euclid_sim = similarity_measures::euclidean_distance_normalized(doc_a, doc_b);
-    double cos_sim = similarity_measures::cosine_similarity(doc_a, doc_b);
+    double euclid_sim = similarity_measures::calcEuclideanDistanceNormalized(doc_a, doc_b);
+    double cos_sim = similarity_measures::calcCosineSimilarity(doc_a, doc_b);
 
     random_projection::create_random_matrix(0, 1, true, 0.1, "gaussian");
 
@@ -61,6 +62,8 @@ int main(const int argc, const char* argv[]) {
     std::cout << "Hello CMake" << std::endl;*/
 
     // random_projection::create_random_matrix(100, 500, true, 0.1, "gaussian");
+
+    std::cout << QueryProcessingEngine::Instance().search("hi") << std::endl;
 
     return 0;
 }

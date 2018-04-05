@@ -29,12 +29,12 @@ set(HEADER_FILES
         inverted_index.hh
         measure.hh
         tiered_index.hh
-        similarity_measures.hh
         types.hh
-        utils.hh
+        utility.hh
         random_projection.hh
         index_manager.hh
         posting_list.hh
+        query_processing_engine.hh
 )
 
 set(SOURCE_FILES
@@ -43,11 +43,10 @@ set(SOURCE_FILES
         document.cc
         inverted_index.cc
         tiered_index.cc
-        similarity_measures.cc
-        utils.cc
         random_projection.cc
         index_manager.cc
         posting_list.cc
+        query_processing_engine.cc
 )
  
 #if (EXISTS ${SOURCE_FILES})
