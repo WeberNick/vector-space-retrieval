@@ -63,7 +63,7 @@ int main(const int argc, const char* argv[]) {
 
     // random_projection::create_random_matrix(100, 500, true, 0.1, "gaussian");
 
-    std::cout << QueryProcessingEngine::Instance().search("hi") << std::endl;
+    std::cout << QueryProcessingEngine::Instance().search("Documenting transportation is such a great fundamental human being") << std::endl;
 
     return 0;
 }

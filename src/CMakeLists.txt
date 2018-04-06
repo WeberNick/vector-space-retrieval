@@ -10,16 +10,30 @@ project(${CMAKE_PROJECT_NAME}_lib)
 
 # Clone Eigen
 set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/src/lib/)
-if(NOT EXISTS ${EIGEN_DIR})
+if(NOT EXISTS ${EXTERNAL_DIR}eigen)
     find_package(Git REQUIRED)
     execute_process(
             COMMAND ${GIT_EXECUTABLE} clone https://github.com/eigenteam/eigen-git-mirror ${EXTERNAL_DIR}eigen
     )
 endif()
 
+# Clone /OleanderStemmingLibrary
+
+if(NOT EXISTS ${EXTERNAL_DIR}oleanderStemmingLibrary)
+    find_package(Git REQUIRED)
+    execute_process(
+            COMMAND ${GIT_EXECUTABLE} clone https://github.com/OleanderSoftware/OleanderStemmingLibrary.git ${EXTERNAL_DIR}oleanderStemmingLibrary
+    )
+endif()
+
+
+
+
+
 include_directories(./infra)
 include_directories(./util)
 include_directories(${CMAKE_SOURCE_DIR}/src/lib/eigen/)
+include_directories(${CMAKE_SOURCE_DIR}/src/lib/oleanderStemmingLibrary/)
 
 set(HEADER_FILES
         argbase.hh
