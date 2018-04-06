@@ -13,7 +13,7 @@ set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/src/lib/)
 if(NOT EXISTS ${EIGEN_DIR})
     find_package(Git REQUIRED)
     execute_process(
-            COMMAND ${GIT_EXECUTABLE} clone https://github.com/eigenteam/eigen-git-mirror ${EXTERNAL_DIR}eigen
+        COMMAND ${GIT_EXECUTABLE} clone https://github.com/eigenteam/eigen-git-mirror ${EXTERNAL_DIR}eigen
     )
 endif()
 

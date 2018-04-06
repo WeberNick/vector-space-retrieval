@@ -8,7 +8,7 @@
 
 class Document {
   public:
-    explicit Document(const size_t aID, const std::string& aDocID, const std::string& aContent);
+    explicit Document(const std::string& aDocID, const std::string& aContent);
     explicit Document() = delete;
     Document(const Document&) = delete;
     Document(Document&&) = delete;
@@ -23,6 +23,7 @@ class Document {
     inline uint getTF(const std::string& aTerm) { return _tf->find(aTerm)->second; }
 
   private:
+    static size_t _documentCount;
     size_t _ID;           // e.g. 5
     std::string _docID;   // e.g. MED-123
     std::string _content; // e.g. studi run [...]

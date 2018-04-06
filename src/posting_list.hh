@@ -8,8 +8,13 @@
 
 class PostingList {
   public:
-    typedef std::tuple<uint, uint> DocTFPair; // Pair<DocID, TF of term>
-    typedef std::vector<DocTFPair> Posting;
+    struct PostingElement {
+        uint _docID;
+        uint _tf;
+        inline bool operator< (const PostingElement& post) const {
+          return _docID < post._docID;
+        }
+    };
   
   public:
     explicit PostingList(const std::string& aTerm, const float aIDF);
@@ -18,12 +23,14 @@ class PostingList {
     PostingList(PostingList&&) = delete;
     PostingList& operator=(const PostingList&) = delete;
     PostingList& operator=(PostingList&&) = delete;
-    //PostingList& operator<<(Posting& aPosting, DocTFPair aElem) {}; // insert and ensure sort by ID
     ~PostingList();
 
+  public:
+    inline float getIDF() { return _idf; }
+    // inline uint getTF(uint aDocID) { return }
+
   private:
-    std::string _term;
     float _idf;
-    Posting* _posting;
+    std::vector<PostingElement>* _posting; // has to be sorted
 };
 

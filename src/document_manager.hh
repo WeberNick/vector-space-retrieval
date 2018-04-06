@@ -9,9 +9,9 @@
 
 class DocumentManager {
   public:
-    typedef std::map<size_t, Document> DocumentMap;
+    typedef std::map<size_t, Document> doc_mt;
     typedef std::pair<size_t, Document> DocumentMapElem;
-    typedef DocumentMap::iterator DocMapIterator;
+    typedef doc_mt::iterator DocMapIterator;
     // typedef std::pair<DocMapIterator, bool> ...;
 
   public:
@@ -26,8 +26,6 @@ class DocumentManager {
   private:
     /* start the scan for files at the root directory and add all found docs to map */
     void read(const std::string& aFile);
-
-  public:  /* Wrapper functions for the respective map container calls */
     /* insert element into manager (by std::pair element) */
     bool insert(const DocumentMapElem& aElement);
     /* insert element into manager (by values) */
@@ -40,7 +38,7 @@ class DocumentManager {
     bool erase(const DocMapIterator aIterator);
 
   public:
-    inline const DocumentMap& getDocumentMap() { return _docs; }
+    inline const doc_mt& getDocuments() { return _docs; }
     inline size_t getNoDocuments() { return _docs.size(); }
 
     inline static void createInstance(const std::string& aPath) {
@@ -64,10 +62,11 @@ class DocumentManager {
 
   private:
     static DocumentManager* _instance;
+    static const char _delimiter;
     static bool _isCreated;
     static size_t _countID;
     static std::string _collectionFile;
 
-    DocumentMap _docs;
     IndexManager _indexMgr;
+    doc_mt _docs;
 };

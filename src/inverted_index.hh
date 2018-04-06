@@ -1,5 +1,6 @@
 #pragma once
 
+#include "posting_list.hh"
 #include "types.hh"
 
 #include <map>
@@ -8,8 +9,8 @@
 class InvertedIndex {
   public:
     // better: Hashing
-    typedef std::map<std::string, size_t_vt> PostingMap;
-    typedef PostingMap::iterator PostingMapIterator;
+    typedef std::map<std::string, PostingList*> posting_mt;
+    typedef posting_mt::iterator PostingMapIterator;
 
   public:
     explicit InvertedIndex();
@@ -19,9 +20,7 @@ class InvertedIndex {
     InvertedIndex& operator=(InvertedIndex&&) = delete;
     ~InvertedIndex();
 
-  public:
-    /* The following are just wrapper functions for the respective map container calls */
-
+  public: /* The following are just wrapper functions for the respective map container calls */
     /* if term is not in inverted index yet: create an empty posting list for the term (key) */
     bool insert(const std::string& aTerm);
     /* find element in collection */
@@ -44,9 +43,9 @@ class InvertedIndex {
     size_t getNoDocs(const std::string& aTerm);
 
   public:
-    inline const PostingMap& getPostings() { return _postings; }
+    inline const posting_mt& getPostings() { return _postings; }
     inline size_t getNoPostings() { return _postings.size(); }
 
   private:
-    PostingMap _postings;
+    posting_mt _postings;
 };
