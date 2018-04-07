@@ -47,10 +47,11 @@ int random_projection::dimension(int& sample, float eps) {
         throw("Sample size must be grater than zero");
     } else {
         double denominator = (pow(eps, 2) / 2 - (pow(eps, 3) / 3));
-        return floor((4 * log(sample) / denominator));
+        return static_cast<int>(floor((4 * log(sample) / denominator)));
     }
 }
 
+// TODO: RANDOM PROJECT IS NOT WORKING
 /**
  * @brief
  *
@@ -60,7 +61,12 @@ int random_projection::dimension(int& sample, float eps) {
  * @param eps
  * @param projection
  */
-void random_projection::create_random_matrix(int rows, int cols, bool JLT, double eps = 0.1, std::string projection = "gaussian") {
+Eigen::MatrixXd random_projection::createRandomMatrix(int rows, int cols, bool JLT, double eps, std::string projection) {
+
+    if (rows == 0) throw("Number of rows has to be greater than 0");
+    if (cols == 0) throw("Number of columns has to be greater than 0");
+
+    if (JLT) { cols = dimension(cols, eps); }
 
     std::vector<double> randoms;
 
@@ -79,6 +85,53 @@ void random_projection::create_random_matrix(int rows, int cols, bool JLT, doubl
         }
     }
 
-    std::cout << m << std::endl;
-    std::cout << m(99, 499) << std::endl;
+    return m;
+}
+Eigen::MatrixXd random_projection::projectMatrix() {
+
+    int rows = 5;
+    int cols = 1000;
+    int j = cols;
+
+    Eigen::MatrixXd randomMatrix = Eigen::MatrixXd::Random(rows, cols);
+    std::cout << "Random matrix" << std::endl;
+    std::cout << randomMatrix << std::endl;
+
+    int k = dimension(j);
+    std::cout << "New dimension: " << k << std::endl;
+    // eps = 0.1, projection = "gaussian"
+
+    Eigen::MatrixXd projectionMatrix = createRandomMatrix(j, k, false);
+    std::cout << "Random matrix generated" << std::endl;
+    std::cout << projectionMatrix << std::endl;
+
+    std::cout << "Project matrix into a lower dimensional space" << std::endl;
+    Eigen::MatrixXcd resultMatrix = randomMatrix * projectionMatrix;
+
+    std::cout << "Here is the result " << std::endl;
+    std::cout << resultMatrix << std::endl;
+
+    std::cout << "Start cols: " << randomMatrix.cols() << std::endl;
+    std::cout << "Result cols: " << resultMatrix.cols() << std::endl;
+
+    /*Eigen::MatrixXd a(2,3);
+    a << 3, 2, 1,
+        1, 0, 2;
+    std::cout << a << std::endl;
+    std::cout << "======================"<< std::endl;
+
+
+    Eigen::MatrixXd b(3,2);
+    b << 1, 2,
+         0, 1,
+         4, 0;
+
+    Eigen::MatrixXd c = a * b;
+
+
+    std::cout << b << std::endl;
+  std::cout << "======================" << std::endl;
+    std::cout << c << std::endl;*/
+
+    return Eigen::MatrixXd();
 }
