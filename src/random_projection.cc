@@ -4,6 +4,7 @@
 
 #include "random_projection.hh"
 #include "cmath"
+#include "utility.hh"
 #include <Eigen/Dense>
 #include <iostream>
 #include <vector>
@@ -61,7 +62,7 @@ int random_projection::dimension(int& sample, float eps) {
  * @param eps
  * @param projection
  */
-Eigen::MatrixXd random_projection::createRandomMatrix(int rows, int cols, bool JLT, double eps, std::string projection) {
+Eigen::MatrixXf random_projection::createRandomMatrix(int rows, int cols, bool JLT, double eps, std::string projection) {
 
     if (rows == 0) throw("Number of rows has to be greater than 0");
     if (cols == 0) throw("Number of columns has to be greater than 0");
@@ -75,7 +76,7 @@ Eigen::MatrixXd random_projection::createRandomMatrix(int rows, int cols, bool J
         randoms.push_back(rand);
     }
 
-    Eigen::MatrixXd m(rows, cols);
+    Eigen::MatrixXf m(rows, cols);
     int k = 0;
     for (int j = 0; j < rows; ++j) {
         for (int i = 0; i < cols; ++i) {
@@ -87,51 +88,45 @@ Eigen::MatrixXd random_projection::createRandomMatrix(int rows, int cols, bool J
 
     return m;
 }
-Eigen::MatrixXd random_projection::projectMatrix() {
+Eigen::MatrixXf random_projection::projectMatrix() {
 
-    int rows = 5;
-    int cols = 1000;
-    int j = cols;
+    int nrow = 5;
+    int ncol = 103260;
+    int j = ncol;
 
-    Eigen::MatrixXd randomMatrix = Eigen::MatrixXd::Random(rows, cols);
-    std::cout << "Random matrix" << std::endl;
-    std::cout << randomMatrix << std::endl;
+    Eigen::MatrixXf randomMatrix = (Eigen::MatrixXf::Random(nrow, ncol) + Eigen::MatrixXf::Ones(nrow, ncol)) * 5;
+    std::cout << "Random matrix generated" << std::endl;
 
-    int k = dimension(j);
+    Eigen::VectorXf v1 = randomMatrix.row(0);
+    std::vector<float> doc_a(&v1[0], v1.data() + v1.cols() * v1.rows());
+
+    Eigen::VectorXf v2 = randomMatrix.row(1);
+    std::vector<float> doc_b(&v2[0], v2.data() + v2.cols() * v2.rows());
+
+    std::cout << "Cosine similarity between doc_a and doc_b before reduction: " << similarity_measures::calcCosineSimilarity(doc_a, doc_b) << std::endl;
+
+    int k = dimension(j, 0.5);
     std::cout << "New dimension: " << k << std::endl;
     // eps = 0.1, projection = "gaussian"
 
-    Eigen::MatrixXd projectionMatrix = createRandomMatrix(j, k, false);
-    std::cout << "Random matrix generated" << std::endl;
-    std::cout << projectionMatrix << std::endl;
+  std::cout << "Create projection matrix" << std::endl;
+    Eigen::MatrixXf projectionMatrix = createRandomMatrix(j, k, false);
+    std::cout << "Projection matrix generated" << std::endl;
 
     std::cout << "Project matrix into a lower dimensional space" << std::endl;
-    Eigen::MatrixXcd resultMatrix = randomMatrix * projectionMatrix;
+    Eigen::MatrixXf resultMatrix = randomMatrix * projectionMatrix;
 
     std::cout << "Here is the result " << std::endl;
-    std::cout << resultMatrix << std::endl;
-
-    std::cout << "Start cols: " << randomMatrix.cols() << std::endl;
+    std::cout << "Original cols: " << randomMatrix.cols() << std::endl;
     std::cout << "Result cols: " << resultMatrix.cols() << std::endl;
 
-    /*Eigen::MatrixXd a(2,3);
-    a << 3, 2, 1,
-        1, 0, 2;
-    std::cout << a << std::endl;
-    std::cout << "======================"<< std::endl;
+    Eigen::VectorXf v4 = resultMatrix.row(0);
+    std::vector<float> doc_c(&v4[0], v4.data() + v4.cols() * v4.rows());
 
+    Eigen::VectorXf v5 = resultMatrix.row(1);
+    std::vector<float> doc_d(&v5[0], v5.data() + v5.cols() * v5.rows());
 
-    Eigen::MatrixXd b(3,2);
-    b << 1, 2,
-         0, 1,
-         4, 0;
+    std::cout << "Cosine similarity between doc_a and doc_b before reduction: " << similarity_measures::calcCosineSimilarity(doc_c, doc_d) << std::endl;
 
-    Eigen::MatrixXd c = a * b;
-
-
-    std::cout << b << std::endl;
-  std::cout << "======================" << std::endl;
-    std::cout << c << std::endl;*/
-
-    return Eigen::MatrixXd();
+    return Eigen::MatrixXf();
 }

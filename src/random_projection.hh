@@ -9,7 +9,7 @@
 namespace random_projection {
 
     int dimension(int& sample, float eps = 0.1);
-    Eigen::MatrixXd createRandomMatrix(int rows, int cols, bool JLT, double eps = 0.1, std::string projection = "gaussian");
-    Eigen::MatrixXd projectMatrix();
+    Eigen::MatrixXf createRandomMatrix(int rows, int cols, bool JLT, double eps = 0.1, std::string projection = "gaussian");
+    Eigen::MatrixXf projectMatrix();
 
 } // namespace random_projection
