@@ -8,10 +8,10 @@
  *	@section DESCRIPTION
  *	This class implements the command line arguements. A command line arguement has the form:
  * 	--[command] [optional parameter]
- * 	Where '--' indicates a command will follow, 
+ * 	Where '--' indicates a command will follow,
  *	'command' is the command name (e.g., 'help'),
  *	'optional parameter' is an optional parameter only needed for certain commands (e.g., for 'path' and string is needed)
- *	A complete invocation example could be: 
+ *	A complete invocation example could be:
  *	"./evsr --path "../data/" --trace --print" to use the relative path from src, activate tracing and printing information to std out
  *
  *	@section USAGE
@@ -25,7 +25,7 @@
  *      //parses arguments in their respective date type, stores them in an object of Args and return an status flag
  *      if(!parse_args<Args>(1, argc, argv, lArgDesc, lArgs)) //if != 0, an error occured while parsing arguments...
  *      {
- *          std::cerr << "error while parsing arguments." << std::endl; 
+ *          std::cerr << "error while parsing arguments." << std::endl;
  *          return -1;
  *      }
  *      //now use the data stored in object lArgs like this:
@@ -38,39 +38,38 @@
 #include "types.hh"
 #include <string>
 
-class Args
-{
-	public:
-		explicit Args();
-		Args(const Args&) = delete;
-		Args(Args&&) = delete;
-		Args& operator=(const Args&) = delete;
-		Args& operator=(Args&&) = delete;
-  		~Args();
+class Args {
+  public:
+    explicit Args();
+    Args(const Args&) = delete;
+    Args(Args&&) = delete;
+    Args& operator=(const Args&) = delete;
+    Args& operator=(Args&&) = delete;
+    ~Args();
 
-	public:
-		inline const bool help(){ return _help; }
-		inline void help(const bool& x) { _help = x; }
+  public:
+    inline const bool help() { return _help; }
+    inline void help(const bool& x) { _help = x; }
 
-		inline const bool trace(){ return _trace;}
-		inline void trace(const bool& x){ _trace = x;}
+    inline const bool trace() { return _trace; }
+    inline void trace(const bool& x) { _trace = x; }
 
-		inline const bool measure(){ return _measure;}
-		inline void measure(const bool& x){ _measure = x;}
+    inline const bool measure() { return _measure; }
+    inline void measure(const bool& x) { _measure = x; }
 
-		inline const bool print(){ return _print;}
-		inline void print(const bool& x){ _print = x;}
+    inline const bool print() { return _print; }
+    inline void print(const bool& x) { _print = x; }
 
-		inline const std::string path(){ return _path;}
-		inline void path(const std::string& x){ _path = x;}
+    inline const std::string path() { return _path; }
+    inline void path(const std::string& x) { _path = x; }
 
-	private:
-		bool _help;
-		bool _trace;
-		bool _measure;
-		bool _print;
+  private:
+    bool _help;
+    bool _trace;
+    bool _measure;
+    bool _print;
 
-		std::string _path;
+    std::string _path;
 };
 
 typedef std::vector<argdescbase_t<Args>*> argdesc_vt;

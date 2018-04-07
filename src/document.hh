@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <vector>
 
 class Document {
     public:
@@ -13,7 +14,7 @@ class Document {
         typedef std::vector<const Document*> doc_ptr_vt;
 
   public:
-    explicit Document(const size_t aDocID, const std::string& aPath);
+    explicit Document(const size_t aID, const std::string& aDocID, const std::string& aContent);
     explicit Document() = delete;
     Document(const Document&) = delete;
     Document(Document&&) = delete;
@@ -22,14 +23,14 @@ class Document {
     ~Document();
 
   public:
-    // todo: helper function to process content of a document
-
-  public:
     inline size_t getID() { return _ID; }
-    inline std::string getContent() { return _content; }
+    inline const std::string& getDocID() { return _docID; }
+    inline const std::string& getContent() { return _content; }
+    inline uint getTF(const std::string& aTerm) { return _tf->find(aTerm)->second; }
 
   private:
-    size_t _ID;
-    std::string _content;
-    float_map* _tfidf; // stores tfidf values
+    size_t _ID;           // e.g. 5
+    std::string _docID;   // e.g. MED-123
+    std::string _content; // e.g. studi run [...]
+    int_map* _tf;         // stores tf values
 };
