@@ -9,6 +9,8 @@
 class Document {
     public:
         typedef std::vector<Document> doc_vt;
+        typedef std::vector<const Document&> doc_ref_vt;
+        typedef std::vector<const Document*> doc_ptr_vt;
 
   public:
     explicit Document(const size_t aDocID, const std::string& aPath);

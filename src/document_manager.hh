@@ -46,6 +46,7 @@ class DocumentManager {
     // getter
     inline const DocumentMap& getDocumentManager() { return _docs; }
     inline size_t getNoDocuments() { return _docs.size(); }
+    inline size_t getCurrID(){ return _countID; }
     // setter, if needed
 
   private:
