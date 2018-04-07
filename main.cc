@@ -53,7 +53,7 @@ int main(const int argc, const char* argv[]) {
     double euclid_sim = similarity_measures::calcEuclideanDistanceNormalized(doc_a, doc_b);
     double cos_sim = similarity_measures::calcCosineSimilarity(doc_a, doc_b);
 
-    random_projection::create_random_matrix(0, 1, true, 0.1, "gaussian");
+    random_projection::createRandomMatrix(0, 1, true, 0.1, "gaussian");
 
     std::cout << euclid_sim << std::endl;
     std::cout << cos_sim << std::endl;
@@ -61,9 +61,12 @@ int main(const int argc, const char* argv[]) {
     std::cout << random_projection::dimension(dimension, 0.1) << std::endl;
     std::cout << "Hello CMake" << std::endl;*/
 
-    // random_projection::create_random_matrix(100, 500, true, 0.1, "gaussian");
+    // random_projection::createRandomMatrix(100, 500, true, 0.1, "gaussian");
 
-    std::cout << QueryProcessingEngine::Instance().search("Documenting transportation is such a great fundamental human being") << std::endl;
+    std::cout << "hi" << std::endl;
+    random_projection::projectMatrix();
+
+    // std::cout << QueryProcessingEngine::Instance().search("Documenting transportation is such a great fundamental human being") << std::endl;
 
     return 0;
 }
