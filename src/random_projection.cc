@@ -5,7 +5,6 @@
 #include "random_projection.hh"
 #include "cmath"
 #include "utility.hh"
-#include <Eigen/Dense>
 #include <iostream>
 #include <vector>
 
@@ -114,7 +113,7 @@ Eigen::MatrixXf random_projection::projectMatrix() {
     std::cout << "Projection matrix generated" << std::endl;
 
     std::cout << "Project matrix into a lower dimensional space" << std::endl;
-    Eigen::MatrixXf resultMatrix = randomMatrix * projectionMatrix;
+    Eigen::MatrixXf resultMatrix = randomMatrix*projectionMatrix;
 
     std::cout << "Here is the result " << std::endl;
     std::cout << "Original cols: " << randomMatrix.cols() << std::endl;
