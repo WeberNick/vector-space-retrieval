@@ -103,13 +103,13 @@ Eigen::MatrixXf random_projection::projectMatrix() {
     Eigen::VectorXf v2 = randomMatrix.row(1);
     std::vector<float> doc_b(&v2[0], v2.data() + v2.cols() * v2.rows());
 
-    std::cout << "Cosine similarity between doc_a and doc_b before reduction: " << similarity_measures::calcCosineSimilarity(doc_a, doc_b) << std::endl;
+    std::cout << "Cosine similarity between doc_a and doc_b before reduction: " << Utility::SimilarityMeasures::calcCosSim(doc_a, doc_b) << std::endl;
 
     int k = dimension(j, 0.5);
     std::cout << "New dimension: " << k << std::endl;
     // eps = 0.1, projection = "gaussian"
 
-  std::cout << "Create projection matrix" << std::endl;
+    std::cout << "Create projection matrix" << std::endl;
     Eigen::MatrixXf projectionMatrix = createRandomMatrix(j, k, false);
     std::cout << "Projection matrix generated" << std::endl;
 
@@ -126,7 +126,7 @@ Eigen::MatrixXf random_projection::projectMatrix() {
     Eigen::VectorXf v5 = resultMatrix.row(1);
     std::vector<float> doc_d(&v5[0], v5.data() + v5.cols() * v5.rows());
 
-    std::cout << "Cosine similarity between doc_a and doc_b before reduction: " << similarity_measures::calcCosineSimilarity(doc_c, doc_d) << std::endl;
+    std::cout << "Cosine similarity between doc_a and doc_b before reduction: " << Utility::SimilarityMeasures::calcCosSim(doc_c, doc_d) << std::endl;
 
     return Eigen::MatrixXf();
 }

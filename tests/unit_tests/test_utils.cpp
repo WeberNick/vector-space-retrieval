@@ -7,7 +7,7 @@
 
 TEST(Random_Vector_Size_Equals_Test, Equals) {
 
-    std::vector<float> vec = utility::generateRandomVector(10, 0, 1000);
+    std::vector<float> vec = Utility::generateRandomVector(10, 0, 1000);
 
     EXPECT_EQ(10, vec.size());
 }

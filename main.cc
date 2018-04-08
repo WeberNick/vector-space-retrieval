@@ -67,7 +67,7 @@ int main(const int argc, const char* argv[]) {
     std::cout << "hi" << std::endl;
     // random_projection::projectMatrix();
 
-    QueryProcessingEngine::Instance().cosineScore("Documenting transportation is such a great fundamental human being being being being", 10);
+    QueryProcessingEngine::getInstance().cosineScore("Documenting transportation is such a great fundamental human being being being being", 10);
     //
 
     return 0;

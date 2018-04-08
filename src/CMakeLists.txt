@@ -1,15 +1,16 @@
 cmake_minimum_required(VERSION 3.9)
- 
+
 find_program(CMAKE_C_COMPILER NAMES $ENV{CC} gcc PATHS ENV PATH NO_DEFAULT_PATH)
 find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PATH)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Weffc++ -Wno-deprecated")
 
 project(${CMAKE_PROJECT_NAME}_lib)
 
-# Clone Eigen
 set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/src/lib/)
+
+# Clone Eigen
 if(NOT EXISTS ${EXTERNAL_DIR}eigen)
     find_package(Git REQUIRED)
     execute_process(
@@ -59,7 +60,7 @@ set(SOURCE_FILES
         posting_list.cc
         query_processing_engine.cc
 )
- 
+
 #if (EXISTS ${SOURCE_FILES})
 # The library contains header and source files.
     add_library(${CMAKE_PROJECT_NAME}_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})

@@ -1,10 +1,7 @@
 #pragma once
 
-#include "utility.hh"
-
-#include <iostream>
-#include <sstream>
 #include <string>
+#include <vector>
 
 class QueryProcessingEngine {
   private:
@@ -22,5 +19,5 @@ class QueryProcessingEngine {
     }
 
   public:
-    std::string search(const std::string& string);
+    std::vector<int> cosineScore(const std::string& query, size_t topK);
 };
