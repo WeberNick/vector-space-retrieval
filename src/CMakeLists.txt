@@ -30,21 +30,21 @@ endif()
 
 
 
-include_directories(./infra)
-include_directories(./util)
 include_directories(${CMAKE_SOURCE_DIR}/src/lib/eigen/)
 include_directories(${CMAKE_SOURCE_DIR}/src/lib/oleanderStemmingLibrary/)
 
 set(HEADER_FILES
         argbase.hh
-        args.hh
-        document_manager.hh
-        document.hh
-        inverted_index.hh
-        measure.hh
-        tiered_index.hh
         types.hh
         utility.hh
+        args.hh
+        exception.hh
+        measure.hh
+        document.hh
+        document_manager.hh
+        inverted_index.hh
+        tiered_index.hh
+        cluster.hh
         random_projection.hh
         index_manager.hh
         posting_list.hh
@@ -53,10 +53,12 @@ set(HEADER_FILES
 
 set(SOURCE_FILES
         args.cc
-        document_manager.cc
+        exception.cc
         document.cc
+        document_manager.cc
         inverted_index.cc
         tiered_index.cc
+        cluster.cc
         random_projection.cc
         index_manager.cc
         posting_list.cc

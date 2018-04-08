@@ -2,6 +2,7 @@
 
 #include "types.hh"
 
+#include <vector>
 #include <map>
 #include <string>
 #include <vector>
@@ -29,3 +30,11 @@ class Document {
     std::string _content; // e.g. studi run [...]
     int_map* _tf;         // stores calcTF values
 };
+
+typedef std::vector<Document> doc_vt;
+typedef std::vector<const Document&> doc_ref_vt;
+typedef std::vector<const Document*> doc_ptr_vt;
+typedef std::map<size_t, Document> doc_mt;
+typedef std::pair<size_t, Document> doc_map_elem_t;
+typedef doc_mt::iterator doc_map_iter_t;
+// typedef std::pair<DocMapIterator, bool> ...;

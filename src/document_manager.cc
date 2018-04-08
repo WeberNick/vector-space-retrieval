@@ -4,15 +4,37 @@
 #include <sstream>
 #include <vector>
 
-const char DocumentManager::_delimiter = '~';
 size_t DocumentManager::_countID = 0;
-bool DocumentManager::_isCreated = false;
-DocumentManager* DocumentManager::_instance = NULL;
+DocumentManager* DocumentManager::_instance = nullptr;
 
-DocumentManager::DocumentManager(const std::string& aPath) {
+DocumentManager::DocumentManager(const std::string& aPath) : _delimiter('~') {
     read(aPath);
     // _indexMgr = IndexManager::getInstance();
     // handle indexManager calls
+}
+
+DocumentManager::~DocumentManager() { destroyInstance(); }
+
+void DocumentManager::createInstance(const std::string& aPath) {
+    if (!_instance) // if _instance -> nullptr = false, else true -> !_instance is true only if not created
+    {
+        _instance = new DocumentManager(aPath);
+    }
+}
+
+void DocumentManager::destroyInstance() {
+    if (_instance) {
+        delete _instance;
+        _instance = nullptr;
+    }
+}
+
+DocumentManager& DocumentManager::getInstance() {
+    if (!_instance) {
+        // either change back to a return of a pointer or find more graceful solution?
+        throw SingletonException(__FILE__, __LINE__, __PRETTY_FUNCTION__);
+    }
+    return *_instance;
 }
 
 /**
@@ -37,12 +59,12 @@ void DocumentManager::read(const std::string& aFile) {
     }
 }
 
-bool DocumentManager::insert(const DocumentMapElem& aElement) {}
+bool DocumentManager::insert(const doc_map_elem_t& aElement) {}
 
 bool DocumentManager::insert(const size_t aKey, const Document& aDocument) {}
 
-DocumentManager::DocMapIterator DocumentManager::find(const size_t aKey) {}
+doc_map_iter_t DocumentManager::find(const size_t aKey) {}
 
 bool DocumentManager::erase(const size_t aKey) {}
 
-bool DocumentManager::erase(const DocMapIterator aIterator) {}
+bool DocumentManager::erase(const doc_map_iter_t aIterator) {}

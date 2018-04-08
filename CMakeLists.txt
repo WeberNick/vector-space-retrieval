@@ -26,7 +26,7 @@ include_directories(src/infra)
 include_directories(src/util)
 
 add_subdirectory(src)
-add_subdirectory(tests)
+#add_subdirectory(tests)
 add_subdirectory(docs)
 
 

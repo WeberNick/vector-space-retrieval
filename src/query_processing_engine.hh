@@ -1,19 +1,26 @@
+#pragma once
 
+#include "utility.hh"
+
+#include <iostream>
+#include <sstream>
 #include <string>
+
 class QueryProcessingEngine {
-  public:
-    static QueryProcessingEngine& Instance() {
-        static QueryProcessingEngine singleton;
-        return singleton;
-    }
+    private:
+        QueryProcessingEngine() {}
+        // ctor hidden
+        QueryProcessingEngine(QueryProcessingEngine const&) = delete;            //Nick: modified to delete
+        QueryProcessingEngine& operator=(QueryProcessingEngine const&) = delete; //Nick: modified to delete
+        ~QueryProcessingEngine() {}
+        // dtor hidden
+    
+    public:
+        static QueryProcessingEngine& getInstance() {
+            static QueryProcessingEngine lInstance;
+            return lInstance;
+        }
 
-    std::string search(const std::string& string);
-
-  private:
-    QueryProcessingEngine() {}
-    // ctor hidden
-    QueryProcessingEngine(QueryProcessingEngine const&);            // copy ctor hidden
-    QueryProcessingEngine& operator=(QueryProcessingEngine const&); // assign op. hidden
-    ~QueryProcessingEngine() {}
-    // dtor hidden
+    public:
+        std::string search(const std::string& string);
 };

@@ -43,7 +43,8 @@ int main(const int argc, const char* argv[]) {
     double lSeconds = lMeasure.mTotalTime();
 
     DocumentManager::createInstance(lArgs.path());
-    DocumentManager* docManager = DocumentManager::getInstance();
+    //Nick: For ease of use, I changed the return of getInstance to a reference (see document_manager.hh)
+    DocumentManager& docManager = DocumentManager::getInstance(); 
 
     /*std::vector<double> doc_a = { 1, 3, 5, 8, 100, 100 };
     std::vector<double> doc_b = { 2, 4, 5, 1, 2, 0 };
