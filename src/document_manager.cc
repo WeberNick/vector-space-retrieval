@@ -3,7 +3,6 @@
 #include <sstream>
 
 size_t DocumentManager::_countID = 0;
-bool DocumentManager::_isCreated = false;
 DocumentManager* DocumentManager::_instance = nullptr;
 
 DocumentManager::DocumentManager(const std::string& aPath) {
@@ -16,27 +15,26 @@ DocumentManager::~DocumentManager()
 }
 
 void DocumentManager::createInstance(const std::string& aPath){
-    if (!DocumentManager::_isCreated) { //change to nullptr check and remove bool flag therefore?
-        DocumentManager::_isCreated = true;
-        DocumentManager::_instance = new DocumentManager(aPath);
+    if (!_instance) //if _instance -> nullptr = false, else true -> !_instance is true only if not created
+    {
+        _instance = new DocumentManager(aPath);
     }
 }
 
 void DocumentManager::destroyInstance() {
-    //change to nullptr check and remove bool flag therefore?
-        if (DocumentManager::_isCreated) 
+        if (_instance) 
         { 
-            _isCreated = false;     
-            delete DocumentManager::_instance; 
+            delete _instance; 
+            _instance = nullptr;
         }
     }
 
 DocumentManager& DocumentManager::getInstance() {
-    if (!DocumentManager::_isCreated) {//change to nullptr check and remove bool flag therefore?
+    if (!_instance) {
         //either change back to a return of a pointer or find more graceful solution?
         throw SingletonException(__FILE__, __LINE__, __PRETTY_FUNCTION__);
     } 
-    return *DocumentManager::_instance;
+    return *_instance;
 }
 
 

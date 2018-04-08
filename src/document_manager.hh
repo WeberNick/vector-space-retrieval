@@ -47,7 +47,6 @@ class DocumentManager {
   
   private:
     static DocumentManager* _instance;
-    static bool _isCreated;
     static size_t _countID;
     static std::string _collectionFile;
 
