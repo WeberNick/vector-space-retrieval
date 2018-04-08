@@ -9,14 +9,13 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin)
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/build)
 
 set (CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Weffc++ -Wno-deprecated")
 
 project(evsr VERSION 0.0.1)
 
 #For Testing
 include(CTest)
 enable_testing()
-
 
 SET(SOURCE_FILES main.cc)
 add_executable(${CMAKE_PROJECT_NAME}_run ${SOURCE_FILES})
@@ -29,6 +28,4 @@ add_subdirectory(src)
 #add_subdirectory(tests)
 add_subdirectory(docs)
 
-
 target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib)
-

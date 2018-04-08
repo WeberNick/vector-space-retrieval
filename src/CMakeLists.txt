@@ -18,17 +18,12 @@ if(NOT EXISTS ${EXTERNAL_DIR}eigen)
 endif()
 
 # Clone /OleanderStemmingLibrary
-
 if(NOT EXISTS ${EXTERNAL_DIR}oleanderStemmingLibrary)
     find_package(Git REQUIRED)
     execute_process(
             COMMAND ${GIT_EXECUTABLE} clone https://github.com/OleanderSoftware/OleanderStemmingLibrary.git ${EXTERNAL_DIR}oleanderStemmingLibrary
     )
 endif()
-
-
-
-
 
 include_directories(${CMAKE_SOURCE_DIR}/src/lib/eigen/)
 include_directories(${CMAKE_SOURCE_DIR}/src/lib/oleanderStemmingLibrary/)
