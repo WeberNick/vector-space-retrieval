@@ -17,30 +17,42 @@
 #include <iostream>
 #include <errno.h>
 
-class BaseException : public std::exception
+class BaseException : public std::runtime_error 
 {
     public:
-        BaseException(
+        explicit BaseException(
                 const char*         aFileName, 
                 const unsigned int  aLineNumber, 
                 const char*         aFunctionName, 
-                const std::string   aErrorMessage); 
-        BaseException(const BaseException& aException);
-        BaseException& operator=(const BaseException& aException);
+                const char*         aErrorMessage); 
+        explicit BaseException(
+                const std::string&  aFileName, 
+                const unsigned int  aLineNumber, 
+                const std::string&  aFunctionName, 
+                const std::string&  aErrorMessage); 
+        explicit BaseException(const BaseException& aException);
+        BaseException& operator=(const BaseException&) = delete;
         BaseException(BaseException&&) = delete;
         BaseException& operator=(BaseException&&) = delete;
-        ~BaseException();
+        virtual ~BaseException() = default;
 
     public:
-        virtual const char* what() const throw() { return _errMsg.c_str(); }
+//        virtual const char* what() const; // inherited from std::runtime_error
         void print() const;
 
     private:
         const std::string   _file;
         const unsigned int  _line;
         const std::string   _func;
-        const std::string   _errMsg;
+};
 
+class SingletonException : public BaseException
+{
+    public:
+        SingletonException(
+                const char*         aFileName,
+                const unsigned int  aLineNumber,
+                const char*         aFunctionName);
 };
 
 class OutOfMemoryException : public BaseException

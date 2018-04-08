@@ -4,37 +4,51 @@ BaseException::BaseException(
         const char*         aFileName, 
         const unsigned int  aLineNumber, 
         const char*         aFunctionName, 
-        const std::string   aErrorMessage) : 
+        const char*         aErrorMessage) : 
+    std::runtime_error(aErrorMessage),
 	_file(aFileName),
 	_line(aLineNumber),
-	_func(aFunctionName),
-	_errMsg(aErrorMessage) 
+	_func(aFunctionName)
+	//_errMsg(aErrorMessage) 
+{}
+        
+BaseException::BaseException(
+        const std::string&  aFileName, 
+        const unsigned int  aLineNumber, 
+        const std::string&  aFunctionName, 
+        const std::string&  aErrorMessage) : 
+    std::runtime_error(aErrorMessage),
+	_file(aFileName),
+	_line(aLineNumber),
+	_func(aFunctionName)
 {}
 
 BaseException::BaseException(const BaseException& aException) : 
+    std::runtime_error(aException.what()),
 	_file(aException._file),
 	_line(aException._line),
-	_func(aException._func),
-	_errMsg(aException._errMsg) 
+	_func(aException._func)
 {}
-
-BaseException& BaseException::operator=(const BaseException& aException) 
-{
-  _file = aException._file;
-  _line = aException._line;
-  _func = aException._func;
-  _errMsg = aException._errMsg;
-  return (*this);
-}
 
 void BaseException::print() const 
 {
   std::cerr << "An error occured in " << _file 
       << ", line " << _line  
       << ", '" << _func 
-      << "':\n\t\"" << _errMsg << "\"" 
+      << "':\n\t\"" << what() << "\"" 
       << std::endl;
 }
+
+SingletonException::SingletonException(
+        const char*         aFileName, 
+        const unsigned int  aLineNumber, 
+        const char*         aFunctionName) :
+	BaseException(
+            aFileName, 
+            aLineNumber, 
+            aFunctionName, 
+            "Cannot return reference to uninstantiated singleton.")
+{}
 
 OutOfMemoryException::OutOfMemoryException(
         const char*         aFileName, 

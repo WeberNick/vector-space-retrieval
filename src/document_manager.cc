@@ -10,6 +10,11 @@ DocumentManager::DocumentManager(const std::string& aPath) {
   read(aPath);
 }
 
+DocumentManager::~DocumentManager()
+{
+    destroyInstance();
+}
+
 void DocumentManager::createInstance(const std::string& aPath){
     if (!DocumentManager::_isCreated) { //change to nullptr check and remove bool flag therefore?
         DocumentManager::_isCreated = true;
@@ -19,15 +24,19 @@ void DocumentManager::createInstance(const std::string& aPath){
 
 void DocumentManager::destroyInstance() {
     //change to nullptr check and remove bool flag therefore?
-        if (DocumentManager::_isCreated) { delete DocumentManager::_instance; }
+        if (DocumentManager::_isCreated) 
+        { 
+            _isCreated = false;     
+            delete DocumentManager::_instance; 
+        }
     }
 
 DocumentManager& DocumentManager::getInstance() {
-    if (DocumentManager::_isCreated) {//change to nullptr check and remove bool flag therefore?
-        return *DocumentManager::_instance;
-    } else {
-        return nullptr;
-    }
+    if (!DocumentManager::_isCreated) {//change to nullptr check and remove bool flag therefore?
+        //either change back to a return of a pointer or find more graceful solution?
+        throw SingletonException(__FILE__, __LINE__, __PRETTY_FUNCTION__);
+    } 
+    return *DocumentManager::_instance;
 }
 
 

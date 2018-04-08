@@ -68,7 +68,13 @@ if [ -d ./build ];
 then
   echo "Deleting ./build directory"
   rm -rf ./build 
-fi 
+fi
+
+if [ -d ./src/lib ];
+then
+  echo "Deleting ./src/lib directory"
+  rm -rf ./src/lib
+fi
 
 if [ -d ./bin ]; 
 then

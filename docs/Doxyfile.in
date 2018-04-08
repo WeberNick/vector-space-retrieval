@@ -1,0 +1,7 @@
+PROJECT_NAME           = "@CMAKE_PROJECT_NAME@"
+PROJECT_NUMBER         = @VERSION
+PROJECT_BRIEF          = "Efficient Vector Space Retrieval"
+RECURSIVE              = YES
+INPUT                  = @PROJECT_SOURCE_DIR@/src/
+EXCLUDE                = @PROJECT_SOURCE_DIR@/src/lib
+OUTPUT_DIRECTORY       = @PROJECT_SOURCE_DIR@/docs/

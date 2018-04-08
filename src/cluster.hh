@@ -3,7 +3,8 @@
  *	@author	Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de)
  *	@brief  Implements the pre-clustering functionality for documents	
  *	@bugs 	Currently no bugs known
- *	@todos	-
+ *	@todos	A cluster can be created and it will automatically initiated itself.
+ *	        But: need to add functionality.
  *
  *	@section DESCRIPTION
  *	TODO
@@ -11,7 +12,7 @@
 #pragma once
 
 #include "types.hh"
-#include "utils.hh"
+#include "utility.hh"
 #include "document.hh"
 #include "document_manager.hh"
 
@@ -21,25 +22,28 @@
 #include <cmath>
 #include <algorithm>
 
-class Clustering
+class Cluster
 {
     public:
         typedef std::unordered_map<const Document*, doc_ptr_vt> cluster_mt;
 
     private:
-        explicit Clustering();
-        Clustering(const Clustering&) = delete;
-        Clustering(Clustering&&) = delete;
-        Clustering& operator=(const Clustering&) = delete;
-        Clustering& operator=(Clustering&&) = delete;
-        ~Clustering();
+        explicit Cluster();
+        Cluster(const Cluster&) = delete;
+        Cluster(Cluster&&) = delete;
+        Cluster& operator=(const Cluster&) = delete;
+        Cluster& operator=(Cluster&&) = delete;
+        ~Cluster();
 
     public:
-        static Clustering& getInstance()
+        static Cluster& getInstance()
         {
-            static Clustering lInstance;
+            static Cluster lInstance;
             return lInstance;
         }
+
+    public:
+        //todo: Functionality of a cluster
     
     public:
         inline const doc_ptr_vt&    getLeaders(){ return _leaders; }

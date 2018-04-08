@@ -4,10 +4,12 @@
 
 #pragma once
 
+#include <lib/eigen/Eigen/Dense>
 #include <string>
 namespace random_projection {
 
     int dimension(int& sample, float eps = 0.1);
-    void create_random_matrix(int rows, int cols, bool JLT, double eps, std::string projection);
+    Eigen::MatrixXd createRandomMatrix(int rows, int cols, bool JLT, double eps = 0.1, std::string projection = "gaussian");
+    Eigen::MatrixXd projectMatrix();
 
 } // namespace random_projection

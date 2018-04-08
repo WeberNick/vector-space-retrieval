@@ -1,19 +1,14 @@
 #pragma once
 
+#include "types.hh"
+#include "exception.hh"
 #include "document.hh"
 #include "index_manager.hh"
-#include "types.hh"
 
 #include <map>
 #include <string>
 
 class DocumentManager {
-  public:
-    typedef std::map<size_t, Document> DocumentMap;
-    typedef std::pair<size_t, Document> DocumentMapElem;
-    typedef DocumentMap::iterator DocMapIterator;
-    // typedef std::pair<DocMapIterator, bool> ...;
-
   public:
     explicit DocumentManager(const std::string& aPath);
     explicit DocumentManager() = delete;
@@ -34,18 +29,18 @@ class DocumentManager {
 
   public:  /* Wrapper functions for the respective map container calls */
     /* insert element into manager (by std::pair element) */
-    bool insert(const DocumentMapElem& aElement);
+    bool insert(const doc_map_elem_t& aElement);
     /* insert element into manager (by values) */
     bool insert(const size_t aKey, const Document& aDocument);
     /* find element in manager */
-    DocMapIterator find(const size_t aKey);
+    doc_map_iter_t find(const size_t aKey);
     /* erase by key */
     bool erase(const size_t aKey);
     /* erase by iterator */
-    bool erase(const DocMapIterator aIterator);
+    bool erase(const doc_map_iter_t aIterator);
 
   public:
-    inline const DocumentMap& getDocumentMap() { return _docs; }
+    inline const doc_mt& getDocumentMap() { return _docs; }
     inline size_t getNoDocuments() { return _docs.size(); }
     inline size_t getCurrID(){ return _countID; }
     // setter, if needed
@@ -56,6 +51,6 @@ class DocumentManager {
     static size_t _countID;
     static std::string _collectionFile;
 
-    DocumentMap _docs;
-    IndexManager _indexMgr;
+    doc_mt          _docs;
+    IndexManager    _indexMgr;
 };

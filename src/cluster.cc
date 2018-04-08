@@ -1,22 +1,22 @@
 #include "cluster.hh"
 
-Clustering::Clustering() :
-    _leaders();
-    _cluster();
+Cluster::Cluster() :
+    _leaders(),
+    _cluster()
 {
     init();
 }
 
-Clustering::~Clustering(){}
+Cluster::~Cluster(){}
     
-void Clustering::init()
+void Cluster::init()
 {
     chooseLeaders();
     initCluster();
     fillCluster();
 }
 
-void Clustering::chooseLeaders()
+void Cluster::chooseLeaders()
 {
     const doc_mt& lDocs = DocumentManager::getInstance().getDocumentMap();
     std::random_device lSeeder; //the random device that will seed the generator
@@ -40,7 +40,7 @@ void Clustering::chooseLeaders()
             lDocIt = lDocs.find(lRandomID);
             lIDsIt = std::find(lIDs.begin(), lIDs.end(), lRandomID);
         }//valid doc id found
-        _leaders.push_back(&(lIterator->second));
+        _leaders.push_back(&(lDocIt->second));
         lIDs.push_back(lRandomID);
     }
 }
@@ -63,7 +63,7 @@ void Cluster::fillCluster()
         lSD.second = nullptr;
         for(const auto& leader : _leaders)
         {
-            float lDist = Util::calcCosDist(*leader, doc.second);
+            float lDist = Utility::SimilarityMeasures::calcCosDist(*leader, doc.second);
             if(lDist < lSD.first)
             {
                 lSD.first = lDist;
@@ -73,3 +73,6 @@ void Cluster::fillCluster()
         _cluster[lSD.second].push_back(&doc.second); //store pointer to doc in the vector
     }
 }
+
+
+//TODO: Add functionality

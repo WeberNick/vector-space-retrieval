@@ -5,9 +5,10 @@
 #include "args.hh"
 #include "measure.hh"
 #include "random_projection.hh"
-#include "similarity_measures.hh"
+#include "utility.hh"
 
 #include <iostream>
+#include <query_processing_engine.hh>
 #include <vector>
 
 /**
@@ -42,17 +43,18 @@ int main(const int argc, const char* argv[]) {
     double lSeconds = lMeasure.mTotalTime();
 
     DocumentManager::createInstance(lArgs.path());
-    DocumentManager* docManager = DocumentManager::getInstance();
+    //Nick: For ease of use, I changed the return of getInstance to a reference (see document_manager.hh)
+    DocumentManager& docManager = DocumentManager::getInstance(); 
 
     /*std::vector<double> doc_a = { 1, 3, 5, 8, 100, 100 };
     std::vector<double> doc_b = { 2, 4, 5, 1, 2, 0 };
 
     std::cout << similarity_measures::tf_idf(5.0, 10.0) << std::endl;
 
-    double euclid_sim = similarity_measures::euclidean_distance_normalized(doc_a, doc_b);
-    double cos_sim = similarity_measures::cosine_similarity(doc_a, doc_b);
+    double euclid_sim = similarity_measures::calcEuclideanDistanceNormalized(doc_a, doc_b);
+    double cos_sim = similarity_measures::calcCosineSimilarity(doc_a, doc_b);
 
-    random_projection::create_random_matrix(0, 1, true, 0.1, "gaussian");
+    random_projection::createRandomMatrix(0, 1, true, 0.1, "gaussian");
 
     std::cout << euclid_sim << std::endl;
     std::cout << cos_sim << std::endl;
@@ -60,7 +62,12 @@ int main(const int argc, const char* argv[]) {
     std::cout << random_projection::dimension(dimension, 0.1) << std::endl;
     std::cout << "Hello CMake" << std::endl;*/
 
-    // random_projection::create_random_matrix(100, 500, true, 0.1, "gaussian");
+    // random_projection::createRandomMatrix(100, 500, true, 0.1, "gaussian");
+
+    std::cout << "hi" << std::endl;
+    random_projection::projectMatrix();
+
+    // std::cout << QueryProcessingEngine::Instance().search("Documenting transportation is such a great fundamental human being") << std::endl;
 
     return 0;
 }

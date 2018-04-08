@@ -8,11 +8,6 @@
 #include <vector>
 
 class Document {
-    public:
-        typedef std::vector<Document> doc_vt;
-        typedef std::vector<const Document&> doc_ref_vt;
-        typedef std::vector<const Document*> doc_ptr_vt;
-
   public:
     explicit Document(const size_t aID, const std::string& aDocID, const std::string& aContent);
     explicit Document() = delete;
@@ -32,5 +27,14 @@ class Document {
     size_t _ID;           // e.g. 5
     std::string _docID;   // e.g. MED-123
     std::string _content; // e.g. studi run [...]
-    int_map* _tf;         // stores tf values
+    int_map* _tf;         // stores calcTF values
 };
+
+typedef std::vector<Document> doc_vt;
+typedef std::vector<const Document&> doc_ref_vt;
+typedef std::vector<const Document*> doc_ptr_vt;
+typedef std::map<size_t, Document> doc_mt;
+typedef std::pair<size_t, Document> doc_map_elem_t;
+typedef doc_mt::iterator doc_map_iter_t;
+// typedef std::pair<DocMapIterator, bool> ...;
+

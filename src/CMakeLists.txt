@@ -10,46 +10,59 @@ project(${CMAKE_PROJECT_NAME}_lib)
 
 # Clone Eigen
 set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/src/lib/)
-if(NOT EXISTS ${EIGEN_DIR})
+if(NOT EXISTS ${EXTERNAL_DIR}eigen)
     find_package(Git REQUIRED)
     execute_process(
             COMMAND ${GIT_EXECUTABLE} clone https://github.com/eigenteam/eigen-git-mirror ${EXTERNAL_DIR}eigen
     )
 endif()
 
-include_directories(./infra)
-include_directories(./util)
+# Clone /OleanderStemmingLibrary
+
+if(NOT EXISTS ${EXTERNAL_DIR}oleanderStemmingLibrary)
+    find_package(Git REQUIRED)
+    execute_process(
+            COMMAND ${GIT_EXECUTABLE} clone https://github.com/OleanderSoftware/OleanderStemmingLibrary.git ${EXTERNAL_DIR}oleanderStemmingLibrary
+    )
+endif()
+
+
+
+
+
 include_directories(${CMAKE_SOURCE_DIR}/src/lib/eigen/)
+include_directories(${CMAKE_SOURCE_DIR}/src/lib/oleanderStemmingLibrary/)
 
 set(HEADER_FILES
         argbase.hh
         types.hh
+        utility.hh
         args.hh
         exception.hh
         measure.hh
-        utils.hh
         document.hh
         document_manager.hh
         inverted_index.hh
         tiered_index.hh
-        similarity_measures.hh
+        cluster.hh
         random_projection.hh
         index_manager.hh
         posting_list.hh
+        query_processing_engine.hh
 )
 
 set(SOURCE_FILES
         args.cc
         exception.cc
-        utils.cc
         document.cc
         document_manager.cc
         inverted_index.cc
         tiered_index.cc
-        similarity_measures.cc
+        cluster.cc
         random_projection.cc
         index_manager.cc
         posting_list.cc
+        query_processing_engine.cc
 )
  
 #if (EXISTS ${SOURCE_FILES})
