@@ -9,7 +9,9 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin)
 set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/build)
 
 set (CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Weffc++")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Weffc++")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wno-deprecated-declarations -Wno-deprecated")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
 project(evsr VERSION 0.0.1)
 
@@ -21,11 +23,18 @@ SET(SOURCE_FILES main.cc)
 add_executable(${CMAKE_PROJECT_NAME}_run ${SOURCE_FILES})
 
 include_directories(src)
-include_directories(src/infra)
-include_directories(src/util)
 
 add_subdirectory(src)
 #add_subdirectory(tests)
-add_subdirectory(docs)
+#add_subdirectory(docs)
 
 target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib)
+
+#NICK: Use this to supress deprecated warning in file
+#src/lib/oleanderStemmingLibrary/stemming/../indexing/string_util.h
+#line number 299 (remove first #):
+
+# 	#pragma GCC diagnostic push
+# 	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+# 	int* digits = new int[length+1]; std::auto_ptr<int> digitsDeleter(digits); 
+# 	#pragma GCC diagnostic pop
