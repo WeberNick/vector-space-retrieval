@@ -65,9 +65,10 @@ int main(const int argc, const char* argv[]) {
     // random_projection::createRandomMatrix(100, 500, true, 0.1, "gaussian");
 
     std::cout << "hi" << std::endl;
-    random_projection::projectMatrix();
+    // random_projection::projectMatrix();
 
-    // std::cout << QueryProcessingEngine::Instance().search("Documenting transportation is such a great fundamental human being") << std::endl;
+    QueryProcessingEngine::Instance().cosineScore("Documenting transportation is such a great fundamental human being being being being", 10);
+    //
 
     return 0;
 }
