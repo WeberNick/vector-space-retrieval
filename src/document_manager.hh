@@ -4,12 +4,12 @@
 #include "index_manager.hh"
 #include "types.hh"
 
-#include <map>
+#include <unordered_map>
 #include <string>
 
 class DocumentManager {
   public:
-    typedef std::map<size_t, Document> doc_mt;
+    typedef std::unordered_map<size_t, Document> doc_mt;
     typedef std::pair<size_t, Document> DocumentMapElem;
     typedef doc_mt::iterator DocMapIterator;
     // typedef std::pair<DocMapIterator, bool> ...;

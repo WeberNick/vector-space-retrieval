@@ -2,20 +2,20 @@
 
 #include "types.hh"
 
+#include <string>
 #include <tuple>
 #include <vector>
-#include <string>
 
 class PostingList {
   public:
     struct PostingElement {
         uint _docID;
         uint _tf;
-        inline bool operator< (const PostingElement& post) const {
-          return _docID < post._docID;
+        inline bool operator<(const PostingElement& post) const {
+            return _docID < post._docID;
         }
     };
-  
+
   public:
     explicit PostingList(const std::string& aTerm, const float aIDF);
     explicit PostingList() = delete;
@@ -31,6 +31,5 @@ class PostingList {
 
   private:
     float _idf;
-    std::vector<PostingElement>* _posting; // has to be sorted
+    std::vector<PostingElement> _posting; // has to be sorted
 };
-

@@ -11,9 +11,15 @@ DocumentManager* DocumentManager::_instance = NULL;
 
 DocumentManager::DocumentManager(const std::string& aPath) {
     read(aPath);
+    // _indexMgr = IndexManager::getInstance();
     // handle indexManager calls
 }
 
+/**
+ * @brief
+ *
+ * @param aFile
+ */
 void DocumentManager::read(const std::string& aFile) {
     std::ifstream file(aFile);
     std::string line;
