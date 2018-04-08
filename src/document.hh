@@ -27,5 +27,5 @@ class Document {
     size_t _ID;           // e.g. 5
     std::string _docID;   // e.g. MED-123
     std::string _content; // e.g. studi run [...]
-    int_map* _tf;         // stores tf values
+    int_map* _tf;         // stores calcTF values
 };
