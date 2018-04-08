@@ -1,9 +1,15 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.9)
 
 find_program(CMAKE_C_COMPILER NAMES $ENV{CC} gcc PATHS ENV PATH NO_DEFAULT_PATH)
 find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PATH)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+set(CMAKE_VERBOSE_MAKEFILE ON)
+
+set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin)
+set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/build)
+
+set (CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Weffc++ -Wno-deprecated")
 
 project(evsr VERSION 0.0.1)
 
@@ -11,9 +17,15 @@ project(evsr VERSION 0.0.1)
 include(CTest)
 enable_testing()
 
+SET(SOURCE_FILES main.cc)
+add_executable(${CMAKE_PROJECT_NAME}_run ${SOURCE_FILES})
+
+include_directories(src)
 include_directories(src/infra)
+include_directories(src/util)
 
-SET(SOURCES src/main/main.cc src/document.cc src/document_manager.cc src/inverted_index.cc src/posting.cc)
-SET(HEADERS src/infra/types.hh src/document.hh src/document_manager.hh src/inverted_index.hh src/posting.hh)
+add_subdirectory(src)
+#add_subdirectory(tests)
+add_subdirectory(docs)
 
-add_executable(evsr ${SOURCES} ${HEADERS})
+target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib)
