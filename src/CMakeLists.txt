@@ -25,8 +25,8 @@ if(NOT EXISTS ${EXTERNAL_DIR}oleanderStemmingLibrary)
     )
 endif()
 
-include_directories(SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/eigen/")
-include_directories(SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/oleanderStemmingLibrary/")
+include_directories(SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/eigen")
+include_directories(SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/oleanderStemmingLibrary")
 
 set(HEADER_FILES
         argbase.hh

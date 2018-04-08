@@ -15,6 +15,7 @@
 #pragma once
 
 #include "document_manager.hh"
+#include "exception.hh"
 #include <algorithm>
 #include <cmath>
 #include <functional>
@@ -23,19 +24,6 @@
 #include <random>
 #include <sstream>
 #include <string>
-
-/**
- * @brief Class for a custom exception for vector operations
- */
-class VectorException : public std::runtime_error {
-  public:
-    /**
-     * @brief Construct a new Vector Exception object
-     *
-     * @param _aMessage
-     */
-    VectorException(std::string _aMessage) : runtime_error(_aMessage) {}
-};
 
 /**
  * @brief Namespace for general utilities
@@ -286,7 +274,7 @@ namespace Utility {
          */
         inline float calcCosSim(const std::vector<float>& aTF_IDF_a, const std::vector<float>& aTF_IDF_b) {
 
-            if (aTF_IDF_a.size() != aTF_IDF_b.size()) throw VectorException("Vectors are not of the same size");
+            if (aTF_IDF_a.size() != aTF_IDF_b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size");
 
             double dotProduct = 0;
             double magnitudeDoc_a = 0;
@@ -320,7 +308,7 @@ namespace Utility {
          */
         inline float calcEuclDist(const std::vector<float>& doc_a, const std::vector<float>& doc_b) {
 
-            if (doc_a.size() != doc_b.size()) throw VectorException("Vectors are not of the same size");
+            if (doc_a.size() != doc_b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size");
 
             double sum = 0;
             for (int i = 0; i < doc_a.size(); ++i) {
@@ -338,7 +326,7 @@ namespace Utility {
          */
         inline float calcEuclDistNormalized(std::vector<float> doc_a, std::vector<float> doc_b) {
 
-            if (doc_a.size() != doc_b.size()) throw VectorException("Vectors are not of the same size");
+            if (doc_a.size() != doc_b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size");
 
             double magnitudeDoc_a = 0;
             double magnitudeDoc_b = 0;
