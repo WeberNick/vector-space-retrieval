@@ -46,7 +46,7 @@ namespace Utility {
         std::uniform_real_distribution<float> dist(min, max);
 
         auto gen = std::bind(dist, mersenne_engine);
-        std::vector<float> vec(dimension);
+        std::vector<float> vec(static_cast<unsigned long>(dimension));
         generate(begin(vec), end(vec), gen);
         return vec;
     }
@@ -118,6 +118,27 @@ namespace Utility {
                 return std::count_if(std::istream_iterator<std::string>(ss), std::istream_iterator<std::string>(),
                                      [word](const std::string& s) { return s == word; });
             }
+        }
+
+        /**
+         * @brief Returns the frequency of the most frequent term in the document
+         *
+         * @param str
+         * @return
+         */
+        inline int getMaxWordFrequency(const std::string& str) {
+
+            std::istringstream input(str);
+            std::map<std::string, int> count;
+            std::string word;
+            decltype(count)::const_iterator most_common;
+            while (input >> word) {
+                auto iterator = count.emplace(word, 0).first;
+                ++iterator->second;
+                if (count.size() == 1 || iterator->second > most_common->second) most_common = iterator;
+            }
+
+            return most_common->second;
         }
 
         /**
@@ -194,9 +215,8 @@ namespace Utility {
          * @return the term frequency
          */
         inline float calcTF(const std::string& term, const std::string& content) {
-
-            // TODO: max frequency of any word in the dox instead of the 10 here
-            return static_cast<float>((1 + log10(StringOp::countWordInString(content, term, false))) / (1 + log10(10)));
+            return static_cast<float>((1 + log10(Utility::StringOp::countWordInString(content, term, false))) /
+                                      (1 + log10(Utility::StringOp::getMaxWordFrequency(content))));
         }
 
         /**
@@ -260,7 +280,7 @@ namespace Utility {
          * @param doc_b
          * @return the cosine similarity
          */
-        inline float calcCosSim(const Document& doc_a, const Document& doc_b) {
+        inline float calcCosSim(Document& doc_a, const Document& doc_b) {
             // TODO:
             return 0.0; // calcCosSim(doc_a.getTF_IDF(), doc_b.getTF_IDF())
         }
