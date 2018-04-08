@@ -33,4 +33,6 @@ std::vector<int> QueryProcessingEngine::cosineScore(const std::string& query, si
       auto end = std::next(scores.begin(), std::min(topK, scores.size()));
 
       return std::vector<int>(scores.begin(), end);**/
+
+    return std::vector<int>();
 }

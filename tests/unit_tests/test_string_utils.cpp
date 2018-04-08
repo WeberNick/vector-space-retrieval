@@ -11,7 +11,7 @@
 
 TEST(To_Lower_Equals_Test, Equals) {
 
-    std::string loweredWord = utility::string::toLower("You");
+    std::string loweredWord = Utility::StringOp::toLower("You");
 
     EXPECT_EQ("you", loweredWord);
 }
@@ -19,12 +19,12 @@ TEST(To_Lower_Equals_Test, Equals) {
 TEST(Count_Word_Equals_Test, Equals) {
 
     std::string sentence = "Hi how are you today, you look gorgeous";
-    EXPECT_EQ(2, utility::string::countWordInString(sentence, "you", true));
+    EXPECT_EQ(2, Utility::StringOp::countWordInString(sentence, "you", true));
 }
 
 TEST(Word_Trim_Equals_Test, Equals) {
 
     std::string sentence = " Whitespaces are lost ";
-    utility::string::trim(sentence);
+    Utility::StringOp::trim(sentence);
     EXPECT_EQ("Whitespaces are lost", sentence);
 }

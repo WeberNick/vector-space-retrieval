@@ -4,7 +4,7 @@
 # HEADER
 #================================================================
 #% SYNOPSIS
-#+    ${SCRIPT_NAME} [-h] [-c[compiler_path]]  [-cxx[compiler_path]]
+#+    ${SCRIPT_NAME} [-h] [-c[compiler_path]]  [-cxx[compiler_path]] [-a]
 #%
 #% DESCRIPTION
 #%    Setting up CMake, directory structure and compile everything to start the main evsr executable
@@ -12,9 +12,10 @@
 #% OPTIONS
 #%    -c [path], --c [path]         Set a custom C compiler path
 #%    -cxx [path], --cxx [path]     Set a custom C++ compiler path
+#%    -a, --all                     Also delete external lib folders and clone again 
 #%
 #% EXAMPLES
-#%    ${SCRIPT_NAME} -c "/usr/local/Cellar/gcc/7.3.0_1/bin/gcc-7 -cxx /usr/local/Cellar/gcc/7.3.0_1/bin/g++-7
+#%    ${SCRIPT_NAME} -c "/usr/local/Cellar/gcc/7.3.0_1/bin/gcc-7 -cxx /usr/local/Cellar/gcc/7.3.0_1/bin/g++-7 -a
 #%
 #================================================================
 
@@ -40,6 +41,11 @@ case $key in
     ;;
     -cxx|--cxx)
     CXX="$2"
+    shift # past argument
+    shift # past value
+    ;;
+     -a|--all)
+    ALL="$2"
     shift # past argument
     shift # past value
     ;;
@@ -72,8 +78,14 @@ fi
 
 if [ -d ./src/lib ];
 then
-  echo "Deleting ./src/lib directory"
-  rm -rf ./src/lib
+  if [ ! -z ${ALL+x} ]
+  then
+    echo "Deleting ./src/lib directory"
+    rm -rf ./src/lib
+  else
+    echo "Not deleting ./src/lib directory - external libs are not cloned again!"
+  fi
+  
 fi
 
 if [ -d ./bin ]; 
@@ -84,8 +96,13 @@ fi
 
 if [ -d ./tests/lib ];
 then
+ if [ ! -z ${ALL+x} ]
+  then
   echo "Deleting ./tests/lib directory"
   rm -rf ./tests/lib
+  else
+     echo "Not deleting ./tests/lib  directory - googletest is not cloned again!"
+  fi
 fi
 
 echo "Creating ./build directory"

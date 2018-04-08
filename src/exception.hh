@@ -90,3 +90,13 @@ class FileException : public BaseException
                 const char*         aErrorFileName, 
                 const std::string   aErrorMessage); 
 };
+
+class VectorException : public BaseException
+{
+ public:
+  VectorException(
+		  const char*         aFileName,
+		  unsigned int  aLineNumber,
+		  const char*         aFunctionName,
+		  std::string   aErrorMessage);
+};

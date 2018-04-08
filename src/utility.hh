@@ -15,6 +15,7 @@
 #pragma once
 
 #include "document_manager.hh"
+#include "exception.hh"
 #include <algorithm>
 #include <cmath>
 #include <functional>
@@ -23,19 +24,6 @@
 #include <random>
 #include <sstream>
 #include <string>
-
-/**
- * @brief Class for a custom exception for vector operations
- */
-class VectorException : public std::runtime_error {
-  public:
-    /**
-     * @brief Construct a new Vector Exception object
-     *
-     * @param _aMessage
-     */
-    VectorException(std::string _aMessage) : runtime_error(_aMessage) {}
-};
 
 /**
  * @brief Namespace for general utilities
@@ -58,7 +46,7 @@ namespace Utility {
         std::uniform_real_distribution<float> dist(min, max);
 
         auto gen = std::bind(dist, mersenne_engine);
-        std::vector<float> vec(dimension);
+        std::vector<float> vec(static_cast<unsigned long>(dimension));
         generate(begin(vec), end(vec), gen);
         return vec;
     }
@@ -130,6 +118,27 @@ namespace Utility {
                 return std::count_if(std::istream_iterator<std::string>(ss), std::istream_iterator<std::string>(),
                                      [word](const std::string& s) { return s == word; });
             }
+        }
+
+        /**
+         * @brief Returns the frequency of the most frequent term in the document
+         *
+         * @param str
+         * @return
+         */
+        inline int getMaxWordFrequency(const std::string& str) {
+
+            std::istringstream input(str);
+            std::map<std::string, int> count;
+            std::string word;
+            decltype(count)::const_iterator most_common;
+            while (input >> word) {
+                auto iterator = count.emplace(word, 0).first;
+                ++iterator->second;
+                if (count.size() == 1 || iterator->second > most_common->second) most_common = iterator;
+            }
+
+            return most_common->second;
         }
 
         /**
@@ -206,9 +215,8 @@ namespace Utility {
          * @return the term frequency
          */
         inline float calcTF(const std::string& term, const std::string& content) {
-
-            // TODO: max frequency of any word in the dox instead of the 10 here
-            return static_cast<float>((1 + log10(StringOp::countWordInString(content, term, false))) / (1 + log10(10)));
+            return static_cast<float>((1 + log10(Utility::StringOp::countWordInString(content, term, false))) /
+                                      (1 + log10(Utility::StringOp::getMaxWordFrequency(content))));
         }
 
         /**
@@ -230,7 +238,7 @@ namespace Utility {
         inline float calcTF_IDF(const float& tf, const float& idf) { return tf * idf; }
 
         /**
-         * @brief Stems a string word based on the porter stemmer algorithm
+         * @brief Stems a string word based on the porter stemmer algorithm. Uses https://github.com/OleanderSoftware/OleanderStemmingLibrary
          *
          * @param sentence
          * @return
@@ -266,7 +274,7 @@ namespace Utility {
         inline float calcCosSimEfficient(){};
 
         /**
-         * @brief Wrapper method for <calcCosSim>"()" which accepts documents instead of the raw vector
+         * @brief Wrapper method for \link Utility#StringOp#calcCosSim() calcCosSim() \endlink which accepts documents instead of the raw vector
          *
          * @param doc_a
          * @param doc_b
@@ -278,7 +286,7 @@ namespace Utility {
         }
 
         /**
-         * @brief Calculates the cosine similarity between #aTF_IDF_a and #aTF_IDF_b
+         * @brief Calculates the cosine similarity between \a aTF_IDF_a and \a aTF_IDF_b
          *
          * @param aTF_IDF_a a tf-idf vector
          * @param aTF_IDF_b a tf-idf vector
@@ -286,13 +294,13 @@ namespace Utility {
          */
         inline float calcCosSim(const std::vector<float>& aTF_IDF_a, const std::vector<float>& aTF_IDF_b) {
 
-            if (aTF_IDF_a.size() != aTF_IDF_b.size()) throw VectorException("Vectors are not of the same size");
+            if (aTF_IDF_a.size() != aTF_IDF_b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size");
 
             double dotProduct = 0;
             double magnitudeDoc_a = 0;
             double magnitudeDoc_b = 0;
 
-            for (int i = 0; i < aTF_IDF_a.size(); ++i) {
+            for (size_t i = 0; i < aTF_IDF_a.size(); ++i) {
                 dotProduct += (aTF_IDF_a[i] * aTF_IDF_b[i]);
                 magnitudeDoc_a += pow(aTF_IDF_a[i], 2);
                 magnitudeDoc_b += pow(aTF_IDF_b[i], 2);
@@ -302,8 +310,8 @@ namespace Utility {
         }
 
         /**
-         * Returns 1 - <calcCosSim>"()". So we have the higher the returned value the more similar the docs are. This is just for negating the
-         * counter-intuitive measurement of the cosine similarity for being high for unsimilar documents
+         * Returns 1 - \link Utility#StringOp#calcCosSim() calcCosSim() \endlink. So we have the higher the returned value the more similar the docs are. This
+         * is just for negating the counter-intuitive measurement of the cosine similarity for being high for unsimilar documents
          *
          * @param doc_a
          * @param doc_b
@@ -312,7 +320,7 @@ namespace Utility {
         inline float calcCosDist(const Document& doc_a, const Document& doc_b) { return 1 - calcCosSim(doc_a, doc_b); }
 
         /**
-         * @brief Calculates the euclidean distance between #doc_a and #doc_b
+         * @brief Calculates the euclidean distance between \a doc_a and \a doc_b
          *
          * @param doc_a a document
          * @param doc_b a document
@@ -320,17 +328,17 @@ namespace Utility {
          */
         inline float calcEuclDist(const std::vector<float>& doc_a, const std::vector<float>& doc_b) {
 
-            if (doc_a.size() != doc_b.size()) throw VectorException("Vectors are not of the same size");
+            if (doc_a.size() != doc_b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size");
 
             double sum = 0;
-            for (int i = 0; i < doc_a.size(); ++i) {
+            for (size_t i = 0; i < doc_a.size(); ++i) {
                 sum += pow((doc_a[i] - doc_b[i]), 2);
             }
             return static_cast<float>(sqrt(sum));
         }
 
         /**
-         * @brief Calculates the normalized euclidean distance between #doc_a and #doc_b
+         * @brief Calculates the normalized euclidean distance between \a doc_a and \a doc_b
          *
          * @param doc_a a document
          * @param doc_b a document
@@ -338,12 +346,12 @@ namespace Utility {
          */
         inline float calcEuclDistNormalized(std::vector<float> doc_a, std::vector<float> doc_b) {
 
-            if (doc_a.size() != doc_b.size()) throw VectorException("Vectors are not of the same size");
+            if (doc_a.size() != doc_b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size");
 
             double magnitudeDoc_a = 0;
             double magnitudeDoc_b = 0;
 
-            for (int i = 0; i < doc_a.size(); ++i) {
+            for (size_t i = 0; i < doc_a.size(); ++i) {
                 magnitudeDoc_a += pow(doc_a[i], 2);
                 magnitudeDoc_b += pow(doc_b[i], 2);
             }
@@ -351,7 +359,7 @@ namespace Utility {
             magnitudeDoc_a = sqrt(magnitudeDoc_a);
             magnitudeDoc_b = sqrt(magnitudeDoc_b);
 
-            for (int j = 0; j < doc_a.size(); ++j) {
+            for (size_t j = 0; j < doc_a.size(); ++j) {
                 doc_a[j] = doc_a[j] / magnitudeDoc_a;
                 doc_b[j] = doc_b[j] / magnitudeDoc_b;
             }
