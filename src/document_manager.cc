@@ -11,19 +11,20 @@ DocumentManager::DocumentManager(const std::string& aPath) {
 }
 
 void DocumentManager::createInstance(const std::string& aPath){
-    if (!DocumentManager::_isCreated) {
+    if (!DocumentManager::_isCreated) { //change to nullptr check and remove bool flag therefore?
         DocumentManager::_isCreated = true;
         DocumentManager::_instance = new DocumentManager(aPath);
     }
 }
 
 void DocumentManager::destroyInstance() {
+    //change to nullptr check and remove bool flag therefore?
         if (DocumentManager::_isCreated) { delete DocumentManager::_instance; }
     }
 
-DocumentManager* DocumentManager::getInstance() {
-    if (DocumentManager::_isCreated) {
-        return DocumentManager::_instance;
+DocumentManager& DocumentManager::getInstance() {
+    if (DocumentManager::_isCreated) {//change to nullptr check and remove bool flag therefore?
+        return *DocumentManager::_instance;
     } else {
         return nullptr;
     }

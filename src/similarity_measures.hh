@@ -3,13 +3,14 @@
 
 #pragma once
 
-#include <document_manager.hh>
+#include "document.hh"
+#include "document_manager.hh"
 #include <string>
 
 /**
  * @brief Namespace for similarity measure methods
  */
-namespace similarity_measures {
+namespace SimilarityMeasures {
 
 /**
  * @brief Class for a custom exception for vector operations
@@ -29,6 +30,7 @@ double tf(const std::string& term, std::string& content);
 double idf(const std::string& term, const DocumentManager& documentManager);
 double tf_idf(const double& tf, const double& idf);
 double cosine_similarity(const std::vector<double>& doc_a, const std::vector<double>& doc_b);
+float calcCosineDist(const Document& aDoc, const Document& aOtherDoc);
 double euclidean_distance(const std::vector<double>& doc_a, const std::vector<double>& doc_b);
 double euclidean_distance_normalized(std::vector<double> doc_a, std::vector<double> doc_b);
 

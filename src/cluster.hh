@@ -24,18 +24,23 @@
 class Clustering
 {
     public:
-        typedef std::unordered_map<Document, doc_ptr_vt> cluster_mt;
+        typedef std::unordered_map<const Document*, doc_ptr_vt> cluster_mt;
 
-    public:
+    private:
         explicit Clustering();
         Clustering(const Clustering&) = delete;
         Clustering(Clustering&&) = delete;
         Clustering& operator=(const Clustering&) = delete;
         Clustering& operator=(Clustering&&) = delete;
         ~Clustering();
-    
-    public:
 
+    public:
+        static Clustering& getInstance()
+        {
+            static Clustering lInstance;
+            return lInstance;
+        }
+    
     public:
         inline const doc_ptr_vt&    getLeaders(){ return _leaders; }
         inline const cluster_mt&    getCluster(){ return _cluster; }
@@ -43,11 +48,14 @@ class Clustering
     private:
         void init();
         void chooseLeaders();
+        void initCluster();
+        void fillCluster();
 
 
     private:
-        doc_ptr_vt  _leaders;
-        cluster_mt  _cluster; 
+        doc_ptr_vt  _leaders; //stores pointer to leader documents inside the doc mngr's map
+        cluster_mt  _cluster; //stores <Doc*, Vector<Doc*>> pairs, the first pointer is a leader document
+        //maybe remove leader vector? can store leader implicitly in cluster map...
 };
 
 

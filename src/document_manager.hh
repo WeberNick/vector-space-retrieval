@@ -26,7 +26,7 @@ class DocumentManager {
   public:
     static void createInstance(const std::string& aPath);
     static void destroyInstance();
-    static DocumentManager* getInstance();
+    static DocumentManager& getInstance();
 
   private:
     /* start the scan for files at the root directory and add all found docs to map */
