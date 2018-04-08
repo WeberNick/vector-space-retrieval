@@ -238,7 +238,7 @@ namespace Utility {
         inline float calcTF_IDF(const float& tf, const float& idf) { return tf * idf; }
 
         /**
-         * @brief Stems a string word based on the porter stemmer algorithm
+         * @brief Stems a string word based on the porter stemmer algorithm. Uses https://github.com/OleanderSoftware/OleanderStemmingLibrary
          *
          * @param sentence
          * @return
@@ -274,19 +274,19 @@ namespace Utility {
         inline float calcCosSimEfficient(){};
 
         /**
-         * @brief Wrapper method for <calcCosSim>"()" which accepts documents instead of the raw vector
+         * @brief Wrapper method for \link Utility#StringOp#calcCosSim() calcCosSim() \endlink which accepts documents instead of the raw vector
          *
          * @param doc_a
          * @param doc_b
          * @return the cosine similarity
          */
-        inline float calcCosSim(Document& doc_a, const Document& doc_b) {
+        inline float calcCosSim(const Document& doc_a, const Document& doc_b) {
             // TODO:
             return 0.0; // calcCosSim(doc_a.getTF_IDF(), doc_b.getTF_IDF())
         }
 
         /**
-         * @brief Calculates the cosine similarity between #aTF_IDF_a and #aTF_IDF_b
+         * @brief Calculates the cosine similarity between \a aTF_IDF_a and \a aTF_IDF_b
          *
          * @param aTF_IDF_a a tf-idf vector
          * @param aTF_IDF_b a tf-idf vector
@@ -300,7 +300,7 @@ namespace Utility {
             double magnitudeDoc_a = 0;
             double magnitudeDoc_b = 0;
 
-            for (int i = 0; i < aTF_IDF_a.size(); ++i) {
+            for (size_t i = 0; i < aTF_IDF_a.size(); ++i) {
                 dotProduct += (aTF_IDF_a[i] * aTF_IDF_b[i]);
                 magnitudeDoc_a += pow(aTF_IDF_a[i], 2);
                 magnitudeDoc_b += pow(aTF_IDF_b[i], 2);
@@ -310,8 +310,8 @@ namespace Utility {
         }
 
         /**
-         * Returns 1 - <calcCosSim>"()". So we have the higher the returned value the more similar the docs are. This is just for negating the
-         * counter-intuitive measurement of the cosine similarity for being high for unsimilar documents
+         * Returns 1 - \link Utility#StringOp#calcCosSim() calcCosSim() \endlink. So we have the higher the returned value the more similar the docs are. This
+         * is just for negating the counter-intuitive measurement of the cosine similarity for being high for unsimilar documents
          *
          * @param doc_a
          * @param doc_b
@@ -320,7 +320,7 @@ namespace Utility {
         inline float calcCosDist(const Document& doc_a, const Document& doc_b) { return 1 - calcCosSim(doc_a, doc_b); }
 
         /**
-         * @brief Calculates the euclidean distance between #doc_a and #doc_b
+         * @brief Calculates the euclidean distance between \a doc_a and \a doc_b
          *
          * @param doc_a a document
          * @param doc_b a document
@@ -331,14 +331,14 @@ namespace Utility {
             if (doc_a.size() != doc_b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size");
 
             double sum = 0;
-            for (int i = 0; i < doc_a.size(); ++i) {
+            for (size_t i = 0; i < doc_a.size(); ++i) {
                 sum += pow((doc_a[i] - doc_b[i]), 2);
             }
             return static_cast<float>(sqrt(sum));
         }
 
         /**
-         * @brief Calculates the normalized euclidean distance between #doc_a and #doc_b
+         * @brief Calculates the normalized euclidean distance between \a doc_a and \a doc_b
          *
          * @param doc_a a document
          * @param doc_b a document
@@ -351,7 +351,7 @@ namespace Utility {
             double magnitudeDoc_a = 0;
             double magnitudeDoc_b = 0;
 
-            for (int i = 0; i < doc_a.size(); ++i) {
+            for (size_t i = 0; i < doc_a.size(); ++i) {
                 magnitudeDoc_a += pow(doc_a[i], 2);
                 magnitudeDoc_b += pow(doc_b[i], 2);
             }
@@ -359,7 +359,7 @@ namespace Utility {
             magnitudeDoc_a = sqrt(magnitudeDoc_a);
             magnitudeDoc_b = sqrt(magnitudeDoc_b);
 
-            for (int j = 0; j < doc_a.size(); ++j) {
+            for (size_t j = 0; j < doc_a.size(); ++j) {
                 doc_a[j] = doc_a[j] / magnitudeDoc_a;
                 doc_b[j] = doc_b[j] / magnitudeDoc_b;
             }

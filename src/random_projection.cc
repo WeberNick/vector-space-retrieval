@@ -70,15 +70,15 @@ Eigen::MatrixXf random_projection::createRandomMatrix(int rows, int cols, bool J
 
     std::vector<double> randoms;
 
-    for (int i = 0; i < cols * rows; ++i) {
+    for (size_t i = 0; i < cols * rows; ++i) {
         double rand = (rand_normal(0, (1 / sqrt(cols))));
         randoms.push_back(rand);
     }
 
     Eigen::MatrixXf m(rows, cols);
     int k = 0;
-    for (int j = 0; j < rows; ++j) {
-        for (int i = 0; i < cols; ++i) {
+    for (size_t j = 0; j < rows; ++j) {
+        for (size_t i = 0; i < cols; ++i) {
             double rand = randoms[k];
             m(j, i) = randoms[k];
             k++;
