@@ -1,6 +1,5 @@
-# EfficientVectorSpaceRetrieval
-
-An efficient Vector Space Model (VSM) implementation for retrieving medical data, built within the team project of the course Information Retrieval & Web Search.
+# Vector Space Retrieval
+An efficient Vector Space Model (VSM) implementation for retrieving medical data, built within the team project for the course "Information Retrieval and Web Search" (http://dws.informatik.uni-mannheim.de/en/teaching/courses-for-master-candidates/ie663websearchandinformationretrieval/). This is an active project and currently in development. Expect major changes in the comming weeks.
 
 # Project Structure
 
