@@ -41,7 +41,7 @@ double rand_normal(double mean, double stddev) { // Box muller method
  * @return minimum amount of dimensions
  */
 int random_projection::dimension(int& sample, float eps) {
-    if (eps > 1.0 | eps <= 0.0) {
+    if ((eps > 1.0) | (eps <= 0.0)) {
         throw("The JL bound for epsilon is [0.0,1.0]");
     } else if (sample <= 0.01) {
         throw("Sample size must be grater than zero");
@@ -70,16 +70,15 @@ Eigen::MatrixXf random_projection::createRandomMatrix(int rows, int cols, bool J
 
     std::vector<double> randoms;
 
-    for (size_t i = 0; i < cols * rows; ++i) {
+    for (int i = 0; i < cols * rows; ++i) {
         double rand = (rand_normal(0, (1 / sqrt(cols))));
         randoms.push_back(rand);
     }
 
     Eigen::MatrixXf m(rows, cols);
     int k = 0;
-    for (size_t j = 0; j < rows; ++j) {
-        for (size_t i = 0; i < cols; ++i) {
-            double rand = randoms[k];
+    for (int j = 0; j < rows; ++j) {
+        for (int i = 0; i < cols; ++i) {
             m(j, i) = randoms[k];
             k++;
         }
