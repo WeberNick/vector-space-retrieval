@@ -52,9 +52,11 @@ int main(const int argc, const char* argv[]) {
     // do processing
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
+    std::cout << "This print message is just used to prevent unused variable warnings. " << lSeconds << std::endl;
 
-    //Nick: For ease of use, I changed the return of getInstance to a reference (see document_manager.hh)
     DocumentManager& docManager = DocumentManager::getInstance(); 
+    std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getCurrID() << std::endl;
+
 
     /*std::vector<double> doc_a = { 1, 3, 5, 8, 100, 100 };
     std::vector<double> doc_b = { 2, 4, 5, 1, 2, 0 };
