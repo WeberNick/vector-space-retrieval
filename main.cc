@@ -42,7 +42,6 @@ int main(const int argc, const char* argv[]) {
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
 
-    DocumentManager::createInstance(lArgs.path());
     //Nick: For ease of use, I changed the return of getInstance to a reference (see document_manager.hh)
     DocumentManager& docManager = DocumentManager::getInstance(); 
 
@@ -64,7 +63,6 @@ int main(const int argc, const char* argv[]) {
 
     // random_projection::createRandomMatrix(100, 500, true, 0.1, "gaussian");
 
-    std::cout << "hi" << std::endl;
     random_projection::projectMatrix();
 
     //QueryProcessingEngine::getInstance().cosineScore("Documenting transportation is such a great fundamental human being being being being", 10);

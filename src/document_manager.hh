@@ -9,9 +9,8 @@
 #include <unordered_map>
 
 class DocumentManager {
-  public:
-    explicit DocumentManager(const std::string& aPath);
-    explicit DocumentManager() = delete;
+  private:
+    explicit DocumentManager();
     DocumentManager(const DocumentManager&) = delete;
     DocumentManager(DocumentManager&&) = delete;
     DocumentManager& operator=(const DocumentManager&) = delete;
@@ -19,8 +18,8 @@ class DocumentManager {
     ~DocumentManager();
 
   public:
-    static void createInstance(const std::string& aPath);
-    static void destroyInstance();
+    //static void createInstance(const std::string& aPath);
+    //static void destroyInstance();
     static DocumentManager& getInstance();
 
   private:
@@ -43,11 +42,11 @@ class DocumentManager {
     inline size_t getCurrID() { return _countID; }
 
   private:
-    static DocumentManager* _instance;
+    //static DocumentManager* _instance;
     static size_t _countID;
-    static std::string _collectionFile;
 
-    const char _delimiter;
-    IndexManager _indexMgr;
-    doc_mt _docs;
+    const std::string   _collectionFile; //hard coded
+    const char          _delimiter; //hard coded
+    IndexManager&       _indexMgr;
+    doc_mt              _docs;
 };
