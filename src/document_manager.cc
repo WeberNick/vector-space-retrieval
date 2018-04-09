@@ -7,7 +7,7 @@
 size_t DocumentManager::_countID = 0;
 
 DocumentManager::DocumentManager() : 
-    _collectionFile("./data/collection.docs"), //relative path from /path/to/repo/evsr
+    _collectionFile("./data/collection.docs"), //relative path from /path/to/repo/vector-space-retrieval
     _delimiter('~'),
     _indexMgr(IndexManager::getInstance()),
     _docs()

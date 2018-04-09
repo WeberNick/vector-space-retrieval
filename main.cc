@@ -22,10 +22,10 @@ namespace fs = std::experimental::filesystem;
  */
 int main(const int argc, const char* argv[]) {
     //this is just a test, needs a proper implementation later on
-    if(!Utility::StringOp::endsWith(fs::current_path().string(), "evsr"))
+    if(!Utility::StringOp::endsWith(fs::current_path().string(), "vector-space-retrieval"))
     {
         //todo: change error message
-        std::cerr << "Incorrect execution path! Please start the executable from the path ending with 'evsr'" << std::endl;
+        std::cerr << "Incorrect execution path! Please start the executable from the path ending with 'vector-space-retrieval'" << std::endl;
         std::cout << "Current Working Directory: " << fs::current_path() << std::endl;
         return -1;
     }
