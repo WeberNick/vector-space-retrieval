@@ -71,7 +71,7 @@ class InvalidArguementException : public BaseException
                 const char*         aFileName, 
                 const unsigned int  aLineNumber, 
                 const char*         aFunctionName, 
-                const std::string   aErrorMessage);
+                const std::string&  aErrorMessage);
 };
 
 class SwitchException : public BaseException
@@ -88,7 +88,7 @@ class FileException : public BaseException
                 const unsigned int  aLineNumber, 
                 const char*         aFunctionName, 
                 const char*         aErrorFileName, 
-                const std::string   aErrorMessage); 
+                const std::string&  aErrorMessage); 
 };
 
 class VectorException : public BaseException
@@ -96,7 +96,7 @@ class VectorException : public BaseException
  public:
   VectorException(
 		  const char*         aFileName,
-		  unsigned int  aLineNumber,
+		  const unsigned int  aLineNumber,
 		  const char*         aFunctionName,
-		  std::string   aErrorMessage);
+		  const std::string&  aErrorMessage);
 };

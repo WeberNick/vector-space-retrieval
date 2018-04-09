@@ -4,11 +4,10 @@
 #include <sstream>
 #include <vector>
 
-//DocumentManager* DocumentManager::_instance = nullptr;
 size_t DocumentManager::_countID = 0;
 
 DocumentManager::DocumentManager() : 
-    _collectionFile("./data/collection.docs"),
+    _collectionFile("./data/collection.docs"), //relative path from /path/to/repo/evsr
     _delimiter('~'),
     _indexMgr(IndexManager::getInstance()),
     _docs()
@@ -18,28 +17,9 @@ DocumentManager::DocumentManager() :
     // handle indexManager calls
 }
 
-DocumentManager::~DocumentManager() { /*destroyInstance();*/ }
-
-/*void DocumentManager::createInstance(const std::string& aPath) {*/
-    //if (!_instance) // if _instance -> nullptr = false, else true -> !_instance is true only if not created
-    //{
-        //_instance = new DocumentManager(aPath);
-    //}
-/*}*/
-
-/*void DocumentManager::destroyInstance() {*/
-    //if (_instance) {
-        //delete _instance;
-        //_instance = nullptr;
-    //}
-/*}*/
+DocumentManager::~DocumentManager() { }
 
 DocumentManager& DocumentManager::getInstance() {
-   /* if (!_instance) {*/
-        //// either change back to a return of a pointer or find more graceful solution?
-        //throw SingletonException(__FILE__, __LINE__, __PRETTY_FUNCTION__);
-    //}
-    /*return *_instance;*/
     static DocumentManager lInstance;
     return lInstance;
 }

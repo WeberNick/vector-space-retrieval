@@ -65,7 +65,7 @@ InvalidArguementException::InvalidArguementException(
         const char*         aFileName,
         const unsigned int  aLineNumber,
         const char*         aFunctionName,
-        const std::string   aErrorMessage) :
+        const std::string&  aErrorMessage) :
 	BaseException(
             aFileName,
             aLineNumber,
@@ -89,7 +89,7 @@ FileException::FileException(
         const unsigned int  aLineNumber,
         const char*         aFunctionName,
         const char*         aErrorFileName,
-        const std::string   aErrorMessage) :
+        const std::string&  aErrorMessage) :
 	BaseException(
             aFileName,
             aLineNumber,
@@ -101,9 +101,10 @@ VectorException::VectorException(
 		const char*         aFileName,
 		const unsigned int  aLineNumber,
 		const char*         aFunctionName,
-		std::string			aErrorMessage) :
+		const std::string&  aErrorMessage) :
 		BaseException(
 		    aFileName,
             aLineNumber,
             aFunctionName,
-            aErrorMessage){}
+            aErrorMessage)
+{}

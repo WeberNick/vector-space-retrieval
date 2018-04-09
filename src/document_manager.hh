@@ -18,8 +18,6 @@ class DocumentManager {
     ~DocumentManager();
 
   public:
-    //static void createInstance(const std::string& aPath);
-    //static void destroyInstance();
     static DocumentManager& getInstance();
 
   private:

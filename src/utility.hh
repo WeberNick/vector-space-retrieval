@@ -56,6 +56,17 @@ namespace Utility {
      */
     namespace StringOp {
         /**
+         * @brief Checks whether a given string ends with a specified suffix
+         * @param aString the input string
+         * @param aSuffix the suffix
+         * @return true if input string ends with specified suffix, false otherwise
+        */
+        inline bool endsWith(const std::string& aString, const std::string& aSuffix)
+        {
+            return aString.size() >= aSuffix.size() && 0 == aString.compare(aString.size() - aSuffix.size(), aSuffix.size(), aSuffix);
+        }
+
+        /**
          * @brief Lower case a given string
          *
          * @param string string to lower case
