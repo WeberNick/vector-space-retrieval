@@ -16,11 +16,15 @@
 
 #include "document_manager.hh"
 #include "exception.hh"
+
+#include <lib/oleanderStemmingLibrary/stemming/english_stem.h>
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <algorithm>
 #include <cmath>
 #include <functional>
 #include <iterator>
-#include <lib/oleanderStemmingLibrary/stemming/english_stem.h>
 #include <random>
 #include <sstream>
 #include <string>
@@ -56,14 +60,28 @@ namespace Utility {
      */
     namespace StringOp {
         /**
-         * @brief Checks whether a given string ends with a specified suffix
+         * @brief Splits a given string with the given delimiter. Wrapper function for call to boost
+         *
+         * @param aString the input string to split
+         * @param aDelimiter the delimiter used for splitting
+         * @param aOutputVector the vector to store the string tokens in
+         * @return -
+         */
+        inline void splitString(const std::string& aString, const char aDelimiter, string_vt& aOutputVector)
+        {
+            boost::split(aOutputVector, aString, boost::is_any_of(std::string(1,aDelimiter)));
+        }
+
+        /**
+         * @brief Checks whether a given string ends with a specified suffix. Wrapper function for call to boost
          * @param aString the input string
          * @param aSuffix the suffix
          * @return true if input string ends with specified suffix, false otherwise
         */
         inline bool endsWith(const std::string& aString, const std::string& aSuffix)
         {
-            return aString.size() >= aSuffix.size() && 0 == aString.compare(aString.size() - aSuffix.size(), aSuffix.size(), aSuffix);
+            return boost::algorithm::ends_with(aString, aSuffix);
+//            return aString.size() >= aSuffix.size() && 0 == aString.compare(aString.size() - aSuffix.size(), aSuffix.size(), aSuffix);
         }
 
         /**

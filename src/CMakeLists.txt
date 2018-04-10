@@ -3,9 +3,16 @@ cmake_minimum_required(VERSION 3.9)
 find_program(CMAKE_C_COMPILER NAMES $ENV{CC} gcc PATHS ENV PATH NO_DEFAULT_PATH)
 find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PATH)
 
+set (BOOST_ROOT "/usr/local/Cellar/boost/1.66.0/")
+set (BOOST_INCLUDEDIR "/usr/local/Cellar/boost/1.66.0/include")
+set (BOOST_LIBRARYDIR "/usr/local/Cellar/boost/1.66.0/lib")
+
+find_package (Boost 1.55.0 REQUIRED)
+if (Boost_FOUND)
+  include_directories (SYSTEM ${Boost_INCLUDE_DIR})
+endif ()
+
 set(CMAKE_CXX_STANDARD 17)
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Weffc++")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wno-deprecated-declarations -Wno-deprecated")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++17 -Wno-deprecated-declarations -Wno-deprecated -Wall")
 set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -lstdc++fs") 
 

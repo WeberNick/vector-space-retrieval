@@ -41,7 +41,7 @@
 class Args {
   public:
     explicit Args();
-    Args(const Args&) = delete;
+    explicit Args(const Args&) = delete;
     Args(Args&&) = delete;
     Args& operator=(const Args&) = delete;
     Args& operator=(Args&&) = delete;
@@ -63,6 +63,12 @@ class Args {
     inline const std::string path() { return _path; }
     inline void path(const std::string& x) { _path = x; }
 
+    inline const uint tiers() { return _tiers; }
+    inline void tiers(const uint& x) { _tiers = x; }
+
+    inline const uint dimensions() { return _dimensions; }
+    inline void dimensions(const uint& x) { _dimensions = x; }
+
   private:
     bool _help;
     bool _trace;
@@ -70,6 +76,9 @@ class Args {
     bool _print;
 
     std::string _path;
+
+    uint    _tiers;
+    uint    _dimensions;
 };
 
 typedef std::vector<argdescbase_t<Args>*> argdesc_vt;
