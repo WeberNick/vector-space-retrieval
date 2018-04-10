@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include "document.hh"
 
 class QueryProcessingEngine {
   private:
@@ -20,4 +21,5 @@ class QueryProcessingEngine {
 
   public:
     std::vector<int> cosineScore(const std::string& query, size_t topK);
+    size_t cosineScoreCluster(Document* query, std::vector<Document*> collection);
 };

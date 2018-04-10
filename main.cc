@@ -7,17 +7,16 @@
 #include "random_projection.hh"
 #include "utility.hh"
 
+#include <experimental/filesystem>
 #include <iostream>
 #include <query_processing_engine.hh>
 #include <vector>
-#include <experimental/filesystem>
+
 namespace fs = std::experimental::filesystem;
 
-
-//insert everything here what is not actually meant to be in main
-void test(const control_block_t& aCB)
-{
- /* Example how to use Measurement class (also described in measure.hh) */
+// insert everything here what is not actually meant to be in main
+void test(const control_block_t& aCB) {
+    /* Example how to use Measurement class (also described in measure.hh) */
 
     Measure lMeasure;
     if (aCB.measure()) { lMeasure.start(); }
@@ -26,18 +25,16 @@ void test(const control_block_t& aCB)
     double lSeconds = lMeasure.mTotalTime();
     std::cout << "This print message is just used to prevent unused variable warnings. " << lSeconds << std::endl;
 
-    DocumentManager& docManager = DocumentManager::getInstance(); 
+    DocumentManager& docManager = DocumentManager::getInstance();
     std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getCurrID() << std::endl;
 
     std::string text = "Let me split this into words";
     std::vector<std::string> results;
 
     Utility::StringOp::splitString(text, ' ', results);
-    for(auto t : results)
-    {
+    for (auto t : results) {
         std::cout << "Word: " << t << std::endl;
     }
-
 
     /*std::vector<double> doc_a = { 1, 3, 5, 8, 100, 100 };
     std::vector<double> doc_b = { 2, 4, 5, 1, 2, 0 };
@@ -57,12 +54,45 @@ void test(const control_block_t& aCB)
 
     // random_projection::createRandomMatrix(100, 500, true, 0.1, "gaussian");
 
-    random_projection::projectMatrix();
+    std::vector<float> doc_a = { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 };
+    std::vector<float> doc_b = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
 
-    //QueryProcessingEngine::getInstance().cosineScore("Documenting transportation is such a great fundamental human being being being being", 10);
+    RandomProjection::getInstance().setDimensions(5);
+    RandomProjection::getInstance().setOrigVectorSize(doc_a.size());
+    RandomProjection::getInstance().initRandomVectors();
+
+    std::cout << "Dimension inside RandomProjection = " << RandomProjection::getInstance().getDimensions() << std::endl;
+
+    for (auto& elem : RandomProjection::getInstance().getRandomVectors()) {
+        for (auto& dimValue : elem) {
+            std::cout << dimValue << ",";
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << "Cos sim before locality hashing: " << Utility::SimilarityMeasures::calcCosSim(doc_a, doc_b) << std::endl;
+
+    std::vector<float> doc_a_proj = RandomProjection::getInstance().localiltySensitveHashProjection(doc_a, hash);
+    std::vector<float> doc_b_proj = RandomProjection::getInstance().localiltySensitveHashProjection(doc_b, hash);
+
+    std::cout << "doc_a after hashing" << std::endl;
+
+    for (int i = 0; i < doc_a_proj.size(); ++i) {
+        std::cout << doc_a_proj[i] << ",";
+    }
+
+    std::cout << std::endl;
+    std::cout << std::endl;
+
+    std::cout << "doc_b after hashing" << std::endl;
+    for (int i = 0; i < doc_b_proj.size(); ++i) {
+        std::cout << doc_b_proj[i] << ",";
+    }
+    std::cout << std::endl;
+    std::cout << "Cos sim after locality hashing: " << Utility::SimilarityMeasures::calcCosSim(doc_a_proj, doc_b_proj) << std::endl;
+
+    // QueryProcessingEngine::getInstance().cosineScore("Documenting transportation is such a great fundamental human being being being being", 10);
     //
-
-
 }
 
 /**
@@ -73,10 +103,9 @@ void test(const control_block_t& aCB)
  * @return
  */
 int main(const int argc, const char* argv[]) {
-    //this is just a test, needs a proper implementation later on
-    if(!Utility::StringOp::endsWith(fs::current_path().string(), "vector-space-retrieval"))
-    {
-        //todo: change error message
+    // this is just a test, needs a proper implementation later on
+    if (!Utility::StringOp::endsWith(fs::current_path().string(), "vector-space-retrieval")) {
+        // todo: change error message
         std::cerr << "Incorrect execution path! Please start the executable from the path ending with 'vector-space-retrieval'" << std::endl;
         std::cout << "Current Working Directory: " << fs::current_path() << std::endl;
         return -1;
@@ -97,17 +126,9 @@ int main(const int argc, const char* argv[]) {
         return 0;
     }
 
-    const control_block_t lCB = {
-        lArgs.trace(),
-        lArgs.measure(),
-        lArgs.print(),
-        lArgs.path(),
-        lArgs.results(),
-        lArgs.tiers(),
-        lArgs.dimensions()
-    };
+    const control_block_t lCB = { lArgs.trace(), lArgs.measure(), lArgs.print(), lArgs.path(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
 
-    //insert everything here what is not actually meant to be in main
+    // insert everything here what is not actually meant to be in main
     test(lCB);
 
     return 0;

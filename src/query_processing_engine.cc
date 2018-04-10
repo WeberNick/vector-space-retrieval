@@ -36,3 +36,24 @@ std::vector<int> QueryProcessingEngine::cosineScore(const std::string& query, si
 
     return std::vector<int>();
 }
+size_t QueryProcessingEngine::cosineScoreCluster(Document* query, std::vector<Document*> collection) {
+
+    /*int docCount = collection.size();
+
+    std::vector<float> scores(docCount);
+    std::vector<int> length(docCount);
+
+    // Fill length vector with the lengths of the documents
+    for (int i = 0; i < docCount; ++i) {
+        length[i] = collection[i]->getContent().size();
+    }
+
+    for (int j = 0; j < query->getContent().size(); ++j) {
+        const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList("termn");
+        for (auto& posting : postingList) {
+            postingList.getIDF();
+        }
+    }
+    */
+    return 2;
+}

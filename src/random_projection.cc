@@ -8,7 +8,44 @@
 #include <iostream>
 #include <vector>
 
-double rand_normal(double mean, double stddev) { // Box muller method
+RandomProjection::~RandomProjection() = default;
+
+RandomProjection::RandomProjection() {}
+
+RandomProjection& RandomProjection::getInstance() {
+    static RandomProjection lInstance;
+    return lInstance;
+}
+
+std::vector<float> RandomProjection::localiltySensitveHashProjection(std::vector<float>& vector, float (*hashFunc)(std::vector<float>&, std::vector<float>&)) {
+
+    std::vector<float> result(_dimension);
+    for (int j = 0; j < _dimension; ++j) {
+        result[j] = hashFunc(vector, this->_randomVectors[j]);
+    }
+
+    return result;
+}
+
+/**
+ * @brief  Find the minimum dimension required to project the data from high dimensional space to low dimensional space
+ *
+ * @param sample number of samples
+ * @param eps error tolerance level
+ * @return minimum amount of dimensions
+ */
+const int RandomProjection::dimension(int& sample, float eps) {
+    if ((eps > 1.0) | (eps <= 0.0)) {
+        throw("The JL bound for epsilon is [0.0,1.0]");
+    } else if (sample <= 0.01) {
+        throw("Sample size must be grater than zero");
+    } else {
+        double denominator = (pow(eps, 2) / 2 - (pow(eps, 3) / 3));
+        return static_cast<int>(floor((4 * log(sample) / denominator)));
+    }
+}
+
+const double RandomProjection::rand_normal(double mean, double stddev) { // Box muller method
     static double n2 = 0.0;
     static int n2_cached = 0;
     if (!n2_cached) {
@@ -34,25 +71,6 @@ double rand_normal(double mean, double stddev) { // Box muller method
 }
 
 /**
- * @brief  Find the minimum dimension required to project the data from high dimensional space to low dimensional space
- *
- * @param sample number of samples
- * @param eps error tolerance level
- * @return minimum amount of dimensions
- */
-int random_projection::dimension(int& sample, float eps) {
-    if ((eps > 1.0) | (eps <= 0.0)) {
-        throw("The JL bound for epsilon is [0.0,1.0]");
-    } else if (sample <= 0.01) {
-        throw("Sample size must be grater than zero");
-    } else {
-        double denominator = (pow(eps, 2) / 2 - (pow(eps, 3) / 3));
-        return static_cast<int>(floor((4 * log(sample) / denominator)));
-    }
-}
-
-// TODO: RANDOM PROJECT IS NOT WORKING
-/**
  * @brief
  *
  * @param rows
@@ -61,12 +79,12 @@ int random_projection::dimension(int& sample, float eps) {
  * @param eps
  * @param projection
  */
-Eigen::MatrixXf random_projection::createRandomMatrix(int rows, int cols, bool JLT, double eps, std::string projection) {
+Eigen::MatrixXf RandomProjection::createRandomMatrix(int rows, int cols, bool JLT, double eps, std::string projection) {
 
     if (rows == 0) throw("Number of rows has to be greater than 0");
     if (cols == 0) throw("Number of columns has to be greater than 0");
 
-    if (JLT) { cols = dimension(cols, eps); }
+    if (JLT) { cols = this->dimension(cols, eps); }
 
     std::vector<double> randoms;
 
@@ -86,7 +104,7 @@ Eigen::MatrixXf random_projection::createRandomMatrix(int rows, int cols, bool J
 
     return m;
 }
-Eigen::MatrixXf random_projection::projectMatrix() {
+const Eigen::MatrixXf RandomProjection::projectMatrix() {
 
     int nrow = 5;
     int ncol = 103260;
@@ -112,7 +130,7 @@ Eigen::MatrixXf random_projection::projectMatrix() {
     std::cout << "Projection matrix generated" << std::endl;
 
     std::cout << "Project matrix into a lower dimensional space" << std::endl;
-    Eigen::MatrixXf resultMatrix = randomMatrix*projectionMatrix;
+    Eigen::MatrixXf resultMatrix = randomMatrix * projectionMatrix;
 
     std::cout << "Here is the result " << std::endl;
     std::cout << "Original cols: " << randomMatrix.cols() << std::endl;
