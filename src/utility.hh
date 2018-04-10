@@ -94,11 +94,10 @@ namespace Utility {
          * @param aString the input string
          * @param aSuffix the suffix
          * @return true if input string ends with specified suffix, false otherwise
-        */
-        inline bool endsWith(const std::string& aString, const std::string& aSuffix)
-        {
+         */
+        inline bool endsWith(const std::string& aString, const std::string& aSuffix) {
             return boost::algorithm::ends_with(aString, aSuffix);
-//            return aString.size() >= aSuffix.size() && 0 == aString.compare(aString.size() - aSuffix.size(), aSuffix.size(), aSuffix);
+            //            return aString.size() >= aSuffix.size() && 0 == aString.compare(aString.size() - aSuffix.size(), aSuffix.size(), aSuffix);
         }
 
         /**

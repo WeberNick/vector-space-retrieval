@@ -7,12 +7,27 @@
 #include "random_projection.hh"
 #include "utility.hh"
 
+#include <document_manager.hh>
 #include <experimental/filesystem>
 #include <iostream>
 #include <query_processing_engine.hh>
+#include <utility.hh>
 #include <vector>
-
 namespace fs = std::experimental::filesystem;
+
+float hash(std::vector<float> & origVec, std::vector<float> & randVec) {
+
+    if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
+
+    double dot = std::inner_product(std::begin(origVec), std::end(origVec), std::begin(randVec), 0.0);
+
+    if (dot >= 0.75) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 
 // insert everything here what is not actually meant to be in main
 void test(const control_block_t& aCB) {
@@ -71,6 +86,7 @@ void test(const control_block_t& aCB) {
     }
 
     std::cout << "Cos sim before locality hashing: " << Utility::SimilarityMeasures::calcCosSim(doc_a, doc_b) << std::endl;
+
 
     std::vector<float> doc_a_proj = RandomProjection::getInstance().localiltySensitveHashProjection(doc_a, hash);
     std::vector<float> doc_b_proj = RandomProjection::getInstance().localiltySensitveHashProjection(doc_b, hash);

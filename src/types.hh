@@ -16,6 +16,7 @@ typedef std::map<std::string, float> str_float_mt;
 typedef std::map<std::string, uint> str_int_mt;
 typedef std::map<std::string, float> float_map;
 typedef std::map<std::string, uint> int_map;
+typedef std::vector<std::vector<float>> float_vector_vt;
 
 struct control_block_t {
     const bool _trace;   // indicate if tracing is activated

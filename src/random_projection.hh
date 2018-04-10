@@ -4,17 +4,10 @@
 
 #pragma once
 
-<<<<<<< develop
-
-#include <string>
-#include <Eigen/Dense>
-namespace random_projection {
-=======
-#include "types.hh"
 #include "utility.hh"
-#include <lib/eigen/Eigen/Dense>
+#include "types.hh"
+#include <Eigen/Dense>
 #include <string>
->>>>>>> Transfer the random_projection workflow into a class
 
 class RandomProjection {
   private:
