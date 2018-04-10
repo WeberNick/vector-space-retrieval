@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 3.9)
 project(${CMAKE_PROJECT_NAME}_lib)
 
-#Use standard gcc and g++ in env path if not else specified
-find_program(CMAKE_C_COMPILER NAMES $ENV{CC} gcc PATHS ENV PATH NO_DEFAULT_PATH)
-find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PATH)
-
 #Set Boost library paths
 set (BOOST_ROOT "/usr/local/Cellar/boost/1.66.0/")
 set (BOOST_INCLUDEDIR "/usr/local/Cellar/boost/1.66.0/include")
