@@ -1,43 +1,36 @@
 cmake_minimum_required(VERSION 3.9)
+project(evsr VERSION 0.0.1)
 
+#Use standard gcc and g++ in env path if not else specified
 find_program(CMAKE_C_COMPILER NAMES $ENV{CC} gcc PATHS ENV PATH NO_DEFAULT_PATH)
 find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PATH)
 
-set (BOOST_ROOT "/usr/local/Cellar/boost/1.66.0/")
-set (BOOST_INCLUDEDIR "/usr/local/Cellar/boost/1.66.0/include")
-set (BOOST_LIBRARYDIR "/usr/local/Cellar/boost/1.66.0/lib")
-
-find_package (Boost 1.55.0 REQUIRED)
-if (Boost_FOUND)
-  include_directories (SYSTEM ${Boost_INCLUDE_DIR})
-endif ()
-
-set (CMAKE_CXX_STANDARD 17)
-
+# Specifiy if makefile is verbose and set output directories
 set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/build)
 
-set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/bin)
-set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_HOME_DIRECTORY}/build)
-
-set (CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++17 -Wno-deprecated-declarations -Wall")
+#Set c++ standard, warning flags and linker flags
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++17 -Wno-deprecated-declarations -Wno-deprecated -Wall")
 set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -lstdc++fs")
-
-project(evsr VERSION 0.0.1)
 
 #For Testing
 include(CTest)
 enable_testing()
 
+#Set source files
 SET(SOURCE_FILES main.cc)
 add_executable(${CMAKE_PROJECT_NAME}_run ${SOURCE_FILES})
 
 include_directories(SYSTEM src)
 
+#Add subdirectories and execute their CmakeLists
 add_subdirectory(src)
 #add_subdirectory(tests)
 #add_subdirectory(docs)
 
+#Link main executable with code lib
 target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib)
 
 #NICK: Use this to supress deprecated warning in file

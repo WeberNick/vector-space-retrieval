@@ -17,7 +17,7 @@
 #include "document_manager.hh"
 #include "exception.hh"
 
-#include <lib/oleanderStemmingLibrary/stemming/english_stem.h>
+
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
@@ -28,6 +28,7 @@
 #include <random>
 #include <sstream>
 #include <string>
+#include <stemming/english_stem.h>
 
 /**
  * @brief Namespace for general utilities

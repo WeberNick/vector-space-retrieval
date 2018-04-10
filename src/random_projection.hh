@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include <lib/eigen/Eigen/Dense>
+
 #include <string>
+#include <Eigen/Dense>
 namespace random_projection {
 
     int dimension(int& sample, float eps = 0.1);
