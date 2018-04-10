@@ -63,6 +63,9 @@ class Args {
     inline const std::string path() { return _path; }
     inline void path(const std::string& x) { _path = x; }
 
+    inline const uint results() { return _results; }
+    inline void results(const uint& x) { _results = x; }
+
     inline const uint tiers() { return _tiers; }
     inline void tiers(const uint& x) { _tiers = x; }
 
@@ -77,6 +80,7 @@ class Args {
 
     std::string _path;
 
+    uint    _results;
     uint    _tiers;
     uint    _dimensions;
 };

@@ -17,12 +17,12 @@ void construct_arg_desc(argdesc_vt& x) {
     
     x.push_back(new sarg_t("--path", "./data/", &Args::path, "path to the data directory. relative path from repo root directory or absolute path possible"));
 
-
+     x.push_back(new uarg_t("--results", 10, &Args::results, "the maximum number of results a query shall return"));
      x.push_back(new uarg_t("--tiers", 0, &Args::tiers, "the number of tiers used for the tiered index. TODO: assign appropriate default value"));
      x.push_back(new uarg_t("--dimensions", 0, &Args::dimensions, "the number of dimensions used for the random projection. TODO: assign appropriate default value"));
 
 }
 
-Args::Args() : _help(false), _trace(false), _measure(false), _print(false), _path("./data/"), _tiers(0), _dimensions(0) {}
+Args::Args() : _help(false), _trace(false), _measure(false), _print(false), _path("./data/"), _results(10), _tiers(0), _dimensions(0) {}
 
 Args::~Args() {}

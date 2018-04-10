@@ -2,17 +2,22 @@
 
 Cluster::Cluster() :
     _leaders(),
-    _cluster()
+    _cluster(),
+    _cb(nullptr)
 {
     init();
 }
 
 Cluster::~Cluster(){}
+
+void Cluster::init(const control_block_t& aCB)
+{
+    _cb = &aCB;
+}
     
 void Cluster::init()
 {
     chooseLeaders();
-    initCluster();
     fillCluster();
 }
 
@@ -43,13 +48,10 @@ void Cluster::chooseLeaders()
         _leaders.push_back(&(lDocIt->second));
         lIDs.push_back(lRandomID);
     }
-}
-
-void Cluster::initCluster()
-{
-    for(const Document* docPtr : _leaders)
+    for(const Document* leaderDocPtr : _leaders)
     {
-        _cluster[docPtr];//default constructs the vector for each leader
+        //default constructs the vector for each leader and adds leader to its own cluster
+        _cluster[leaderDocPtr].push_back(leaderDocPtr);
     }
 }
 
@@ -58,21 +60,7 @@ void Cluster::fillCluster()
     const doc_mt& lDocs = DocumentManager::getInstance().getDocumentMap();
     for(const auto& doc : lDocs) //doc will we an iterator over the map
     {
-        std::pair<float, const Document*> lSD; //SD = Smallest Distance
-        lSD.first = 1; //one is highest dist
-        lSD.second = nullptr;
-        for(const auto& leader : _leaders)
-        {
-            float lDist = Utility::SimilarityMeasures::calcCosDist(*leader, doc.second);
-            if(lDist < lSD.first)
-            {
-                lSD.first = lDist;
-                lSD.second = leader;
-            }
-        }//closest leader found
-        _cluster[lSD.second].push_back(&doc.second); //store pointer to doc in the vector
+        //const size_t lIndex =  Utility::SimilarityMeasures::calcCosDist(&doc.second, _leaders);
+        //_cluster.at(_leaders[lIndex]).push_back(&doc.second);
     }
 }
-
-
-//TODO: Add functionality

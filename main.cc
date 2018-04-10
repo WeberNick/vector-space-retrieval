@@ -102,6 +102,7 @@ int main(const int argc, const char* argv[]) {
         lArgs.measure(),
         lArgs.print(),
         lArgs.path(),
+        lArgs.results(),
         lArgs.tiers(),
         lArgs.dimensions()
     };

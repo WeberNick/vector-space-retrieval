@@ -18,22 +18,24 @@ typedef std::map<std::string, uint> int_map;
 
 struct control_block_t
 {
-    const bool          _trace;
-    const bool          _measure;
-    const bool          _print;
+    const bool          _trace;             //indicate if tracing is activated
+    const bool          _measure;           //indicate if measurement is activated
+    const bool          _print;             //indicate if tracing/(error) messages shall be printed (cout)
 
 
-    const std::string   _collectionPath;
+    const std::string   _collectionPath;    //the path to the document collection
     
 
-    const uint          _noTiers;
-    const uint          _noDimensions;
+    const uint          _noResults;         //the number of results to return for each query
+    const uint          _noTiers;           //number of tiers for the tiered index
+    const uint          _noDimensions;      //the number of dimensions for the random projection
 
 
     const bool          trace()         const { return _trace; }
     const bool          measure()       const { return _measure; }
     const bool          print()         const { return _print; }
     const std::string&  collectionPath()const { return _collectionPath; }
+    const uint          results()       const { return _noResults; }
     const uint          tiers()         const { return _noTiers; }
     const uint          dimensions()    const { return _noDimensions; }
 };
