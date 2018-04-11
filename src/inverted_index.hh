@@ -40,7 +40,7 @@ class InvertedIndex {
   public:
     inline const postinglist_mt& getPostings() { return _postings; }
     inline size_t getNoPostings() { return _postings.size(); }
-    inline const PostingList& getPostingList(const std::string& term){ return _postings.at(term); };
+    // inline const PostingList& getPostingList(const std::string& term){ return _postings.at(term); };
 
   private:
     postinglist_mt _postings;

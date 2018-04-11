@@ -4,12 +4,12 @@ IndexManager::IndexManager() {}
 
 IndexManager::~IndexManager() {}
 
-IndexManager::buildInvertedIndex() {
+void IndexManager::buildInvertedIndex() {
 
 }
 
-IndexManager::buildTieredIndex() {
-    
+void IndexManager::buildTieredIndex() {
+
 }
 /**
  * Basic Idea to create inverted index (pseudo code):

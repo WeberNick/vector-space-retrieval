@@ -257,13 +257,16 @@ namespace Utility {
         }
 
         /**
-         * @brief Calculates the inverted document of a given term inside a given document collection
+         * @brief Calculates the inverted document frequency of a given term inside a given document collection
          *
          * @param term the term to calculate the frequency of
-         * @param documentManager the document in which the term appears
+         * @param documentManager the documents in which the term appears
          * @return the inverted document frequency
          */
-        inline float calcIDF(const std::string& term, const DocumentManager& documentManager) {}
+        /*inline float calcIDF(const std::string& term, const DocumentManager& documentManager) {
+            // TODO
+            return 0;
+        }*/
 
         /**
          * @brief Calculates the tf-idf value
@@ -308,7 +311,10 @@ namespace Utility {
      */
     namespace SimilarityMeasures {
 
-        inline float calcCosSimEfficient(){};
+        inline float calcCosSimEfficient() {
+            // TODO
+            return 0;
+        };
 
         /**
          * @brief Wrapper method for \link Utility#StringOp#calcCosSim() calcCosSim() \endlink which accepts documents instead of the raw vector

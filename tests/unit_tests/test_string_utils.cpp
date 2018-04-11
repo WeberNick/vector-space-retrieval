@@ -28,3 +28,21 @@ TEST(Word_Trim_Equals_Test, Equals) {
     Utility::StringOp::trim(sentence);
     EXPECT_EQ("Whitespaces are lost", sentence);
 }
+
+TEST(Split_String_By, Equals) {
+
+    std::string sentence = "This is split by Space.";
+    string_vt vec;
+    Utility::StringOp::splitStringBy(sentence, ' ', string_vt);
+    EXPECT_EQ(["This", "is", "split", "by", "Space."], vec);
+
+}
+
+TEST(Split_String, Equals) {
+
+    std::string sentence = "This is split by Space.";
+    string_vt vec;
+    Utility::StringOp::splitString(sentence, ' ', string_vt);
+    EXPECT_EQ(["This", "is", "split", "by", "Space."], vec);
+    
+}

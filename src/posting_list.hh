@@ -2,6 +2,7 @@
 
 #include "types.hh"
 
+#include <map>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -18,13 +19,13 @@ class PostingList {
 
   public:
     inline float getIDF() const { return _idf; }
-    //inline uint getTF(uint aDocID) { return };
+    // inline uint getTF(uint aDocID) { return };
 
   private:
     float _idf;
-    posting _posting; // has to be sorted
+    // postng _posting; // has to be sorted
 };
 
 typedef std::map<std::string, PostingList*> postinglist_mt;
 typedef postinglist_mt::iterator posting_map_iter_t;
-typedef std::map<size_t, uint> posting; // docID, TF
+typedef std::map<size_t, uint> postng; // docID, TF
