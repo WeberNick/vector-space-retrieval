@@ -1,10 +1,19 @@
 cmake_minimum_required(VERSION 3.9)
 project(${CMAKE_PROJECT_NAME}_lib)
 
+if (UNIX AND NOT APPLE)
+    set(LINUX TRUE)
+endif()
+
 #Set Boost library paths
-set (BOOST_ROOT "/usr/local/Cellar/boost/1.66.0/")
-set (BOOST_INCLUDEDIR "/usr/local/Cellar/boost/1.66.0/include")
-set (BOOST_LIBRARYDIR "/usr/local/Cellar/boost/1.66.0/lib")
+if(LINUX)
+    set(BOOST_INCLUDEDIR "/usr/include/boost")
+    set(BOOST_LIBRARYDIR "/usr/lib/x86_64-linux-gnu")
+else()
+    set(BOOST_ROOT "/usr/local/Cellar/boost/1.66.0/")
+    set(BOOST_INCLUDEDIR "${BOOST_ROOT}/include")
+    set(BOOST_LIBRARYDIR "${BOOST_ROOT}/lib")
+endif()
 
 #Set src/lib as other external librs
 set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/src/lib/)
@@ -22,7 +31,7 @@ endif()
 if(NOT EXISTS ${EXTERNAL_DIR}oleanderStemmingLibrary)
     find_package(Git REQUIRED)
     execute_process(
-            COMMAND ${GIT_EXECUTABLE} clone https://github.com/OleanderSoftware/OleanderStemmingLibrary.git ${EXTERNAL_DIR}oleanderStemmingLibrary
+        COMMAND ${GIT_EXECUTABLE} clone https://github.com/OleanderSoftware/OleanderStemmingLibrary.git ${EXTERNAL_DIR}oleanderStemmingLibrary
     )
 endif()
 
@@ -62,9 +71,10 @@ set(SOURCE_FILES
 add_library(${CMAKE_PROJECT_NAME}_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
 
 #Include Boost libraries to target
-find_package (Boost 1.66.0 REQUIRED)
+set(BOOST_MIN_VERSION 1.58.0)
+find_package (Boost ${BOOST_MIN_VERSION} REQUIRED)
 if (Boost_FOUND)
-    target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM ${Boost_INCLUDE_DIR})
+    target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM ${BOOST_INCLUDE_DIR})
 else()
     return()
 endif ()

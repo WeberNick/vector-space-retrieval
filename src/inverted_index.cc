@@ -5,18 +5,18 @@ InvertedIndex::InvertedIndex(){}
 InvertedIndex::~InvertedIndex(){}
 
 bool InvertedIndex::insert(const std::string& aTerm) {
-    // return _postings.insert(aTerm, nullptr);
+    // return _term_posting_map.insert(aTerm, nullptr);
     return false;
 }
 
-// posting_map_iter_t InvertedIndex::find(const std::string& aKey) { // return _postings.find(aKey); }
+// posting_map_iter_t InvertedIndex::find(const std::string& aKey) { // return _term_posting_map.find(aKey); }
 
 void InvertedIndex::erase(const std::string& aKey) {
-    _postings.erase(aKey);
+    _term_posting_map.erase(aKey);
 }
 
 void InvertedIndex::erase(const posting_map_iter_t aIterator) {
-    _postings.erase(aIterator);
+    _term_posting_map.erase(aIterator);
 }
 
 // const size_t_vt& InvertedIndex::getDocIDs(const std::string& aTerm) {}

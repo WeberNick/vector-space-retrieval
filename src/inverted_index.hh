@@ -38,10 +38,10 @@ class InvertedIndex {
     size_t getNoDocs(const std::string& aTerm);
 
   public:
-    inline const postinglist_mt& getPostings() { return _postings; }
-    inline size_t getNoPostings() { return _postings.size(); }
+    inline const postinglist_mt& getPostings() { return _term_posting_map; }
+    inline size_t getNoPostings() { return _term_posting_map.size(); }
     // inline const PostingList& getPostingList(const std::string& term){ return _postings.at(term); };
 
   private:
-    postinglist_mt _postings;
+    postinglist_mt _term_posting_map;
 };
