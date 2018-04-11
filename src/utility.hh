@@ -56,13 +56,28 @@ namespace Utility {
      */
     namespace StringOp {
         /**
+         * @brief
+         * @param str
+         * @param splitChar
+         * @param out
+         */
+        inline void splitStringBy(const std::string& str, const char splitChar, string_vt& out) {
+            size_t found;
+            size_t pos = 0;
+            while ((found = str.find_first_of(splitChar, pos)) != std::string::npos) {
+                out.emplace_back(str.substr(pos, found - pos));
+                pos = found + 1;
+            }
+            out.emplace_back(str.substr(pos));
+        }
+
+        /**
          * @brief Checks whether a given string ends with a specified suffix
          * @param aString the input string
          * @param aSuffix the suffix
          * @return true if input string ends with specified suffix, false otherwise
-        */
-        inline bool endsWith(const std::string& aString, const std::string& aSuffix)
-        {
+         */
+        inline bool endsWith(const std::string& aString, const std::string& aSuffix) {
             return aString.size() >= aSuffix.size() && 0 == aString.compare(aString.size() - aSuffix.size(), aSuffix.size(), aSuffix);
         }
 
@@ -114,21 +129,18 @@ namespace Utility {
          * @param case_insensitive delare if the search should be case insensitive or not
          * @return the number of occurences
          */
-
-        inline long countWordInString(const std::string& str, const std::string& word, bool case_insensitive) {
+        inline long countWordInString(std::string str, std::string word, bool case_insensitive) {
             if (case_insensitive) {
-
-                std::string word_lower = toLower(word);
-                std::string string_lower = toLower(str);
-                std::istringstream ss(string_lower);
-
-                return std::count_if(std::istream_iterator<std::string>(ss), std::istream_iterator<std::string>(),
-                                     [word_lower](const std::string& s) { return s == word_lower; });
-            } else {
-                std::istringstream ss(str);
-                return std::count_if(std::istream_iterator<std::string>(ss), std::istream_iterator<std::string>(),
-                                     [word](const std::string& s) { return s == word; });
+                std::string word = toLower(word);
+                std::string str = toLower(str);
             }
+            string_vt content;
+            splitStringBy(str, ' ', content);
+            size_t count = 0;
+            for (size_t i = 0; i < content.size(); ++i) {
+                if (content[i] == word) ++count;
+            }
+            return count;
         }
 
         /**
@@ -138,7 +150,6 @@ namespace Utility {
          * @return
          */
         inline int getMaxWordFrequency(const std::string& str) {
-
             std::istringstream input(str);
             std::map<std::string, int> count;
             std::string word;
@@ -148,7 +159,6 @@ namespace Utility {
                 ++iterator->second;
                 if (count.size() == 1 || iterator->second > most_common->second) most_common = iterator;
             }
-
             return most_common->second;
         }
 

@@ -8,11 +8,6 @@
 
 class InvertedIndex {
   public:
-    // better: Hashing
-    typedef std::map<std::string, PostingList*> posting_mt;
-    typedef posting_mt::iterator PostingMapIterator;
-
-  public:
     explicit InvertedIndex();
     InvertedIndex(const InvertedIndex&) = delete;
     InvertedIndex(InvertedIndex&&) = delete;
@@ -20,15 +15,15 @@ class InvertedIndex {
     InvertedIndex& operator=(InvertedIndex&&) = delete;
     ~InvertedIndex();
 
-  public: /* The following are just wrapper functions for the respective map container calls */
+  public:
     /* if term is not in inverted index yet: create an empty posting list for the term (key) */
     bool insert(const std::string& aTerm);
     /* find element in collection */
-    PostingMapIterator find(const std::string& aKey);
+    posting_map_iter_t find(const std::string& aKey);
     /* erase by key */
-    bool erase(const std::string& aKey);
+    void erase(const std::string& aKey);
     /* erase by iterator */
-    bool erase(const PostingMapIterator aIterator);
+    void erase(const posting_map_iter_t aIterator);
 
   public:
     /* look for posting list of term  in map and return the vector containing the doc IDs*/
@@ -43,9 +38,10 @@ class InvertedIndex {
     size_t getNoDocs(const std::string& aTerm);
 
   public:
-    inline const posting_mt& getPostings() { return _postings; }
+    inline const postinglist_mt& getPostings() { return _postings; }
     inline size_t getNoPostings() { return _postings.size(); }
+    inline const PostingList& getPostingList(const std::string& term){ return _postings.at(term); };
 
   private:
-    posting_mt _postings;
+    postinglist_mt _postings;
 };

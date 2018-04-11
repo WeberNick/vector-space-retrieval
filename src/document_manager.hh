@@ -4,9 +4,14 @@
 #include "exception.hh"
 #include "index_manager.hh"
 #include "types.hh"
+#include "utility.hh"
 
+#include <fstream>
+#include <sstream>
 #include <string>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
 class DocumentManager {
   private:
@@ -30,21 +35,24 @@ class DocumentManager {
     /* find element in manager */
     doc_map_iter_t find(const size_t aKey);
     /* erase by key */
-    bool erase(const size_t aKey);
+    void erase(const size_t aKey);
     /* erase by iterator */
-    bool erase(const doc_map_iter_t aIterator);
+    void erase(const doc_map_iter_t aIterator);
 
   public:
+    /**
+     * @brief Get the Document Map object
+     *
+     * @return const doc_mt&
+     */
     inline const doc_mt& getDocumentMap() { return _docs; }
     inline size_t getNoDocuments() { return _docs.size(); }
     inline size_t getCurrID() { return _countID; }
 
   private:
-    //static DocumentManager* _instance;
     static size_t _countID;
 
-    const std::string   _collectionFile; //hard coded
-    const char          _delimiter; //hard coded
-    IndexManager&       _indexMgr;
-    doc_mt              _docs;
+    const std::string _collectionFile; // defined manually
+    const char _delimiter;             // defined manually
+    doc_mt _docs;
 };

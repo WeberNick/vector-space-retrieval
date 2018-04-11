@@ -8,15 +8,6 @@
 
 class PostingList {
   public:
-    struct PostingElement {
-        uint _docID;
-        uint _tf;
-        inline bool operator<(const PostingElement& post) const {
-            return _docID < post._docID;
-        }
-    };
-
-  public:
     explicit PostingList(const std::string& aTerm, const float aIDF);
     explicit PostingList() = delete;
     PostingList(const PostingList&) = delete;
@@ -26,10 +17,14 @@ class PostingList {
     ~PostingList();
 
   public:
-    inline float getIDF() { return _idf; }
-    // inline uint getTF(uint aDocID) { return }
+    inline float getIDF() const { return _idf; }
+    //inline uint getTF(uint aDocID) { return };
 
   private:
     float _idf;
-    std::vector<PostingElement> _posting; // has to be sorted
+    posting _posting; // has to be sorted
 };
+
+typedef std::map<std::string, PostingList*> postinglist_mt;
+typedef postinglist_mt::iterator posting_map_iter_t;
+typedef std::map<size_t, uint> posting; // docID, TF

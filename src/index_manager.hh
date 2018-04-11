@@ -4,7 +4,7 @@
 #include "tiered_index.hh"
 
 class IndexManager {
-  public: // must be private
+  private:
     explicit IndexManager();
     IndexManager(const IndexManager&) = delete;
     IndexManager(IndexManager&&) = delete;
@@ -19,6 +19,10 @@ class IndexManager {
         static IndexManager indexManager;
         return indexManager;
     }
+  
+  public:
+    void buildInvertedIndex();
+    void buildTieredIndex();
 
   private:
     InvertedIndex _invertedIndex;
