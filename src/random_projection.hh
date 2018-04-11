@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "utility.hh"
 #include "types.hh"
+#include "utility.hh"
 #include <Eigen/Dense>
 #include <string>
 
@@ -58,7 +58,6 @@ class RandomProjection {
             for (int i = 0; i < _dimension; ++i) {
                 _randomVectors.push_back(Utility::generateRandomVector(_origVectorSize, 0, 1));
             }
-
             return true;
         } else {
             return false;
