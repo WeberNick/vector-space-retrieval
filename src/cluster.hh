@@ -42,9 +42,8 @@ class Cluster
             return lInstance;
         }
 
-    public:
-        //todo: Functionality of a cluster
-    
+        void init(const control_block_t& aCB);
+
     public:
         inline const doc_ptr_vt&    getLeaders(){ return _leaders; }
         inline const cluster_mt&    getCluster(){ return _cluster; }
@@ -52,14 +51,12 @@ class Cluster
     private:
         void init();
         void chooseLeaders();
-        void initCluster();
         void fillCluster();
-
 
     private:
         doc_ptr_vt  _leaders; //stores pointer to leader documents inside the doc mngr's map
         cluster_mt  _cluster; //stores <Doc*, Vector<Doc*>> pairs, the first pointer is a leader document
-        //maybe remove leader vector? can store leader implicitly in cluster map...
+        const control_block_t* _cb;
 };
 
 

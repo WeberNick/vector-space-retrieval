@@ -1,19 +1,16 @@
 cmake_minimum_required(VERSION 3.9)
-
-find_program(CMAKE_C_COMPILER NAMES $ENV{CC} gcc PATHS ENV PATH NO_DEFAULT_PATH)
-find_program(CMAKE_CXX_COMPILER NAMES $ENV{CXX} g++ PATHS ENV PATH NO_DEFAULT_PATH)
-
-set(CMAKE_CXX_STANDARD 17)
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -Weffc++")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wno-deprecated-declarations -Wno-deprecated")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=c++17 -Wno-deprecated-declarations -Wno-deprecated -Wall")
-set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -lstdc++fs") 
-
 project(${CMAKE_PROJECT_NAME}_lib)
 
+#Set Boost library paths
+set (BOOST_ROOT "/usr/local/Cellar/boost/1.66.0/")
+set (BOOST_INCLUDEDIR "/usr/local/Cellar/boost/1.66.0/include")
+set (BOOST_LIBRARYDIR "/usr/local/Cellar/boost/1.66.0/lib")
+
+#Set src/lib as other external librs
 set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/src/lib/)
 
-# Clone Eigen
+# Clone non-boost external libs
+## Clone Eigen
 if(NOT EXISTS ${EXTERNAL_DIR}eigen)
     find_package(Git REQUIRED)
     execute_process(
@@ -21,16 +18,13 @@ if(NOT EXISTS ${EXTERNAL_DIR}eigen)
     )
 endif()
 
-# Clone /OleanderStemmingLibrary
+## Clone /OleanderStemmingLibrary
 if(NOT EXISTS ${EXTERNAL_DIR}oleanderStemmingLibrary)
     find_package(Git REQUIRED)
     execute_process(
             COMMAND ${GIT_EXECUTABLE} clone https://github.com/OleanderSoftware/OleanderStemmingLibrary.git ${EXTERNAL_DIR}oleanderStemmingLibrary
     )
 endif()
-
-include_directories(SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/eigen")
-include_directories(SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/oleanderStemmingLibrary")
 
 set(HEADER_FILES
         argbase.hh
@@ -64,7 +58,17 @@ set(SOURCE_FILES
         query_processing_engine.cc
 )
 
-
+#Create library which is later linked to the main executable
 add_library(${CMAKE_PROJECT_NAME}_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
-#target_include_directories(${CMAKE_PROJECT_NAME}_lib PRIVATE SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/eigen/Eigen")
-#target_include_directories(${CMAKE_PROJECT_NAME}_lib PRIVATE SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/oleanderStemmingLibrary")
+
+#Include Boost libraries to target
+find_package (Boost 1.66.0 REQUIRED)
+if (Boost_FOUND)
+    target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM ${Boost_INCLUDE_DIR})
+else()
+    return()
+endif ()
+
+#Inlcude non-boost libraries
+target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/eigen")
+target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/oleanderStemmingLibrary")

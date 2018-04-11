@@ -16,13 +16,17 @@
 
 #include "document_manager.hh"
 #include "exception.hh"
+
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <algorithm>
 #include <cmath>
 #include <functional>
 #include <iterator>
-#include <lib/oleanderStemmingLibrary/stemming/english_stem.h>
 #include <random>
 #include <sstream>
+#include <stemming/english_stem.h>
 #include <string>
 
 /**
@@ -56,10 +60,11 @@ namespace Utility {
      */
     namespace StringOp {
         /**
-         * @brief
-         * @param str
-         * @param splitChar
-         * @param out
+         * @brief Splits a given string by a delimiter and fills the given string vector
+         *
+         * @param str the input string to split
+         * @param splitChar the delimiter character indicating where to split
+         * @param out the vector storing the result
          */
         inline void splitStringBy(const std::string& str, const char splitChar, string_vt& out) {
             size_t found;
@@ -71,15 +76,26 @@ namespace Utility {
             out.emplace_back(str.substr(pos));
         }
 
+        /*
+         * @brief Splits a given string with the given delimiter. Wrapper function for call to boost
+         *
+         * @param aString the input string to split
+         * @param aDelimiter the delimiter used for splitting
+         * @param aOutputVector the vector to store the string tokens in
+         * @return -
+         */
+        inline void splitString(const std::string& aString, const char aDelimiter, string_vt& aOutputVector) {
+            boost::split(aOutputVector, aString, boost::is_any_of(std::string(1, aDelimiter)));
+        }
+
         /**
-         * @brief Checks whether a given string ends with a specified suffix
+         * @brief Checks whether a given string ends with a specified suffix. Wrapper function for call to boost
+         *
          * @param aString the input string
          * @param aSuffix the suffix
          * @return true if input string ends with specified suffix, false otherwise
          */
-        inline bool endsWith(const std::string& aString, const std::string& aSuffix) {
-            return aString.size() >= aSuffix.size() && 0 == aString.compare(aString.size() - aSuffix.size(), aSuffix.size(), aSuffix);
-        }
+        inline bool endsWith(const std::string& aString, const std::string& aSuffix) { return boost::algorithm::ends_with(aString, aSuffix); }
 
         /**
          * @brief Lower case a given string
@@ -135,7 +151,7 @@ namespace Utility {
                 std::string str = toLower(str);
             }
             string_vt content;
-            splitStringBy(str, ' ', content);
+            splitString(str, ' ', content);
             size_t count = 0;
             for (size_t i = 0; i < content.size(); ++i) {
                 if (content[i] == word) ++count;
