@@ -12,10 +12,10 @@
 #% OPTIONS
 #%    -c [path], --c [path]         Set a custom C compiler path
 #%    -cxx [path], --cxx [path]     Set a custom C++ compiler path
-#%    -a, --all                     Also delete external lib folders and clone again 
+#%    -a, --all                     Also delete external lib folders and clone again
 #%
 #% EXAMPLES
-#%    ${SCRIPT_NAME} -c "/usr/local/Cellar/gcc/7.3.0_1/bin/gcc-7 -cxx /usr/local/Cellar/gcc/7.3.0_1/bin/g++-7 -a
+#%    ./${SCRIPT_NAME} -c /usr/local/Cellar/gcc/7.3.0_1/bin/gcc-7 -cxx /usr/local/Cellar/gcc/7.3.0_1/bin/g++-7 -a
 #%
 #================================================================
 
@@ -64,16 +64,16 @@ set -- "${POSITIONAL[@]}" # restore positional parameters
 
 
 if [ ! -z ${HELP+x} ]
-then 
+then
   usagefull
   exit 1
 fi
 
 
-if [ -d ./build ]; 
+if [ -d ./build ];
 then
   echo "Deleting ./build directory"
-  rm -rf ./build 
+  rm -rf ./build
 fi
 
 if [ -d ./src/lib ];
@@ -85,14 +85,14 @@ then
   else
     echo "Not deleting ./src/lib directory - external libs are not cloned again!"
   fi
-  
+
 fi
 
-if [ -d ./bin ]; 
+if [ -d ./bin ];
 then
   echo "Deleting ./bin directory"
-  rm -rf ./bin 
-fi 
+  rm -rf ./bin
+fi
 
 if [ -d ./tests/lib ];
 then
@@ -115,13 +115,13 @@ if [ -z ${C+x} ] && [ -z ${CXX+x} ]
 then
   echo "No compiler flags set, use standard or the ones declared in ./CMakeLists.txt"
   cmake ../
-else 
+else
   if [ ! -z ${C+x} ] && [ ! -z ${CXX+x} ]
   then
     cmake -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_C_COMPILER=$C ../
-  else 
+  else
     if [ ! -z "$C" ]
-    then 
+    then
       cmake -DCMAKE_C_COMPILER=$C ../
     else
       if [ ! -z "$CXX" ]
@@ -129,8 +129,8 @@ else
         cmake -DCMAKE_CXX_COMPILER=$CXX ../
       fi
     fi
-  fi  
+  fi
 fi
 
-cmake --build ./ --target all --config Debug 
+cmake --build ./ --target all --config Debug
 cd ../
