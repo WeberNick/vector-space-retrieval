@@ -28,9 +28,9 @@ void DocumentManager::read(const std::string& aFile) {
     std::string line;
     while (std::getline(file, line)) {
         string_vt parts;
-        Utility::StringOp::splitStringBy(line, _delimiter, parts);
+        Utility::StringOp::splitString(line, _delimiter, parts);
         string_vt content;
-        Utility::StringOp::splitStringBy(parts[1], ' ', content);
+        Utility::StringOp::splitString(parts[1], ' ', content);
         Document doc(parts[0], content);
         this->insert(std::make_pair(doc.getID(), doc));
     }
