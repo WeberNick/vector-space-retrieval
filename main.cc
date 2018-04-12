@@ -107,6 +107,9 @@ void test(const control_block_t& aCB) {
     std::cout << std::endl;
     std::cout << "Cos sim after locality hashing: " << Utility::SimilarityMeasures::calcCosSim(doc_a_proj, doc_b_proj) << std::endl;
 
+    std::vector<std::string> sentence = { "Hi", "how", "are", "you", "today,", "you", "you", "you", "look", "look", "look", "gorgeous" };
+    std::cout << Utility::StringOp::getMaxWordFrequency(sentence) << std::endl;
+
     // QueryProcessingEngine::getInstance().cosineScore("Documenting transportation is such a great fundamental human being being being being", 10);
     //
 }

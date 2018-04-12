@@ -1,8 +1,8 @@
 #pragma once
 
+#include "document.hh"
 #include <string>
 #include <vector>
-#include "document.hh"
 
 class QueryProcessingEngine {
   private:
@@ -20,6 +20,7 @@ class QueryProcessingEngine {
     }
 
   public:
-    std::vector<int> cosineScore(const std::string& query, size_t topK);
-    size_t cosineScoreCluster(Document* query, std::vector<Document*> collection);
+    void search(const Document* query, size_t topK);
+    std::vector<size_t> cosineScore(const Document* query, const doc_mt &collection, size_t topK);
+    const size_t cosineScoreCluster(Document* query, const std::vector<Document*>& collection);
 };

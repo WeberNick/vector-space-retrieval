@@ -21,10 +21,12 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <algorithm>
+#include <bits/stl_algo.h>
 #include <cmath>
 #include <functional>
 #include <iterator>
 #include <random>
+#include <set>
 #include <sstream>
 #include <stemming/english_stem.h>
 #include <string>
@@ -140,6 +142,7 @@ namespace Utility {
             return s;
         }
 
+        // TODO: TEST FAILS
         /**
          * @brief Calculates the appearance of a single word inside a string
          *
@@ -153,11 +156,31 @@ namespace Utility {
                 std::string word = toLower(word);
                 std::string str = toLower(str);
             }
-            string_vt content;
+            std::vector<std::string> content;
             splitString(str, ' ', content);
             size_t count = 0;
             for (size_t i = 0; i < content.size(); ++i) {
                 if (content[i] == word) ++count;
+            }
+            return count;
+        }
+
+        /**
+         * @brief Calculates the appearance of a single word inside a string
+         *
+         * @param str the sentence to check for the word
+         * @param word the word to count
+         * @param case_insensitive delare if the search should be case insensitive or not
+         * @return the number of occurences
+         */
+        inline long countWordInString(std::vector<std::string> str, std::string word, bool case_insensitive) {
+            if (case_insensitive) {
+                std::string word = toLower(word);
+                std::string str = toLower(str);
+            }
+            size_t count = 0;
+            for (const auto& i : str) {
+                if (i == word) ++count;
             }
             return count;
         }
@@ -179,6 +202,32 @@ namespace Utility {
                 if (count.size() == 1 || iterator->second > most_common->second) most_common = iterator;
             }
             return most_common->second;
+        }
+
+        /**
+         * @brief Returns the frequency of the most frequent term in the document
+         *
+         * @param str
+         * @return
+         */
+        inline int getMaxWordFrequency(std::vector<std::string> str) {
+            std::map<std::string, int> count;
+            std::string word;
+
+            for (const auto& i : str) {
+                std::cout << i << std::endl;
+                count[i]++;
+                std::cout << count[i] << std::endl;
+            }
+
+            int maxn = max_element(count.begin(), count.end(),
+                                   [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) {
+                                       std::cout << a.second << " > " << b.second << std::endl;
+                                       return a.second < b.second;
+                                   })
+                           ->second;
+
+            return maxn;
         }
 
         /**
@@ -255,6 +304,18 @@ namespace Utility {
          * @return the term frequency
          */
         inline float calcTF(const std::string& term, const std::string& content) {
+            return static_cast<float>((1 + log10(Utility::StringOp::countWordInString(content, term, false))) /
+                                      (1 + log10(Utility::StringOp::getMaxWordFrequency(content))));
+        }
+
+        /**
+         * @brief Calculates the term frequency of a given term inside a given document
+         *
+         * @param term the term to calculate the frequency of
+         * @param content The content vector of terms
+         * @return the term frequency
+         */
+        inline float calcTF(const std::string& term, const std::vector<std::string> content) {
             return static_cast<float>((1 + log10(Utility::StringOp::countWordInString(content, term, false))) /
                                       (1 + log10(Utility::StringOp::getMaxWordFrequency(content))));
         }

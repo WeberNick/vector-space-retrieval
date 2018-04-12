@@ -17,7 +17,15 @@ RandomProjection& RandomProjection::getInstance() {
     return lInstance;
 }
 
-std::vector<float> RandomProjection::localiltySensitveHashProjection(std::vector<float>& vector, float (*hashFunc)(std::vector<float>&, std::vector<float>&)) {
+/**
+ * Uses the method of locality sensitive hashing to reduce the number of dimensions of a vector
+ *
+ * @param vector original vector
+ * @param hashFunc hash function to use to combine original vector and random vectors
+ * @return
+ */
+std::vector<float> RandomProjection::localiltySensitveHashProjection(std::vector<float>& vector,
+                                                                     std::function<float(std::vector<float>&, std::vector<float>&)> hashFunc) {
 
     std::vector<float> result(_dimension);
     for (int j = 0; j < _dimension; ++j) {

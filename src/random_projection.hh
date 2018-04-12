@@ -23,7 +23,10 @@ class RandomProjection {
   public:
     static RandomProjection& getInstance();
     const Eigen::MatrixXf projectMatrix();
-    std::vector<float> localiltySensitveHashProjection(std::vector<float>& vector, float (*hashFunc)(std::vector<float>&, std::vector<float>&));
+    std::vector<float> localiltySensitveHashProjection(std::vector<float>& vector,
+                                                       std::function <
+                                                           float(std::vector<float>&,
+                                                                 std::vector<float>&)>); // float (*hashFunc)(std::vector<float>&, std::vector<float>&));
 
   private:
     const int dimension(int& sample, float eps = 0.1);
