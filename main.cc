@@ -15,19 +15,45 @@
 #include <vector>
 namespace fs = std::experimental::filesystem;
 
-float hash(std::vector<float> & origVec, std::vector<float> & randVec) {
+unsigned int hash(std::vector<float>& origVec, std::vector<float>& randVec) {
 
     if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
 
     double dot = std::inner_product(std::begin(origVec), std::end(origVec), std::begin(randVec), 0.0);
 
-    if (dot >= 0.75) {
+    if (dot >= 0) {
         return 1;
     } else {
         return 0;
     }
 }
 
+unsigned int hash2(std::vector<float>& origVec, std::vector<float>& randVec) {
+
+    if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
+
+    int res = 0;
+
+    double dot = std::inner_product(std::begin(origVec), std::end(origVec), std::begin(randVec), 0.0);
+
+    if (dot >= 0) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+size_t nnz(size_t num) {
+    if (num == 0) { return 0; }
+
+    size_t res = 1;
+    num = num & (num - 1);
+    while (num) {
+        res += 1;
+        num = num & (num - 1);
+    }
+    return res;
+}
 
 // insert everything here what is not actually meant to be in main
 void test(const control_block_t& aCB) {
@@ -51,6 +77,11 @@ void test(const control_block_t& aCB) {
         std::cout << "Word: " << t << std::endl;
     }
 
+    /*std::vector<float> randn = Utility::generateRandomVectorN(200);
+    for (int j = 0; j < randn.size(); ++j) {
+        std::cout << randn[j] << std::endl;
+    }*/
+
     /*std::vector<double> doc_a = { 1, 3, 5, 8, 100, 100 };
     std::vector<double> doc_b = { 2, 4, 5, 1, 2, 0 };
 
@@ -69,8 +100,8 @@ void test(const control_block_t& aCB) {
 
     // random_projection::createRandomMatrix(100, 500, true, 0.1, "gaussian");
 
-    std::vector<float> doc_a = { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0 };
-    std::vector<float> doc_b = { 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 };
+    std::vector<float> doc_a = { 90, 36, 28, 94, 9, 51, 47, 50, 12, 9 };
+    std::vector<float> doc_b = { 74, 50, 56, 30, 91, 98, 60, 40, 22, 2 };
 
     RandomProjection::getInstance().setDimensions(5);
     RandomProjection::getInstance().setOrigVectorSize(doc_a.size());
@@ -85,13 +116,15 @@ void test(const control_block_t& aCB) {
         std::cout << std::endl;
     }
 
-    std::cout << "Cos sim before locality hashing: " << Utility::SimilarityMeasures::calcCosSim(doc_a, doc_b) << std::endl;
+    std::cout << "Angular sim before locality hashing: " << Utility::SimilarityMeasures::calcAngularSimilarity(doc_a, doc_b) << std::endl;
 
+    // std::vector<unsigned int> doc_a_proj = RandomProjection::getInstance().localiltySensitveHashProjection(doc_a, hash);
+    // std::vector<unsigned int> doc_b_proj = RandomProjection::getInstance().localiltySensitveHashProjection(doc_b, hash);
 
-    std::vector<float> doc_a_proj = RandomProjection::getInstance().localiltySensitveHashProjection(doc_a, hash);
-    std::vector<float> doc_b_proj = RandomProjection::getInstance().localiltySensitveHashProjection(doc_b, hash);
+    size_t doc_a_proj = RandomProjection::getInstance().localiltySensitveHashProjection2(doc_a);
+    size_t doc_b_proj = RandomProjection::getInstance().localiltySensitveHashProjection2(doc_b);
 
-    std::cout << "doc_a after hashing" << std::endl;
+    /*std::cout << "doc_a after hashing" << std::endl;
 
     for (int i = 0; i < doc_a_proj.size(); ++i) {
         std::cout << doc_a_proj[i] << ",";
@@ -105,13 +138,20 @@ void test(const control_block_t& aCB) {
         std::cout << doc_b_proj[i] << ",";
     }
     std::cout << std::endl;
-    std::cout << "Cos sim after locality hashing: " << Utility::SimilarityMeasures::calcCosSim(doc_a_proj, doc_b_proj) << std::endl;
+    */
 
-    std::vector<std::string> sentence = { "Hi", "how", "are", "you", "today,", "you", "you", "you", "look", "look", "look", "gorgeous" };
-    std::cout << Utility::StringOp::getMaxWordFrequency(sentence) << std::endl;
+    size_t XOR = doc_a_proj ^ doc_b_proj;
+
+    double simAfterProj = (doc_a.size() - nnz(XOR) / doc_a.size());
+
+    std::cout << "Angular sim after locality hashing: " << simAfterProj << std::endl;
+    // std::cout << "Angular sim after locality hashing: " << Utility::SimilarityMeasures::calcCosSimHamming(doc_a_proj, doc_b_proj) << std::endl;
+
+    // std::vector<std::string> sentence = { "Hi", "how", "are", "you", "today,", "you", "you", "you", "look", "look", "look", "gorgeous" };
+    // std::cout << Utility::StringOp::getMaxWordFrequency(sentence) << std::endl;
 
     // QueryProcessingEngine::getInstance().cosineScore("Documenting transportation is such a great fundamental human being being being being", 10);
-    //
+    //*/
 }
 
 /**

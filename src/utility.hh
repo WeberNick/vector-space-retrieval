@@ -36,6 +36,31 @@
  */
 namespace Utility {
 
+    inline double rand_normal(double mean, double stddev) { // Box muller method
+        static double n2 = 0.0;
+        static int n2_cached = 0;
+        if (!n2_cached) {
+            double x, y, r;
+            do {
+                x = 2.0 * rand() / RAND_MAX - 1;
+                y = 2.0 * rand() / RAND_MAX - 1;
+
+                r = x * x + y * y;
+            } while (r == 0.0 || r > 1.0);
+            {
+                double d = sqrt(-2.0 * log(r) / r);
+                double n1 = x * d;
+                n2 = y * d;
+                double result = n1 * stddev + mean;
+                n2_cached = 1;
+                return result;
+            }
+        } else {
+            n2_cached = 0;
+            return n2 * stddev + mean;
+        }
+    }
+
     /**
      * @brief Generates a random vector of floats with the given dimension and number in the range of min - max. Primarily used for testing
      *
@@ -55,6 +80,20 @@ namespace Utility {
         std::vector<float> vec(static_cast<unsigned long>(dimension));
         generate(begin(vec), end(vec), gen);
         return vec;
+    }
+
+    inline std::vector<float> generateRandomVectorN(size_t dimension) {
+        std::vector<float> result(dimension);
+        for (int i = 0; i < dimension; ++i) {
+            result[i] = static_cast<float>(rand_normal(0, 1));
+        }
+        return result;
+    }
+
+    inline double scalar_product(std::vector<float> const& a, std::vector<float> const& b) {
+        if (a.size() != b.size()) { throw std::runtime_error("different sizes"); }
+
+        return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
     }
 
     /**
@@ -417,14 +456,46 @@ namespace Utility {
         }
 
         /**
-         * Returns 1 - \link Utility#StringOp#calcCosSim() calcCosSim() \endlink. So we have the higher the returned value the more similar the docs are. This
-         * is just for negating the counter-intuitive measurement of the cosine similarity for being high for unsimilar documents
+         * Returns the angular similarity between two docs
          *
          * @param doc_a
          * @param doc_b
          * @return
          */
-        inline float calcCosDist(const Document& doc_a, const Document& doc_b) { return 1 - calcCosSim(doc_a, doc_b); }
+        inline float calcAngularSimilarity(const Document& doc_a, const Document& doc_b) {
+            return 0.0; // return calcAngularSimilarity(doc_a.getTF_IDF, doc_a.getTF_IDF);
+        }
+
+        /**
+         * Returns the angular similarity between two docs
+         *
+         * @see https://en.wikipedia.org/wiki/Cosine_similarity#Angular_distance_and_similarity
+         * @param aTF_IDF_a a tf-idf vector
+         * @param aTF_IDF_a a tf-idf vector
+         * @return
+         */
+        inline float calcAngularSimilarity(const std::vector<float>& aTF_IDF_a, const std::vector<float>& aTF_IDF_b) {
+            float cosine = calcCosSim(aTF_IDF_a, aTF_IDF_b);
+            float theta = acosf(cosine);
+
+            return static_cast<float>(1 - (theta / M_PI));
+        }
+
+        /**
+         * Calculates the cosine similarity of two LSH vectors
+         *
+         * @see https://stackoverflow.com/questions/12952729/how-to-understand-locality-sensitive-hashing
+         * @param vec_a
+         * @param vec_b
+         * @return
+         */
+        inline float calcCosSimHamming(std::vector<unsigned int>& vec_a, std::vector<unsigned int>& vec_b) {
+            float dist = 0;
+            for (int i = 0; i < vec_a.size(); ++i) {
+                if (vec_a[i] != vec_b[i]) { dist++; }
+            }
+            return cos((dist / vec_a.size() * M_PI));
+        }
 
         /**
          * @brief Calculates the euclidean distance between \a doc_a and \a doc_b

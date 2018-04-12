@@ -14,7 +14,7 @@ typedef std::function<bool(std::pair<std::string, int>, std::pair<std::string, i
  * @return
  */
 std::vector<size_t> QueryProcessingEngine::cosineScore(const Document* query, const doc_mt &collection, size_t topK) {
-
+/*
     unsigned long count = collection.size();
 
     // Map of doc id to scores
@@ -57,7 +57,8 @@ std::vector<size_t> QueryProcessingEngine::cosineScore(const Document* query, co
         counter++;
     }
 
-    return topKIndexes;
+    return topKIndexes;*/
+    return std::vector<size_t>();
 }
 
 /**
@@ -68,7 +69,7 @@ std::vector<size_t> QueryProcessingEngine::cosineScore(const Document* query, co
  * @return
  */
 const size_t QueryProcessingEngine::cosineScoreCluster(Document* query, const std::vector<Document*>& collection) {
-
+    /*
     unsigned long count = collection.size();
 
     // Map of doc id to scores
@@ -109,7 +110,8 @@ const size_t QueryProcessingEngine::cosineScoreCluster(Document* query, const st
     }
 
     // Most similar doc not found
-    return static_cast<const size_t>(-1);
+    return static_cast<const size_t>(-1);*/
+    return 1;
 }
 void QueryProcessingEngine::search(const Document *query, size_t topK) {
     QueryProcessingEngine::cosineScore(query, DocumentManager::getInstance().getDocumentMap(), topK);

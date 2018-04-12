@@ -24,10 +24,10 @@ RandomProjection& RandomProjection::getInstance() {
  * @param hashFunc hash function to use to combine original vector and random vectors
  * @return
  */
-std::vector<float> RandomProjection::localiltySensitveHashProjection(std::vector<float>& vector,
-                                                                     std::function<float(std::vector<float>&, std::vector<float>&)> hashFunc) {
+std::vector<unsigned int> RandomProjection::localiltySensitveHashProjection(std::vector<float>& vector,
+                                                                            std::function<unsigned int(std::vector<float>&, std::vector<float>&)> hashFunc) {
 
-    std::vector<float> result(_dimension);
+    std::vector<unsigned int> result(_dimension);
     for (int j = 0; j < _dimension; ++j) {
         result[j] = hashFunc(vector, this->_randomVectors[j]);
     }
@@ -53,31 +53,6 @@ const int RandomProjection::dimension(int& sample, float eps) {
     }
 }
 
-const double RandomProjection::rand_normal(double mean, double stddev) { // Box muller method
-    static double n2 = 0.0;
-    static int n2_cached = 0;
-    if (!n2_cached) {
-        double x, y, r;
-        do {
-            x = 2.0 * rand() / RAND_MAX - 1;
-            y = 2.0 * rand() / RAND_MAX - 1;
-
-            r = x * x + y * y;
-        } while (r == 0.0 || r > 1.0);
-        {
-            double d = sqrt(-2.0 * log(r) / r);
-            double n1 = x * d;
-            n2 = y * d;
-            double result = n1 * stddev + mean;
-            n2_cached = 1;
-            return result;
-        }
-    } else {
-        n2_cached = 0;
-        return n2 * stddev + mean;
-    }
-}
-
 /**
  * @brief
  *
@@ -97,7 +72,7 @@ Eigen::MatrixXf RandomProjection::createRandomMatrix(int rows, int cols, bool JL
     std::vector<double> randoms;
 
     for (int i = 0; i < cols * rows; ++i) {
-        double rand = (rand_normal(0, (1 / sqrt(cols))));
+        double rand = (Utility::rand_normal(0, (1 / sqrt(cols))));
         randoms.push_back(rand);
     }
 
@@ -153,4 +128,14 @@ const Eigen::MatrixXf RandomProjection::projectMatrix() {
     std::cout << "Cosine similarity between doc_a and doc_b before reduction: " << Utility::SimilarityMeasures::calcCosSim(doc_c, doc_d) << std::endl;
 
     return Eigen::MatrixXf();
+}
+
+size_t RandomProjection::localiltySensitveHashProjection2(std::vector<float>& vector) {
+    size_t res = 0;
+    for (int j = 0; j < _dimension; ++j) {
+        res << 1;
+        double dot = Utility::scalar_product(_randomVectors[j], vector);
+        if (dot >= 1) { res |= 1; }
+    }
+    return res;
 }

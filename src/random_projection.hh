@@ -23,15 +23,14 @@ class RandomProjection {
   public:
     static RandomProjection& getInstance();
     const Eigen::MatrixXf projectMatrix();
-    std::vector<float> localiltySensitveHashProjection(std::vector<float>& vector,
-                                                       std::function <
-                                                           float(std::vector<float>&,
-                                                                 std::vector<float>&)>); // float (*hashFunc)(std::vector<float>&, std::vector<float>&));
+    std::vector<unsigned int> localiltySensitveHashProjection(std::vector<float>& vector,
+                                                              std::function<unsigned int(std::vector<float>&, std::vector<float>&)>);
+
+    size_t localiltySensitveHashProjection2(std::vector<float>& vector);
 
   private:
     const int dimension(int& sample, float eps = 0.1);
     Eigen::MatrixXf createRandomMatrix(int rows, int cols, bool JLT, double eps = 0.1, std::string projection = "gaussian");
-    const double rand_normal(double mean, double stddev);
 
   public:
     inline const float_vector_vt& getRandomVectors() { return _randomVectors; }
@@ -59,7 +58,7 @@ class RandomProjection {
     inline bool initRandomVectors() {
         if (_dimension) {
             for (int i = 0; i < _dimension; ++i) {
-                _randomVectors.push_back(Utility::generateRandomVector(_origVectorSize, 0, 1));
+                _randomVectors.push_back(Utility::generateRandomVectorN(_origVectorSize));
             }
             return true;
         } else {
