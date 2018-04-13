@@ -21,10 +21,12 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <algorithm>
+#include <bits/stl_algo.h>
 #include <cmath>
 #include <functional>
 #include <iterator>
 #include <random>
+#include <set>
 #include <sstream>
 #include <stemming/english_stem.h>
 #include <string>
@@ -33,6 +35,31 @@
  * @brief Namespace for general utilities
  */
 namespace Utility {
+
+    inline double rand_normal(double mean, double stddev) { // Box muller method
+        static double n2 = 0.0;
+        static int n2_cached = 0;
+        if (!n2_cached) {
+            double x, y, r;
+            do {
+                x = 2.0 * rand() / RAND_MAX - 1;
+                y = 2.0 * rand() / RAND_MAX - 1;
+
+                r = x * x + y * y;
+            } while (r == 0.0 || r > 1.0);
+            {
+                double d = sqrt(-2.0 * log(r) / r);
+                double n1 = x * d;
+                n2 = y * d;
+                double result = n1 * stddev + mean;
+                n2_cached = 1;
+                return result;
+            }
+        } else {
+            n2_cached = 0;
+            return n2 * stddev + mean;
+        }
+    }
 
     /**
      * @brief Generates a random vector of floats with the given dimension and number in the range of min - max. Primarily used for testing
@@ -53,6 +80,20 @@ namespace Utility {
         std::vector<float> vec(static_cast<unsigned long>(dimension));
         generate(begin(vec), end(vec), gen);
         return vec;
+    }
+
+    inline std::vector<float> generateRandomVectorN(size_t dimension) {
+        std::vector<float> result(dimension);
+        for (size_t i = 0; i < dimension; ++i) {
+            result[i] = static_cast<float>(rand_normal(0, 1));
+        }
+        return result;
+    }
+
+    inline double scalar_product(std::vector<float> const& a, std::vector<float> const& b) {
+        if (a.size() != b.size()) { throw std::runtime_error("different sizes"); }
+
+        return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
     }
 
     /**
@@ -95,7 +136,10 @@ namespace Utility {
          * @param aSuffix the suffix
          * @return true if input string ends with specified suffix, false otherwise
          */
-        inline bool endsWith(const std::string& aString, const std::string& aSuffix) { return boost::algorithm::ends_with(aString, aSuffix); }
+        inline bool endsWith(const std::string& aString, const std::string& aSuffix) {
+            return boost::algorithm::ends_with(aString, aSuffix);
+            //            return aString.size() >= aSuffix.size() && 0 == aString.compare(aString.size() - aSuffix.size(), aSuffix.size(), aSuffix);
+        }
 
         /**
          * @brief Lower case a given string
@@ -137,6 +181,7 @@ namespace Utility {
             return s;
         }
 
+        // TODO: TEST FAILS
         /**
          * @brief Calculates the appearance of a single word inside a string
          *
@@ -150,11 +195,31 @@ namespace Utility {
                 std::string word = toLower(word);
                 std::string str = toLower(str);
             }
-            string_vt content;
+            std::vector<std::string> content;
             splitString(str, ' ', content);
             size_t count = 0;
             for (size_t i = 0; i < content.size(); ++i) {
                 if (content[i] == word) ++count;
+            }
+            return count;
+        }
+
+        /**
+         * @brief Calculates the appearance of a single word inside a string
+         *
+         * @param str the sentence to check for the word
+         * @param word the word to count
+         * @param case_insensitive delare if the search should be case insensitive or not
+         * @return the number of occurences
+         */
+        inline long countWordInString(std::vector<std::string> str, std::string word, bool case_insensitive) {
+            if (case_insensitive) {
+                std::string word = toLower(word);
+                std::string str = toLower(str);
+            }
+            size_t count = 0;
+            for (const auto& i : str) {
+                if (i == word) ++count;
             }
             return count;
         }
@@ -176,6 +241,32 @@ namespace Utility {
                 if (count.size() == 1 || iterator->second > most_common->second) most_common = iterator;
             }
             return most_common->second;
+        }
+
+        /**
+         * @brief Returns the frequency of the most frequent term in the document
+         *
+         * @param str
+         * @return
+         */
+        inline int getMaxWordFrequency(std::vector<std::string> str) {
+            std::map<std::string, int> count;
+            std::string word;
+
+            for (const auto& i : str) {
+                std::cout << i << std::endl;
+                count[i]++;
+                std::cout << count[i] << std::endl;
+            }
+
+            int maxn = max_element(count.begin(), count.end(),
+                                   [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) {
+                                       std::cout << a.second << " > " << b.second << std::endl;
+                                       return a.second < b.second;
+                                   })
+                           ->second;
+
+            return maxn;
         }
 
         /**
@@ -252,6 +343,18 @@ namespace Utility {
          * @return the term frequency
          */
         inline float calcTF(const std::string& term, const std::string& content) {
+            return static_cast<float>((1 + log10(Utility::StringOp::countWordInString(content, term, false))) /
+                                      (1 + log10(Utility::StringOp::getMaxWordFrequency(content))));
+        }
+
+        /**
+         * @brief Calculates the term frequency of a given term inside a given document
+         *
+         * @param term the term to calculate the frequency of
+         * @param content The content vector of terms
+         * @return the term frequency
+         */
+        inline float calcTF(const std::string& term, const std::vector<std::string> content) {
             return static_cast<float>((1 + log10(Utility::StringOp::countWordInString(content, term, false))) /
                                       (1 + log10(Utility::StringOp::getMaxWordFrequency(content))));
         }
@@ -353,14 +456,61 @@ namespace Utility {
         }
 
         /**
-         * Returns 1 - \link Utility#StringOp#calcCosSim() calcCosSim() \endlink. So we have the higher the returned value the more similar the docs are. This
-         * is just for negating the counter-intuitive measurement of the cosine similarity for being high for unsimilar documents
+         * Returns the angular similarity between two docs
          *
          * @param doc_a
          * @param doc_b
          * @return
          */
-        inline float calcCosDist(const Document& doc_a, const Document& doc_b) { return 1 - calcCosSim(doc_a, doc_b); }
+        inline float calcAngularSimilarity(const Document& doc_a, const Document& doc_b) {
+            return 0.0; // return calcAngularSimilarity(doc_a.getTF_IDF, doc_a.getTF_IDF);
+        }
+
+        /**
+         * Returns the angular similarity between two docs
+         *
+         * @see https://en.wikipedia.org/wiki/Cosine_similarity#Angular_distance_and_similarity
+         * @param aTF_IDF_a a tf-idf vector
+         * @param aTF_IDF_a a tf-idf vector
+         * @return
+         */
+        inline float calcAngularSimilarity(const std::vector<float>& aTF_IDF_a, const std::vector<float>& aTF_IDF_b) {
+            float cosine = calcCosSim(aTF_IDF_a, aTF_IDF_b);
+            float theta = acosf(cosine);
+
+            return static_cast<float>(1 - (theta / M_PI));
+        }
+
+        inline unsigned int calcHammingDist(std::vector<bool>& vec_a, std::vector<bool>& vec_b) {
+            float dist = 0;
+            for (size_t i = 0; i < vec_a.size(); ++i) {
+                if (vec_a[i] != vec_b[i]) { dist++; }
+            }
+            return dist;
+        }
+
+        /**
+         * Calculates the cosine similarity of two LSH vectors
+         *
+         * @see https://stackoverflow.com/questions/12952729/how-to-understand-locality-sensitive-hashing
+         * @param vec_a
+         * @param vec_b
+         * @return
+         */
+        inline float calcAngSimHamming(std::vector<bool>& vec_a, std::vector<bool>& vec_b) {
+            int hamming = calcHammingDist(vec_a, vec_b);
+            std::cout << "Hamming: " << hamming << std::endl;
+            std::cout << "Vec size: " << vec_a.size() << std::endl;
+
+
+            double result = cos(hamming/vec_a.size() * 3.14);
+            std::cout << result << std::endl;
+
+            float theta = acosf(cos(((hamming / vec_a.size()) * M_PI)));
+            std::cout << theta << std::endl;
+
+            return static_cast<float>(1 - (theta / M_PI));
+        }
 
         /**
          * @brief Calculates the euclidean distance between \a doc_a and \a doc_b

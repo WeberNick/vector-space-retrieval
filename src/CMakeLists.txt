@@ -42,7 +42,7 @@ set(HEADER_FILES
         index_manager.hh
         posting_list.hh
         query_processing_engine.hh
-)
+        )
 
 set(SOURCE_FILES
         args.cc
@@ -56,7 +56,7 @@ set(SOURCE_FILES
         index_manager.cc
         posting_list.cc
         query_processing_engine.cc
-)
+        )
 
 #Create library which is later linked to the main executable
 add_library(${CMAKE_PROJECT_NAME}_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
