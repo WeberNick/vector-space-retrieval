@@ -84,7 +84,7 @@ namespace Utility {
 
     inline std::vector<float> generateRandomVectorN(size_t dimension) {
         std::vector<float> result(dimension);
-        for (int i = 0; i < dimension; ++i) {
+        for (size_t i = 0; i < dimension; ++i) {
             result[i] = static_cast<float>(rand_normal(0, 1));
         }
         return result;
@@ -481,6 +481,14 @@ namespace Utility {
             return static_cast<float>(1 - (theta / M_PI));
         }
 
+        inline unsigned int calcHammingDist(std::vector<bool>& vec_a, std::vector<bool>& vec_b) {
+            float dist = 0;
+            for (size_t i = 0; i < vec_a.size(); ++i) {
+                if (vec_a[i] != vec_b[i]) { dist++; }
+            }
+            return dist;
+        }
+
         /**
          * Calculates the cosine similarity of two LSH vectors
          *
@@ -489,12 +497,19 @@ namespace Utility {
          * @param vec_b
          * @return
          */
-        inline float calcCosSimHamming(std::vector<unsigned int>& vec_a, std::vector<unsigned int>& vec_b) {
-            float dist = 0;
-            for (int i = 0; i < vec_a.size(); ++i) {
-                if (vec_a[i] != vec_b[i]) { dist++; }
-            }
-            return cos((dist / vec_a.size() * M_PI));
+        inline float calcAngSimHamming(std::vector<bool>& vec_a, std::vector<bool>& vec_b) {
+            int hamming = calcHammingDist(vec_a, vec_b);
+            std::cout << "Hamming: " << hamming << std::endl;
+            std::cout << "Vec size: " << vec_a.size() << std::endl;
+
+
+            double result = cos(hamming/vec_a.size() * 3.14);
+            std::cout << result << std::endl;
+
+            float theta = acosf(cos(((hamming / vec_a.size()) * M_PI)));
+            std::cout << theta << std::endl;
+
+            return static_cast<float>(1 - (theta / M_PI));
         }
 
         /**

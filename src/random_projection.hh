@@ -7,6 +7,7 @@
 #include "types.hh"
 #include "utility.hh"
 #include <Eigen/Dense>
+#include <bitset>
 #include <string>
 
 class RandomProjection {
@@ -23,10 +24,7 @@ class RandomProjection {
   public:
     static RandomProjection& getInstance();
     const Eigen::MatrixXf projectMatrix();
-    std::vector<unsigned int> localiltySensitveHashProjection(std::vector<float>& vector,
-                                                              std::function<unsigned int(std::vector<float>&, std::vector<float>&)>);
-
-    size_t localiltySensitveHashProjection2(std::vector<float>& vector);
+    std::vector<bool> localitySensitiveHashProjection(std::vector<float>& vector, std::function<unsigned int(std::vector<float>&, std::vector<float>&)>);
 
   private:
     const int dimension(int& sample, float eps = 0.1);
@@ -57,7 +55,7 @@ class RandomProjection {
 
     inline bool initRandomVectors() {
         if (_dimension) {
-            for (int i = 0; i < _dimension; ++i) {
+            for (size_t i = 0; i < _dimension; ++i) {
                 _randomVectors.push_back(Utility::generateRandomVectorN(_origVectorSize));
             }
             return true;

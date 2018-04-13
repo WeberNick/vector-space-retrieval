@@ -24,16 +24,17 @@ RandomProjection& RandomProjection::getInstance() {
  * @param hashFunc hash function to use to combine original vector and random vectors
  * @return
  */
-std::vector<unsigned int> RandomProjection::localiltySensitveHashProjection(std::vector<float>& vector,
+std::vector<bool> RandomProjection::localitySensitiveHashProjection(std::vector<float>& vector,
                                                                             std::function<unsigned int(std::vector<float>&, std::vector<float>&)> hashFunc) {
 
-    std::vector<unsigned int> result(_dimension);
-    for (int j = 0; j < _dimension; ++j) {
-        result[j] = hashFunc(vector, this->_randomVectors[j]);
+    std::vector<bool> result(_dimension);
+    for (size_t j = 0; j < _dimension; ++j) {
+        result[j] = hashFunc(vector, _randomVectors[j]);
     }
-
     return result;
 }
+
+
 
 /**
  * @brief  Find the minimum dimension required to project the data from high dimensional space to low dimensional space
@@ -128,14 +129,4 @@ const Eigen::MatrixXf RandomProjection::projectMatrix() {
     std::cout << "Cosine similarity between doc_a and doc_b before reduction: " << Utility::SimilarityMeasures::calcCosSim(doc_c, doc_d) << std::endl;
 
     return Eigen::MatrixXf();
-}
-
-size_t RandomProjection::localiltySensitveHashProjection2(std::vector<float>& vector) {
-    size_t res = 0;
-    for (int j = 0; j < _dimension; ++j) {
-        res << 1;
-        double dot = Utility::scalar_product(_randomVectors[j], vector);
-        if (dot >= 1) { res |= 1; }
-    }
-    return res;
 }
