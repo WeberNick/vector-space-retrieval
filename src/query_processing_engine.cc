@@ -43,7 +43,7 @@ std::vector<size_t> QueryProcessingEngine::cosineScore(const Document* query, co
         docId2Scores[elem.first] = docId2Scores[elem.first] / docId2Length[elem.first];
     }
 
-    // Sort the map ascending into a set with lamda
+    // Sort the map ascending into a set with lambda
     std::set<std::pair<size_t, float>, Comparator> setOfCounts(
         docId2Scores.begin(), docId2Scores.end(), [](std::pair<size_t, float> elem1, std::pair<size_t, float> elem2) { return elem1.second > elem2.second; });
 
@@ -97,7 +97,7 @@ const size_t QueryProcessingEngine::cosineScoreCluster(Document* query, const st
         docId2Scores[elem.first] = docId2Scores[elem.first] / docId2Length[elem.first];
     }
 
-    // Sort the map ascending into a set with lamda
+    // Sort the map ascending into a set with labmda
     std::set<std::pair<size_t, float>, Comparator> setOfCounts(
         docId2Scores.begin(), docId2Scores.end(), [](std::pair<size_t, float> elem1, std::pair<size_t, float> elem2) { return elem1.second > elem2.second; });
 
