@@ -8,6 +8,7 @@
 #include "utility.hh"
 #include <Eigen/Dense>
 #include <bitset>
+#include <boost/dynamic_bitset.hpp>
 #include <string>
 
 class RandomProjection {
@@ -24,7 +25,7 @@ class RandomProjection {
   public:
     static RandomProjection& getInstance();
     const Eigen::MatrixXf projectMatrix();
-    std::vector<bool> localitySensitiveHashProjection(std::vector<float>& vector, std::function<unsigned int(std::vector<float>&, std::vector<float>&)>);
+    boost::dynamic_bitset<> localitySensitiveHashProjection(std::vector<float>& vector, std::function<unsigned int(std::vector<float>&, std::vector<float>&)>);
 
   private:
     const int dimension(int& sample, float eps = 0.1);

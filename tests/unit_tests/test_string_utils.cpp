@@ -39,7 +39,7 @@ TEST(Word_Trim_Equals_Test, Equals) {
     EXPECT_EQ("Whitespaces are lost", sentence);
 }
 
-/*
+/*//TODO: Fails
 TEST(Split_String_By, Equals) {
 
     std::string sentence = "This is split by Space.";

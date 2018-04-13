@@ -15,16 +15,16 @@
 #include <vector>
 namespace fs = std::experimental::filesystem;
 
-bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
+unsigned int hash(std::vector<float>& origVec, std::vector<float>& randVec) {
 
     if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
 
     double dot = Utility::scalar_product(origVec, randVec);
 
     if (dot >= 0) {
-        return true;
+        return 1;
     } else {
-        return false;
+        return 0;
     }
 }
 
@@ -45,10 +45,10 @@ void test(const control_block_t& aCB) {
     std::string text = "Let me split this into words";
     std::vector<std::string> results;
 
-    Utility::StringOp::splitString(text, ' ', results);
+    /*Utility::StringOp::splitString(text, ' ', results);
     for (auto t : results) {
         std::cout << "Word: " << t << std::endl;
-    }
+    }*/
 
     /*std::vector<float> randn = Utility::generateRandomVectorN(200);
     for (int j = 0; j < randn.size(); ++j) {
@@ -97,27 +97,23 @@ void test(const control_block_t& aCB) {
     // size_t doc_a_proj = RandomProjection::getInstance().localiltySensitveHashProjection2(doc_a);
     // size_t doc_b_proj = RandomProjection::getInstance().localiltySensitveHashProjection2(doc_b);
 
-    std::vector<bool> doc_a_proj = RandomProjection::getInstance().localitySensitiveHashProjection(doc_a, hash);
-    std::vector<bool> doc_b_proj = RandomProjection::getInstance().localitySensitiveHashProjection(doc_b, hash);
+    boost::dynamic_bitset<> doc_a_proj = RandomProjection::getInstance().localitySensitiveHashProjection(doc_a, hash);
+    boost::dynamic_bitset<> doc_b_proj = RandomProjection::getInstance().localitySensitiveHashProjection(doc_b, hash);
 
-    std::cout << "doc_a after hashing" << std::endl;
-
-    for (size_t i = 0; i < doc_a_proj.size(); ++i) {
-        std::cout << doc_a_proj[i] << ",";
-    }
+    std::cout << "doc_a after hashing: " << doc_a_proj << std::endl;
+    std::cout << "doc_b after hashing: " << doc_b_proj << std::endl;
 
     std::cout << std::endl;
-    std::cout << std::endl;
 
-    std::cout << "doc_b after hashing" << std::endl;
-    for (size_t i = 0; i < doc_b_proj.size(); ++i) {
-        std::cout << doc_b_proj[i] << ",";
-    }
-    std::cout << std::endl;
+    boost::dynamic_bitset<> XOR = doc_a_proj ^ doc_b_proj;
+    std::cout << XOR << std::endl;
+    std::cout << XOR.count() << std::endl;
 
+    double sim = (static_cast<double>(XOR.size()) - static_cast<double>(XOR.count())) / XOR.size();
+    std::cout << sim << std::endl;
 
-    std::cout << "Hamming distance doc_a_proj and doc_b_proj" << Utility::SimilarityMeasures::calcHammingDist(doc_a_proj, doc_b_proj) << std::endl;
-    std::cout << "Angular sim after locality hashing: " << Utility::SimilarityMeasures::calcAngSimHamming(doc_a_proj, doc_b_proj) << std::endl;
+    // std::cout << "Hamming distance doc_a_proj and doc_b_proj" << Utility::SimilarityMeasures::calcHammingDist(doc_a_proj, doc_b_proj) << std::endl;
+    // std::cout << "Angular sim after locality hashing: " << Utility::SimilarityMeasures::calcAngSimHamming(doc_a_proj, doc_b_proj) << std::endl;
 
     // size_t XOR = doc_a_proj ^ doc_b_proj;
 
