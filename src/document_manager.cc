@@ -2,36 +2,48 @@
 
 size_t DocumentManager::_countID = 0;
 
+/**
+ * @brief Construct a new Document Manager:: Document Manager object
+ * 
+ */
 DocumentManager::DocumentManager() : 
-    _collectionFile("./data/collection.docs"), //relative path from /path/to/repo/vector-space-retrieval
+    _collectionFile("./data/collection.docs"), // relative path from /path/to/repo/vector-space-retrieval
     _delimiter('~'),
     _docs()
 {
     read(_collectionFile);
-    // handle indexManager calls
+    IndexManager& iman = IndexManager::getInstance();
+    iman.buildInvertedIndex(_docs);
+    iman.buildTieredIndex(_docs);
 }
 
 DocumentManager::~DocumentManager() { }
 
+/**
+ * @brief returns reference to DocumentManager Singleton
+ * 
+ * @return DocumentManager& 
+ */
 DocumentManager& DocumentManager::getInstance() {
     static DocumentManager lInstance;
     return lInstance;
 }
 
 /**
- * @brief
+ * @brief reads in the document collection, creates Document objects and fills the _docs map
  *
- * @param aFile
+ * @param aFile the document collection
  */
 void DocumentManager::read(const std::string& aFile) {
     std::ifstream file(aFile);
     std::string line;
     while (std::getline(file, line)) {
         string_vt parts;
+        std::string docID = parts[0];
         Utility::StringOp::splitString(line, _delimiter, parts);
         string_vt content;
         Utility::StringOp::splitString(parts[1], ' ', content);
-        Document doc(parts[0], content);
+        Document doc(docID, content);
         this->insert(std::make_pair(doc.getID(), doc));
     }
 }

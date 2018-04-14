@@ -1,36 +1,46 @@
 #pragma once
 
 #include "types.hh"
+#include "exception.hh"
 
 #include <map>
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
 
 class Document {
-  public:
-    explicit Document(const std::string& aDocID, const string_vt& aContent);
-    explicit Document() = delete;
-    //Document(const Document&) = delete;
-    //Document(Document&&) = delete;
-    //Document& operator=(Document&&) = delete;
-    ~Document();
-  private:
-    Document& operator=(const Document& doc);
 
   public:
-    inline size_t getID() { return _ID; }
-    inline const std::string& getDocID() { return _docID; }
-    inline const string_vt& getContent() { return _content; }
-    inline uint getTF(const std::string& aTerm) { return _tf->find(aTerm)->second; }
+    explicit Document(const std::string& aDocID, const string_vt& aContent);
+    explicit Document(const Document&);
+    explicit Document() = delete;
+    Document(Document&&) = delete;
+    Document& operator=(const Document& doc) = delete;
+    Document& operator=(Document&&) = delete;
+    ~Document();
+
+  private:
+    void buildTFMap();
+
+  public:
+    inline size_t getID() const { return _ID; }
+    inline const std::string& getDocID() const { return _docID; }
+    inline const string_vt& getContent() const { return _content; }
+    inline const str_float_mt& getTermTFMap() const { return _term_tf_map; }
+    inline float getTF(const std::string& aTerm) const {
+        if (_term_tf_map.find(aTerm) != _term_tf_map.end())
+            return _term_tf_map.at(aTerm);
+        else
+            throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "The term " + aTerm + " doest not appear in this document.");
+    }
 
   private:
     static size_t _documentCount;
 
-    size_t _ID;         // e.g. 5
-    std::string _docID; // e.g. MED-123
-    string_vt _content; // e.g. [studi, run, ...]
-    str_int_mt* _tf;    // stores TF values
+    size_t _ID;                // e.g. 5
+    std::string _docID;        // e.g. MED-123
+    string_vt _content;        // e.g. [studi, run, ...]
+    str_float_mt _term_tf_map; // stores TF values
 };
 
 typedef std::vector<const Document*> doc_ptr_vt;

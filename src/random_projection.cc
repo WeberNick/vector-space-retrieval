@@ -8,29 +8,30 @@
 #include <iostream>
 #include <vector>
 
-double rand_normal(double mean, double stddev) { // Box muller method
-    static double n2 = 0.0;
-    static int n2_cached = 0;
-    if (!n2_cached) {
-        double x, y, r;
-        do {
-            x = 2.0 * rand() / RAND_MAX - 1;
-            y = 2.0 * rand() / RAND_MAX - 1;
+RandomProjection::~RandomProjection() = default;
 
-            r = x * x + y * y;
-        } while (r == 0.0 || r > 1.0);
-        {
-            double d = sqrt(-2.0 * log(r) / r);
-            double n1 = x * d;
-            n2 = y * d;
-            double result = n1 * stddev + mean;
-            n2_cached = 1;
-            return result;
-        }
-    } else {
-        n2_cached = 0;
-        return n2 * stddev + mean;
+RandomProjection::RandomProjection() {}
+
+RandomProjection& RandomProjection::getInstance() {
+    static RandomProjection lInstance;
+    return lInstance;
+}
+
+/**
+ * Uses the method of locality sensitive hashing to reduce the number of dimensions of a vector
+ *
+ * @param vector original vector
+ * @param hashFunc hash function to use to combine original vector and random vectors
+ * @return
+ */
+std::vector<bool> RandomProjection::localitySensitiveHashProjection(std::vector<float>& vector,
+                                                                    std::function<unsigned int(std::vector<float>&, std::vector<float>&)> hashFunc) {
+
+    std::vector<bool> result(_dimension);
+    for (size_t j = 0; j < _dimension; ++j) {
+        result[j] = hashFunc(vector, _randomVectors[j]);
     }
+    return result;
 }
 
 /**
@@ -40,7 +41,7 @@ double rand_normal(double mean, double stddev) { // Box muller method
  * @param eps error tolerance level
  * @return minimum amount of dimensions
  */
-int random_projection::dimension(int& sample, float eps) {
+const int RandomProjection::dimension(int& sample, float eps) {
     if ((eps > 1.0) | (eps <= 0.0)) {
         throw("The JL bound for epsilon is [0.0,1.0]");
     } else if (sample <= 0.01) {
@@ -51,7 +52,6 @@ int random_projection::dimension(int& sample, float eps) {
     }
 }
 
-// TODO: RANDOM PROJECT IS NOT WORKING
 /**
  * @brief
  *
@@ -61,17 +61,17 @@ int random_projection::dimension(int& sample, float eps) {
  * @param eps
  * @param projection
  */
-Eigen::MatrixXf random_projection::createRandomMatrix(int rows, int cols, bool JLT, double eps, std::string projection) {
+Eigen::MatrixXf RandomProjection::createRandomMatrix(int rows, int cols, bool JLT, double eps, std::string projection) {
 
     if (rows == 0) throw("Number of rows has to be greater than 0");
     if (cols == 0) throw("Number of columns has to be greater than 0");
 
-    if (JLT) { cols = dimension(cols, eps); }
+    if (JLT) { cols = this->dimension(cols, eps); }
 
     std::vector<double> randoms;
 
     for (int i = 0; i < cols * rows; ++i) {
-        double rand = (rand_normal(0, (1 / sqrt(cols))));
+        double rand = (Utility::rand_normal(0, (1 / sqrt(cols))));
         randoms.push_back(rand);
     }
 
@@ -86,7 +86,7 @@ Eigen::MatrixXf random_projection::createRandomMatrix(int rows, int cols, bool J
 
     return m;
 }
-Eigen::MatrixXf random_projection::projectMatrix() {
+const Eigen::MatrixXf RandomProjection::projectMatrix() {
 
     int nrow = 5;
     int ncol = 103260;
@@ -112,7 +112,7 @@ Eigen::MatrixXf random_projection::projectMatrix() {
     std::cout << "Projection matrix generated" << std::endl;
 
     std::cout << "Project matrix into a lower dimensional space" << std::endl;
-    Eigen::MatrixXf resultMatrix = randomMatrix*projectionMatrix;
+    Eigen::MatrixXf resultMatrix = randomMatrix * projectionMatrix;
 
     std::cout << "Here is the result " << std::endl;
     std::cout << "Original cols: " << randomMatrix.cols() << std::endl;

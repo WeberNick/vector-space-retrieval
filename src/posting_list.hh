@@ -5,27 +5,31 @@
 #include <map>
 #include <string>
 #include <tuple>
+#include <unordered_map>
 #include <vector>
 
 class PostingList {
   public:
-    explicit PostingList(const std::string& aTerm, const float aIDF);
+    typedef std::map<size_t, uint> posting; // docID, TF: [(1, 25), (2, 0), ...]
+
+  public:
+    explicit PostingList(const float aIDF);
+    explicit PostingList(const PostingList& pl);
     explicit PostingList() = delete;
-    PostingList(const PostingList&) = delete;
     PostingList(PostingList&&) = delete;
     PostingList& operator=(const PostingList&) = delete;
     PostingList& operator=(PostingList&&) = delete;
     ~PostingList();
 
   public:
+    inline posting getPosting() const { return _posting; }
     inline float getIDF() const { return _idf; }
-    // inline uint getTF(uint aDocID) { return };
+    inline size_t getTF(uint aDocID) const { return _posting.at(aDocID); }
 
   private:
     float _idf;
-    // postng _posting; // has to be sorted
+    posting _posting;
 };
 
-typedef std::map<std::string, PostingList*> postinglist_mt;
+typedef std::unordered_map<std::string, PostingList> postinglist_mt; // term, PostingList: [("Frodo", <PostingListObj>), ...]
 typedef postinglist_mt::iterator posting_map_iter_t;
-typedef std::map<size_t, uint> postng; // docID, TF

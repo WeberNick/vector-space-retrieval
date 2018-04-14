@@ -1,6 +1,8 @@
 #pragma once
 
+#include "exception.hh"
 #include "posting_list.hh"
+#include "document.hh"
 #include "types.hh"
 
 #include <map>
@@ -17,7 +19,7 @@ class InvertedIndex {
 
   public:
     /* if term is not in inverted index yet: create an empty posting list for the term (key) */
-    bool insert(const std::string& aTerm);
+    bool insert(const std::string& aTerm, const PostingList& aPostingList);
     /* find element in collection */
     posting_map_iter_t find(const std::string& aKey);
     /* erase by key */
@@ -38,10 +40,34 @@ class InvertedIndex {
     size_t getNoDocs(const std::string& aTerm);
 
   public:
-    inline const postinglist_mt& getPostings() { return _postings; }
-    inline size_t getNoPostings() { return _postings.size(); }
-    // inline const PostingList& getPostingList(const std::string& term){ return _postings.at(term); };
+    /**
+     * @brief Get the Postings object
+     *
+     * @return const postinglist_mt&
+     */
+    inline const postinglist_mt& getPostings() { return _term_posting_map; }
+
+    /**
+     * @brief Get the No Postings object
+     *
+     * @return size_t
+     */
+    inline size_t getNoPostings() { return _term_posting_map.size(); }
+
+    /**
+     * @brief Get the Posting List object
+     *
+     * @param term
+     * @return const PostingList&
+     * @throw InvalidArgumentException if there is no PostingList for the given term
+     */
+    inline const PostingList& getPostingList(const std::string& term) {
+        if (_term_posting_map.find(term) != _term_posting_map.end())
+            return _term_posting_map.at(term);
+        else
+            throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "The term " + term + " doest not appear in the document Collection.");
+    };
 
   private:
-    postinglist_mt _postings;
+    postinglist_mt _term_posting_map;
 };

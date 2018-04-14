@@ -64,10 +64,10 @@ class OutOfMemoryException : public BaseException
                 const char*         aFunctionName);
 };
 
-class InvalidArguementException : public BaseException
+class InvalidArgumentException : public BaseException
 {
 	public:
-		InvalidArguementException(
+		InvalidArgumentException(
                 const char*         aFileName, 
                 const unsigned int  aLineNumber, 
                 const char*         aFunctionName, 

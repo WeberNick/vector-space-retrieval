@@ -61,7 +61,7 @@ OutOfMemoryException::OutOfMemoryException(
             "There was insufficient memory to fulfill the allocation request.")
 {}
 
-InvalidArguementException::InvalidArguementException(
+InvalidArgumentException::InvalidArgumentException(
         const char*         aFileName,
         const unsigned int  aLineNumber,
         const char*         aFunctionName,
@@ -98,12 +98,12 @@ FileException::FileException(
 {}
 
 VectorException::VectorException(
-		const char*         aFileName,
-		const unsigned int  aLineNumber,
-		const char*         aFunctionName,
-		const std::string&  aErrorMessage) :
-		BaseException(
-		    aFileName,
+	const char*         aFileName,
+	const unsigned int  aLineNumber,
+	const char*         aFunctionName,
+	const std::string&  aErrorMessage) :
+	BaseException(
+	    aFileName,
             aLineNumber,
             aFunctionName,
             aErrorMessage)

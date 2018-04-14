@@ -1,5 +1,6 @@
 #pragma once
 
+#include "document.hh"
 #include "inverted_index.hh"
 #include "tiered_index.hh"
 
@@ -21,8 +22,8 @@ class IndexManager {
     }
   
   public:
-    void buildInvertedIndex();
-    void buildTieredIndex();
+    void buildInvertedIndex(const doc_mt& aCollection);
+    void buildTieredIndex(const doc_mt& aCollection);
 
   private:
     InvertedIndex _invertedIndex;

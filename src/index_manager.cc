@@ -1,21 +1,22 @@
 #include "index_manager.hh"
+#include "utility.hh"
 
 IndexManager::IndexManager() {}
 
 IndexManager::~IndexManager() {}
 
-void IndexManager::buildInvertedIndex() {
-
+void IndexManager::buildInvertedIndex(const doc_mt& aCollection) {
+    str_float_mt idfMap;
+    Utility::IR::calcIDFMap(aCollection, idfMap);
+    for (const auto& term : idfMap) {
+        
+    }
 }
 
-void IndexManager::buildTieredIndex() {
+void IndexManager::buildTieredIndex(const doc_mt& aCollection) {
 
 }
 /**
- * Basic Idea to create inverted index (pseudo code):
- *
- * DocumentCollection docCol("path/to/root/directory")
- * docCol.collect();
  * InvertedIndex invInd();
  * vector<string> terms;
  * for each Document d in docCol{
