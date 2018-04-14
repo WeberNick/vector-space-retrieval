@@ -85,6 +85,6 @@ class Args {
     uint    _dimensions;
 };
 
-typedef std::vector<argdescbase_t<Args>*> argdesc_vt;
+using argdesc_vt = std::vector<argdescbase_t<Args>*>;
 
 void construct_arg_desc(argdesc_vt& aArgDesc);

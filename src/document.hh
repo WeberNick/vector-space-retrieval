@@ -33,7 +33,7 @@ class Document {
     str_int_mt* _tf;    // stores TF values
 };
 
-typedef std::vector<const Document*> doc_ptr_vt;
-typedef std::map<size_t, Document> doc_mt;
-typedef std::pair<size_t, Document> doc_map_elem_t;
-typedef doc_mt::iterator doc_map_iter_t;
+using doc_ptr_vt = std::vector<const Document*>;
+using doc_mt = std::map<size_t, Document>;
+using doc_map_elem_t = std::pair<size_t, Document>;
+using doc_map_iter_t = doc_mt::iterator;

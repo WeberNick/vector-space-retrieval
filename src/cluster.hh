@@ -25,7 +25,7 @@
 class Cluster
 {
     public:
-        typedef std::unordered_map<const Document*, doc_ptr_vt> cluster_mt;
+        using cluster_mt = std::unordered_map<const Document*, doc_ptr_vt>;
 
     private:
         explicit Cluster();

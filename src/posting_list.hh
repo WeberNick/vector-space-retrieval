@@ -10,7 +10,7 @@
 
 class PostingList {
   public:
-    typedef std::map<size_t, uint> posting; // docID, TF: [(1, 25), (2, 0), ...]
+    using posting = std::map<size_t, uint>; // docID, TF: [(1, 25), (2, 0), ...]
   public:
     explicit PostingList(const std::string& aTerm, const float aIDF);
     explicit PostingList() = delete;
@@ -29,5 +29,5 @@ class PostingList {
     posting _posting;
 };
 
-typedef std::unordered_map<std::string, PostingList> postinglist_mt; // "term", PostingList; for Example: [("Frodo", <PostingListObj>), ...]
-typedef postinglist_mt::iterator posting_map_iter_t;
+using postinglist_mt = std::unordered_map<std::string, PostingList>; // "term", PostingList; for Example: [("Frodo", <PostingListObj>), ...]
+using posting_map_iter_t = postinglist_mt::iterator;
