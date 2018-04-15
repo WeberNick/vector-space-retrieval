@@ -1,13 +1,13 @@
 #include "args.hh"
 
 void construct_arg_desc(argdesc_vt& x) {
-    //typedef argdesc_t<Args, char> carg_t;
-    //typedef argdesc_t<Args, int> iarg_t;
-    typedef argdesc_t<Args, uint> uarg_t;
-    //typedef argdesc_t<Args, float> farg_t;
-    //typedef argdesc_t<Args, double> darg_t;
-    typedef argdesc_t<Args, bool> barg_t;
-    typedef argdesc_t<Args, std::string> sarg_t;
+    //using carg_t = argdesc_t<Args, char>;
+    //using iarg_t = argdesc_t<Args, int>;
+    using uarg_t = argdesc_t<Args, uint>;
+    //using farg_t = argdesc_t<Args, float>;
+    //using darg_t = argdesc_t<Args, double>;
+    using barg_t = argdesc_t<Args, bool>;
+    using sarg_t = argdesc_t<Args, std::string>;
 
     x.push_back(new barg_t("--help", false, &Args::help, "print this message"));
     x.push_back(new barg_t("--trace", false, &Args::trace, "sets the flag to activate tracing"));

@@ -28,5 +28,5 @@ class PostingList {
     sizet_float_mt _posting; // docID, TF: [(1, 25), (2, 0), ...]
 };
 
-typedef std::unordered_map<std::string, PostingList> postinglist_mt; // term, PostingList: [("Frodo", <PostingListObj>), ...]
-typedef postinglist_mt::iterator posting_map_iter_t;
+using postinglist_mt = std::unordered_map<std::string, PostingList>; // term, PostingList: [("Frodo", <PostingListObj>), ...]
+using posting_map_iter_t = postinglist_mt::iterator;

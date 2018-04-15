@@ -4,7 +4,7 @@
 #include <iostream>
 #include <sstream>
 
-typedef std::function<bool(std::pair<std::string, int>, std::pair<std::string, int>)> Comparator;
+using Comparator = std::function<bool(std::pair<std::string, int>, std::pair<std::string, int>)>;
 
 /**
  * @brief Returns the ids of the most similar document in \collection
