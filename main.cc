@@ -29,11 +29,11 @@ bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
 }
 
 // insert everything here what is not actually meant to be in main
-void test(const control_block_t& aCB) {
+void test(const control_block_t& aControlBlock) {
     /* Example how to use Measurement class (also described in measure.hh) */
 
     Measure lMeasure;
-    if (aCB.measure()) { lMeasure.start(); }
+    if (aControlBlock.measure()) { lMeasure.start(); }
     // do processing
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
@@ -127,20 +127,21 @@ void test(const control_block_t& aCB) {
     //*/
 }
 
-void testNico(const control_block_t& aCB) {
+void testNico(const control_block_t& aControlBlock) {
     Measure lMeasure;
-    if (aCB.measure()) { lMeasure.start(); }
+    lMeasure.start();
     DocumentManager& docManager = DocumentManager::getInstance();
-    docManager.init(aCB);
+    docManager.init(aControlBlock);
     std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getCurrID() << std::endl;
-    InvertedIndex& iI = InvertedIndex::getInstance();
-    iI.getPostingList("trial").pprintPosting("food");
-    // IndexManager& imInstance = IndexManager::getInstance();
-    // imInstance.init(aCB);
-    // imInstance.getInvertedIndex().getPostingList("surviv").pprintPosting("surviv");
+
+    IndexManager& imInstance = IndexManager::getInstance();
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
     std::cout << "Took " << lSeconds << " Seconds." << std::endl;
+    imInstance.init(aControlBlock, docManager.getDocumentMap());
+    imInstance.getInvertedIndex().getPostingList("food").pprintPosting("food");
+
+
 }
 
 /**

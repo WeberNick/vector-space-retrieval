@@ -22,8 +22,8 @@ void DocumentManager::init() {
     this->read(_collectionFile);
 }
 
-void DocumentManager::init(const control_block_t& aCB) {
-    _cb = &aCB;
+void DocumentManager::init(const control_block_t& aControlBlock) {
+    _cb = &aControlBlock;
 }
 
 /**

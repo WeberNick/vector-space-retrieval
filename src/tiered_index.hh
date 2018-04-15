@@ -19,7 +19,7 @@ class TieredIndex {
         static TieredIndex instance;
         return instance;
     }
-    void init(const control_block_t& aCB);
+    void init(const control_block_t& aControlBlock);
     void init();
     void buildTieredIndex(const doc_mt& aCollection);
 

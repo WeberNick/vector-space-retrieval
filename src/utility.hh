@@ -360,48 +360,6 @@ namespace Utility {
         }
 
         /**
-         * @brief Calculates the inverted document frequency of a given term inside a given document collection
-         *
-         * @param collection
-         * @param out
-         */
-        inline void calcMaps(const doc_mt& collection, postinglist_mt& postinglist_out) {
-            str_int_mt idf_occs;
-            for (const auto& [_ID, doc] : collection) {
-                
-                str_int_mt tf_counts;
-                str_float_mt tf_out;
-                sizet_float_mt posting;
-                const string_vt& con = doc.getContent();
-                std::set<std::string> distinct_terms;
-                for (const std::string& term : con) {
-                    ++tf_counts[term];
-                    if (distinct_terms.find(term) == distinct_terms.end()) { // term not in set
-                        ++idf_occs[term];
-                        distinct_terms.insert(term);
-                    }
-                    if (postinglist_out.find(term) == postinglist_out.end()) { // term not in map
-                        posting[_ID] = 0;                                       // tf has to be set below
-                        postinglist_out[term] = PostingList(0, posting);       // idf has to be set below
-                    }
-                }
-                int maxFreq = Utility::StringOp::getMaxWordFrequency(con);
-                for (const auto& [term, count] : tf_counts) {
-                    tf_out[term] = static_cast<float>((1 + log10(count)) / (1 + log10(maxFreq)));
-                    // set tf for term -> (docID) to tf_out[term]
-                    postinglist_out[term].setTF(_ID, tf_out.at(term));
-                }
-                DocumentManager::getInstance().getDocument(_ID).setTermTFMap(tf_out);
-            }
-            str_float_mt idf_map;
-            const int N = collection.size();
-            for (const auto& [term, occ] : idf_occs) {
-                idf_map[term] = static_cast<float>(log10(N / occ));
-                postinglist_out[term].setIDF(idf_map[term]);
-            }
-        }
-
-        /**
          * @brief Calculates the tf-idf value
          *
          * @param tf the term frequency

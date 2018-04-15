@@ -15,22 +15,29 @@ class IndexManager {
     IndexManager& operator=(IndexManager&&) = delete;
     ~IndexManager();
 
+  private:
+    void buildIndices(postinglist_mt& postinglist_out);
+
   public:
     inline const InvertedIndex& getInvertedIndex() { return _invertedIndex; }
     inline const TieredIndex& getTieredIndex() { return _tieredIndex; }
-    inline const Cluster& getClusteredIndex() { return _clusteredIndex; }
+    //inline const Cluster& getClusteredIndex() { return _clusteredIndex; }
 
     inline static IndexManager& getInstance() {
         static IndexManager indexManager;
         return indexManager;
     }
-    void init(const control_block_t& aCB);
+    void init(const control_block_t& aControlBlock, doc_mt& aDocMap);
   
 
   private:
     const control_block_t* _cb;
 
+    doc_mt* _docs;
+    str_float_mt _idf_map;
+    string_vt _collection_terms; // does not have to be sorted
+
     InvertedIndex _invertedIndex;
     TieredIndex _tieredIndex;
-    Cluster _clusteredIndex;
+    //Cluster _clusteredIndex;
 };

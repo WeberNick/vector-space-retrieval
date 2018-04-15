@@ -13,11 +13,11 @@ Cluster::~Cluster(){}
 /**
  * @brief initialize control block
  * 
- * @param aCB the control block
+ * @param aControlBlock the control block
  */
-void Cluster::init(const control_block_t& aCB)
+void Cluster::init(const control_block_t& aControlBlock)
 {
-  _cb = &aCB;
+  _cb = &aControlBlock;
 }
 
 /**

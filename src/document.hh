@@ -1,7 +1,7 @@
 #pragma once
 
-#include "types.hh"
 #include "exception.hh"
+#include "types.hh"
 
 #include <map>
 #include <string>
@@ -33,7 +33,7 @@ class Document {
         if (_term_tf_map.find(aTerm) != _term_tf_map.end())
             return _term_tf_map.at(aTerm);
         else
-            throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "The term " + aTerm + " doest not appear in this document.");
+            return 0;
     }
 
   private:
@@ -42,6 +42,7 @@ class Document {
     size_t _ID;                // e.g. 5
     std::string _docID;        // e.g. MED-123
     string_vt _content;        // e.g. [studi, run, ...]
+    float _norm_length;
     str_float_mt _term_tf_map; // stores TF values
 };
 

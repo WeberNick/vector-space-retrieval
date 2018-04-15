@@ -43,7 +43,7 @@ class Cluster
             static Cluster lInstance;
             return lInstance;
         }
-        void init(const control_block_t& aCB);
+        void init(const control_block_t& aControlBlock);
         void init();
         void chooseLeaders();
         void fillCluster();

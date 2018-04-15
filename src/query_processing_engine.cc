@@ -33,6 +33,7 @@ std::vector<size_t> QueryProcessingEngine::cosineScore(const Document* query, co
     for (size_t j = 0; j < query->getContent().size(); ++j) {
         const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList(query->getContent()[j]);
         for (auto& posting : postingList) {
+            // @Alex: calcTF muss vorher geschehen für alle terms in der query. ist so zu teuer (content array muss nur einmal durchgegangen werden, nicht |queryterms| mal)
             docId2Scores[posting.docId] +=
                 (posting.getTF * postingList.getIDF()) * (Utility::IR::calcTF(query->getContent()[j], query->getContent()) * postingList.getIDF());
         }

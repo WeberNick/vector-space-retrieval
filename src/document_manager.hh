@@ -39,7 +39,7 @@ class DocumentManager {
         static DocumentManager lInstance;
         return lInstance;
     }
-    void init(const control_block_t& aCB);
+    void init(const control_block_t& aControlBlock);
     void init();
 
     /**
@@ -47,7 +47,7 @@ class DocumentManager {
      *
      * @return const doc_mt&
      */
-    inline const doc_mt& getDocumentMap() { return _docs; }
+    inline doc_mt& getDocumentMap() { return _docs; }
     inline Document& getDocument(size_t aDocID) {
         if(_docs.find(aDocID) != _docs.end())
           return _docs.at(aDocID);

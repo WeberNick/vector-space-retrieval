@@ -9,7 +9,6 @@ Document::Document(const std::string& aDocID, const string_vt& aContent) :
     _content(aContent),
     _term_tf_map()
 {
-    // this->buildTFMap();
     // this->pprintTFMap();
 }
 

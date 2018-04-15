@@ -26,7 +26,7 @@ class InvertedIndex {
         return instance;
     }
     void init();
-    void init(const control_block_t& aCB);
+    void init(const control_block_t& aControlBlock, postinglist_mt aPostingList);
     void buildInvertedIndex();
 
   public:
