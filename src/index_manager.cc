@@ -1,30 +1,17 @@
 #include "index_manager.hh"
-#include "utility.hh"
 
-IndexManager::IndexManager() {}
+IndexManager::IndexManager() :
+    _cb(nullptr),
+    _invertedIndex(InvertedIndex::getInstance()),
+    _tieredIndex(TieredIndex::getInstance()),
+    _clusteredIndex(Cluster::getInstance())
+{}
 
 IndexManager::~IndexManager() {}
 
-void IndexManager::buildInvertedIndex(const doc_mt& aCollection) {
-    str_float_mt idfMap;
-    Utility::IR::calcIDFMap(aCollection, idfMap);
-    for (const auto& term : idfMap) {
-        
-    }
+void IndexManager::init(const control_block_t& aCB) {
+    _cb = &aCB;
+    _invertedIndex.init(aCB);
+    _tieredIndex.init(aCB);
+    _clusteredIndex.init(aCB);
 }
-
-void IndexManager::buildTieredIndex(const doc_mt& aCollection) {
-
-}
-/**
- * InvertedIndex invInd();
- * vector<string> terms;
- * for each Document d in docCol{
- *      d.preprocess();
- *      for each term t in d{
- *          terms.push_back(t);
- *      }
- *      invInd.addTerm(terms, d.getID());
- *      terms.clear();
- * }
- */

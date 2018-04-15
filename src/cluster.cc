@@ -10,11 +10,20 @@ Cluster::Cluster() :
 
 Cluster::~Cluster(){}
 
+/**
+ * @brief initialize control block
+ * 
+ * @param aCB the control block
+ */
 void Cluster::init(const control_block_t& aCB)
 {
   _cb = &aCB;
 }
 
+/**
+ * @brief initialize Cluster
+ * 
+ */
 void Cluster::init()
 {
   chooseLeaders();

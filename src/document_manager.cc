@@ -7,26 +7,22 @@ size_t DocumentManager::_countID = 0;
  * 
  */
 DocumentManager::DocumentManager() : 
+    _cb(nullptr),
     _collectionFile("./data/collection.docs"), // relative path from /path/to/repo/vector-space-retrieval
     _delimiter('~'),
     _docs()
 {
-    read(_collectionFile);
-    IndexManager& iman = IndexManager::getInstance();
-    iman.buildInvertedIndex(_docs);
-    iman.buildTieredIndex(_docs);
+    this->init();
 }
 
 DocumentManager::~DocumentManager() { }
 
-/**
- * @brief returns reference to DocumentManager Singleton
- * 
- * @return DocumentManager& 
- */
-DocumentManager& DocumentManager::getInstance() {
-    static DocumentManager lInstance;
-    return lInstance;
+void DocumentManager::init() {
+    read(_collectionFile);
+}
+
+void DocumentManager::init(const control_block_t& aCB) {
+    _cb = &aCB;
 }
 
 /**

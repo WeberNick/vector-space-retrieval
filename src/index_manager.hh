@@ -1,8 +1,10 @@
 #pragma once
 
+#include "cluster.hh"
 #include "document.hh"
 #include "inverted_index.hh"
 #include "tiered_index.hh"
+#include "utility.hh"
 
 class IndexManager {
   private:
@@ -16,16 +18,19 @@ class IndexManager {
   public:
     inline const InvertedIndex& getInvertedIndex() { return _invertedIndex; }
     inline const TieredIndex& getTieredIndex() { return _tieredIndex; }
+    inline const Cluster& getClusteredIndex() { return _clusteredIndex; }
+
     inline static IndexManager& getInstance() {
         static IndexManager indexManager;
         return indexManager;
     }
-  
-  public:
-    void buildInvertedIndex(const doc_mt& aCollection);
-    void buildTieredIndex(const doc_mt& aCollection);
+    void init();
+    void init(const control_block_t& aCB);
 
   private:
+    const control_block_t* _cb;
+
     InvertedIndex _invertedIndex;
     TieredIndex _tieredIndex;
+    Cluster _clusteredIndex;
 };

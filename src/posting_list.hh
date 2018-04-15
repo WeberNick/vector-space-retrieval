@@ -10,10 +10,7 @@
 
 class PostingList {
   public:
-    typedef std::map<size_t, uint> posting; // docID, TF: [(1, 25), (2, 0), ...]
-
-  public:
-    explicit PostingList(const float aIDF);
+    explicit PostingList(const float aIDF, const sizet_float_mt& aPosting);
     explicit PostingList(const PostingList& pl);
     explicit PostingList() = delete;
     PostingList(PostingList&&) = delete;
@@ -22,13 +19,13 @@ class PostingList {
     ~PostingList();
 
   public:
-    inline posting getPosting() const { return _posting; }
+    inline sizet_float_mt getPosting() const { return _posting; }
     inline float getIDF() const { return _idf; }
     inline size_t getTF(uint aDocID) const { return _posting.at(aDocID); }
 
   private:
     float _idf;
-    posting _posting;
+    sizet_float_mt _posting; // docID, TF: [(1, 25), (2, 0), ...]
 };
 
 typedef std::unordered_map<std::string, PostingList> postinglist_mt; // term, PostingList: [("Frodo", <PostingListObj>), ...]

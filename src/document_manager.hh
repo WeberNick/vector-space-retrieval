@@ -2,7 +2,6 @@
 
 #include "document.hh"
 #include "exception.hh"
-#include "index_manager.hh"
 #include "types.hh"
 #include "utility.hh"
 
@@ -22,9 +21,6 @@ class DocumentManager {
     DocumentManager& operator=(DocumentManager&&) = delete;
     ~DocumentManager();
 
-  public:
-    static DocumentManager& getInstance();
-
   private:
     /* start the scan for files at the root directory and add all found docs to map */
     void read(const std::string& aFile);
@@ -40,6 +36,13 @@ class DocumentManager {
     void erase(const doc_map_iter_t aIterator);
 
   public:
+    inline static DocumentManager& getInstance() {
+        static DocumentManager lInstance;
+        return lInstance;
+    }
+    void init(const control_block_t& aCB);
+    void init();
+
     /**
      * @brief Get the Document Map object
      *
@@ -51,6 +54,8 @@ class DocumentManager {
 
   private:
     static size_t _countID;
+
+    const control_block_t* _cb;
 
     const std::string _collectionFile; // defined manually
     const char _delimiter;             // defined manually

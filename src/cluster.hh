@@ -24,34 +24,33 @@
 
 class Cluster
 {
+    friend class IndexManager;
+
     public:
         typedef std::unordered_map<const Document*, doc_ptr_vt> cluster_mt;
 
     private:
         explicit Cluster();
-        Cluster(const Cluster&) = delete;
+        Cluster(const Cluster&) = default;
         Cluster(Cluster&&) = delete;
         Cluster& operator=(const Cluster&) = delete;
         Cluster& operator=(Cluster&&) = delete;
         ~Cluster();
 
-    public:
-        static Cluster& getInstance()
+    private:
+        inline static Cluster& getInstance()
         {
             static Cluster lInstance;
             return lInstance;
         }
-
         void init(const control_block_t& aCB);
+        void init();
+        void chooseLeaders();
+        void fillCluster();
 
     public:
         inline const doc_ptr_vt&    getLeaders(){ return _leaders; }
         inline const cluster_mt&    getCluster(){ return _cluster; }
-
-    private:
-        void init();
-        void chooseLeaders();
-        void fillCluster();
 
     private:
         doc_ptr_vt  _leaders; //stores pointer to leader documents inside the doc mngr's map

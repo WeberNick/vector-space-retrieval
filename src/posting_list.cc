@@ -1,7 +1,8 @@
 #include "posting_list.hh"
 
-PostingList::PostingList(const float aIDF) : 
-    _idf(aIDF)
+PostingList::PostingList(const float aIDF, const sizet_float_mt& aPosting) : 
+    _idf(aIDF),
+    _posting(aPosting)
 {}
 
 PostingList::~PostingList() {}

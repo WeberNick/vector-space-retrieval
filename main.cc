@@ -3,15 +3,15 @@
 //
 
 #include "args.hh"
+#include "document_manager.hh"
+#include "index_manager.hh"
 #include "measure.hh"
+#include "query_processing_engine.hh"
 #include "random_projection.hh"
 #include "utility.hh"
 
-#include <document_manager.hh>
 #include <experimental/filesystem>
 #include <iostream>
-#include <query_processing_engine.hh>
-#include <utility.hh>
 #include <vector>
 namespace fs = std::experimental::filesystem;
 
@@ -30,7 +30,10 @@ bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
 
 void testNico(const control_block_t& aCB) {
     DocumentManager& docManager = DocumentManager::getInstance();
+    docManager.init(aCB);
     std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getCurrID() << std::endl;
+    IndexManager& imInstance = IndexManager::getInstance();
+    imInstance.init(aCB);
 }
 
 // insert everything here what is not actually meant to be in main
@@ -166,7 +169,7 @@ int main(const int argc, const char* argv[]) {
     const control_block_t lCB = { lArgs.trace(), lArgs.measure(), lArgs.print(), lArgs.path(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
 
     // insert everything here what is not actually meant to be in main
-    //test(lCB);
+    // test(lCB);
     testNico(lCB);
 
     return 0;
