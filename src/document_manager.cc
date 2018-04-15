@@ -1,4 +1,5 @@
 #include "document_manager.hh"
+#include "utility.hh"
 
 size_t DocumentManager::_countID = 0;
 
@@ -18,7 +19,7 @@ DocumentManager::DocumentManager() :
 DocumentManager::~DocumentManager() { }
 
 void DocumentManager::init() {
-    read(_collectionFile);
+    this->read(_collectionFile);
 }
 
 void DocumentManager::init(const control_block_t& aCB) {
@@ -35,10 +36,10 @@ void DocumentManager::read(const std::string& aFile) {
     std::string line;
     while (std::getline(file, line)) {
         string_vt parts;
-        std::string docID = parts[0];
         Utility::StringOp::splitString(line, _delimiter, parts);
         string_vt content;
         Utility::StringOp::splitString(parts[1], ' ', content);
+        std::string docID = parts[0];
         Document doc(docID, content);
         this->insert(std::make_pair(doc.getID(), doc));
     }

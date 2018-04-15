@@ -21,11 +21,13 @@ class Document {
 
   private:
     void buildTFMap();
+    void pprintTFMap();
 
   public:
     inline size_t getID() const { return _ID; }
     inline const std::string& getDocID() const { return _docID; }
     inline const string_vt& getContent() const { return _content; }
+    inline void setTermTFMap(str_float_mt& termTFMap) { _term_tf_map = termTFMap; }
     inline const str_float_mt& getTermTFMap() const { return _term_tf_map; }
     inline float getTF(const std::string& aTerm) const {
         if (_term_tf_map.find(aTerm) != _term_tf_map.end())

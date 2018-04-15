@@ -3,7 +3,6 @@
 #include "document.hh"
 #include "exception.hh"
 #include "types.hh"
-#include "utility.hh"
 
 #include <fstream>
 #include <sstream>
@@ -49,6 +48,12 @@ class DocumentManager {
      * @return const doc_mt&
      */
     inline const doc_mt& getDocumentMap() { return _docs; }
+    inline Document& getDocument(size_t aDocID) {
+        if(_docs.find(aDocID) != _docs.end())
+          return _docs.at(aDocID);
+        else
+          throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "This docID does not appear in the document collection.");
+    }
     inline size_t getNoDocuments() { return _docs.size(); }
     inline size_t getCurrID() { return _countID; }
 

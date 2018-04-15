@@ -3,7 +3,9 @@
 InvertedIndex::InvertedIndex() : 
     _cb(nullptr),
     _term_posting_map()
-{}
+{
+    this->init();
+}
 
 InvertedIndex::~InvertedIndex() {}
 
@@ -16,22 +18,10 @@ void InvertedIndex::init(const control_block_t& aCB) {
 }
 
 void InvertedIndex::buildInvertedIndex() {
-    const doc_mt& docMap = DocumentManager::getInstance().getDocumentMap();
-    str_float_mt idfMap;
-    Utility::IR::calcIDFMap(docMap, idfMap);
-    for (const auto& [term, idf] : idfMap) {
-        sizet_float_mt id_tf_map;
-        for (const auto& [id, doc] : docMap) {
-            try {
-                float tf = doc.getTF(term);
-                id_tf_map[id] = tf;
-            } catch (InvalidArgumentException iae) {
-                continue;
-            }
-        }
-        PostingList posting_list(idf, id_tf_map);
-        this->insert(term, posting_list);
-    }
+    str_float_mt tf_out;
+    postinglist_mt postinglist_out;
+    Utility::IR::calcMaps(DocumentManager::getInstance().getDocumentMap(), postinglist_out);
+    this->_term_posting_map = postinglist_out;
 }
 
 bool InvertedIndex::insert(const std::string& aTerm, const PostingList& aPostingList) {
@@ -50,7 +40,7 @@ void InvertedIndex::erase(const posting_map_iter_t aIterator) {
     _term_posting_map.erase(aIterator);
 }
 
-const PostingList& InvertedIndex::getPostingList(const std::string& aTerm) {
+const PostingList& InvertedIndex::getPostingList(const std::string& aTerm) const {
     if (_term_posting_map.find(aTerm) != _term_posting_map.end())
         return _term_posting_map.at(aTerm);
     else

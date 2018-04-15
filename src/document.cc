@@ -9,7 +9,8 @@ Document::Document(const std::string& aDocID, const string_vt& aContent) :
     _content(aContent),
     _term_tf_map()
 {
-    this->buildTFMap();
+    // this->buildTFMap();
+    // this->pprintTFMap();
 }
 
 Document::~Document(){}
@@ -21,4 +22,10 @@ Document::Document(const Document& doc) :
     _term_tf_map(doc.getTermTFMap())
 {}
 
-void Document::buildTFMap() { Utility::IR::calcTFMap(_content, _term_tf_map); }
+void Document::pprintTFMap() {
+    std::cout << "Document: " << this->getID() << std::endl;
+    for (const auto& [term, tf] : _term_tf_map) {
+        std::cout << "(" << term << ", " << tf << ") ";
+    }
+    std::cout << std::endl;
+}

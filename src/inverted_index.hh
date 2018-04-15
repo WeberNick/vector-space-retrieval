@@ -12,7 +12,7 @@
 class InvertedIndex {
     friend class IndexManager;
 
-  private:
+  public://priv
     explicit InvertedIndex();
     InvertedIndex(const InvertedIndex&) = default;
     InvertedIndex(InvertedIndex&&) = delete;
@@ -20,7 +20,7 @@ class InvertedIndex {
     InvertedIndex& operator=(InvertedIndex&&) = delete;
     ~InvertedIndex();
 
-  private:
+  public://priv
     inline static InvertedIndex& getInstance() {
         static InvertedIndex instance;
         return instance;
@@ -41,7 +41,7 @@ class InvertedIndex {
 
   public:
     /* */
-    const PostingList& getPostingList(const std::string& term);
+    const PostingList& getPostingList(const std::string& term) const;
     /* get size of posting list for the given term */
     size_t getNoDocs(const std::string& aTerm);
     /**

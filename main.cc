@@ -5,6 +5,7 @@
 #include "args.hh"
 #include "document_manager.hh"
 #include "index_manager.hh"
+#include "inverted_index.hh"
 #include "measure.hh"
 #include "query_processing_engine.hh"
 #include "random_projection.hh"
@@ -16,24 +17,15 @@
 namespace fs = std::experimental::filesystem;
 
 bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
-
-    if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
+    if (origVec.size() != randVec.size())
+        throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
 
     double dot = Utility::scalar_product(origVec, randVec);
-
     if (dot >= 0) {
         return true;
     } else {
         return false;
     }
-}
-
-void testNico(const control_block_t& aCB) {
-    DocumentManager& docManager = DocumentManager::getInstance();
-    docManager.init(aCB);
-    std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getCurrID() << std::endl;
-    IndexManager& imInstance = IndexManager::getInstance();
-    imInstance.init(aCB);
 }
 
 // insert everything here what is not actually meant to be in main
@@ -135,6 +127,22 @@ void test(const control_block_t& aCB) {
     //*/
 }
 
+void testNico(const control_block_t& aCB) {
+    Measure lMeasure;
+    if (aCB.measure()) { lMeasure.start(); }
+    DocumentManager& docManager = DocumentManager::getInstance();
+    docManager.init(aCB);
+    std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getCurrID() << std::endl;
+    InvertedIndex& iI = InvertedIndex::getInstance();
+    iI.getPostingList("trial").pprintPosting("food");
+    // IndexManager& imInstance = IndexManager::getInstance();
+    // imInstance.init(aCB);
+    // imInstance.getInvertedIndex().getPostingList("surviv").pprintPosting("surviv");
+    lMeasure.stop();
+    double lSeconds = lMeasure.mTotalTime();
+    std::cout << "Took " << lSeconds << " Seconds." << std::endl;
+}
+
 /**
  * @brief Starts everything
  *
@@ -166,7 +174,15 @@ int main(const int argc, const char* argv[]) {
         return 0;
     }
 
-    const control_block_t lCB = { lArgs.trace(), lArgs.measure(), lArgs.print(), lArgs.path(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
+    const control_block_t lCB = { 
+        lArgs.trace(),
+        lArgs.measure(),
+        lArgs.print(),
+        lArgs.path(),
+        lArgs.results(),
+        lArgs.tiers(),
+        lArgs.dimensions()
+    };
 
     // insert everything here what is not actually meant to be in main
     // test(lCB);

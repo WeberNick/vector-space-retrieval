@@ -14,8 +14,9 @@
  */
 #pragma once
 
+//#include "document.hh"
+#include "posting_list.hh"
 #include "document_manager.hh"
-#include "document.hh"
 #include "exception.hh"
 
 #include <boost/algorithm/string.hpp>
@@ -71,7 +72,6 @@ namespace Utility {
      * @return
      */
     inline std::vector<float> generateRandomVector(int dimension, int min, int max) {
-
         std::random_device rnd_device;
         // Specify the engine and distribution.
         std::mt19937 mersenne_engine(rnd_device());
@@ -93,7 +93,6 @@ namespace Utility {
 
     inline double scalar_product(std::vector<float> const& a, std::vector<float> const& b) {
         if (a.size() != b.size()) { throw std::runtime_error("different sizes"); }
-
         return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
     }
 
@@ -255,14 +254,14 @@ namespace Utility {
             std::string word;
 
             for (const auto& i : str) {
-                std::cout << i << std::endl;
+                // std::cout << i << std::endl;
                 count[i]++;
-                std::cout << count[i] << std::endl;
+                // std::cout << count[i] << std::endl;
             }
 
             int maxn = max_element(count.begin(), count.end(),
                                    [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) {
-                                       std::cout << a.second << " > " << b.second << std::endl;
+                                       //                    std::cout << a.second << " > " << b.second << std::endl;
                                        return a.second < b.second;
                                    })
                            ->second;
@@ -361,40 +360,44 @@ namespace Utility {
         }
 
         /**
-         * @brief Calculates the term frequency for all terms in a string vector which represents a document
-         * 
-         * @param content the terms to calculate the tf for
-         * @param out the output map with all (term, tf) pairs
-         */
-        inline void calcTFMap(const string_vt& content, str_float_mt& out) {
-            str_int_mt termCounts;
-            for (std::string term : content) {
-                ++termCounts[term];
-            }
-            int maxFreq = Utility::StringOp::getMaxWordFrequency(content);
-            for (const auto& [term, count] : termCounts) {
-                out[term] = static_cast<float>((1 + log10(count))/(1 + log10(maxFreq)));
-            }
-        }
-
-        /**
          * @brief Calculates the inverted document frequency of a given term inside a given document collection
-         * 
-         * @param collection 
-         * @param out 
+         *
+         * @param collection
+         * @param out
          */
-        inline void calcIDFMap(const doc_mt& collection, str_float_mt& out) {
-            str_int_mt occurrences;
-            for (const auto& it : collection) {
-                const string_vt& con = it.second.getContent();
-                std::set<std::string> terms(con.begin(), con.end());
-                for (const auto& term : terms) {
-                    ++occurrences[term];
+        inline void calcMaps(const doc_mt& collection, postinglist_mt& postinglist_out) {
+            str_int_mt idf_occs;
+            for (const auto& [_ID, doc] : collection) {
+                
+                str_int_mt tf_counts;
+                str_float_mt tf_out;
+                sizet_float_mt posting;
+                const string_vt& con = doc.getContent();
+                std::set<std::string> distinct_terms;
+                for (const std::string& term : con) {
+                    ++tf_counts[term];
+                    if (distinct_terms.find(term) == distinct_terms.end()) { // term not in set
+                        ++idf_occs[term];
+                        distinct_terms.insert(term);
+                    }
+                    if (postinglist_out.find(term) == postinglist_out.end()) { // term not in map
+                        posting[_ID] = 0;                                       // tf has to be set below
+                        postinglist_out[term] = PostingList(0, posting);       // idf has to be set below
+                    }
                 }
+                int maxFreq = Utility::StringOp::getMaxWordFrequency(con);
+                for (const auto& [term, count] : tf_counts) {
+                    tf_out[term] = static_cast<float>((1 + log10(count)) / (1 + log10(maxFreq)));
+                    // set tf for term -> (docID) to tf_out[term]
+                    postinglist_out[term].setTF(_ID, tf_out.at(term));
+                }
+                DocumentManager::getInstance().getDocument(_ID).setTermTFMap(tf_out);
             }
+            str_float_mt idf_map;
             const int N = collection.size();
-            for (const auto& [term, occ] : occurrences) {
-                out[term] = static_cast<float>(log10(N / occ));
+            for (const auto& [term, occ] : idf_occs) {
+                idf_map[term] = static_cast<float>(log10(N / occ));
+                postinglist_out[term].setIDF(idf_map[term]);
             }
         }
 
@@ -414,23 +417,18 @@ namespace Utility {
          * @return
          */
         inline std::string stemPorter(const std::string& sentence) {
-
             std::istringstream iss(sentence);
             std::ostringstream os;
             std::string word;
 
             stemming::english_stem<> StemEnglish;
-
             while (iss >> word) {
-
                 std::wstring wordToStem = StringOp::string2wstring(word);
                 StemEnglish(wordToStem);
                 os << StringOp::wstring2string(wordToStem) << " ";
             }
-
             std::string stemmed = os.str();
             StringOp::trim(stemmed);
-
             return stemmed;
         }
 

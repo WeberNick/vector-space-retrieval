@@ -24,8 +24,8 @@ class IndexManager {
         static IndexManager indexManager;
         return indexManager;
     }
-    void init();
     void init(const control_block_t& aCB);
+  
 
   private:
     const control_block_t* _cb;
