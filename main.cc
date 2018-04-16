@@ -131,12 +131,14 @@ void testNico(const control_block_t& aControlBlock) {
     std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getNoDocuments() << std::endl;
 
     IndexManager& imInstance = IndexManager::getInstance();
-    lMeasure.stop();
-    double lSeconds = lMeasure.mTotalTime();
-    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
     imInstance.init(aControlBlock, docManager.getDocumentMap());
     std::string term = "sabdariffa";
     std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term);
+    size_t size = docManager.getDocument(1).getTfIdfVector().size();
+    std::cout << size << std::endl;
+    lMeasure.stop();
+    double lSeconds = lMeasure.mTotalTime();
+    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
 }
 
 /**
