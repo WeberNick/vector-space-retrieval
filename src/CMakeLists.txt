@@ -7,12 +7,12 @@ endif()
 
 #Set Boost library paths
 if(LINUX)
-    set(BOOST_INCLUDEDIR "/usr/include/boost")
-    set(BOOST_LIBRARYDIR "/usr/lib/x86_64-linux-gnu")
+    set(BOOST_INCLUDE_DIR "/usr/include/boost")
+    set(BOOST_LIBRARY_DIR "/usr/lib/x86_64-linux-gnu")
 else()
     set(BOOST_ROOT "/usr/local/Cellar/boost/1.66.0/")
-    set(BOOST_INCLUDEDIR "${BOOST_ROOT}/include")
-    set(BOOST_LIBRARYDIR "${BOOST_ROOT}/lib")
+    set(BOOST_INCLUDE_DIR "${BOOST_ROOT}/include")
+    set(BOOST_LIBRARY_DIR "${BOOST_ROOT}/lib")
 endif()
 
 #Set src/lib as other external librs
