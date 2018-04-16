@@ -147,3 +147,13 @@ Temporary Items
 
 # Build Folder
 build/
+
+### Own Stuff ###
+docs/html
+docs/latex
+data/nfcorpus
+tests/lib/
+tests/lib/**
+bin/**
+src/lib/
+src/lib/**

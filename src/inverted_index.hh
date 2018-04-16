@@ -1,52 +1,115 @@
+/**
+ *	@file 	inverted_index.hh
+ *	@author	Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
+ *	@brief  Implements the inverted index represented by a map of string -> PostingList
+ *          The PostingList contains the idf and posting for a term
+ *	@bugs 	Currently no bugs known
+ *	@todos	Write DESCRIPTION
+ *
+ *	@section DESCRIPTION
+ *	TODO
+ */
 #pragma once
 
-#include "infra/types.hh"
+#include "document.hh"
+#include "exception.hh"
+#include "posting_list.hh"
+#include "types.hh"
+#include "utility.hh"
 
 #include <map>
 #include <string>
 
 class InvertedIndex {
-public:
-  // better: Hashing
-  typedef std::map<std::string, size_t_vt> PostingMap;
-  typedef PostingMap::iterator PostingMapIterator;
+    friend class IndexManager;
 
-public:
-  explicit InvertedIndex();
-  InvertedIndex(const InvertedIndex&) = delete;
-  InvertedIndex(InvertedIndex&&) = delete;
-  InvertedIndex& operator=(const InvertedIndex&) = delete;
-  InvertedIndex& operator=(InvertedIndex&&) = delete;
-  ~InvertedIndex();
+  private:
+    explicit InvertedIndex();
+    InvertedIndex(const InvertedIndex&) = default;
+    InvertedIndex(InvertedIndex&&) = delete;
+    InvertedIndex& operator=(const InvertedIndex&) = delete;
+    InvertedIndex& operator=(InvertedIndex&&) = delete;
+    ~InvertedIndex();
 
-public:
-  /* The following are just wrapper functions for the respective map container calls */
+  private:
+    /**
+     * @brief Insert an empty posting list for aTerm, if this term is not in the inverted index yet
+     *
+     * @param aTerm the term to insert
+     * @param aPostingList the posting list to insert
+     * @return true if insertion was successful
+     * @return false if insertion failed
+     */
+    bool insert(const std::string& aTerm, const PostingList& aPostingList);
+    /**
+     * @brief Find a postingList with aKey and return an iterator
+     * 
+     * @param aKey the term to find in the map
+     * @return posting_map_iter_t the postingList for aKey (the term)
+     */
+    posting_map_iter_t find(const std::string& aKey);
+    /**
+     * @brief Erase the postingList of aKey
+     * 
+     * @param aKey the term to erase
+     */
+    void erase(const std::string& aKey);
+    /**
+     * @brief Erase the postingList for aIterator
+     * 
+     * @param aIterator the iterator to erase with
+     */
+    void erase(const posting_map_iter_t aIterator);
 
-  /* if term is not in inverted index yet: create an empty posting list for the term (key) */
-  bool insert(const std::string& aTerm);
-  /* find element in collection */
-  PostingMapIterator find(const std::string& aKey);
-  /* erase by key */
-  bool erase(const std::string& aKey);
-  /* erase by iterator */
-  bool erase(const PostingMapIterator aIterator);
+    /**
+     * @brief Get the InvertedIndex Singleton instance.
+     *
+     * @return InvertedIndex& a reference to the InvertedIndex Singleton instance.
+     */
+    inline static InvertedIndex& getInstance() {
+        static InvertedIndex instance;
+        return instance;
+    }
+    /**
+     * @brief initialize control block and inverted index
+     * 
+     * @param aControlBlock the control block
+     * @param aPostingList the posting lists
+     */
+    void init(const control_block_t& aControlBlock, postinglist_mt aPostingLists);
 
-public:
-  /* look for posting list of term  in map and return the vector containing the doc IDs*/
-  const size_t_vt& getDocIDs(const std::string& aTerm);
-  /* add a document ID to the posting list for the given term. immediately sort */
-  void addDocID(const std::string& aTerm, const size_t aDocID);
-  /* same as previous but add doc ID for multiple terms */
-  void addDocIDToTerms(const string_vt& aTermList, const size_t aDocID);
-  /* return the i'th doc ID for the given term */
-  void getDocID(const std::string& aTerm, size_t aIndex);
-  /* get size of posting list for the given term */
-  size_t getNoDocs(const std::string& aTerm);
+  public:
+    /**
+     * @brief Get the posting lists
+     * 
+     * @return const postinglist_mt& the posting lists 
+     */
+    inline const postinglist_mt& getPostingLists() { return _term_posting_map; }
+    /**
+     * @brief Get the size of the dictionary
+     * 
+     * @return size_t the distinct number of vocab terms
+     */
+    inline size_t getDictionarySize() { return _term_posting_map.size(); }
+    
+    /**
+     * @brief Get the posting list for the given term
+     * 
+     * @param term the term for getting the posting list
+     * @return const PostingList& the posting list
+     */
+    const PostingList& getPostingList(const std::string& term) const;
+    /**
+     * @brief Get the number of documents in which aTerm appears
+     * 
+     * @param aTerm the term 
+     * @return size_t the number of documents in which aTerm appears
+     */
+    size_t getNoDocs(const std::string& aTerm);
 
-public:
-  inline const PostingMap& getPostings() { return _postings; }
-  inline size_t getNoPostings() { return _postings.size(); }
+  private:
+    const control_block_t* _cb;
 
-private:
-  PostingMap _postings;
+    bool _init;
+    postinglist_mt _term_posting_map; // term, PostingList: [("Frodo", <PostingListObj>), ...]
 };
