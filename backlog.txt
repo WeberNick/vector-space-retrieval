@@ -1,5 +1,0 @@
-- Check if all external libraries are defined in cmake, set flags
-- weg einzubauen, bei dem der anwender angibt ob er boost hat (inkl. pfad) und falls nicht boost geladen wird und der pfad in der cmake richtig gesetzt wird
-- Tiered Index /Nico
-- Random projections locality sensitive hashing was wenn nur 0, wie kommme ich an ne gescheite hash funktion
-- Noch ein todo: kannst du mal bei cmake überprüfen, was wir in der äißeren cmake tatsächlich brauchen? im moment schreibe ich aus paranoia alle cmake befehle in die äußere cmake und in src cmake :D

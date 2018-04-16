@@ -37,9 +37,6 @@ void DocumentManager::read(const std::string& aFile) {
         string_vt content;
         Utility::StringOp::splitStringBoost(parts[1], ' ', content);
         std::string docID = parts[0];
-        for (auto& elem : content)
-            std::cout << elem << " ";
-        std::cout << std::endl;
         Document doc(docID, content);
         this->insert(std::make_pair(doc.getID(), doc));
     }

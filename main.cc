@@ -13,14 +13,26 @@
 namespace fs = std::experimental::filesystem;
 
 bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
-    if (origVec.size() != randVec.size())
-        throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
+
+    if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
 
     double dot = Utility::scalar_product(origVec, randVec);
     if (dot >= 0) {
-        return true;
+        return 1;
     } else {
-        return false;
+        return 0;
+    }
+}
+
+unsigned int hashExercise2Task2(std::vector<float>& origVec, std::vector<float>& randVec) {
+
+    if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
+
+    double dot = Utility::scalar_product(origVec, randVec);
+    if (dot > 0.75) {
+        return 1;
+    } else {
+        return 0;
     }
 }
 
@@ -41,10 +53,10 @@ void test(const control_block_t& aControlBlock) {
     std::string text = "Let me split this into words";
     std::vector<std::string> results;
 
-    Utility::StringOp::splitString(text, ' ', results);
+    /*Utility::StringOp::splitString(text, ' ', results);
     for (auto t : results) {
         std::cout << "Word: " << t << std::endl;
-    }
+    }*/
 
     /*std::vector<double> doc_a = { 1, 3, 5, 8, 100, 100 };
     std::vector<double> doc_b = { 2, 4, 5, 1, 2, 0 };
@@ -64,13 +76,26 @@ void test(const control_block_t& aControlBlock) {
 
     // random_projection::createRandomMatrix(100, 500, true, 0.1, "gaussian");
 
-    std::vector<float> doc_a = Utility::generateRandomVector(500, 0, 10000);
-    std::vector<float> doc_b = Utility::generateRandomVector(500, 0, 10000);
+    /*std::vector<float> doc_a = Utility::generateRandomVector(10, 0, 1);
+    std::vector<float> doc_b = Utility::generateRandomVector(10, 0, 1);
+    std::vector<float> doc_c = Utility::generateRandomVector(10, 0, 1);
 
-    RandomProjection::getInstance().setDimensions(10);
+    RandomProjection::getInstance().setDimensions(5);
     RandomProjection::getInstance().setOrigVectorSize(doc_a.size());
     RandomProjection::getInstance().initRandomVectors();
 
+    for (int j = 0; j < doc_a.size(); ++j) {
+        std::cout << doc_a[j] << ",";
+    }
+    std::cout << std::endl;
+    for (int j = 0; j < doc_b.size(); ++j) {
+        std::cout << doc_b[j] << ",";
+    }
+    std::cout << std::endl;
+    for (int j = 0; j < doc_c.size(); ++j) {
+        std::cout << doc_c[j] << ",";
+    }
+    std::cout << std::endl;
     std::cout << "Dimension inside RandomProjection = " << RandomProjection::getInstance().getDimensions() << std::endl;
 
     for (auto& elem : RandomProjection::getInstance().getRandomVectors()) {
@@ -78,49 +103,7 @@ void test(const control_block_t& aControlBlock) {
             std::cout << dimValue << ",";
         }
         std::cout << std::endl;
-    }
-
-    std::cout << "Angular sim before locality hashing: " << Utility::SimilarityMeasures::calcAngularSimilarity(doc_a, doc_b) << std::endl;
-
-    // std::vector<unsigned int> doc_a_proj = RandomProjection::getInstance().localiltySensitveHashProjection(doc_a, hash);
-    // std::vector<unsigned int> doc_b_proj = RandomProjection::getInstance().localiltySensitveHashProjection(doc_b, hash);
-
-    // size_t doc_a_proj = RandomProjection::getInstance().localiltySensitveHashProjection2(doc_a);
-    // size_t doc_b_proj = RandomProjection::getInstance().localiltySensitveHashProjection2(doc_b);
-
-    std::vector<bool> doc_a_proj = RandomProjection::getInstance().localitySensitiveHashProjection(doc_a, hash);
-    std::vector<bool> doc_b_proj = RandomProjection::getInstance().localitySensitiveHashProjection(doc_b, hash);
-
-    std::cout << "doc_a after hashing" << std::endl;
-
-    for (size_t i = 0; i < doc_a_proj.size(); ++i) {
-        std::cout << doc_a_proj[i] << ",";
-    }
-
-    std::cout << std::endl;
-    std::cout << std::endl;
-
-    std::cout << "doc_b after hashing" << std::endl;
-    for (size_t i = 0; i < doc_b_proj.size(); ++i) {
-        std::cout << doc_b_proj[i] << ",";
-    }
-    std::cout << std::endl;
-
-    std::cout << "Hamming distance doc_a_proj and doc_b_proj" << Utility::SimilarityMeasures::calcHammingDist(doc_a_proj, doc_b_proj) << std::endl;
-    std::cout << "Angular sim after locality hashing: " << Utility::SimilarityMeasures::calcAngSimHamming(doc_a_proj, doc_b_proj) << std::endl;
-
-    // size_t XOR = doc_a_proj ^ doc_b_proj;
-
-    // double simAfterProj = (doc_a.size() - nnz(XOR) / doc_a.size());
-
-    // std::cout << "Angular sim after locality hashing: " << simAfterProj << std::endl;
-    // std::cout << "Angular sim after locality hashing: " << Utility::SimilarityMeasures::calcCosSimHamming(doc_a_proj, doc_b_proj) << std::endl;
-
-    // std::vector<std::string> sentence = { "Hi", "how", "are", "you", "today,", "you", "you", "you", "look", "look", "look", "gorgeous" };
-    // std::cout << Utility::StringOp::getMaxWordFrequency(sentence) << std::endl;
-
-    // QueryProcessingEngine::getInstance().cosineScore("Documenting transportation is such a great fundamental human being being being being", 10);
-    //*/
+    }*/
 }
 
 void testNico(const control_block_t& aControlBlock) {
@@ -133,31 +116,73 @@ void testNico(const control_block_t& aControlBlock) {
     IndexManager& imInstance = IndexManager::getInstance();
     imInstance.init(aControlBlock, docMap);
     // std::string term = "sabdariffa";
-    std::string term = "food";
-    std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term);
-    size_t size = docManager.getDocument(1).getTfIdfVector().size();
-    std::cout << size << std::endl;
+    std::string term = "today";
+    
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
     std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
     int count = 0;
-    std::cout << docManager.getDocument(1) << std::endl;
-    //PostingList& pl = 
-    std::cout << imInstance.getInvertedIndex().getPostingList("today") << std::endl;
+    std::cout << docManager.getDocument(2) << std::endl;
+    std::cout  << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term) << std::endl;
     for (const auto& [term, idf] : imInstance.getIdfMap()) {
         ++count;
         if (count > 100) return;
         std::cout << term << ": ";
         std::cout << idf << std::endl;
     }
+    // testSearch("why deep fried foods may cause cancer");
+    // testSearch("do cholesterol statin drugs cause breast cancer ?");
+}
+
+void testSearch(std::string query) {
+    QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
+
+    string_vt proc_query;
+
+    Utility::StringOp::splitString(query, ' ', proc_query);
+    Document doc("0", proc_query);
+
+    Measure lMeasureQuery;
+    lMeasureQuery.start();
+    std::vector<size_t> result = qpe.search(&doc, 50);
+    lMeasureQuery.stop();
+    double lSecondsQuery = lMeasureQuery.mTotalTime();
+    std::cout << "Search took " << lSecondsQuery << " sec." << std::endl;
+
+    for (size_t j = 0; j < result.size(); ++j) {
+        std::cout << "(" << j << ".) " << DocumentManager::getInstance().getDocument(result[j]).getDocID() << ": ";
+
+        for (auto& elem : DocumentManager::getInstance().getDocument(result[j]).getContent()) {
+            std::cout << elem << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+void testAlex(const control_block_t& aControlBlock) {
+    Measure lMeasureIndexing;
+    lMeasureIndexing.start();
+    DocumentManager& docManager = DocumentManager::getInstance();
+    docManager.init(aControlBlock, "./data/collection_test_mwe.docs");
+    doc_mt& docMap = docManager.getDocumentMap();
+
+    IndexManager& imInstance = IndexManager::getInstance();
+    imInstance.init(aControlBlock, docMap);
+
+    lMeasureIndexing.stop();
+    double lSeconds = lMeasureIndexing.mTotalTime();
+    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
+
+    testSearch("why deep fried foods may cause cancer");
+    testSearch("do cholesterol statin drugs cause breast cancer ?");
 }
 
 /**
  * @brief Starts the program
- * 
- * @param argc 
- * @param argv 
- * @return int 
+ *
+ * @param argc
+ * @param argv
+ * @return int
  */
 int main(const int argc, const char* argv[]) {
     // this is just a test, needs a proper implementation later on
@@ -183,19 +208,11 @@ int main(const int argc, const char* argv[]) {
         return 0;
     }
 
-    const control_block_t lCB = { 
-        lArgs.trace(),
-        lArgs.measure(),
-        lArgs.print(),
-        lArgs.path(),
-        lArgs.results(),
-        lArgs.tiers(),
-        lArgs.dimensions()
-    };
+    const control_block_t lCB = { lArgs.trace(), lArgs.measure(), lArgs.print(), lArgs.path(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
 
     // insert everything here what is not actually meant to be in main
     // test(lCB);
     testNico(lCB);
-
+    // testAlex(lCB);
     return 0;
 }

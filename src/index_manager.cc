@@ -44,24 +44,19 @@ void IndexManager::buildIndices(postinglist_mt& postinglist_out) {
         str_float_mt tf_out;
         sizet_float_mt posting;
         const string_vt& con = doc.getContent();
-        std::cout << std::endl;
         for (const std::string& term : con) {
-            std::cout << term << " ";
             ++tf_counts[term];
             if (postinglist_out.find(term) == postinglist_out.end()) { // term not in map
                 posting[id] = 0;                                       // tf has to be set below
                 postinglist_out[term] = PostingList(0, posting);       // idf has to be set below
             }
-            std::cout << std::endl;
         }
         int maxFreq = Utility::StringOp::getMaxWordFrequency(con);
         for (const auto & [ term, count ] : tf_counts) { // this loops through the distinct terms of this document
-            // std::cout << term << ", ";
             tf_out[term] = Utility::IR::calcTf(count, maxFreq);
             postinglist_out[term].setTf(id, tf_out.at(term));
             ++idf_occs[term];
         }
-        // std::cout << std::endl;
         _docs->at(id).setTermTfMap(tf_out);
     }
     const int N = _docs->size();

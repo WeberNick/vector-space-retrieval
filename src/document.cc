@@ -46,7 +46,7 @@ float Document::getTf(const std::string& aTerm) const {
 }
 
 std::ostream& operator<<(std::ostream& strm, const Document& doc) {
-    strm << "Document: " << doc.getID() << ": " << std::endl;
+    strm << "Document: " << doc.getID() << ": ";
     std::string sep = ") ";
     for (auto it = doc.getTermTfMap().begin(); it != doc.getTermTfMap().end(); ++it) {
         if (it == std::prev(doc.getTermTfMap().end(), 1)) { sep = ")"; }

@@ -3,13 +3,13 @@
  *	@author	Alexander Weiß, Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de), Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
  *	@brief  Captures Utility functionality for String operations, IR related operations and similarity measures
  *          Namespace Nesting:
- *          
+ *
  *          namespace Utility {
  *              namespace StringOp { ... }
  *              namespace IR { ... }
  *              namespace SimilarityMeasures { ... }
  *          }
- * 
+ *
  *	@bugs 	Currently no bugs known
  *	@todos	Write DESCRIPTION
  *
@@ -18,15 +18,16 @@
  */
 #pragma once
 
-#include "posting_list.hh"
 #include "document_manager.hh"
 #include "exception.hh"
+#include "posting_list.hh"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <algorithm>
 #include <bits/stl_algo.h>
+#include <boost/dynamic_bitset.hpp>
 #include <cmath>
 #include <functional>
 #include <iterator>
@@ -42,11 +43,11 @@
 namespace Utility {
 
     /**
-     * @brief 
-     * 
-     * @param mean 
-     * @param stddev 
-     * @return double 
+     * @brief Generates a random normal distributed double number
+     *
+     * @param mean
+     * @param stddev
+     * @return
      */
     inline double rand_normal(double mean, double stddev) { // Box muller method
         static double n2 = 0.0;
@@ -81,23 +82,24 @@ namespace Utility {
      * @param max maximum number value
      * @return
      */
-    inline std::vector<float> generateRandomVector(int dimension, int min, int max) {
+    inline std::vector<float> generateRandomVector(size_t dimension, int min, int max) {
+
         std::random_device rnd_device;
         // Specify the engine and distribution.
         std::mt19937 mersenne_engine(rnd_device());
-        std::uniform_real_distribution<float> dist(min, max);
+        std::uniform_int_distribution<int> dist(min, max);
 
-        auto gen = std::bind(dist, mersenne_engine);
-        std::vector<float> vec(static_cast<unsigned long>(dimension));
+        auto gen = std::bind(dist, std::ref(mersenne_engine));
+        std::vector<float> vec(dimension);
         generate(begin(vec), end(vec), gen);
         return vec;
     }
 
     /**
-     * @brief 
-     * 
-     * @param dimension 
-     * @return std::vector<float> 
+     * @brief Generates a random vector of size \dimension with random standard normal distributed values
+     *
+     * @param dimension
+     * @return
      */
     inline std::vector<float> generateRandomVectorN(size_t dimension) {
         std::vector<float> result(dimension);
@@ -108,13 +110,14 @@ namespace Utility {
     }
 
     /**
-     * @brief 
-     * 
-     * @param a 
-     * @param b 
-     * @return double 
+     * @brief Calculates the dot product of two vectors
+     *
+     * @param a
+     * @param b
+     * @return
      */
-    inline double scalar_product(std::vector<float> const& a, std::vector<float> const& b) {
+    template <typename T>
+    inline double scalar_product(std::vector<T> const& a, std::vector<T> const& b) {
         if (a.size() != b.size()) { throw std::runtime_error("different sizes"); }
         return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
     }
@@ -176,6 +179,24 @@ namespace Utility {
         }
 
         /**
+         * @brief Lower case a given vector of strings
+         *
+         * @param string string to lower case
+         * @return lowercased string
+         */
+        inline std::vector<std::string> toLower(const std::vector<std::string>& string) {
+            std::vector<std::string> data;
+            data.reserve(string.size());
+            std::transform(string.begin(), string.end(), std::back_inserter(data), [](const std::string& in) {
+                std::string out;
+                out.reserve(in.size());
+                std::transform(in.begin(), in.end(), std::back_inserter(out), ::tolower);
+                return out;
+            });
+            return data;
+        }
+
+        /**
          * @brief Converts std:string into std:wstring
          *
          * @author
@@ -212,15 +233,15 @@ namespace Utility {
          * @return the number of occurences
          */
         inline long countWordInString(std::string str, std::string word, bool case_insensitive) {
-            if (case_insensitive) {
-                std::string word = toLower(word);
-                std::string str = toLower(str);
-            }
-            string_vt con;
-            splitString(str, ' ', con);
+            std::string wordCased = case_insensitive ? toLower(word) : word;
+            std::string strCased  = case_insensitive ? toLower(str) : str;
+
+            std::vector<std::string> content;
+            splitString(strCased, ' ', content);
+
             size_t count = 0;
-            for (const auto& i : con) {
-                if (i == word) ++count;
+            for (size_t i = 0; i < content.size(); ++i) {
+                if (content[i] == wordCased) ++count;
             }
             return count;
         }
@@ -234,10 +255,10 @@ namespace Utility {
          * @return the number of occurences
          */
         inline long countWordInString(std::vector<std::string> str, std::string word, bool case_insensitive) {
-            if (case_insensitive) {
-                std::string word = toLower(word);
-                std::string str = toLower(str);
-            }
+
+            std::string word_2 = case_insensitive ? toLower(word) : word;
+            std::vector<std::string> str_2 = case_insensitive ? toLower(str) : str;
+
             size_t count = 0;
             for (const auto& i : str) {
                 if (i == word) ++count;
@@ -298,7 +319,7 @@ namespace Utility {
          */
         static inline void ltrim(std::string& s) {
             s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) { return !std::isspace(ch); }));
-        } // namespace utility
+        }
 
         /**
          * @brief Trims the right side of a string in place
@@ -365,7 +386,7 @@ namespace Utility {
          * @param max 
          * @return float 
          */
-        inline float calcTf(const size_t term, const size_t max) { return static_cast<float>((1 + log10(term)) / (1 + log10(max))); }
+        inline float calcTf(const float term, const float max) { return static_cast<float>((1 + log10(term)) / (1 + log10(max))); }
         /**
          * @brief Calculates the 
          * 
@@ -373,7 +394,7 @@ namespace Utility {
          * @param max 
          * @return float 
          */
-        inline float calcIdf(const size_t N, const size_t docs) { return static_cast<float>(log10(N / docs)); }
+        inline float calcIdf(const float N, const float docs) { return static_cast<float>(log10(N / docs)); }
          /**
          * @brief Calculates the tf-idf value
          *
@@ -402,7 +423,7 @@ namespace Utility {
          * @param content The content vector of terms
          * @return the term frequency
          */
-        inline float calcTf(const std::string& term, const string_vt& content) {
+        inline float calcTf(const std::string& term, const std::vector<std::string>& content) {
             return static_cast<float>((1 + log10(Utility::StringOp::countWordInString(content, term, false))) /
                                       (1 + log10(Utility::StringOp::getMaxWordFrequency(content))));
         }
@@ -491,6 +512,24 @@ namespace Utility {
         }
 
         /**
+         * @brief Calculates the cosine distance of two documents
+         *
+         * @param aTF_IDF_a
+         * @param aTF_IDF_b
+         * @return
+         */
+        inline float calcCosDist(const Document& doc_a, const Document& doc_b) { return 0.0; } // return calcCosDist(doc_a.getTFIDF(), doc_b.getTFIDF()); }
+
+        /**
+         * @brief Calculates the cosine distance of two vectors
+         *
+         * @param aTF_IDF_a
+         * @param aTF_IDF_b
+         * @return
+         */
+        inline float calcCosDist(const std::vector<float>& aTF_IDF_a, const std::vector<float>& aTF_IDF_b) { return 1 - calcCosSim(aTF_IDF_a, aTF_IDF_b); }
+
+        /**
          * Returns the angular similarity between two docs
          *
          * @param doc_a
@@ -518,18 +557,41 @@ namespace Utility {
         }
 
         /**
-         * @brief 
-         * 
-         * @param vec_a 
-         * @param vec_b 
-         * @return unsigned int 
+         * @brief Calculates the Hamming distance between two std::vector<bools> vectors
+         *
+         * @param vec_a
+         * @param vec_b
+         * @return
          */
         inline unsigned int calcHammingDist(std::vector<bool>& vec_a, std::vector<bool>& vec_b) {
-            float dist = 0;
+            unsigned int dist = 0;
             for (size_t i = 0; i < vec_a.size(); ++i) {
                 if (vec_a[i] != vec_b[i]) { dist++; }
             }
             return dist;
+        }
+
+        /**
+         * @brief Calculates the Hamming distance between two boost::dynamic_bitset sets
+         *
+         * @param vec_a
+         * @param vec_b
+         * @return
+         */
+        inline unsigned int calcHammingDist(boost::dynamic_bitset<>& vec_a, boost::dynamic_bitset<>& vec_b) {
+            return static_cast<unsigned int>((vec_a ^ vec_b).count());
+        }
+
+        /**
+         * @brief Calculates the Hamming similarity between two boost::dynamic_bitset sets
+         * (\vec_a.size() -  \calcHammingDist(\vec_a, \vec_b))
+         *
+         * @param vec_a
+         * @param vec_b
+         * @return
+         */
+        inline unsigned int calcHammingSim(boost::dynamic_bitset<>& vec_a, boost::dynamic_bitset<>& vec_b) {
+            return static_cast<unsigned int>(vec_a.size() - calcHammingDist(vec_a, vec_b));
         }
 
         /**
@@ -548,7 +610,7 @@ namespace Utility {
             double result = cos(hamming / vec_a.size() * 3.14);
             std::cout << result << std::endl;
 
-            float theta = acosf(cos(((hamming / vec_a.size()) * M_PI)));
+            double theta = acosf(cos(((hamming / vec_a.size()) * M_PI)));
             std::cout << theta << std::endl;
 
             return static_cast<float>(1 - (theta / M_PI));
