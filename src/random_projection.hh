@@ -45,6 +45,8 @@ class RandomProjection {
         }
     }
 
+    inline void setRandomVectors(float_vector_vt randomVectors) { _randomVectors = randomVectors; }
+
     inline bool setOrigVectorSize(const size_t origVectorSize) {
         if (_origVectorSize) {
             return false;
