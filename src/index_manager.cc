@@ -22,17 +22,6 @@ void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
     _invertedIndex.init(aControlBlock, postinglist_out);
     _tieredIndex.init(aControlBlock);
     //_clusteredIndex.init(aControlBlock);
-    
-    std::cout << _collection_terms.size() << std::endl;
-    using float_vt = std::vector<float>;
-    float_vt res;
-    res.reserve(_collection_terms.size());
-    for (const auto& [ id, doc ] : *(_docs)) {
-        for (std::string& term : _collection_terms) {
-            int idf = _invertedIndex.getPostingList(term).getIDF();
-            res.push_back(_docs->at(id).getTF(term) * idf);
-        }
-    }
 }
 
 /**
@@ -72,5 +61,16 @@ void IndexManager::buildIndices(postinglist_mt& postinglist_out) {
         // build doc vec with collection terms, does not have to be sorted alphabetically but has to be the same order for every doc. this order is preserved in _collection_terms
         _collection_terms.push_back(term);
         // is this possible here?
+        std::cout << _collection_terms.size() << std::endl;
+    
+        using float_vt = std::vector<float>;
+        float_vt res;
+        res.reserve(_collection_terms.size());
+        for (const auto& [ id, doc ] : *(_docs)) {
+            for (std::string& term : _collection_terms) {
+                int idf = _invertedIndex.getPostingList(term).getIDF();
+                res.push_back(_docs->at(id).getTF(term) * idf);
+            }
+        }
     }
 }

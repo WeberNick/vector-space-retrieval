@@ -35,6 +35,8 @@ class Document {
         else
             return 0;
     }
+    inline float_vt getTFIDFVector() { return _tf_idf_vec; }
+    inline const void appendTFIDFValue(const float aVal) { _tf_idf_vec.push_back(aVal); }
 
   private:
     static size_t _documentCount;
@@ -42,7 +44,8 @@ class Document {
     size_t _ID;                // e.g. 5
     std::string _docID;        // e.g. MED-123
     string_vt _content;        // e.g. [studi, run, ...]
-    float _norm_length;
+    float _norm_length;        // normalization factor of _tf_idf_vec
+    float_vt _tf_idf_vec;      // e.g. <0, 2, 1.5, 3, .84, ..>
     str_float_mt _term_tf_map; // stores TF values
 };
 

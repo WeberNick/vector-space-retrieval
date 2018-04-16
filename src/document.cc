@@ -8,9 +8,7 @@ Document::Document(const std::string& aDocID, const string_vt& aContent) :
     _docID(aDocID),
     _content(aContent),
     _term_tf_map()
-{
-    // this->pprintTFMap();
-}
+{}
 
 Document::~Document(){}
 
