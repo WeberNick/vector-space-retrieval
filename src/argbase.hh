@@ -1,6 +1,6 @@
 /**
- *  @file   args.hh
- *  @brief  Implements the parsing of command line arguments
+ *  @file args.hh
+ *  @brief Implements the parsing of command line arguments
  */
 #pragma once
 

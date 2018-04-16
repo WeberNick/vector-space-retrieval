@@ -1,12 +1,12 @@
 /**
- *	@file 	exception.hh
- *	@author	Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de)
- *	@brief	Provides a central class for exception handling
- *	@bugs 	Currently no bugs known
- *	@todos	-
+ *  @file   exception.hh
+ *  @author Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de)
+ *  @brief  Provides a central class for exception handling
+ *  @bugs   Currently no bugs known
+ *  @todos  Write DESCRIPTION
  *
- *	@section DESCRIPTION
- *	TODO
+ *  @section DESCRIPTION
+ *  TODO
  *  @section USE
  *	    throw BaseException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Error Message");
  */

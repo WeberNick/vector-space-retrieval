@@ -11,16 +11,16 @@
  */
 #pragma once
 
-#include "types.hh"
-#include "utility.hh"
 #include "document.hh"
 #include "document_manager.hh"
+#include "types.hh"
+#include "utility.hh"
 
-#include <vector>
-#include <unordered_map>
-#include <random>
-#include <cmath>
 #include <algorithm>
+#include <cmath>
+#include <random>
+#include <unordered_map>
+#include <vector>
 
 class Cluster
 {
@@ -38,24 +38,52 @@ class Cluster
         ~Cluster();
 
     private:
-        inline static Cluster& getInstance()
-        {
-            static Cluster lInstance;
-            return lInstance;
+        /**
+         * @brief Get the Cluster Singleton instance.
+         *
+         * @return Cluster& a reference to the Cluster Singleton instance.
+         */
+        inline static Cluster& getInstance() {
+          static Cluster lInstance;
+          return lInstance;
         }
+        /**
+         * @brief Initialize control block and cluster
+         *
+         * @param aControlBlock the control block
+         */
         void init(const control_block_t& aControlBlock);
-        void init();
+        /**
+         * @brief Choose Leaders
+         * 
+         */
         void chooseLeaders();
+        /**
+         * @brief Fill Clusters
+         * 
+         */
         void fillCluster();
 
     public:
-        inline const doc_ptr_vt&    getLeaders(){ return _leaders; }
-        inline const cluster_mt&    getCluster(){ return _cluster; }
+        /**
+         * @brief Get the Leaders object
+         * 
+         * @return const doc_ptr_vt& 
+         */
+        inline const doc_ptr_vt& getLeaders() { return _leaders; }
+        /**
+         * @brief Get the Cluster object
+         * 
+         * @return const cluster_mt& 
+         */
+        inline const cluster_mt& getCluster() { return _cluster; }
 
     private:
-        doc_ptr_vt  _leaders; //stores pointer to leader documents inside the doc mngr's map
-        cluster_mt  _cluster; //stores <Doc*, Vector<Doc*>> pairs, the first pointer is a leader document
         const control_block_t* _cb;
+
+        bool _init;          // was the cluster initialized?
+        doc_ptr_vt _leaders; // stores pointer to leader documents inside the doc mngr's map
+        cluster_mt _cluster; // stores <Doc*, Vector<Doc*>> pairs, the first pointer is a leader document
 };
 
 

@@ -1,7 +1,3 @@
-//
-// Created by Alexander Weiß on 30.03.18.
-//
-
 #include "utility.hh"
 #include "gtest/gtest.h"
 

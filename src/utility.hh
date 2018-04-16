@@ -1,20 +1,23 @@
-//
-// Created by Alexander Weiß on 30.03.18.
-//
-
 /**
- *  Namespace Nesting explained:
+ *	@file 	utility.hh
+ *	@author	Alexander Weiß, Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de), Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
+ *	@brief  Captures Utility functionality for String operations, IR related operations and similarity measures
+ *          Namespace Nesting:
+ *          
+ *          namespace Utility {
+ *              namespace StringOp { ... }
+ *              namespace IR { ... }
+ *              namespace SimilarityMeasures { ... }
+ *          }
+ * 
+ *	@bugs 	Currently no bugs known
+ *	@todos	Write DESCRIPTION
  *
- *  namespace Utility
- *  {
- *      namespace StringOp{...}
- *      namespace IR{...}
- *      namespace SimilarityMeasures{...}
- *  }
+ *	@section DESCRIPTION
+ *	TODO
  */
 #pragma once
 
-//#include "document.hh"
 #include "posting_list.hh"
 #include "document_manager.hh"
 #include "exception.hh"

@@ -1,3 +1,13 @@
+/**
+ *	@file 	types.hh
+ *	@author	Alexander Weiß, Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de), Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
+ *	@brief  Specification of basic types and the control block used in the project
+ *	@bugs 	Currently no bugs known
+ *	@todos	Write DESCRIPTION
+ *
+ *	@section DESCRIPTION
+ *	TODO
+ */
 #pragma once
 
 #include <cstddef>
@@ -11,6 +21,7 @@ using byte = std::byte;
 using uint = unsigned int;
 using size_t_vt = std::vector<size_t>;
 using uint_vt = std::vector<uint>;
+using float_vt = std::vector<float>;
 using string_vt = std::vector<std::string>;
 using sizet_float_mt = std::map<size_t, float>;
 using str_float_mt = std::map<std::string, float>;

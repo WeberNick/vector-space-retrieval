@@ -1,7 +1,3 @@
-//
-// Created by Alexander Weiß on 30.03.18.
-//
-
 #include "args.hh"
 #include "document_manager.hh"
 #include "index_manager.hh"
@@ -40,7 +36,7 @@ void test(const control_block_t& aControlBlock) {
     std::cout << "This print message is just used to prevent unused variable warnings. " << lSeconds << std::endl;
 
     DocumentManager& docManager = DocumentManager::getInstance();
-    std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getCurrID() << std::endl;
+    std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getNoDocuments() << std::endl;
 
     std::string text = "Let me split this into words";
     std::vector<std::string> results;
@@ -132,24 +128,23 @@ void testNico(const control_block_t& aControlBlock) {
     lMeasure.start();
     DocumentManager& docManager = DocumentManager::getInstance();
     docManager.init(aControlBlock);
-    std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getCurrID() << std::endl;
+    std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getNoDocuments() << std::endl;
 
     IndexManager& imInstance = IndexManager::getInstance();
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
-    std::cout << "Took " << lSeconds << " Seconds." << std::endl;
+    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
     imInstance.init(aControlBlock, docManager.getDocumentMap());
-    imInstance.getInvertedIndex().getPostingList("food").pprintPosting("food");
-
-
+    std::string term = "sabdariffa";
+    std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term);
 }
 
 /**
- * @brief Starts everything
- *
- * @param argc
- * @param argv
- * @return
+ * @brief Starts the program
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
  */
 int main(const int argc, const char* argv[]) {
     // this is just a test, needs a proper implementation later on

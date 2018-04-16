@@ -16,16 +16,16 @@
  *
  *	@section USAGE
  *	        In main, create class 'Args' with the default constructor and add the following code:
- *              Args lArgs;                   // create Args object with default constructor
- *              argdesc_vt lArgDesc;          // create vector where to store the command line arguments (used for internal processing)
- *              construct_arg_desc(lArgDesc); // pass vector to a internal routine which processes the command line arguments
+ *              Args lArgs;                                           // create Args object with default constructor
+ *              argdesc_vt lArgDesc;                                  // create vector where to store the command line arguments (used for internal processing)
+ *              construct_arg_desc(lArgDesc);                         // pass vector to a internal routine which processes the command line arguments
  *              // parses arguments in their respective date type, stores them in an object of Args and return an status flag
  *              if(!parse_args<Args>(1, argc, argv, lArgDesc, lArgs)) // if != 0, an error occured while parsing arguments...
  *              {
  *                  std::cerr << "error while parsing arguments." << std::endl;
  *                  return -1;
  *              }
- *              bool help = lArgs.help();     // now use the data stored in object lArgs like this:
+ *              bool help = lArgs.help();                             // now use the data stored in object lArgs like this:
  *              // write your own functions and command line arguments in this header and use the same structure as seen in args.cc
  */
 #pragma once

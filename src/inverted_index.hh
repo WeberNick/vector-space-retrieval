@@ -1,3 +1,14 @@
+/**
+ *	@file 	inverted_index.hh
+ *	@author	Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
+ *	@brief  Implements the inverted index represented by a map of string -> PostingList
+ *          The PostingList contains the idf and posting for a term
+ *	@bugs 	Currently no bugs known
+ *	@todos	Write DESCRIPTION
+ *
+ *	@section DESCRIPTION
+ *	TODO
+ */
 #pragma once
 
 #include "document.hh"
@@ -12,7 +23,7 @@
 class InvertedIndex {
     friend class IndexManager;
 
-  public://priv
+  private:
     explicit InvertedIndex();
     InvertedIndex(const InvertedIndex&) = default;
     InvertedIndex(InvertedIndex&&) = delete;
@@ -20,46 +31,85 @@ class InvertedIndex {
     InvertedIndex& operator=(InvertedIndex&&) = delete;
     ~InvertedIndex();
 
-  public://priv
+  private:
+    /**
+     * @brief Insert an empty posting list for aTerm, if this term is not in the inverted index yet
+     *
+     * @param aTerm the term to insert
+     * @param aPostingList the posting list to insert
+     * @return true if insertion was successful
+     * @return false if insertion failed
+     */
+    bool insert(const std::string& aTerm, const PostingList& aPostingList);
+    /**
+     * @brief Find a postingList with aKey and return an iterator
+     * 
+     * @param aKey the term to find in the map
+     * @return posting_map_iter_t the postingList for aKey (the term)
+     */
+    posting_map_iter_t find(const std::string& aKey);
+    /**
+     * @brief Erase the postingList of aKey
+     * 
+     * @param aKey the term to erase
+     */
+    void erase(const std::string& aKey);
+    /**
+     * @brief Erase the postingList for aIterator
+     * 
+     * @param aIterator the iterator to erase with
+     */
+    void erase(const posting_map_iter_t aIterator);
+
+    /**
+     * @brief Get the InvertedIndex Singleton instance.
+     *
+     * @return InvertedIndex& a reference to the InvertedIndex Singleton instance.
+     */
     inline static InvertedIndex& getInstance() {
         static InvertedIndex instance;
         return instance;
     }
-    void init();
-    void init(const control_block_t& aControlBlock, postinglist_mt aPostingList);
-    void buildInvertedIndex();
+    /**
+     * @brief initialize control block and inverted index
+     * 
+     * @param aControlBlock the control block
+     * @param aPostingList the posting lists
+     */
+    void init(const control_block_t& aControlBlock, postinglist_mt aPostingLists);
 
   public:
-    /* if term is not in inverted index yet: create an empty posting list for the term (key) */
-    bool insert(const std::string& aTerm, const PostingList& aPostingList);
-    /* find element in collection */
-    posting_map_iter_t find(const std::string& aKey);
-    /* erase by key */
-    void erase(const std::string& aKey);
-    /* erase by iterator */
-    void erase(const posting_map_iter_t aIterator);
-
-  public:
-    /* */
+    /**
+     * @brief Get the posting lists
+     * 
+     * @return const postinglist_mt& the posting lists 
+     */
+    inline const postinglist_mt& getPostingLists() { return _term_posting_map; }
+    /**
+     * @brief Get the size of the dictionary
+     * 
+     * @return size_t the distinct number of vocab terms
+     */
+    inline size_t getDictionarySize() { return _term_posting_map.size(); }
+    
+    /**
+     * @brief Get the posting list for the given term
+     * 
+     * @param term the term for getting the posting list
+     * @return const PostingList& the posting list
+     */
     const PostingList& getPostingList(const std::string& term) const;
-    /* get size of posting list for the given term */
+    /**
+     * @brief Get the number of documents in which aTerm appears
+     * 
+     * @param aTerm the term 
+     * @return size_t the number of documents in which aTerm appears
+     */
     size_t getNoDocs(const std::string& aTerm);
-    /**
-     * @brief Get the Postings object
-     *
-     * @return const postinglist_mt&
-     */
-    inline const postinglist_mt& getPostings() { return _term_posting_map; }
-
-    /**
-     * @brief Get the No Postings object
-     *
-     * @return size_t
-     */
-    inline size_t getNoPostings() { return _term_posting_map.size(); }
 
   private:
     const control_block_t* _cb;
-    
+
+    bool _init;
     postinglist_mt _term_posting_map; // term, PostingList: [("Frodo", <PostingListObj>), ...]
 };

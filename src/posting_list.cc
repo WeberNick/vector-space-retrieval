@@ -1,25 +1,38 @@
 #include "posting_list.hh"
 
-PostingList::PostingList(const float aIDF, const sizet_float_mt& aPosting) : 
-    _idf(aIDF),
+/**
+ * @brief Construct a new Posting List:: Posting List object
+ * 
+ * @param aIdf the idf
+ * @param aPosting the posting
+ */
+PostingList::PostingList(const float aIdf, const sizet_float_mt& aPosting) : 
+    _idf(aIdf),
     _posting(aPosting)
 {}
 
+/**
+ * @brief Destroy the Posting List:: Posting List object
+ * 
+ */
 PostingList::~PostingList() {}
 
+/**
+ * @brief Construct a new Posting List:: Posting List object
+ * 
+ * @param pl the postingList to copy
+ */
 PostingList::PostingList(const PostingList& pl) : 
-    _idf(pl.getIDF()),
+    _idf(pl.getIdf()),
     _posting(pl.getPosting())
 {}
 
-void PostingList::pprintPosting(const std::string& aTerm) const {
-    std::cout << "\"" << aTerm << "\" -> [";
+std::ostream& operator<<(std::ostream& strm, const PostingList& pl) {
+    strm << " -> [";
     std::string sep = ") ";
-    for(auto it = _posting.begin(); it != _posting.end(); ++it) {
-        if (it == std::prev(_posting.end(), 1)) {
-            sep = ")";
-        }
-        std::cout << "(" << it->first << ", " << it->second << sep;
+    for (auto it = pl.getPosting().begin(); it != pl.getPosting().end(); ++it) {
+        if (it == std::prev(pl.getPosting().end(), 1)) { sep = ")"; }
+        strm << "(" << it->first << ", " << it->second << sep;
     }
-    std::cout << "]" << std::endl;
+    return strm << "]" << std::endl;
 }

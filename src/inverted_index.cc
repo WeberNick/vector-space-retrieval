@@ -1,15 +1,27 @@
 #include "inverted_index.hh"
 
+/**
+ * @brief Construct a new Inverted Index:: Inverted Index object
+ * 
+ */
 InvertedIndex::InvertedIndex() : 
     _cb(nullptr),
+    _init(false),
     _term_posting_map()
 {}
 
+/**
+ * @brief Destroy the Inverted Index:: Inverted Index object
+ * 
+ */
 InvertedIndex::~InvertedIndex() {}
 
-void InvertedIndex::init(const control_block_t& aControlBlock, postinglist_mt aPostingList) {
+void InvertedIndex::init(const control_block_t& aControlBlock, postinglist_mt aPostingLists) {
     _cb = &aControlBlock;
-    _term_posting_map = aPostingList;
+    if (!_init) {
+        _term_posting_map = aPostingLists;
+        _init = true;
+    }
 }
 
 bool InvertedIndex::insert(const std::string& aTerm, const PostingList& aPostingList) {
@@ -32,12 +44,12 @@ const PostingList& InvertedIndex::getPostingList(const std::string& aTerm) const
     if (_term_posting_map.find(aTerm) != _term_posting_map.end())
         return _term_posting_map.at(aTerm);
     else
-        throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "The term " + aTerm + " does not appear in the document Collection.");
+        throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "The term " + aTerm + " does not appear in the document collection.");
 }
 
 size_t InvertedIndex::getNoDocs(const std::string& aTerm) {
     if (_term_posting_map.find(aTerm) != _term_posting_map.end())
         return _term_posting_map.at(aTerm).getPosting().size();
     else
-        throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "The term " + aTerm + " does not appear in the document Collection.");
+        throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "The term " + aTerm + " does not appear in the document collection.");
 }

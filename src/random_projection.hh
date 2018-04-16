@@ -1,7 +1,13 @@
-//
-// Created by Alexander Weiß on 31.03.18.
-//
-
+/**
+ *	@file 	random_projection.hh
+ *	@author	Alexander Weiß
+ *	@brief  TODO
+ *	@bugs 	Currently no bugs known
+ *	@todos	Write @brief and DESCRIPTION
+ *
+ *	@section DESCRIPTION
+ *	TODO
+ */
 #pragma once
 
 #include "types.hh"

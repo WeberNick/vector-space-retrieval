@@ -1,11 +1,3 @@
-//
-// Created by Alexander Weiß on 07.04.18.
-//
-
-//
-// Created by Alexander Weiß on 31.03.18.
-//
-
 #include "utility.hh"
 #include "gtest/gtest.h"
 #include <vector>
