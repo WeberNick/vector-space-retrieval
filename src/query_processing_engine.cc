@@ -23,6 +23,27 @@ typedef multi_index_container<QueryProcessingEngine::SearchHelper,
                                   // sort by less<string> on name
                                   ordered_non_unique<member<QueryProcessingEngine::SearchHelper, double, &QueryProcessingEngine::SearchHelper::score>>>>
     doc2scores_set;
+
+QueryProcessingEngine::QueryProcessingEngine() :
+    _cb(nullptr), _init(false), _stopwordFile("./data/stopwords.large") // relative path from /path/to/repo/vector-space-retrieval
+{}
+
+void QueryProcessingEngine::init(const control_block_t& aControlBlock) {
+    _cb = &aControlBlock;
+    if (!_init) {
+        read(_stopwordFile);
+        _init = true;
+    }
+}
+
+void QueryProcessingEngine::read(const std::string& aFile) {
+    std::ifstream file(aFile);
+    std::string line;
+    while (std::getline(file, line)) {
+        this->_stopword_list.push_back(Utility::StringOp::trim_copy(line));
+    }
+}
+
 /**
  * @brief Returns the ids of the most similar document in \collection
  *
@@ -136,7 +157,13 @@ const size_t QueryProcessingEngine::cosineScoreCluster(Document* query, const st
 }
 std::vector<size_t> QueryProcessingEngine::search(Document* query, size_t topK) {
 
+
+
+
+
+
     std::vector<std::string> preprocessed_content;
+
 
     for (auto& elem : query->getContent()) {
         preprocessed_content.push_back(Utility::IR::stemPorter(elem));

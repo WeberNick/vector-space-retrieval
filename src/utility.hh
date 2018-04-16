@@ -24,6 +24,8 @@
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
+#include <boost/algorithm/string_regex.hpp>
+#include <boost/regex.hpp>
 
 #include <algorithm>
 #include <bits/stl_algo.h>
@@ -380,6 +382,28 @@ namespace Utility {
      * @brief Namespace for everything IR related
      */
     namespace IR {
+
+        /**
+         * @brief Removes all stopwords sepcified in \stopwordList from \str
+         *
+         * @param str
+         * @param stopwordList
+         * //TODO: NEED TO IMPLEMENT
+         */
+        inline void removeStopword(std::string& str, const string_vt& stopwordList) {
+            for (auto& elem : stopwordList) {
+
+                std::cout << str << std::endl;
+                std::string regex = "\\b(" + elem + ")\\b";
+                std::cout << regex << std::endl;
+
+                boost::regex re(regex, boost::regex::icase);
+
+                std::string format = "";
+                boost::algorithm::replace_all_regex(str, re, format, boost::match_flag_type::match_default);
+            }
+        }
+
         /**
          * @brief Calculates the term frequency of a given term inside a given string
          *

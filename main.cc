@@ -125,8 +125,9 @@ void testNico(const control_block_t& aControlBlock) {
 void testSearch(std::string query) {
     QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
 
+    Utility::IR::removeStopword(query, qpe.getStopwordlist()); // TODO Maybe put this in query processing engine, but this currently only works on raw strings,
+                                                               // but the content of a doc is a string_vt
     string_vt proc_query;
-
     Utility::StringOp::splitString(query, ' ', proc_query);
     Document doc("0", proc_query);
 
@@ -160,8 +161,10 @@ void testAlex(const control_block_t& aControlBlock) {
     std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
     imInstance.init(aControlBlock, docManager.getDocumentMap());
 
+    QueryProcessingEngine::getInstance().init(aControlBlock);
+
     testSearch("why deep fried foods may cause cancer");
-    testSearch("do cholesterol statin drugs cause breast cancer ?");
+    // testSearch("do cholesterol statin drugs cause breast cancer ?");
 }
 
 /**
