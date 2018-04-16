@@ -3,11 +3,11 @@
  *  @brief  Implementation of a time measurement functionality
  *
  *  @section USAGE
- *  Include file,
- *  create Measure object like this 'Measure lMeasure;',
- *  use 'lMeasure.start();' to start the measurement,
- *  use 'lMeasure.stop();' to stop the measurement,
- *  use 'lMeasure.mTotalTime();' to get the duration of the measurement in seconds
+ *          Include file,
+ *          create Measure object like this 'Measure lMeasure;',
+ *          use 'lMeasure.start();' to start the measurement,
+ *          use 'lMeasure.stop();' to stop the measurement,
+ *          use 'lMeasure.mTotalTime();' to get the duration of the measurement in seconds
  */
 #pragma once
 //---------------------------------------------------------------------------

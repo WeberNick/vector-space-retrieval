@@ -1,3 +1,13 @@
+/**
+ *	@file 	types.hh
+ *	@author	Alexander Weiß, Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de), Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
+ *	@brief  Specification of basic types and the control block used in the project
+ *	@bugs 	Currently no bugs known
+ *	@todos	Write DESCRIPTION
+ *
+ *	@section DESCRIPTION
+ *	TODO
+ */
 #pragma once
 
 #include <cstddef>
@@ -6,17 +16,19 @@
 #include <map>
 #include <vector>
 
-typedef std::size_t size_t;
-typedef std::byte byte;
-typedef unsigned int uint;
-typedef std::vector<size_t> size_t_vt;
-typedef std::vector<uint> uint_vt;
-typedef std::vector<std::string> string_vt;
-typedef std::map<std::string, float> str_float_mt;
-typedef std::map<std::string, uint> str_int_mt;
-typedef std::map<std::string, float> float_map;
-typedef std::map<std::string, uint> int_map;
-typedef std::vector<std::vector<float>> float_vector_vt;
+using size_t = std::size_t;
+using byte = std::byte;
+using uint = unsigned int;
+using size_t_vt = std::vector<size_t>;
+using uint_vt = std::vector<uint>;
+using float_vt = std::vector<float>;
+using string_vt = std::vector<std::string>;
+using sizet_float_mt = std::map<size_t, float>;
+using str_float_mt = std::map<std::string, float>;
+using str_int_mt = std::map<std::string, uint>;
+using float_map = std::map<std::string, float>;
+using int_map = std::map<std::string, uint>;
+using float_vector_vt = std::vector<std::vector<float>>;
 
 struct control_block_t {
     const bool _trace;   // indicate if tracing is activated

@@ -8,7 +8,7 @@
 #include <iostream>
 #include <sstream>
 
-typedef std::function<bool(std::pair<std::string, int>, std::pair<std::string, int>)> Comparator;
+using Comparator = std::function<bool(std::pair<std::string, int>, std::pair<std::string, int>)>;
 
 using namespace ::boost;
 using namespace ::boost::multi_index;
@@ -142,6 +142,5 @@ void QueryProcessingEngine::search(Document* query, size_t topK) {
     Document proc_query = Document(query->getDocID(), preprocessed_content);
 
     std::vector<size_t> found_indexes = QueryProcessingEngine::cosineScore(&proc_query, DocumentManager::getInstance().getDocumentMap(), topK);
-
 
 }

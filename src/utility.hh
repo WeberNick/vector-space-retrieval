@@ -1,21 +1,26 @@
-//
-// Created by Alexander Weiß on 30.03.18.
-//
-
 /**
- *  Namespace Nesting explained:
+ *	@file 	utility.hh
+ *	@author	Alexander Weiß, Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de), Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
+ *	@brief  Captures Utility functionality for String operations, IR related operations and similarity measures
+ *          Namespace Nesting:
  *
- *  namespace Utility
- *  {
- *      namespace StringOp{...}
- *      namespace IR{...}
- *      namespace SimilarityMeasures{...}
- *  }
+ *          namespace Utility {
+ *              namespace StringOp { ... }
+ *              namespace IR { ... }
+ *              namespace SimilarityMeasures { ... }
+ *          }
+ *
+ *	@bugs 	Currently no bugs known
+ *	@todos	Write DESCRIPTION
+ *
+ *	@section DESCRIPTION
+ *	TODO
  */
 #pragma once
 
 #include "document_manager.hh"
 #include "exception.hh"
+#include "posting_list.hh"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
@@ -114,7 +119,6 @@ namespace Utility {
     template <typename T>
     inline double scalar_product(std::vector<T> const& a, std::vector<T> const& b) {
         if (a.size() != b.size()) { throw std::runtime_error("different sizes"); }
-
         return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
     }
 
@@ -184,17 +188,12 @@ namespace Utility {
         inline std::vector<std::string> toLower(const std::vector<std::string>& string) {
             std::vector<std::string> data;
             data.reserve(string.size());
-            std::transform(
-                string.begin(),
-                string.end(),
-                std::back_inserter(data),
-                [](const std::string& in) {
-                  std::string out;
-                  out.reserve(in.size());
-                  std::transform(in.begin(), in.end(), std::back_inserter(out), ::tolower);
-                  return out;
-                }
-            );
+            std::transform(string.begin(), string.end(), std::back_inserter(data), [](const std::string& in) {
+                std::string out;
+                out.reserve(in.size());
+                std::transform(in.begin(), in.end(), std::back_inserter(out), ::tolower);
+                return out;
+            });
             return data;
         }
 
@@ -231,7 +230,7 @@ namespace Utility {
          * @brief Calculates the appearance of a single word inside a string
          *
          * @param str the sentence to check for the word
-         * @param word the word to count
+         * @param word the word to
          * @param case_insensitive delare if the search should be case insensitive or not
          * @return the number of occurences
          */
@@ -300,14 +299,14 @@ namespace Utility {
             std::string word;
 
             for (const auto& i : str) {
-                std::cout << i << std::endl;
+                // std::cout << i << std::endl;
                 count[i]++;
-                std::cout << count[i] << std::endl;
+                // std::cout << count[i] << std::endl;
             }
 
             int maxn = max_element(count.begin(), count.end(),
                                    [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) {
-                                       std::cout << a.second << " > " << b.second << std::endl;
+                                       //                    std::cout << a.second << " > " << b.second << std::endl;
                                        return a.second < b.second;
                                    })
                            ->second;
@@ -382,7 +381,7 @@ namespace Utility {
      */
     namespace IR {
         /**
-         * @brief Calculates the term frequency of a given term inside a given document
+         * @brief Calculates the term frequency of a given term inside a given string
          *
          * @param term the term to calculate the frequency of
          * @param content the content string in which the term appears
@@ -394,7 +393,7 @@ namespace Utility {
         }
 
         /**
-         * @brief Calculates the term frequency of a given term inside a given document
+         * @brief Calculates the term frequency of a given term inside a given string vector
          *
          * @param term the term to calculate the frequency of
          * @param content The content vector of terms
@@ -404,18 +403,6 @@ namespace Utility {
             return static_cast<float>((1 + log10(Utility::StringOp::countWordInString(content, term, false))) /
                                       (1 + log10(Utility::StringOp::getMaxWordFrequency(content))));
         }
-
-        /**
-         * @brief Calculates the inverted document frequency of a given term inside a given document collection
-         *
-         * @param term the term to calculate the frequency of
-         * @param documentManager the documents in which the term appears
-         * @return the inverted document frequency
-         */
-        /*inline float calcIDF(const std::string& term, const DocumentManager& documentManager) {
-            // TODO
-            return 0;
-        }*/
 
         /**
          * @brief Calculates the tf-idf value
@@ -433,23 +420,18 @@ namespace Utility {
          * @return
          */
         inline std::string stemPorter(const std::string& sentence) {
-
             std::istringstream iss(sentence);
             std::ostringstream os;
             std::string word;
 
             stemming::english_stem<> StemEnglish;
-
             while (iss >> word) {
-
                 std::wstring wordToStem = StringOp::string2wstring(word);
                 StemEnglish(wordToStem);
                 os << StringOp::wstring2string(wordToStem) << " ";
             }
-
             std::string stemmed = os.str();
             StringOp::trim(stemmed);
-
             return stemmed;
         }
 

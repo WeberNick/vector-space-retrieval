@@ -33,7 +33,7 @@ add_subdirectory(tests)
 
 #Link main executable with code lib
 target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib )
-target_link_libraries(${CMAKE_PROJECT_NAME}_run)
+target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib stdc++fs)
 
 #NICK: Use this to supress deprecated warning in file
 #src/lib/oleanderStemmingLibrary/stemming/../indexing/string_util.h

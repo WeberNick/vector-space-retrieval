@@ -1,26 +1,22 @@
-//
-// Created by Alexander Weiß on 30.03.18.
-//
-
 #include "args.hh"
+#include "document_manager.hh"
+#include "index_manager.hh"
+#include "inverted_index.hh"
 #include "measure.hh"
+#include "query_processing_engine.hh"
 #include "random_projection.hh"
 #include "utility.hh"
 
-#include <document_manager.hh>
 #include <experimental/filesystem>
 #include <iostream>
-#include <query_processing_engine.hh>
-#include <utility.hh>
 #include <vector>
 namespace fs = std::experimental::filesystem;
 
-unsigned int hash(std::vector<float>& origVec, std::vector<float>& randVec) {
+bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
 
     if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
 
     double dot = Utility::scalar_product(origVec, randVec);
-
     if (dot >= 0) {
         return 1;
     } else {
@@ -41,18 +37,18 @@ unsigned int hashExercise2Task2(std::vector<float>& origVec, std::vector<float>&
 }
 
 // insert everything here what is not actually meant to be in main
-void test(const control_block_t& aCB) {
+void test(const control_block_t& aControlBlock) {
     /* Example how to use Measurement class (also described in measure.hh) */
 
     Measure lMeasure;
-    if (aCB.measure()) { lMeasure.start(); }
+    if (aControlBlock.measure()) { lMeasure.start(); }
     // do processing
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
     std::cout << "This print message is just used to prevent unused variable warnings. " << lSeconds << std::endl;
 
     DocumentManager& docManager = DocumentManager::getInstance();
-    std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getCurrID() << std::endl;
+    std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getNoDocuments() << std::endl;
 
     std::string text = "Let me split this into words";
     std::vector<std::string> results;
@@ -60,11 +56,6 @@ void test(const control_block_t& aCB) {
     /*Utility::StringOp::splitString(text, ' ', results);
     for (auto t : results) {
         std::cout << "Word: " << t << std::endl;
-    }*/
-
-    /*std::vector<float> randn = Utility::generateRandomVectorN(200);
-    for (int j = 0; j < randn.size(); ++j) {
-        std::cout << randn[j] << std::endl;
     }*/
 
     /*std::vector<double> doc_a = { 1, 3, 5, 8, 100, 100 };
@@ -130,7 +121,7 @@ void test(const control_block_t& aCB) {
                                                       { 0.09, 0.05, 0.39, 0.25, 0.45, 0.48, 0.04, 0.45, 0.35, 0.12 },
                                                       { 0.13, 0.17, 0.4, 0.4, 0.07, 0.4, 0.35, 0.39, 0.44, 0.06 } };
 
-    RandomProjection::getInstance().init(aCB, 10);
+    RandomProjection::getInstance().init(aControlBlock, 10);
     /*RandomProjection::getInstance().setRandomVectors(randomVectors);
 
     boost::dynamic_bitset<> doc_1_proj = RandomProjection::getInstance().localitySensitiveHashProjection(d1, hashExercise2Task2);
@@ -242,12 +233,28 @@ void test(const control_block_t& aCB) {
     //*/
 }
 
+void testNico(const control_block_t& aControlBlock) {
+    Measure lMeasure;
+    lMeasure.start();
+    DocumentManager& docManager = DocumentManager::getInstance();
+    docManager.init(aControlBlock);
+    std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getNoDocuments() << std::endl;
+
+    IndexManager& imInstance = IndexManager::getInstance();
+    lMeasure.stop();
+    double lSeconds = lMeasure.mTotalTime();
+    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
+    imInstance.init(aControlBlock, docManager.getDocumentMap());
+    std::string term = "sabdariffa";
+    std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term);
+}
+
 /**
- * @brief Starts everything
+ * @brief Starts the program
  *
  * @param argc
  * @param argv
- * @return
+ * @return int
  */
 int main(const int argc, const char* argv[]) {
     // this is just a test, needs a proper implementation later on
@@ -276,7 +283,8 @@ int main(const int argc, const char* argv[]) {
     const control_block_t lCB = { lArgs.trace(), lArgs.measure(), lArgs.print(), lArgs.path(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
 
     // insert everything here what is not actually meant to be in main
-    test(lCB);
+    // test(lCB);
+    testNico(lCB);
 
     return 0;
 }

@@ -11,52 +11,79 @@
  */
 #pragma once
 
-#include "types.hh"
-#include "utility.hh"
 #include "document.hh"
 #include "document_manager.hh"
+#include "types.hh"
+#include "utility.hh"
 
-#include <vector>
-#include <unordered_map>
-#include <random>
-#include <cmath>
 #include <algorithm>
+#include <cmath>
+#include <random>
+#include <unordered_map>
+#include <vector>
 
 class Cluster
 {
+    friend class IndexManager;
+
     public:
-        typedef std::unordered_map<const Document*, doc_ptr_vt> cluster_mt;
+        using cluster_mt = std::unordered_map<const Document*, doc_ptr_vt>;
 
     private:
         explicit Cluster();
-        Cluster(const Cluster&) = delete;
+        Cluster(const Cluster&) = default;
         Cluster(Cluster&&) = delete;
         Cluster& operator=(const Cluster&) = delete;
         Cluster& operator=(Cluster&&) = delete;
         ~Cluster();
 
-    public:
-        static Cluster& getInstance()
-        {
-            static Cluster lInstance;
-            return lInstance;
-        }
-
-        void init(const control_block_t& aCB);
-
-    public:
-        inline const doc_ptr_vt&    getLeaders(){ return _leaders; }
-        inline const cluster_mt&    getCluster(){ return _cluster; }
-
     private:
-        void init();
+        /**
+         * @brief Get the Cluster Singleton instance.
+         *
+         * @return Cluster& a reference to the Cluster Singleton instance.
+         */
+        inline static Cluster& getInstance() {
+          static Cluster lInstance;
+          return lInstance;
+        }
+        /**
+         * @brief Initialize control block and cluster
+         *
+         * @param aControlBlock the control block
+         */
+        void init(const control_block_t& aControlBlock);
+        /**
+         * @brief Choose Leaders
+         * 
+         */
         void chooseLeaders();
+        /**
+         * @brief Fill Clusters
+         * 
+         */
         void fillCluster();
 
+    public:
+        /**
+         * @brief Get the Leaders object
+         * 
+         * @return const doc_ptr_vt& 
+         */
+        inline const doc_ptr_vt& getLeaders() { return _leaders; }
+        /**
+         * @brief Get the Cluster object
+         * 
+         * @return const cluster_mt& 
+         */
+        inline const cluster_mt& getCluster() { return _cluster; }
+
     private:
-        doc_ptr_vt  _leaders; //stores pointer to leader documents inside the doc mngr's map
-        cluster_mt  _cluster; //stores <Doc*, Vector<Doc*>> pairs, the first pointer is a leader document
         const control_block_t* _cb;
+
+        bool _init;          // was the cluster initialized?
+        doc_ptr_vt _leaders; // stores pointer to leader documents inside the doc mngr's map
+        cluster_mt _cluster; // stores <Doc*, Vector<Doc*>> pairs, the first pointer is a leader document
 };
 
 
