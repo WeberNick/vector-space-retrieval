@@ -20,10 +20,10 @@ RandomProjection& RandomProjection::getInstance() {
  * @param hashFunc hash function to use to combine original vector and random vectors
  * @return
  */
-std::vector<bool> RandomProjection::localitySensitiveHashProjection(std::vector<float>& vector,
-                                                                    std::function<unsigned int(std::vector<float>&, std::vector<float>&)> hashFunc) {
+boost::dynamic_bitset<> RandomProjection::localitySensitiveHashProjection(std::vector<float>& vector,
+                                                                          std::function<unsigned int(std::vector<float>&, std::vector<float>&)> hashFunc) {
 
-    std::vector<bool> result(_dimension);
+    boost::dynamic_bitset<> result(_dimension);
     for (size_t j = 0; j < _dimension; ++j) {
         result[j] = hashFunc(vector, _randomVectors[j]);
     }
