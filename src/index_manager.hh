@@ -53,7 +53,7 @@ class IndexManager {
      * @param term the term
      * @return const float the inverse document frequency
      */
-    inline const float getIdf(std::string& term) { return _idf_map.at(term); }
+    inline float getIdf(std::string term) { return _idf_map.at(term); }
 
     /**
      * @brief Get the inverted index object

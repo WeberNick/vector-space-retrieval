@@ -48,9 +48,8 @@ TEST_F(DocumentTest, Tf_Equals_Test) {
 
 TEST_F(DocumentTest, Idf_Equals_Test) {
 
-    // does not work. Why?
-    const float idf_today2 = indexManager->getIdf("today");
-    float idf_today = indexManager->getInvertedIndex().getPostingList("today").getIdf();
+    const float idf_today = indexManager->getIdf("today");
+    //float idf_today = indexManager->getInvertedIndex().getPostingList("today").getIdf();
     float idf_food = indexManager->getInvertedIndex().getPostingList("food").getIdf();
     EXPECT_EQ(idf_today, 0);
     EXPECT_EQ(idf_food, Utility::IR::calcIdf(docMap->size(), 2));
