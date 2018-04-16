@@ -52,5 +52,5 @@ std::ostream& operator<<(std::ostream& strm, const Document& doc) {
         if (it == std::prev(doc.getTermTfMap().end(), 1)) { sep = ")"; }
         strm << "(" << it->first << ", " << it->second << sep;
     }
-    return strm << std::endl;
+    return strm;
 }

@@ -8,7 +8,7 @@
 DocumentManager::DocumentManager() : 
     _cb(nullptr),
     _init(false),
-    _collectionFile("./data/collection.docs"), // relative path from /path/to/repo/vector-space-retrieval
+    _collectionFile(), // relative path from /path/to/repo/vector-space-retrieval
     _delimiter('~'),
     _docs()
 {}
@@ -19,9 +19,10 @@ DocumentManager::DocumentManager() :
  */
 DocumentManager::~DocumentManager() { }
 
-void DocumentManager::init(const control_block_t& aControlBlock) {
+void DocumentManager::init(const control_block_t& aControlBlock, const std::string& aCollectionFile) {
     _cb = &aControlBlock;
     if (!_init) {
+        _collectionFile = aCollectionFile;
         read(_collectionFile);
         _init = true;
     }
@@ -32,10 +33,13 @@ void DocumentManager::read(const std::string& aFile) {
     std::string line;
     while (std::getline(file, line)) {
         string_vt parts;
-        Utility::StringOp::splitString(line, _delimiter, parts);
+        Utility::StringOp::splitStringBoost(line, _delimiter, parts);
         string_vt content;
-        Utility::StringOp::splitString(parts[1], ' ', content);
+        Utility::StringOp::splitStringBoost(parts[1], ' ', content);
         std::string docID = parts[0];
+        for (auto& elem : content)
+            std::cout << elem << " ";
+        std::cout << std::endl;
         Document doc(docID, content);
         this->insert(std::make_pair(doc.getID(), doc));
     }

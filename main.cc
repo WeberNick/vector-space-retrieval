@@ -127,18 +127,29 @@ void testNico(const control_block_t& aControlBlock) {
     Measure lMeasure;
     lMeasure.start();
     DocumentManager& docManager = DocumentManager::getInstance();
-    docManager.init(aControlBlock);
-    std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getNoDocuments() << std::endl;
+    docManager.init(aControlBlock, "./data/collection_test_mwe.docs");
+    doc_mt& docMap = docManager.getDocumentMap();
 
     IndexManager& imInstance = IndexManager::getInstance();
-    imInstance.init(aControlBlock, docManager.getDocumentMap());
-    std::string term = "sabdariffa";
+    imInstance.init(aControlBlock, docMap);
+    // std::string term = "sabdariffa";
+    std::string term = "food";
     std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term);
     size_t size = docManager.getDocument(1).getTfIdfVector().size();
     std::cout << size << std::endl;
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
     std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
+    int count = 0;
+    std::cout << docManager.getDocument(1) << std::endl;
+    //PostingList& pl = 
+    std::cout << imInstance.getInvertedIndex().getPostingList("today") << std::endl;
+    for (const auto& [term, idf] : imInstance.getIdfMap()) {
+        ++count;
+        if (count > 100) return;
+        std::cout << term << ": ";
+        std::cout << idf << std::endl;
+    }
 }
 
 /**

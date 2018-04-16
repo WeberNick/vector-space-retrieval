@@ -41,6 +41,13 @@
  */
 namespace Utility {
 
+    /**
+     * @brief 
+     * 
+     * @param mean 
+     * @param stddev 
+     * @return double 
+     */
     inline double rand_normal(double mean, double stddev) { // Box muller method
         static double n2 = 0.0;
         static int n2_cached = 0;
@@ -86,6 +93,12 @@ namespace Utility {
         return vec;
     }
 
+    /**
+     * @brief 
+     * 
+     * @param dimension 
+     * @return std::vector<float> 
+     */
     inline std::vector<float> generateRandomVectorN(size_t dimension) {
         std::vector<float> result(dimension);
         for (size_t i = 0; i < dimension; ++i) {
@@ -94,6 +107,13 @@ namespace Utility {
         return result;
     }
 
+    /**
+     * @brief 
+     * 
+     * @param a 
+     * @param b 
+     * @return double 
+     */
     inline double scalar_product(std::vector<float> const& a, std::vector<float> const& b) {
         if (a.size() != b.size()) { throw std::runtime_error("different sizes"); }
         return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
@@ -110,7 +130,7 @@ namespace Utility {
          * @param splitChar the delimiter character indicating where to split
          * @param out the vector storing the result
          */
-        inline void splitStringBy(const std::string& str, const char splitChar, string_vt& out) {
+        inline void splitString(const std::string& str, const char splitChar, string_vt& out) {
             size_t found;
             size_t pos = 0;
             while ((found = str.find_first_of(splitChar, pos)) != std::string::npos) {
@@ -128,7 +148,7 @@ namespace Utility {
          * @param aOutputVector the vector to store the string tokens in
          * @return -
          */
-        inline void splitString(const std::string& aString, const char aDelimiter, string_vt& aOutputVector) {
+        inline void splitStringBoost(const std::string& aString, const char aDelimiter, string_vt& aOutputVector) {
             boost::split(aOutputVector, aString, boost::is_any_of(std::string(1, aDelimiter)));
         }
 
@@ -141,7 +161,6 @@ namespace Utility {
          */
         inline bool endsWith(const std::string& aString, const std::string& aSuffix) {
             return boost::algorithm::ends_with(aString, aSuffix);
-            //            return aString.size() >= aSuffix.size() && 0 == aString.compare(aString.size() - aSuffix.size(), aSuffix.size(), aSuffix);
         }
 
         /**
@@ -184,7 +203,6 @@ namespace Utility {
             return s;
         }
 
-        // TODO: TEST FAILS
         /**
          * @brief Calculates the appearance of a single word inside a string
          *
@@ -198,11 +216,11 @@ namespace Utility {
                 std::string word = toLower(word);
                 std::string str = toLower(str);
             }
-            std::vector<std::string> content;
-            splitString(str, ' ', content);
+            string_vt con;
+            splitString(str, ' ', con);
             size_t count = 0;
-            for (size_t i = 0; i < content.size(); ++i) {
-                if (content[i] == word) ++count;
+            for (const auto& i : con) {
+                if (i == word) ++count;
             }
             return count;
         }
@@ -234,6 +252,7 @@ namespace Utility {
          * @return
          */
         inline int getMaxWordFrequency(const std::string& str) {
+            if (str == "") return 0;
             std::istringstream input(str);
             std::map<std::string, int> count;
             std::string word;
@@ -252,24 +271,24 @@ namespace Utility {
          * @param str
          * @return
          */
-        inline int getMaxWordFrequency(std::vector<std::string> str) {
-            std::map<std::string, int> count;
-            std::string word;
+        inline int getMaxWordFrequency(std::vector<std::string> vec) {
+            if (vec.size() == 0)
+                return 0;
+            else if (vec.size() == 1)
+                return getMaxWordFrequency(vec.at(0));
+            else {
+                std::map<std::string, int> count;
+                std::string word;
 
-            for (const auto& i : str) {
-                // std::cout << i << std::endl;
-                count[i]++;
-                // std::cout << count[i] << std::endl;
+                for (const auto& i : vec) {
+                    ++count[i];
+                }
+                int maxn = max_element(count.begin(), count.end(),
+                                    [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b)
+                                    { return a.second < b.second; }
+                                    )->second;
+                return maxn;
             }
-
-            int maxn = max_element(count.begin(), count.end(),
-                                   [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) {
-                                       //                    std::cout << a.second << " > " << b.second << std::endl;
-                                       return a.second < b.second;
-                                   })
-                           ->second;
-
-            return maxn;
         }
 
         /**
@@ -338,6 +357,32 @@ namespace Utility {
      * @brief Namespace for everything IR related
      */
     namespace IR {
+
+        /**
+         * @brief Calculates the 
+         * 
+         * @param term 
+         * @param max 
+         * @return float 
+         */
+        inline float calcTf(const size_t term, const size_t max) { return static_cast<float>((1 + log10(term)) / (1 + log10(max))); }
+        /**
+         * @brief Calculates the 
+         * 
+         * @param term 
+         * @param max 
+         * @return float 
+         */
+        inline float calcIdf(const size_t N, const size_t docs) { return static_cast<float>(log10(N / docs)); }
+         /**
+         * @brief Calculates the tf-idf value
+         *
+         * @param tf the term frequency
+         * @param idf  the inverse document frequency
+         * @return the idf value
+         */
+        inline float calcTfIdf(const float tf, const float idf) { return static_cast<float>(tf * idf); }
+
         /**
          * @brief Calculates the term frequency of a given term inside a given string
          *
@@ -345,7 +390,7 @@ namespace Utility {
          * @param content the content string in which the term appears
          * @return the term frequency
          */
-        inline float calcTF(const std::string& term, const std::string& content) {
+        inline float calcTf(const std::string& term, const std::string& content) {
             return static_cast<float>((1 + log10(Utility::StringOp::countWordInString(content, term, false))) /
                                       (1 + log10(Utility::StringOp::getMaxWordFrequency(content))));
         }
@@ -357,19 +402,10 @@ namespace Utility {
          * @param content The content vector of terms
          * @return the term frequency
          */
-        inline float calcTF(const std::string& term, const string_vt& content) {
+        inline float calcTf(const std::string& term, const string_vt& content) {
             return static_cast<float>((1 + log10(Utility::StringOp::countWordInString(content, term, false))) /
                                       (1 + log10(Utility::StringOp::getMaxWordFrequency(content))));
         }
-
-        /**
-         * @brief Calculates the tf-idf value
-         *
-         * @param tf the term frequency
-         * @param idf  the inverse document frequency
-         * @return the idf value
-         */
-        inline float calcTF_IDF(const float& tf, const float& idf) { return tf * idf; }
 
         /**
          * @brief Stems a string word based on the porter stemmer algorithm. Uses https://github.com/OleanderSoftware/OleanderStemmingLibrary
@@ -400,6 +436,25 @@ namespace Utility {
      */
     namespace SimilarityMeasures {
 
+        /**
+         * @brief calculate and return the length of the given vector
+         * 
+         * @param vec the vector
+         * @return float the length
+         */
+        inline double vectorLength(const std::vector<float>& vec) {
+            double magn = 0;
+            for (size_t i = 0; i < vec.size(); ++i) {
+                magn += pow(vec[i], 2);
+            }
+            return sqrt(magn);
+        }
+
+        /**
+         * @brief 
+         * 
+         * @return float 
+         */
         inline float calcCosSimEfficient() {
             // TODO
             return 0;
@@ -413,32 +468,26 @@ namespace Utility {
          * @return the cosine similarity
          */
         inline float calcCosSim(const Document& doc_a, const Document& doc_b) {
-            // TODO:
+            // TODO
             return 0.0; // calcCosSim(doc_a.getTF_IDF(), doc_b.getTF_IDF())
         }
 
         /**
-         * @brief Calculates the cosine similarity between \a aTF_IDF_a and \a aTF_IDF_b
+         * @brief Calculates the cosine similarity between \a aTfIdf_a and \a aTfIdf_b
          *
-         * @param aTF_IDF_a a tf-idf vector
-         * @param aTF_IDF_b a tf-idf vector
+         * @param aTfIdf_a a tf-idf vector
+         * @param aTfIdf_b a tf-idf vector
          * @return the cosine similarity
          */
-        inline float calcCosSim(const std::vector<float>& aTF_IDF_a, const std::vector<float>& aTF_IDF_b) {
-
-            if (aTF_IDF_a.size() != aTF_IDF_b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size");
+        inline float calcCosSim(const std::vector<float>& aTfIdf_a, const std::vector<float>& aTfIdf_b) {
+            if (aTfIdf_a.size() != aTfIdf_b.size())
+                throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size");
 
             double dotProduct = 0;
-            double magnitudeDoc_a = 0;
-            double magnitudeDoc_b = 0;
-
-            for (size_t i = 0; i < aTF_IDF_a.size(); ++i) {
-                dotProduct += (aTF_IDF_a[i] * aTF_IDF_b[i]);
-                magnitudeDoc_a += pow(aTF_IDF_a[i], 2);
-                magnitudeDoc_b += pow(aTF_IDF_b[i], 2);
+            for (size_t i = 0; i < aTfIdf_a.size(); ++i) {
+                dotProduct += (aTfIdf_a[i] * aTfIdf_b[i]);
             }
-
-            return static_cast<float>(dotProduct / (sqrt(magnitudeDoc_a) * sqrt(magnitudeDoc_b)));
+            return static_cast<float>(dotProduct / (vectorLength(aTfIdf_a) * vectorLength(aTfIdf_b)));
         }
 
         /**
@@ -449,6 +498,7 @@ namespace Utility {
          * @return
          */
         inline float calcAngularSimilarity(const Document& doc_a, const Document& doc_b) {
+            // TODO
             return 0.0; // return calcAngularSimilarity(doc_a.getTF_IDF, doc_a.getTF_IDF);
         }
 
@@ -456,17 +506,24 @@ namespace Utility {
          * Returns the angular similarity between two docs
          *
          * @see https://en.wikipedia.org/wiki/Cosine_similarity#Angular_distance_and_similarity
-         * @param aTF_IDF_a a tf-idf vector
-         * @param aTF_IDF_a a tf-idf vector
+         * @param aTfIdf_a a tf-idf vector
+         * @param aTfIdf_b a tf-idf vector
          * @return
          */
-        inline float calcAngularSimilarity(const std::vector<float>& aTF_IDF_a, const std::vector<float>& aTF_IDF_b) {
-            float cosine = calcCosSim(aTF_IDF_a, aTF_IDF_b);
+        inline float calcAngularSimilarity(const std::vector<float>& aTfIdf_a, const std::vector<float>& aTfIdf_b) {
+            float cosine = calcCosSim(aTfIdf_a, aTfIdf_b);
             float theta = acosf(cosine);
 
             return static_cast<float>(1 - (theta / M_PI));
         }
 
+        /**
+         * @brief 
+         * 
+         * @param vec_a 
+         * @param vec_b 
+         * @return unsigned int 
+         */
         inline unsigned int calcHammingDist(std::vector<bool>& vec_a, std::vector<bool>& vec_b) {
             float dist = 0;
             for (size_t i = 0; i < vec_a.size(); ++i) {
@@ -505,8 +562,8 @@ namespace Utility {
          * @return the euclidean distance as double
          */
         inline float calcEuclDist(const std::vector<float>& doc_a, const std::vector<float>& doc_b) {
-
-            if (doc_a.size() != doc_b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size");
+            if (doc_a.size() != doc_b.size())
+                throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size.");
 
             double sum = 0;
             for (size_t i = 0; i < doc_a.size(); ++i) {
@@ -522,26 +579,16 @@ namespace Utility {
          * @param doc_b a document
          * @return the euclidean distance as double
          */
-        inline float calcEuclDistNormalized(std::vector<float> doc_a, std::vector<float> doc_b) {
+        inline float calcEuclDistNormalized(std::vector<float>& doc_a, std::vector<float>& doc_b) {
+            if (doc_a.size() != doc_b.size())
+                throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size.");
 
-            if (doc_a.size() != doc_b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size");
-
-            double magnitudeDoc_a = 0;
-            double magnitudeDoc_b = 0;
-
-            for (size_t i = 0; i < doc_a.size(); ++i) {
-                magnitudeDoc_a += pow(doc_a[i], 2);
-                magnitudeDoc_b += pow(doc_b[i], 2);
-            }
-
-            magnitudeDoc_a = sqrt(magnitudeDoc_a);
-            magnitudeDoc_b = sqrt(magnitudeDoc_b);
-
+            double len_a = vectorLength(doc_a);
+            double len_b = vectorLength(doc_b);
             for (size_t j = 0; j < doc_a.size(); ++j) {
-                doc_a[j] = doc_a[j] / magnitudeDoc_a;
-                doc_b[j] = doc_b[j] / magnitudeDoc_b;
+                doc_a[j] = doc_a[j] / len_a;
+                doc_b[j] = doc_b[j] / len_b;
             }
-
             return calcEuclDist(doc_a, doc_b);
         }
 
