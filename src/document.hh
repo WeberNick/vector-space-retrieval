@@ -59,7 +59,19 @@ class Document {
      *
      * @return const str_float_mt& the term tf map
      */
+    inline str_float_mt& getTermTfMap() { return _term_tf_map; }
+    /**
+     * @brief Get the term to term frequency map of the document
+     *
+     * @return const str_float_mt& the term tf map
+     */
     inline const str_float_mt& getTermTfMap() const { return _term_tf_map; }
+    /**
+     * @brief Get the tf idf vector of the document
+     *
+     * @return const float_vt&
+     */
+    inline float_vt& getTfIdfVector() { return _tf_idf_vec; }
     /**
      * @brief Get the tf idf vector of the document
      *
@@ -73,12 +85,6 @@ class Document {
      */
     inline float getNormLength() const { return _norm_length; }
 
-    /**
-     * @brief append a tfidf value to the tf idf vector
-     *
-     * @param aVal the value to append
-     */
-    inline const void appendTfIdfValue(const float aVal) { _tf_idf_vec.push_back(aVal); }
     /**
      * @brief Get the tf of aTerm in this document
      *

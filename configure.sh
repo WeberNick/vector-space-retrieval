@@ -24,7 +24,7 @@
 SCRIPT_HEADSIZE=$(head -200 ${0} |grep -n "^# END_OF_HEADER" | cut -f1 -d:)
 SCRIPT_NAME="$(basename ${0})"
 
-  #== usage functions ==#
+#== usage functions ==#
 usage() { printf "Usage: "; head -${SCRIPT_HEADSIZE:-99} ${0} | grep -e "^#+" | sed -e "s/^#+[ ]*//g" -e "s/\${SCRIPT_NAME}/${SCRIPT_NAME}/g" ; }
 usagefull() { head -${SCRIPT_HEADSIZE:-99} ${0} | grep -e "^#[%+-]" | sed -e "s/^#[%+-]//g" -e "s/\${SCRIPT_NAME}/${SCRIPT_NAME}/g" ; }
 
@@ -69,7 +69,7 @@ then
   exit 1
 fi
 
-
+echo "> [Deleting]"
 if [ -d ./build ];
 then
   echo "Deleting ./build directory"
@@ -109,7 +109,8 @@ echo "Creating ./build directory"
 mkdir ./build
 cd ./build
 
-echo "Executing CMake"
+echo
+echo "> [Executing] CMake"
 
 if [ -z ${C+x} ] && [ -z ${CXX+x} ]
 then
