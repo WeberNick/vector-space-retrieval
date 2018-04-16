@@ -36,6 +36,13 @@ class RandomProjection {
     inline const size_t getDimensions() { return _dimension; };
     inline const size_t getOrigvectorSize() { return _origVectorSize; };
 
+    /**
+     * @brief Set the Dimensions object
+     *
+     * @param dimensions
+     * @return true
+     * @return false
+     */
     inline bool setDimensions(const size_t dimensions) {
         if (_dimension) {
             return false;
@@ -45,8 +52,20 @@ class RandomProjection {
         }
     }
 
+    /**
+     * @brief Set the Random Vectors object
+     *
+     * @param randomVectors
+     */
     inline void setRandomVectors(float_vector_vt randomVectors) { _randomVectors = randomVectors; }
 
+    /**
+     * @brief Set the Orig Vector Size object
+     *
+     * @param origVectorSize
+     * @return true
+     * @return false
+     */
     inline bool setOrigVectorSize(const size_t origVectorSize) {
         if (_origVectorSize) {
             return false;
@@ -56,6 +75,30 @@ class RandomProjection {
         }
     }
 
+    /**
+     * @brief Initializes the RandomProjection object with the control block
+     *
+     * @param aCB
+     * @param origVectorSize
+     * @return
+     */
+    inline bool init(const control_block_t& aCB, const size_t origVectorSize) {
+        _cb = &aCB;
+        _dimension = _cb->_noDimensions;
+        std::cout << "Init with " << _dimension << " dimensions" << std::endl;
+
+        if (_dimension == 0) throw "Random projection dimension equals 0, must be > 0 ";
+
+        setOrigVectorSize(origVectorSize);
+        initRandomVectors();
+    }
+
+    /**
+     * @brief Initilaizes the random vectors
+     *
+     * @return true
+     * @return false
+     */
     inline bool initRandomVectors() {
         if (_dimension) {
             for (size_t i = 0; i < _dimension; ++i) {
@@ -68,6 +111,7 @@ class RandomProjection {
     }
 
   private:
+    const control_block_t* _cb;
     float_vector_vt _randomVectors;
     size_t _dimension;
     size_t _origVectorSize;

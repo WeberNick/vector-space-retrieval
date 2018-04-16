@@ -130,9 +130,8 @@ void test(const control_block_t& aCB) {
                                                       { 0.09, 0.05, 0.39, 0.25, 0.45, 0.48, 0.04, 0.45, 0.35, 0.12 },
                                                       { 0.13, 0.17, 0.4, 0.4, 0.07, 0.4, 0.35, 0.39, 0.44, 0.06 } };
 
-    RandomProjection::getInstance().setDimensions(5);
-    RandomProjection::getInstance().setOrigVectorSize(10);
-    RandomProjection::getInstance().setRandomVectors(randomVectors);
+    RandomProjection::getInstance().init(aCB, 10);
+    /*RandomProjection::getInstance().setRandomVectors(randomVectors);
 
     boost::dynamic_bitset<> doc_1_proj = RandomProjection::getInstance().localitySensitiveHashProjection(d1, hashExercise2Task2);
     std::cout << "doc_1 after hashing: " << doc_1_proj << std::endl;
