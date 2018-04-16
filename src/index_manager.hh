@@ -47,6 +47,13 @@ class IndexManager {
      * @return const string_vt& the collection terms
      */
     inline const string_vt& getCollectionTerms() { return _collection_terms; }
+    /**
+     * @brief Get the inverse document frequency for the term
+     * 
+     * @param term the term
+     * @return const float the inverse document frequency
+     */
+    inline float getIdf(std::string term) { return _idf_map.at(term); }
 
     /**
      * @brief Get the inverted index object

@@ -110,16 +110,28 @@ void testNico(const control_block_t& aControlBlock) {
     Measure lMeasure;
     lMeasure.start();
     DocumentManager& docManager = DocumentManager::getInstance();
-    docManager.init(aControlBlock);
-    std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getNoDocuments() << std::endl;
+    docManager.init(aControlBlock, "./data/collection_test_mwe.docs");
+    doc_mt& docMap = docManager.getDocumentMap();
 
     IndexManager& imInstance = IndexManager::getInstance();
+    imInstance.init(aControlBlock, docMap);
+    // std::string term = "sabdariffa";
+    std::string term = "today";
+    
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
     std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
-    imInstance.init(aControlBlock, docManager.getDocumentMap());
-    std::string term = "sabdariffa";
-    std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term);
+    int count = 0;
+    std::cout << docManager.getDocument(2) << std::endl;
+    std::cout  << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term) << std::endl;
+    for (const auto& [term, idf] : imInstance.getIdfMap()) {
+        ++count;
+        if (count > 100) return;
+        std::cout << term << ": ";
+        std::cout << idf << std::endl;
+    }
+    // testSearch("why deep fried foods may cause cancer");
+    // testSearch("do cholesterol statin drugs cause breast cancer ?");
 }
 
 void testSearch(std::string query) {
@@ -138,7 +150,7 @@ void testSearch(std::string query) {
     double lSecondsQuery = lMeasureQuery.mTotalTime();
     std::cout << "Search took " << lSecondsQuery << " sec." << std::endl;
 
-    for (int j = 0; j < result.size(); ++j) {
+    for (size_t j = 0; j < result.size(); ++j) {
         std::cout << "(" << j << ".) " << DocumentManager::getInstance().getDocument(result[j]).getDocID() << ": ";
 
         for (auto& elem : DocumentManager::getInstance().getDocument(result[j]).getContent()) {
@@ -152,14 +164,15 @@ void testAlex(const control_block_t& aControlBlock) {
     Measure lMeasureIndexing;
     lMeasureIndexing.start();
     DocumentManager& docManager = DocumentManager::getInstance();
-    docManager.init(aControlBlock);
-    std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getNoDocuments() << std::endl;
+    docManager.init(aControlBlock, "./data/collection_test_mwe.docs");
+    doc_mt& docMap = docManager.getDocumentMap();
 
     IndexManager& imInstance = IndexManager::getInstance();
+    imInstance.init(aControlBlock, docMap);
+
     lMeasureIndexing.stop();
     double lSeconds = lMeasureIndexing.mTotalTime();
     std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
-    imInstance.init(aControlBlock, docManager.getDocumentMap());
 
     QueryProcessingEngine::getInstance().init(aControlBlock);
 
@@ -202,7 +215,7 @@ int main(const int argc, const char* argv[]) {
 
     // insert everything here what is not actually meant to be in main
     // test(lCB);
-    // testNico(lCB);
-    testAlex(lCB);
+    testNico(lCB);
+    // testAlex(lCB);
     return 0;
 }

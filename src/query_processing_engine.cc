@@ -53,7 +53,7 @@ void QueryProcessingEngine::read(const std::string& aFile) {
  */
 std::vector<size_t> QueryProcessingEngine::cosineScore(const Document* query, const doc_mt& collection, size_t topK) {
 
-    unsigned long count = collection.size();
+    //unsigned long count = collection.size();
 
     // Map of doc id to scores
     std::map<size_t, float> docId2Scores;
@@ -76,7 +76,7 @@ std::vector<size_t> QueryProcessingEngine::cosineScore(const Document* query, co
             for (auto& posting : postingList.getPosting()) {
 
                 docId2Scores[posting.first] +=
-                    (posting.second * postingList.getIdf() * (Utility::IR::calcTF(query->getContent()[j], query->getContent()) * postingList.getIdf()));
+                    (posting.second * postingList.getIdf() * (Utility::IR::calcTf(query->getContent()[j], query->getContent()) * postingList.getIdf()));
             }
         } catch (const InvalidArgumentException& e) { std::cout << "Error thrown" << std::endl; }
     }
@@ -112,7 +112,7 @@ std::vector<size_t> QueryProcessingEngine::cosineScore(const Document* query, co
  */
 const size_t QueryProcessingEngine::cosineScoreCluster(Document* query, const std::vector<Document*>& collection) {
 
-    unsigned long count = collection.size();
+    size_t count = collection.size();
 
     // Map of doc id to scores
     std::map<size_t, float> docId2Scores;
@@ -121,17 +121,16 @@ const size_t QueryProcessingEngine::cosineScoreCluster(Document* query, const st
                                           // so, this is not the implementation like in the IR Book
 
     // Fill length vector with the lengths of the documents
-    for (int i = 0; i < count; ++i) {
+    for (size_t i = 0; i < count; ++i) {
         docId2Length[collection[i]->getID()] = collection[i]->getContent().size();
     }
 
     // Calculate weightings per doc using the tf-idf of the word in the doc collection times the tf-idf of the term in the query
     for (size_t j = 0; j < query->getContent().size(); ++j) {
         const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList(query->getContent()[j]);
-
         for (auto& posting : postingList.getPosting()) {
             docId2Scores[posting.first] +=
-                (posting.second * postingList.getIdf()) * (Utility::IR::calcTF(query->getContent()[j], query->getContent()) * postingList.getIdf());
+                (posting.second * postingList.getIdf()) * (Utility::IR::calcTf(query->getContent()[j], query->getContent()) * postingList.getIdf());
         }
     }
 
@@ -173,7 +172,7 @@ std::vector<size_t> QueryProcessingEngine::search(Document* query, size_t topK) 
 
     std::cout << "Searching for: ";
 
-    for (int j = 0; j < proc_query.getContent().size(); ++j) {
+    for (size_t j = 0; j < proc_query.getContent().size(); ++j) {
         std::cout << "(" << j << "|" << proc_query.getContent()[j] << ")"
                   << " ";
     }

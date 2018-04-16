@@ -111,13 +111,13 @@ class DocumentManager {
      *
      * @param aControlBlock
      */
-    void init(const control_block_t& aControlBlock);
+    void init(const control_block_t& aControlBlock, const std::string& aCollectionFile);
 
   private:
     const control_block_t* _cb;
 
     bool _init;
-    const std::string _collectionFile; // defined manually
-    const char _delimiter;             // defined manually
+    std::string _collectionFile;
+    const char _delimiter; // defined manually
     doc_mt _docs;
 };
