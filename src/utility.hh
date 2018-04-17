@@ -34,6 +34,7 @@
 #include <functional>
 #include <iterator>
 #include <random>
+#include <regex>
 #include <set>
 #include <sstream>
 #include <stemming/english_stem.h>
@@ -164,9 +165,7 @@ namespace Utility {
          * @param aSuffix the suffix
          * @return true if input string ends with specified suffix, false otherwise
          */
-        inline bool endsWith(const std::string& aString, const std::string& aSuffix) {
-            return boost::algorithm::ends_with(aString, aSuffix);
-        }
+        inline bool endsWith(const std::string& aString, const std::string& aSuffix) { return boost::algorithm::ends_with(aString, aSuffix); }
 
         /**
          * @brief Lower case a given string
@@ -236,7 +235,7 @@ namespace Utility {
          */
         inline long countWordInString(std::string str, std::string word, bool case_insensitive) {
             std::string wordCased = case_insensitive ? toLower(word) : word;
-            std::string strCased  = case_insensitive ? toLower(str) : str;
+            std::string strCased = case_insensitive ? toLower(str) : str;
 
             std::vector<std::string> content;
             splitString(strCased, ' ', content);
@@ -307,11 +306,20 @@ namespace Utility {
                     ++count[i];
                 }
                 int maxn = max_element(count.begin(), count.end(),
-                                    [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b)
-                                    { return a.second < b.second; }
-                                    )->second;
+                                       [](const std::pair<std::string, int>& a, const std::pair<std::string, int>& b) { return a.second < b.second; })
+                               ->second;
                 return maxn;
             }
+        }
+
+        /**
+         * @brief Removes empty strings from a string vector
+         *
+         * @param vec
+         */
+        inline void removeEmptyStringsFromVec(std::vector<std::string>& vec) {
+            auto it = vec.erase(std::remove_if(vec.begin(), vec.end(), [](const std::string& s) { return s.empty(); }));
+            vec.erase(it, vec.end());
         }
 
         /**
@@ -374,6 +382,7 @@ namespace Utility {
             trim(s);
             return s;
         }
+
     } // namespace StringOp
 
     /**
@@ -382,22 +391,24 @@ namespace Utility {
     namespace IR {
 
         /**
-         * @brief Calculates the 
-         * 
-         * @param term 
-         * @param max 
-         * @return float 
+         * @brief Calculates the
+         *
+         * @param term
+         * @param max
+         * @return float
          */
         inline float calcTf(const float term, const float max) { return static_cast<float>((1 + log10(term)) / (1 + log10(max))); }
+
         /**
-         * @brief Calculates the 
-         * 
-         * @param term 
-         * @param max 
-         * @return float 
+         * @brief Calculates the
+         *
+         * @param term
+         * @param max
+         * @return float
          */
         inline float calcIdf(const float N, const float docs) { return static_cast<float>(log10(N / docs)); }
-         /**
+
+        /**
          * @brief Calculates the tf-idf value
          *
          * @param tf the term frequency
@@ -407,23 +418,21 @@ namespace Utility {
         inline float calcTfIdf(const float tf, const float idf) { return static_cast<float>(tf * idf); }
 
         /**
-         * @brief Removes all stopwords sepcified in \stopwordList from \str
+         * @brief Removes all stopwords specified in \stopwordList from \str
          *
          * @param str
          * @param stopwordList
          * //TODO: NEED TO IMPLEMENT
          */
         inline void removeStopword(std::string& str, const string_vt& stopwordList) {
+
+            int counter = 0;
             for (auto& elem : stopwordList) {
-
-                std::cout << str << std::endl;
-                std::string regex = "\\b(" + elem + ")\\b";
-                std::cout << regex << std::endl;
-
-                boost::regex re(regex, boost::regex::icase);
-
-                std::string format = "";
-                boost::algorithm::replace_all_regex(str, re, format, boost::match_flag_type::match_default);
+                std::regex regex("\\b(" + elem + ")\\b");
+                while (std::regex_search(str, regex)) {
+                    str = std::regex_replace(str, regex, "");
+                }
+                ++counter;
             }
         }
 
@@ -482,7 +491,7 @@ namespace Utility {
 
         /**
          * @brief calculate and return the length of the given vector
-         * 
+         *
          * @param vec the vector
          * @return float the length
          */
@@ -495,28 +504,6 @@ namespace Utility {
         }
 
         /**
-         * @brief 
-         * 
-         * @return float 
-         */
-        inline float calcCosSimEfficient() {
-            // TODO
-            return 0;
-        };
-
-        /**
-         * @brief Wrapper method for \link Utility#StringOp#calcCosSim() calcCosSim() \endlink which accepts documents instead of the raw vector
-         *
-         * @param doc_a
-         * @param doc_b
-         * @return the cosine similarity
-         */
-        inline float calcCosSim(const Document& doc_a, const Document& doc_b) {
-            // TODO
-            return 0.0; // calcCosSim(doc_a.getTF_IDF(), doc_b.getTF_IDF())
-        }
-
-        /**
          * @brief Calculates the cosine similarity between \a aTfIdf_a and \a aTfIdf_b
          *
          * @param aTfIdf_a a tf-idf vector
@@ -524,8 +511,7 @@ namespace Utility {
          * @return the cosine similarity
          */
         inline float calcCosSim(const std::vector<float>& aTfIdf_a, const std::vector<float>& aTfIdf_b) {
-            if (aTfIdf_a.size() != aTfIdf_b.size())
-                throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size");
+            if (aTfIdf_a.size() != aTfIdf_b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size");
 
             double dotProduct = 0;
             for (size_t i = 0; i < aTfIdf_a.size(); ++i) {
@@ -535,13 +521,13 @@ namespace Utility {
         }
 
         /**
-         * @brief Calculates the cosine distance of two documents
+         * @brief Wrapper method for \link Utility#StringOp#calcCosSim() calcCosSim() \endlink which accepts documents instead of the raw vector
          *
-         * @param aTF_IDF_a
-         * @param aTF_IDF_b
-         * @return
+         * @param doc_a
+         * @param doc_b
+         * @return the cosine similarity
          */
-        inline float calcCosDist(const Document& doc_a, const Document& doc_b) { return 0.0; } // return calcCosDist(doc_a.getTFIDF(), doc_b.getTFIDF()); }
+        inline float calcCosSim(const Document& doc_a, const Document& doc_b) { return calcCosSim(doc_a.getTfIdfVector(), doc_b.getTfIdfVector()); }
 
         /**
          * @brief Calculates the cosine distance of two vectors
@@ -553,16 +539,13 @@ namespace Utility {
         inline float calcCosDist(const std::vector<float>& aTF_IDF_a, const std::vector<float>& aTF_IDF_b) { return 1 - calcCosSim(aTF_IDF_a, aTF_IDF_b); }
 
         /**
-         * Returns the angular similarity between two docs
+         * @brief Calculates the cosine distance of two documents
          *
-         * @param doc_a
-         * @param doc_b
+         * @param aTF_IDF_a
+         * @param aTF_IDF_b
          * @return
          */
-        inline float calcAngularSimilarity(const Document& doc_a, const Document& doc_b) {
-            // TODO
-            return 0.0; // return calcAngularSimilarity(doc_a.getTF_IDF, doc_a.getTF_IDF);
-        }
+        inline float calcCosDist(const Document& doc_a, const Document& doc_b) { return calcCosDist(doc_a.getTfIdfVector(), doc_b.getTfIdfVector()); }
 
         /**
          * Returns the angular similarity between two docs
@@ -573,10 +556,24 @@ namespace Utility {
          * @return
          */
         inline float calcAngularSimilarity(const std::vector<float>& aTfIdf_a, const std::vector<float>& aTfIdf_b) {
+
+            if (aTfIdf_a.size() != aTfIdf_a.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size.");
+
             float cosine = calcCosSim(aTfIdf_a, aTfIdf_b);
             float theta = acosf(cosine);
 
             return static_cast<float>(1 - (theta / M_PI));
+        }
+
+        /**
+         * Returns the angular similarity between two docs
+         *
+         * @param doc_a
+         * @param doc_b
+         * @return
+         */
+        inline float calcAngularSimilarity(const Document& doc_a, const Document& doc_b) {
+            return calcAngularSimilarity(doc_a.getTfIdfVector(), doc_b.getTfIdfVector());
         }
 
         /**
@@ -587,6 +584,9 @@ namespace Utility {
          * @return
          */
         inline unsigned int calcHammingDist(std::vector<bool>& vec_a, std::vector<bool>& vec_b) {
+
+            if (vec_a.size() != vec_a.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size.");
+
             unsigned int dist = 0;
             for (size_t i = 0; i < vec_a.size(); ++i) {
                 if (vec_a[i] != vec_b[i]) { dist++; }
@@ -618,7 +618,7 @@ namespace Utility {
         }
 
         /**
-         * Calculates the cosine similarity of two LSH vectors
+         * Calculates the angular similarity of two LSH vectors
          *
          * @see https://stackoverflow.com/questions/12952729/how-to-understand-locality-sensitive-hashing
          * @param vec_a
@@ -647,8 +647,7 @@ namespace Utility {
          * @return the euclidean distance as double
          */
         inline float calcEuclDist(const std::vector<float>& doc_a, const std::vector<float>& doc_b) {
-            if (doc_a.size() != doc_b.size())
-                throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size.");
+            if (doc_a.size() != doc_b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size.");
 
             double sum = 0;
             for (size_t i = 0; i < doc_a.size(); ++i) {
@@ -665,8 +664,7 @@ namespace Utility {
          * @return the euclidean distance as double
          */
         inline float calcEuclDistNormalized(std::vector<float>& doc_a, std::vector<float>& doc_b) {
-            if (doc_a.size() != doc_b.size())
-                throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size.");
+            if (doc_a.size() != doc_b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size.");
 
             double len_a = vectorLength(doc_a);
             double len_b = vectorLength(doc_b);

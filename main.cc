@@ -117,13 +117,13 @@ void testNico(const control_block_t& aControlBlock) {
     imInstance.init(aControlBlock, docMap);
     // std::string term = "sabdariffa";
     std::string term = "today";
-    
+
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
     std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
     int count = 0;
     std::cout << docManager.getDocument(2) << std::endl;
-    std::cout  << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term) << std::endl;
+    std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term) << std::endl;
     for (const auto& [term, idf] : imInstance.getIdfMap()) {
         ++count;
         if (count > 100) return;
@@ -137,10 +137,21 @@ void testNico(const control_block_t& aControlBlock) {
 void testSearch(std::string query) {
     QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
 
-    Utility::IR::removeStopword(query, qpe.getStopwordlist()); // TODO Maybe put this in query processing engine, but this currently only works on raw strings,
-                                                               // but the content of a doc is a string_vt
+    // Remove stopwords
+    Utility::IR::removeStopword(query, qpe.getStopwordlist());
+
+    // Trim whitespaces
+    Utility::StringOp::trim(query);
+
     string_vt proc_query;
+
+    // Split string by whitespaces
     Utility::StringOp::splitString(query, ' ', proc_query);
+
+    // Remove eventually empty strings from the query term vector
+    Utility::StringOp::removeEmptyStringsFromVec(proc_query);
+
+    // Create doc from query vector
     Document doc("0", proc_query);
 
     Measure lMeasureQuery;
@@ -164,7 +175,7 @@ void testAlex(const control_block_t& aControlBlock) {
     Measure lMeasureIndexing;
     lMeasureIndexing.start();
     DocumentManager& docManager = DocumentManager::getInstance();
-    docManager.init(aControlBlock, "./data/collection_test_mwe.docs");
+    docManager.init(aControlBlock, "./data/collection.docs");
     doc_mt& docMap = docManager.getDocumentMap();
 
     IndexManager& imInstance = IndexManager::getInstance();
@@ -177,7 +188,7 @@ void testAlex(const control_block_t& aControlBlock) {
     QueryProcessingEngine::getInstance().init(aControlBlock);
 
     testSearch("why deep fried foods may cause cancer");
-    // testSearch("do cholesterol statin drugs cause breast cancer ?");
+    testSearch("do cholesterol statin drugs cause breast cancer ?");
 }
 
 /**
@@ -215,7 +226,7 @@ int main(const int argc, const char* argv[]) {
 
     // insert everything here what is not actually meant to be in main
     // test(lCB);
-    testNico(lCB);
-    // testAlex(lCB);
+    // testNico(lCB);
+    testAlex(lCB);
     return 0;
 }

@@ -40,7 +40,7 @@ void QueryProcessingEngine::read(const std::string& aFile) {
     std::ifstream file(aFile);
     std::string line;
     while (std::getline(file, line)) {
-        this->_stopword_list.push_back(Utility::StringOp::trim_copy(line));
+        Utility::StringOp::splitStringBoost(line, ',', this->_stopword_list);
     }
 }
 
@@ -53,7 +53,7 @@ void QueryProcessingEngine::read(const std::string& aFile) {
  */
 std::vector<size_t> QueryProcessingEngine::cosineScore(const Document* query, const doc_mt& collection, size_t topK) {
 
-    //unsigned long count = collection.size();
+    // unsigned long count = collection.size();
 
     // Map of doc id to scores
     std::map<size_t, float> docId2Scores;
@@ -156,13 +156,7 @@ const size_t QueryProcessingEngine::cosineScoreCluster(Document* query, const st
 }
 std::vector<size_t> QueryProcessingEngine::search(Document* query, size_t topK) {
 
-
-
-
-
-
     std::vector<std::string> preprocessed_content;
-
 
     for (auto& elem : query->getContent()) {
         preprocessed_content.push_back(Utility::IR::stemPorter(elem));

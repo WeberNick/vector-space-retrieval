@@ -73,9 +73,10 @@ add_library(${CMAKE_PROJECT_NAME}_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
 
 #Include Boost libraries to target
 set(BOOST_MIN_VERSION 1.58.0)
-find_package (Boost ${BOOST_MIN_VERSION} REQUIRED)
+find_package (Boost ${BOOST_MIN_VERSION} REQUIRED COMPONENTS regex)
 if (Boost_FOUND)
     target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM ${BOOST_INCLUDE_DIR})
+    target_link_libraries(${CMAKE_PROJECT_NAME}_lib ${BOOST_LIBRARIES})
 else()
     return()
 endif ()
