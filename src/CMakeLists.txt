@@ -36,6 +36,17 @@ if(NOT EXISTS ${EXTERNAL_DIR}oleanderStemmingLibrary)
     )
 endif()
 
+## Clone /nlohmann (JSON)
+if(NOT EXISTS ${EXTERNAL_DIR}nlohmann)
+    find_package(Git REQUIRED)
+    execute_process(
+            COMMAND ${GIT_EXECUTABLE} clone https://github.com/nlohmann/json.git ${EXTERNAL_DIR}nlohmann
+    )
+endif()
+
+
+
+
 set(HEADER_FILES
         argbase.hh
         types.hh
@@ -73,10 +84,9 @@ add_library(${CMAKE_PROJECT_NAME}_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
 
 #Include Boost libraries to target
 set(BOOST_MIN_VERSION 1.58.0)
-find_package (Boost ${BOOST_MIN_VERSION} REQUIRED COMPONENTS regex)
+find_package (Boost ${BOOST_MIN_VERSION} REQUIRED)
 if (Boost_FOUND)
     target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM ${BOOST_INCLUDE_DIR})
-    target_link_libraries(${CMAKE_PROJECT_NAME}_lib ${BOOST_LIBRARIES})
 else()
     return()
 endif ()
@@ -84,3 +94,4 @@ endif ()
 #Inlcude non-boost libraries
 target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/eigen")
 target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/oleanderStemmingLibrary")
+target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/nlohmann/single_include")
