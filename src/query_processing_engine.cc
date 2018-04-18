@@ -110,7 +110,7 @@ std::vector<size_t> QueryProcessingEngine::cosineScore(const Document* query, co
  * @param collection
  * @return
  */
-const size_t QueryProcessingEngine::cosineScoreCluster(Document* query, const std::vector<Document*>& collection) {
+size_t QueryProcessingEngine::cosineScoreCluster(const Document* query, const doc_ptr_vt& collection) {
 
     size_t count = collection.size();
 

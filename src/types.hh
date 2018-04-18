@@ -41,11 +41,12 @@ struct control_block_t {
     const uint _noTiers;      // number of tiers for the tiered index
     const uint _noDimensions; // the number of dimensions for the random projection
 
-    const bool trace() const { return _trace; }
-    const bool measure() const { return _measure; }
-    const bool print() const { return _print; }
+    bool trace() const { return _trace; }
+    bool measure() const { return _measure; }
+    bool print() const { return _print; }
     const std::string& collectionPath() const { return _collectionPath; }
-    const uint results() const { return _noResults; }
-    const uint tiers() const { return _noTiers; }
-    const uint dimensions() const { return _noDimensions; }
+    uint results() const { return _noResults; }
+    uint tiers() const { return _noTiers; }
+    uint dimensions() const { return _noDimensions; }
 };
+using CB = control_block_t;

@@ -13,6 +13,7 @@
 
 #include "document.hh"
 #include "document_manager.hh"
+#include "query_processing_engine.hh"
 #include "types.hh"
 #include "utility.hh"
 
@@ -52,7 +53,7 @@ class Cluster
          *
          * @param aControlBlock the control block
          */
-        void init(const control_block_t& aControlBlock);
+        void init(const CB& aControlBlock);
         /**
          * @brief Choose Leaders
          * 
@@ -79,7 +80,7 @@ class Cluster
         inline const cluster_mt& getCluster() { return _cluster; }
 
     private:
-        const control_block_t* _cb;
+        const CB* _cb;
 
         bool _init;          // was the cluster initialized?
         doc_ptr_vt _leaders; // stores pointer to leader documents inside the doc mngr's map
