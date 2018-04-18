@@ -113,19 +113,14 @@ std::vector<size_t> QueryProcessingEngine::cosineScore(const Document* query, co
  */
 size_t QueryProcessingEngine::cosineScoreCluster(const Document* query, const doc_ptr_vt& collection) {
 
-    size_t count = collection.size();
-
     std::map<size_t, float> docId2Scores;
-    // Map of doc id to length og that doc
-    std::map<size_t, float> docId2Length; // TODO: maybe this can be deleted if we can guarantee the order of the order in collection and scores, but I guess
-                                          // so, this is not the implementation like in the IR Book
 
     // Normal cosine sim calculation without fancy algo
     for (auto& doc : collection) {
         docId2Scores[doc->getID()] = Utility::SimilarityMeasures::calcCosSim(*query, *doc);
     }
 
-    // Sort the map descending into a set with labmda
+    // Sort the map descending into a set with lambda
     std::set<std::pair<size_t, float>, Comparator> setOfCounts(
         docId2Scores.begin(), docId2Scores.end(), [](std::pair<size_t, float> elem1, std::pair<size_t, float> elem2) { return elem1.second > elem2.second; });
 
