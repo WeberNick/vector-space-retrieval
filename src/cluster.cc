@@ -17,7 +17,7 @@ Cluster::Cluster() :
  */
 Cluster::~Cluster(){}
 
-void Cluster::init(const control_block_t& aControlBlock)
+void Cluster::init(const CB& aControlBlock)
 {
   _cb = &aControlBlock;
   if(!_init)
@@ -64,10 +64,10 @@ void Cluster::chooseLeaders()
 
 void Cluster::fillCluster()
 {
-  // const doc_mt& lDocs = DocumentManager::getInstance().getDocumentMap();
-  // for(const auto& doc : lDocs) // doc will we an iterator over the map
-  // {
-    // const size_t lIndex =  Utility::SimilarityMeasures::calcCosDist(&doc.second, _leaders);
-    // _cluster.at(_leaders[lIndex]).push_back(&doc.second);
-  // }
+   const doc_mt& lDocs = DocumentManager::getInstance().getDocumentMap();
+   for(const auto& doc : lDocs) // doc will we an iterator over the map
+   {
+     const size_t lIndex = QueryProcessingEngine::getInstance().cosineScoreCluster(&doc.second, _leaders);
+     _cluster.at(_leaders[lIndex]).push_back(&doc.second);
+   }
 }

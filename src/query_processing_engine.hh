@@ -33,7 +33,7 @@ class QueryProcessingEngine {
      *
      * @param aControlBlock
      */
-    void init(const control_block_t& aControlBlock);
+    void init(const CB& aControlBlock);
 
   private:
     void read(const std::string& aFile);
@@ -42,10 +42,10 @@ class QueryProcessingEngine {
     string_vt getStopwordlist() { return _stopword_list; }
     std::vector<size_t> search(Document* query, size_t topK);
     std::vector<size_t> cosineScore(const Document* query, const doc_mt& collection, size_t topK);
-    const size_t cosineScoreCluster(Document* query, const std::vector<Document*>& collection);
+    size_t cosineScoreCluster(const Document* query, const doc_ptr_vt& collection);
 
   private:
-    const control_block_t* _cb;
+    const CB* _cb;
     bool _init;
     const std::string _stopwordFile; // defined manually
     string_vt _stopword_list;
