@@ -115,29 +115,14 @@ size_t QueryProcessingEngine::cosineScoreCluster(const Document* query, const do
 
     size_t count = collection.size();
 
-    // Map of doc id to scores
     std::map<size_t, float> docId2Scores;
     // Map of doc id to length og that doc
     std::map<size_t, float> docId2Length; // TODO: maybe this can be deleted if we can guarantee the order of the order in collection and scores, but I guess
                                           // so, this is not the implementation like in the IR Book
 
-    // Fill length vector with the lengths of the documents
-    for (size_t i = 0; i < count; ++i) {
-        docId2Length[collection[i]->getID()] = collection[i]->getContent().size();
-    }
-
-    // Calculate weightings per doc using the tf-idf of the word in the doc collection times the tf-idf of the term in the query
-    for (size_t j = 0; j < query->getContent().size(); ++j) {
-        const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList(query->getContent()[j]);
-        for (auto& posting : postingList.getPosting()) {
-            docId2Scores[posting.first] +=
-                (posting.second * postingList.getIdf()) * (Utility::IR::calcTf(query->getContent()[j], query->getContent()) * postingList.getIdf());
-        }
-    }
-
-    // Divide every score of a doc by the length of the document
-    for (const auto& elem : docId2Length) {
-        docId2Scores[elem.first] = docId2Scores[elem.first] / docId2Length[elem.first];
+    // Normal cosine sim calculation without fancy algo
+    for (auto& doc : collection) {
+        docId2Scores[doc->getID()] = Utility::SimilarityMeasures::calcCosSim(*query, *doc);
     }
 
     // Sort the map descending into a set with labmda
@@ -148,50 +133,15 @@ size_t QueryProcessingEngine::cosineScoreCluster(const Document* query, const do
     std::pair<size_t, float> first = *setOfCounts.begin();
 
     // Search for the docID of the first element in the collection and return it
+    int counter = 0;
     for (size_t k = 0; k < collection.size(); ++k) {
         if (collection[k]->getID() == first.first) { return k; }
+        ++counter;
     }
-
     // Most similar doc not found
     return static_cast<const size_t>(-1);
 }
 std::vector<size_t> QueryProcessingEngine::search(Document* query, size_t topK) {
-
-    using json = nlohmann::json;
-
-    json j;
-
-    // add a number that is stored as double (note the implicit conversion of j to an object)
-    j["pi"] = 3.141;
-
-    // add a Boolean that is stored as bool
-    j["happy"] = true;
-
-    // add a string that is stored as std::string
-    j["name"] = "Niels";
-
-    // add another null object by passing nullptr
-    j["nothing"] = nullptr;
-
-    // add an object inside the object
-    j["answer"]["everything"] = 42;
-
-    // add an array that is stored as std::vector (using an initializer list)
-    j["list"] = { 1, 0, 2 };
-
-    // add another object (using an initializer list of pairs)
-    j["object"] = { { "currency", "USD" }, { "value", 42.99 } };
-
-    // instead, you could also write (which looks very similar to the JSON above)
-    json j2 = { { "pi", 3.141 },
-                { "happy", true },
-                { "name", "Niels" },
-                { "nothing", nullptr },
-                { "answer", { { "everything", 42 } } },
-                { "list", { 1, 0, 2 } },
-                { "object", { { "currency", "USD" }, { "value", 42.99 } } } };
-
-    std::cout << j2 << std::endl;
 
     std::vector<std::string> preprocessed_content;
 
