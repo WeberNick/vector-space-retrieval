@@ -10,11 +10,18 @@ if(LINUX)
     set(BOOST_INCLUDE_DIR "/usr/include/boost")
     set(BOOST_LIBRARY_DIR "/usr/lib/x86_64-linux-gnu")
 else()
-    set(BOOST_ROOT "/usr/local/Cellar/boost/1.66.0/")
+    if(NOT EXISTS "$ENV{BOOST}")
+        message(WARNING "Could not find BOOST environment variable")
+        message("Try using the standard brew boost path")
+        set(BOOST_ROOT "/usr/local/Cellar/boost/1.66.0/")
+    else()
+        message("Using provided BOOST path: /usr/local/Cellar/boost/1.66.0/")
+        set(BOOST_ROOT $ENV{BOOST})
+    endif()
+
     set(BOOST_INCLUDE_DIR "${BOOST_ROOT}/include")
     set(BOOST_LIBRARY_DIR "${BOOST_ROOT}/lib")
 endif()
-
 
 #Set src/lib as other external librs
 set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/src/lib/)
@@ -43,9 +50,6 @@ if(NOT EXISTS ${EXTERNAL_DIR}nlohmann)
             COMMAND ${GIT_EXECUTABLE} clone https://github.com/nlohmann/json.git ${EXTERNAL_DIR}nlohmann
     )
 endif()
-
-
-
 
 set(HEADER_FILES
         argbase.hh
