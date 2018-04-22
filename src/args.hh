@@ -44,28 +44,31 @@ class Args {
     ~Args();
 
   public:
-    inline const bool help() { return _help; }
+    inline bool help() { return _help; }
     inline void help(const bool& x) { _help = x; }
 
-    inline const bool trace() { return _trace; }
+    inline bool trace() { return _trace; }
     inline void trace(const bool& x) { _trace = x; }
 
-    inline const bool measure() { return _measure; }
+    inline bool measure() { return _measure; }
     inline void measure(const bool& x) { _measure = x; }
 
-    inline const bool print() { return _print; }
+    inline bool print() { return _print; }
     inline void print(const bool& x) { _print = x; }
 
-    inline const std::string path() { return _path; }
-    inline void path(const std::string& x) { _path = x; }
+    inline const std::string& collectionPath() { return _collectionPath; }
+    inline void collectionPath(const std::string& x) { _collectionPath = x; }
 
-    inline const uint results() { return _results; }
+    inline const std::string& tracePath() { return _tracePath; }
+    inline void tracePath(const std::string& x) { _tracePath = x; }
+
+    inline uint results() { return _results; }
     inline void results(const uint& x) { _results = x; }
 
-    inline const uint tiers() { return _tiers; }
+    inline uint tiers() { return _tiers; }
     inline void tiers(const uint& x) { _tiers = x; }
 
-    inline const uint dimensions() { return _dimensions; }
+    inline uint dimensions() { return _dimensions; }
     inline void dimensions(const uint& x) { _dimensions = x; }
 
   private:
@@ -74,8 +77,9 @@ class Args {
     bool _measure;
     bool _print;
 
-    std::string _path;
-
+    std::string _collectionPath;
+    std::string _tracePath;
+ 
     uint    _results;
     uint    _tiers;
     uint    _dimensions;
