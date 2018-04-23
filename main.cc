@@ -187,8 +187,8 @@ void testAlex(const control_block_t& aControlBlock) {
 
     QueryProcessingEngine::getInstance().init(aControlBlock);
 
-    testSearch("why deep fried foods may cause cancer");
-    testSearch("do cholesterol statin drugs cause breast cancer ?");
+    // testSearch("why deep fried foods may cause cancer");
+    // testSearch("do cholesterol statin drugs cause breast cancer ?");
 }
 
 /**
