@@ -57,6 +57,7 @@ set(HEADER_FILES
         utility.hh
         args.hh
         exception.hh
+        trace.hh
         measure.hh
         document.hh
         document_manager.hh
@@ -72,6 +73,7 @@ set(HEADER_FILES
 set(SOURCE_FILES
         args.cc
         exception.cc
+        trace.cc
         document.cc
         document_manager.cc
         inverted_index.cc
