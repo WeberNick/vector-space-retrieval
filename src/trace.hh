@@ -1,36 +1,53 @@
 /**
- *	@file 	trace.hh
- *	@author	Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
- *	@brief  Header file implementing tracing functionality
- *	@bugs 	Currently no bugs known
- *	@todos	Write DESCRIPTION
+ *  @author Nick Weber
+ *  @brief  Implements tracing functionality
+ *  @todo   If multi threaded access causes problems, add mutex
+ *  @bugs   -
  *
- *	@section DESCRIPTION
- *	TODO
+ *  @section DESCRIPTION
+ *  todo 
+ *  @section USE
+ *  todo
  */
 #pragma once
 
+#include "types.hh"
+#include "exception.hh"
 #include <string>
+#include <fstream>
+#include <ctime>
 
-/**
- * @brief the different TraceLevels severe, warning and info
- * 
- */
-enum struct TraceLevel {
-    severe = 0,
-    warning = 1,
-    info = 2
-}
+class Trace
+{
+    private:
+        explicit Trace();
+        explicit Trace(const Trace&) = delete;
+        explicit Trace(Trace&&) = delete;
+        Trace& operator=(const Trace&) = delete;
+        Trace& operator=(Trace&&) = delete;
+        ~Trace();
 
-/**
- * @brief the Trace namespace
- * 
- */
-namespace Trace {
-    bool _isTraceOn;
-    void print(TraceLevel callLevel, TraceLevel msgLevel, const std::string& aTerm) {
-        if (_isTraceOn && msgLevel <= callLevel) {
-            std::cout << aTerm << std::endl;
+    public:
+        inline static Trace& getInstance()
+        {
+            static Trace lInstance;
+            return lInstance;
         }
-    }
-} // namespace Trace
+
+        void init(const CB& aCB);
+
+    public:
+        void log(const char* aFileName, const uint aLineNumber, const char* aFunctionName, const std::string& aMessage);
+
+    public:
+        inline const std::string&   getLogPath(){ return _logPath; }
+        inline const std::ofstream& getLogStream(){ return _logStream; }
+
+    private:
+        std::string     _logPath;
+        std::ofstream   _logStream;
+        const CB*       _cb;
+        bool            _init;
+        
+};
+

@@ -222,7 +222,15 @@ int main(const int argc, const char* argv[]) {
         return 0;
     }
 
-    const control_block_t lCB = { lArgs.trace(), lArgs.measure(), lArgs.print(), lArgs.path(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
+    const control_block_t lCB = { 
+        lArgs.trace(), 
+        lArgs.measure(), 
+        lArgs.print(), 
+        lArgs.collectionPath(), 
+        lArgs.tracePath(),
+        lArgs.results(), 
+        lArgs.tiers(), 
+        lArgs.dimensions() };
 
     // insert everything here what is not actually meant to be in main
     // test(lCB);

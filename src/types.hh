@@ -36,6 +36,7 @@ struct control_block_t {
     const bool _print;   // indicate if tracing/(error) messages shall be printed (cout)
 
     const std::string _collectionPath; // the path to the document collection
+    const std::string _tracePath;
 
     const uint _noResults;    // the number of results to return for each query
     const uint _noTiers;      // number of tiers for the tiered index
@@ -45,6 +46,7 @@ struct control_block_t {
     bool measure() const { return _measure; }
     bool print() const { return _print; }
     const std::string& collectionPath() const { return _collectionPath; }
+    const std::string& tracePath() const { return _tracePath; }
     uint results() const { return _noResults; }
     uint tiers() const { return _noTiers; }
     uint dimensions() const { return _noDimensions; }
