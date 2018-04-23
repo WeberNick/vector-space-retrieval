@@ -25,13 +25,16 @@ void Trace::init(const CB& aCB)
 
 void Trace::log(const char* aFileName, const uint aLineNumber, const char* aFunctionName, const std::string& aMessage)
 {
-    std::time_t lCurrTime = std::time(nullptr);
-    std::string lTime = std::ctime(&lCurrTime);
-    _logStream << lTime.substr(0, lTime.size() - 1) 
-        << ": " << aFileName 
-        << ", line " << aLineNumber
-        << ", " << aFunctionName
-        << ": '" << aMessage << "'"
-        << std::endl;
+    if(_cb->trace())
+    {
+        std::time_t lCurrTime = std::time(nullptr);
+        std::string lTime = std::ctime(&lCurrTime);
+        _logStream << lTime.substr(0, lTime.size() - 1) 
+            << ": " << aFileName 
+            << ", line " << aLineNumber
+            << ", " << aFunctionName
+            << ": '" << aMessage << "'"
+            << std::endl;
+    }
 }
 
