@@ -27,7 +27,7 @@ void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
     
     if (!_init) {
         _collection_terms.reserve(_docs->size());
-        postinglist_mt postinglist_out;
+        str_postinglist_mt postinglist_out;
         this->buildIndices(postinglist_out);
 
         _invertedIndex.init(aControlBlock, postinglist_out);
@@ -37,7 +37,7 @@ void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
     }
 }
 
-void IndexManager::buildIndices(postinglist_mt& postinglist_out) {
+void IndexManager::buildIndices(str_postinglist_mt& postinglist_out) {
     str_int_mt idf_occs;
     for (const auto & [ id, doc ] : *(_docs)) {
         str_int_mt tf_counts;

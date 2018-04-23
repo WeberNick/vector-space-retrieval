@@ -6,7 +6,8 @@
  */
 TieredIndex::TieredIndex() :
     _cb(nullptr),
-    _init(false)
+    _init(false),
+    _num_tiers()
 {}
 
 /**
@@ -18,7 +19,7 @@ TieredIndex::~TieredIndex() {}
 void TieredIndex::init(const control_block_t& aControlBlock) {
     _cb = &aControlBlock;
     if (!_init) {
-        // init of tiered index
+        _num_tiers = _cb->tiers();
         _init = true;
     }
 }

@@ -31,7 +31,7 @@ void Cluster::chooseLeaders() {
 
     const size_t lNumberOfDocuments = DocumentManager::getInstance().getNoDocuments();
     const size_t lNumberOfClusters = std::sqrt(lNumberOfDocuments);
-    size_t_vt lIDs; // blacklist for IDs already chosen as leader
+    sizet_vt lIDs; // blacklist for IDs already chosen as leader
     size_t lRandomID;
     for (size_t i = 0; i < lNumberOfClusters; ++i) {
         lRandomID = lDistr(lRNG); // generate random doc id

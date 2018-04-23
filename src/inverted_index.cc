@@ -16,7 +16,7 @@ InvertedIndex::InvertedIndex() :
  */
 InvertedIndex::~InvertedIndex() {}
 
-void InvertedIndex::init(const control_block_t& aControlBlock, postinglist_mt aPostingLists) {
+void InvertedIndex::init(const control_block_t& aControlBlock, str_postinglist_mt aPostingLists) {
     _cb = &aControlBlock;
     if (!_init) {
         _term_posting_map = aPostingLists;
