@@ -19,15 +19,13 @@
 using size_t = std::size_t;
 using byte = std::byte;
 using uint = unsigned int;
-using size_t_vt = std::vector<size_t>;
 using uint_vt = std::vector<uint>;
 using float_vt = std::vector<float>;
+using sizet_vt = std::vector<size_t>;
 using string_vt = std::vector<std::string>;
-using sizet_float_mt = std::map<size_t, float>;
-using str_float_mt = std::map<std::string, float>;
 using str_int_mt = std::map<std::string, uint>;
-using float_map = std::map<std::string, float>;
-using int_map = std::map<std::string, uint>;
+using str_float_mt = std::map<std::string, float>;
+using sizet_float_mt = std::map<size_t, float>;
 using float_vector_vt = std::vector<std::vector<float>>;
 
 struct control_block_t {

@@ -110,7 +110,8 @@ void testNico(const control_block_t& aControlBlock) {
     Measure lMeasure;
     lMeasure.start();
     DocumentManager& docManager = DocumentManager::getInstance();
-    docManager.init(aControlBlock, "./data/collection_test_mwe.docs");
+    // docManager.init(aControlBlock, "./data/collection_test_mwe.docs");
+    docManager.init(aControlBlock, "./data/collection.docs");
     doc_mt& docMap = docManager.getDocumentMap();
 
     IndexManager& imInstance = IndexManager::getInstance();
@@ -121,15 +122,15 @@ void testNico(const control_block_t& aControlBlock) {
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
     std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
-    int count = 0;
+    // int count = 0;
     std::cout << docManager.getDocument(2) << std::endl;
     std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term) << std::endl;
-    for (const auto& [term, idf] : imInstance.getIdfMap()) {
+    /*for (const auto& [term, idf] : imInstance.getIdfMap()) {
         ++count;
         if (count > 100) return;
         std::cout << term << ": ";
         std::cout << idf << std::endl;
-    }
+    }*/
     // testSearch("why deep fried foods may cause cancer");
     // testSearch("do cholesterol statin drugs cause breast cancer ?");
 }
@@ -234,7 +235,7 @@ int main(const int argc, const char* argv[]) {
 
     // insert everything here what is not actually meant to be in main
     // test(lCB);
-    // testNico(lCB);
-    testAlex(lCB);
+    testNico(lCB);
+    // testAlex(lCB);
     return 0;
 }

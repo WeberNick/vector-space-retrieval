@@ -41,8 +41,12 @@ class TieredIndex {
      */
     void init(const control_block_t& aControlBlock);
 
+  public:
+    inline size_t getNumTiers() { return _num_tiers; }
+
   private:
     const control_block_t* _cb;
 
     bool _init;
+    size_t _num_tiers;
 };
