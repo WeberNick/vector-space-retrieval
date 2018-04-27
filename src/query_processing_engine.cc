@@ -12,7 +12,6 @@
 
 using Comparator = std::function<bool(std::pair<size_t, float>, std::pair<size_t, float>)>;
 
-
 QueryProcessingEngine::QueryProcessingEngine() :
     _cb(nullptr), _init(false), _stopwordFile("./data/stopwords.large") // relative path from /path/to/repo/vector-space-retrieval
 {}
@@ -43,35 +42,35 @@ void QueryProcessingEngine::read(const std::string& aFile) {
  */
 std::vector<size_t> QueryProcessingEngine::search(Document* query, size_t topK, Utility::VSMType searchType) {
 
-  // Preprocess query
-  std::vector<std::string> preprocessed_content;
+    // Preprocess query
+    std::vector<std::string> preprocessed_content;
 
-  for (auto& elem : query->getContent()) {
-    preprocessed_content.push_back(Utility::IR::stemPorter(elem));
-  }
+    for (auto& elem : query->getContent()) {
+        preprocessed_content.push_back(Utility::IR::stemPorter(elem));
+    }
 
-  Document proc_query(query->getDocID(), preprocessed_content);
+    Document proc_query(query->getDocID(), preprocessed_content);
 
-  std::cout << "Searching for: ";
+    std::cout << "Searching for: ";
 
-  for (size_t j = 0; j < proc_query.getContent().size(); ++j) {
-    std::cout << "(" << j << "|" << proc_query.getContent()[j] << ")"
-              << " ";
-  }
-  std::cout << std::endl;
+    for (size_t j = 0; j < proc_query.getContent().size(); ++j) {
+        std::cout << "(" << j << "|" << proc_query.getContent()[j] << ")"
+                  << " ";
+    }
+    std::cout << std::endl;
 
-  std::vector<size_t> found_indexes;
+    std::vector<size_t> found_indexes;
 
-  switch (searchType) {
+    switch (searchType) {
     case Utility::VSMType::VANILLA:
-      found_indexes = QueryProcessingEngine::cosineScoreVanillaSearch(&proc_query, DocumentManager::getInstance().getDocumentMap(), topK);
-      break;
+        found_indexes = QueryProcessingEngine::cosineScoreVanillaSearch(&proc_query, DocumentManager::getInstance().getDocumentMap(), topK);
+        break;
     case Utility::VSMType::CLUSTER:
-      found_indexes = QueryProcessingEngine::cosineScoreClusterSearch(&proc_query, IndexManager::getInstance().getClusteredIndex().getLeaders(), topK);
-      break;
-  }
+        found_indexes = QueryProcessingEngine::cosineScoreClusterSearch(&proc_query, IndexManager::getInstance().getClusteredIndex().getLeaders(), topK);
+        break;
+    }
 
-  return found_indexes;
+    return found_indexes;
 }
 
 /**
@@ -106,7 +105,10 @@ std::vector<size_t> QueryProcessingEngine::cosineScoreVanillaSearch(const Docume
         try {
             const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList(query->getContent()[j]);
             for (auto& posting : postingList.getPosting()) {
-                const bool is_in = doc_ids.find(posting.first) != doc_ids.end(); // check if current doc looked at, also in the collection we want to search in, because we only have global posting list index
+                const bool is_in =
+                    doc_ids.find(posting.first) !=
+                    doc_ids
+                        .end(); // check if current doc looked at, also in the collection we want to search in, because we only have global posting list index
                 if (is_in) {
                     docId2Scores[posting.first] +=
                         (posting.second * postingList.getIdf() * (Utility::IR::calcTf(query->getContent()[j], query->getContent()) * postingList.getIdf()));
@@ -190,7 +192,10 @@ std::vector<size_t> QueryProcessingEngine::cosineScoreClusterSearch(const Docume
         try {
             const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList(query->getContent()[j]);
             for (auto& posting : postingList.getPosting()) {
-                const bool is_in = leader_ids.find(posting.first) != leader_ids.end(); // check if current doc looked at, also in the collection we want to search in, because we only have global posting list index
+                const bool is_in =
+                    leader_ids.find(posting.first) !=
+                    leader_ids
+                        .end(); // check if current doc looked at, also in the collection we want to search in, because we only have global posting list index
                 if (is_in) {
                     docId2Scores[posting.first] +=
                         (posting.second * postingList.getIdf() * (Utility::IR::calcTf(query->getContent()[j], query->getContent()) * postingList.getIdf()));
@@ -214,7 +219,6 @@ std::vector<size_t> QueryProcessingEngine::cosineScoreClusterSearch(const Docume
     auto iterator = setOfCounts.begin();
     const Document* chosenLeader;
 
-
     while (result.size() < topK) {
 
         // Find leader in leaders vector
@@ -229,9 +233,7 @@ std::vector<size_t> QueryProcessingEngine::cosineScoreClusterSearch(const Docume
         iterator++;
     }
 
-
-
-    return result;
+    return std::vector<size_t>(result.begin(), result.begin() + topK);
 }
 
 std::vector<size_t> QueryProcessingEngine::cosineScoreLSHSearch(const Document* query, const doc_mt& collection, size_t topK) { return std::vector<size_t>(); }
