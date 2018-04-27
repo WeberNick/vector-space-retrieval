@@ -1,6 +1,7 @@
 #pragma once
 
 #include "document.hh"
+#include "utility.hh"
 #include <string>
 #include <vector>
 
@@ -40,9 +41,11 @@ class QueryProcessingEngine {
 
   public:
     string_vt getStopwordlist() { return _stopword_list; }
-    std::vector<size_t> search(Document* query, size_t topK);
-    std::vector<size_t> cosineScore(const Document* query, const doc_mt& collection, size_t topK);
-    size_t cosineScoreCluster(const Document* query, const doc_ptr_vt& collection);
+    std::vector<size_t> search(Document* query, size_t topK, Utility::VSMType searchType);
+    std::vector<size_t> cosineScoreLSHSearch(const Document* query, const doc_mt& collection, size_t topK);
+    std::vector<size_t> cosineScoreVanillaSearch(const Document* query, const doc_mt& collection, size_t topK);
+    std::vector<size_t> cosineScoreClusterSearch(const Document* query, const doc_ptr_vt& leaders, size_t topK);
+    size_t cosineScoreClusterBuilding(const Document* query, const doc_ptr_vt& collection);
 
   private:
     const CB* _cb;

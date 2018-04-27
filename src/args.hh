@@ -35,56 +35,54 @@
 #include <string>
 
 class Args {
-  public:
-    explicit Args();
-    explicit Args(const Args&) = delete;
-    Args(Args&&) = delete;
-    Args& operator=(const Args&) = delete;
-    Args& operator=(Args&&) = delete;
-    ~Args();
+ public:
+  explicit Args();
+  explicit Args(const Args&) = delete;
+  Args(Args&&) = delete;
+  Args& operator=(const Args&) = delete;
+  Args& operator=(Args&&) = delete;
+  ~Args();
 
-  public:
-    inline bool help() { return _help; }
-    inline void help(const bool& x) { _help = x; }
+ public:
+  inline bool help() { return _help; }
+  inline void help(const bool& x) { _help = x; }
 
-    inline bool trace() { return _trace; }
-    inline void trace(const bool& x) { _trace = x; }
+  inline bool trace() { return _trace; }
+  inline void trace(const bool& x) { _trace = x; }
 
-    inline bool measure() { return _measure; }
-    inline void measure(const bool& x) { _measure = x; }
+  inline bool measure() { return _measure; }
+  inline void measure(const bool& x) { _measure = x; }
 
-    inline bool print() { return _print; }
-    inline void print(const bool& x) { _print = x; }
+  inline bool print() { return _print; }
+  inline void print(const bool& x) { _print = x; }
 
-    inline const std::string& collectionPath() { return _collectionPath; }
-    inline void collectionPath(const std::string& x) { _collectionPath = x; }
+  inline const std::string& collectionPath() { return _collectionPath; }
+  inline void collectionPath(const std::string& x) { _collectionPath = x; }
 
-    inline const std::string& tracePath() { return _tracePath; }
-    inline void tracePath(const std::string& x) { _tracePath = x; }
+  inline const std::string& tracePath() { return _tracePath; }
+  inline void tracePath(const std::string& x) { _tracePath = x; }
 
-    inline uint results() { return _results; }
-    inline void results(const uint& x) { _results = x; }
+  inline uint results() { return _results; }
+  inline void results(const uint& x) { _results = x; }
 
-    inline uint tiers() { return _tiers; }
-    inline void tiers(const uint& x) { _tiers = x; }
+  inline uint tiers() { return _tiers; }
+  inline void tiers(const uint& x) { _tiers = x; }
 
-    inline uint dimensions() { return _dimensions; }
-    inline void dimensions(const uint& x) { _dimensions = x; }
+  inline uint dimensions() { return _dimensions; }
+  inline void dimensions(const uint& x) { _dimensions = x; }
 
-  private:
-    bool _help;
-    bool _trace;
-    bool _measure;
-    bool _print;
+ private:
+  bool _help;
+  bool _trace;
+  bool _measure;
+  bool _print;
 
-    std::string _collectionPath;
-    std::string _tracePath;
- 
-    uint    _results;
-    uint    _tiers;
-    uint    _dimensions;
+  std::string _collectionPath;
+  std::string _tracePath;
+
+  uint    _results;
+  uint    _tiers;
+  uint    _dimensions;
 };
 
 using argdesc_vt = std::vector<argdescbase_t<Args>*>;
-
-void construct_arg_desc(argdesc_vt& aArgDesc);

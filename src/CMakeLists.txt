@@ -15,7 +15,7 @@ else()
         message("Try using the standard brew boost path")
         set(BOOST_ROOT "/usr/local/Cellar/boost/1.66.0/")
     else()
-        message("Using provided BOOST path: /usr/local/Cellar/boost/1.66.0/")
+        message("Using provided BOOST path: /usr/local/Cellar/boost/1.66.0")
         set(BOOST_ROOT $ENV{BOOST})
     endif()
 
@@ -51,6 +51,7 @@ if(NOT EXISTS ${EXTERNAL_DIR}nlohmann)
     )
 endif()
 
+
 set(HEADER_FILES
         argbase.hh
         types.hh
@@ -68,7 +69,7 @@ set(HEADER_FILES
         index_manager.hh
         posting_list.hh
         query_processing_engine.hh
-        )
+        word_embeddings.hh)
 
 set(SOURCE_FILES
         args.cc
@@ -83,7 +84,7 @@ set(SOURCE_FILES
         index_manager.cc
         posting_list.cc
         query_processing_engine.cc
-        )
+        word_embeddings.cc)
 
 #Create library which is later linked to the main executable
 add_library(${CMAKE_PROJECT_NAME}_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
@@ -101,3 +102,5 @@ endif ()
 target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/eigen")
 target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/oleanderStemmingLibrary")
 target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/nlohmann/single_include")
+
+target_link_libraries(${CMAKE_PROJECT_NAME}_lib ${CMAKE_SOURCE_DIR}/src/lib/word2vec++/bin/lib/libword2vec.a)
