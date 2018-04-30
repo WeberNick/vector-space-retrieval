@@ -19,6 +19,7 @@
 using size_t = std::size_t;
 using byte = std::byte;
 using uint = unsigned int;
+using sizet_set = std::set<size_t>;
 using uint_vt = std::vector<uint>;
 using float_vt = std::vector<float>;
 using sizet_vt = std::vector<size_t>;
