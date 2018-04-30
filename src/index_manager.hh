@@ -98,7 +98,7 @@ class IndexManager {
     str_float_mt _idf_map;
     string_vt _collection_terms; // does not have to be sorted
 
-    InvertedIndex _invertedIndex;
-    TieredIndex _tieredIndex;
-    Cluster _clusteredIndex;
+    InvertedIndex& _invertedIndex;
+    TieredIndex& _tieredIndex;
+    Cluster& _clusteredIndex;
 };
