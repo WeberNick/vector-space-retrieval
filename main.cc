@@ -26,7 +26,6 @@ bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
     }
 }
 
-
 // insert everything here what is not actually meant to be in main
 void test(const control_block_t& aControlBlock) {
     /* Example how to use Measurement class (also described in measure.hh) */
