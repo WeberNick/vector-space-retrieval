@@ -65,8 +65,12 @@ void IndexManager::buildIndices(str_postinglist_mt& postinglist_out) {
         postinglist_out[term].setIdf(_idf_map[term]);
         _collection_terms.push_back(term);
     }
+    _clusteredIndex.chooseLeaders();
+    sizet_vt& leaders = _clusteredIndex.getLeaders();
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
+        // const size_t index = QueryProcessingEngine::getInstance().searchCollectionCos(&doc, leaders, 1); // get most similar leader
+        _clusteredIndex.addToCluster(index, doc.getID());
         float_vt& tivec = doc.getTfIdfVector();
         tivec.reserve(_collection_terms.size());
         for (std::string& term : _collection_terms) {

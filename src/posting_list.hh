@@ -79,4 +79,5 @@ class PostingList {
 
 using str_postinglist_mt = std::unordered_map<std::string, PostingList>; // term, PostingList: [("Frodo", <PostingListObj>), ...]
 using posting_map_iter_t = str_postinglist_mt::iterator;
-// using // term -> t1
+using str_tierplmap_mt = std::unordered_map<std::string, std::map<size_t, PostingList>>; // term, <t1, PostingList>: [("Frodo", [(0, <PostingListObj>), (1, <PostingListObj>), ..]), ("Sam", ..), ..]
+using tiered_posting_map_iter_t = str_tierplmap_mt::iterator;

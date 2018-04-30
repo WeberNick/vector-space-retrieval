@@ -137,7 +137,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-### VisualStudioCode ###
+# VisualStudioCode
+.vscode/
 .vscode/**
 #!.vscode/settings.json
 #!.vscode/tasks.json
@@ -148,7 +149,7 @@ Temporary Items
 # Build Folder
 build/
 
-### Own Stuff ###
+# Own Stuff
 docs/html
 docs/latex
 data/nfcorpus

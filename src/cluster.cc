@@ -13,11 +13,10 @@ Cluster::Cluster() : _cb(nullptr), _init(false), _leaders(), _cluster() {}
 Cluster::~Cluster() {}
 
 void Cluster::init(const CB& aControlBlock) {
-    _cb = &aControlBlock;
     if (!_init) {
-        chooseLeaders();
-        fillCluster();
+        _cb = &aControlBlock;
         _init = true;
+        TRACE("Cluster: Initialized.");
     }
 }
 
@@ -31,33 +30,38 @@ void Cluster::chooseLeaders() {
 
     const size_t lNumberOfDocuments = DocumentManager::getInstance().getNoDocuments();
     const size_t lNumberOfClusters = std::sqrt(lNumberOfDocuments);
-    sizet_vt lIDs; // blacklist for IDs already chosen as leader
     size_t lRandomID;
-    for (size_t i = 0; i < lNumberOfClusters; ++i) {
+    while(_leaders.size() != lNumberOfClusters) 
+    {
         lRandomID = lDistr(lRNG); // generate random doc id
         auto lDocIt = lDocs.find(lRandomID);
-        auto lIDsIt = std::find(lIDs.begin(), lIDs.end(), lRandomID);
-        while (lDocIt == lDocs.end() || lIDsIt != lIDs.end()) // doc with ID does not exist or ID in blacklist
+        while(lDocIt == lDocs.end()) // doc with ID does not exist or ID in blacklist
         {
             lRandomID = lDistr(lRNG); // generate random doc id
             lDocIt = lDocs.find(lRandomID);
-            lIDsIt = std::find(lIDs.begin(), lIDs.end(), lRandomID);
         } // valid doc id found
-        _leaders.push_back(&(lDocIt->second));
-        lIDs.push_back(lRandomID);
+        _leaders.insert((lDocIt->second).getID()); //only inserted if it is no duplicate
     }
-    for (const Document* leaderDocPtr : _leaders) {
+    _leadersVec = sizet_vt(_leaders.begin(), _leaders.end());
+    for (const size_t leaderID : _leaders) {
         // default constructs the vector for each leader and adds leader to its own cluster
-        _cluster[leaderDocPtr].push_back(leaderDocPtr);
+        _cluster[leaderID].push_back(leaderID);
     }
+    TRACE("Cluster: Leaders chosen.");
 }
 
-void Cluster::fillCluster() {
-    const doc_mt& lDocs = DocumentManager::getInstance().getDocumentMap();
-    for (const auto& doc : lDocs) // doc will we an iterator over the map
+const sizet_vt Cluster::getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, const size_t aTopK)
+{
+    size_t lIDsCount = 0;
+    sizet_vt lOutput;
+    for(const auto& leader : aLeaders)
     {
-        const size_t lIndex = QueryProcessingEngine::getInstance().cosineScoreCluster(&doc.second, _leaders);
-
-        _cluster.at(_leaders[lIndex]).push_back(&doc.second);
+        const sizet_vt& lCluster = _cluster.at(leader.first);
+        lOutput.insert(lOutput.end(), lCluster.begin(), lCluster.end());
+        if(lOutput.size() >= aTopK)
+        {
+            return lOutput;
+        }
     }
+    return lOutput;
 }

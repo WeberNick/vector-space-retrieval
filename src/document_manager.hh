@@ -119,5 +119,6 @@ class DocumentManager {
     bool _init;
     std::string _collectionFile;
     const char _delimiter; // defined manually
+    sizet_vt _ids;
     doc_mt _docs;
 };

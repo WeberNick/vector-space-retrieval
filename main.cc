@@ -226,9 +226,10 @@ int main(const int argc, const char* argv[]) {
     const control_block_t lCB = { 
         lArgs.trace(), 
         lArgs.measure(), 
-        lArgs.print(), 
+        lArgs.plot(), 
         lArgs.collectionPath(), 
         lArgs.tracePath(),
+        lArgs.evalPath(),
         lArgs.results(), 
         lArgs.tiers(), 
         lArgs.dimensions() };
