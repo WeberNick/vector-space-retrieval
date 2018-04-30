@@ -40,7 +40,7 @@ void QueryProcessingEngine::read(const std::string& aFile) {
  * @param searchType What type of search to we process
  * @return
  */
-std::vector<std::pair<size_t, float>> QueryProcessingEngine::search(std::vector& query, size_t topK, IR_MODE searchType) {
+std::vector<std::pair<size_t, float>> QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType) {
 
     // Remove stopwords
     Utility::IR::removeStopword(query, this->getStopwordlist());
@@ -81,15 +81,17 @@ std::vector<std::pair<size_t, float>> QueryProcessingEngine::search(std::vector&
 
     // Execute different search workflows based on the search type
     switch (searchType) {
-    case IR_MODE::kVANILLA: found_indexes = QueryProcessingEngine::searchCollectionCos(&queryDoc, DocumentManager::getInstance().getDocumentMap(), topK); break;
+    case IR_MODE::kVANILLA: //found_indexes = QueryProcessingEngine::searchCollectionCos(&queryDoc, DocumentManager::getInstance().getDocumentMap(), topK); break;
     case IR_MODE::kCLUSTER:
 
+        sizet_vt cluserLeaderIds(IndexManager::getInstance().getClusteredIndex().getLeaders().begin(),
+                                 IndexManager::getInstance().getClusteredIndex().getLeaders().end());
+
         // Get cluster leaders sorted according to query
-        std::vector<std::pair<size_t, float>> leader_indexes =
-            QueryProcessingEngine::searchCollectionCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
+        std::vector<std::pair<size_t, float>> leader_indexes = QueryProcessingEngine::searchCollectionCos(&queryDoc, cluserLeaderIds, 0);
 
         // Get Docs to search in
-        sizet_set clusterDocIds = IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK);
+        sizet_vt clusterDocIds = IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK);
 
         // Search the docs from the clusters
         found_indexes = QueryProcessingEngine::searchCollectionCos(&queryDoc, clusterDocIds, topK);
@@ -141,7 +143,7 @@ size_t QueryProcessingEngine::cosineScoreClusterBuilding(const Document* query, 
  * @param topK
  * @return
  */
-std::vector<std::pair<size_t, float>> QueryProcessingEngine::searchCollectionCos(const Document* query, const sizet_set collectionIds, size_t topK) {
+std::vector<std::pair<size_t, float>> QueryProcessingEngine::searchCollectionCos(const Document* query, const sizet_vt collectionIds, size_t topK) {
 
     std::map<size_t, float> docId2Scores;
     // Map of doc id to length og that doc
@@ -158,7 +160,7 @@ std::vector<std::pair<size_t, float>> QueryProcessingEngine::searchCollectionCos
             const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList(query->getContent()[j]);
             for (auto& posting : postingList.getPosting()) {
                 const bool is_in =
-                    collectionIds.find(posting.first) !=
+                    std::find(collectionIds.begin(), collectionIds.end(), posting.first) !=
                     collectionIds
                         .end(); // check if current doc looked at, also in the collection we want to search in, because we only have global posting list index
                 if (is_in) {

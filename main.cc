@@ -130,7 +130,7 @@ void testSearch(std::string query) {
 
     Measure lMeasureQuery;
     lMeasureQuery.start();
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, 50, IR_MODE::kVANILLA);
+    std::vector<std::pair<size_t, float>> result = qpe.search(query, 50, IR_MODE::kCLUSTER);
     lMeasureQuery.stop();
     double lSecondsQuery = lMeasureQuery.mTotalTime();
     std::cout << "Search took " << lSecondsQuery << " sec." << std::endl;
