@@ -53,14 +53,17 @@ class Args {
     inline bool measure() { return _measure; }
     inline void measure(const bool& x) { _measure = x; }
 
-    inline bool print() { return _print; }
-    inline void print(const bool& x) { _print = x; }
+    inline bool plot() { return _plot; }
+    inline void plot(const bool& x) { _plot = x; }
 
     inline const std::string& collectionPath() { return _collectionPath; }
     inline void collectionPath(const std::string& x) { _collectionPath = x; }
 
     inline const std::string& tracePath() { return _tracePath; }
     inline void tracePath(const std::string& x) { _tracePath = x; }
+
+    inline const std::string& evalPath() { return _evalPath; }
+    inline void evalPath(const std::string& x) { _evalPath = x; }
 
     inline uint results() { return _results; }
     inline void results(const uint& x) { _results = x; }
@@ -75,10 +78,11 @@ class Args {
     bool _help;
     bool _trace;
     bool _measure;
-    bool _print;
+    bool _plot;
 
     std::string _collectionPath;
     std::string _tracePath;
+    std::string _evalPath;
  
     uint    _results;
     uint    _tiers;
