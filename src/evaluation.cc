@@ -40,12 +40,10 @@ double Evaluation::stop()
     return _time;
 }
 
-void Evaluation::evalPerformanceOfIR()
+void Evaluation::evalIR()
 {
     //todo: compare query results with gold standard
 }
-
-
 
 void Evaluation::plot(const std::string& aQueryName, const std::string aPlotFormat)
 {

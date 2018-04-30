@@ -41,7 +41,7 @@ class Evaluation
         //for run time performance
         void start();
         double stop(); //automatically writes performance to file
-        void evalPerformanceOfIR();
+        void evalIR();
     
     public:
         static void init(const CB& aControlBlock);
