@@ -13,10 +13,8 @@ Cluster::Cluster() : _cb(nullptr), _init(false), _leaders(), _cluster() {}
 Cluster::~Cluster() {}
 
 void Cluster::init(const CB& aControlBlock) {
-    _cb = &aControlBlock;
     if (!_init) {
-        chooseLeaders();
-        fillCluster();
+        _cb = &aControlBlock;
         _init = true;
         TRACE("Cluster: Initialized.");
     }
@@ -44,26 +42,13 @@ void Cluster::chooseLeaders() {
         } // valid doc id found
         _leaders.insert((lDocIt->second).getID()); //only inserted if it is no duplicate
     }
+    _leadersVec = sizet_vt(_leaders.begin(), _leaders.end());
     for (const size_t leaderID : _leaders) {
         // default constructs the vector for each leader and adds leader to its own cluster
         _cluster[leaderID].push_back(leaderID);
     }
     TRACE("Cluster: Leaders chosen.");
 }
-
-
-
-void Cluster::fillCluster() {
-    const doc_mt& lDocs = DocumentManager::getInstance().getDocumentMap();
-    for (const auto& doc : lDocs) // doc will we an iterator over the map
-    {
-        const size_t lIndex = 0;
-        //QueryProcessingEngine::getInstance().cosineScoreCluster(&doc.second, _leaders);
-        _cluster.at(lIndex).push_back(doc.second.getID());
-    }
-    TRACE("Cluster: All documents are assigned to a cluster");
-}
-
 
 const sizet_vt Cluster::getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, const size_t aTopK)
 {

@@ -26,9 +26,7 @@
 #include <unordered_map>
 #include <vector>
 #include <utility>
-
 #include <set>
-using sizet_set = std::set<size_t>;
 
 class Cluster
 {
@@ -65,11 +63,9 @@ class Cluster
          * 
          */
         void chooseLeaders();
-        /**
-         * @brief Fill Clusters
-         * 
-         */
-        void fillCluster();
+        
+        const sizet_vt getRandomLeaders();
+
         inline void addToCluster(const size_t aLeaderID, const size_t aDocumentID){ _cluster.at(aLeaderID).push_back(aDocumentID); }
 
     public:
@@ -82,6 +78,7 @@ class Cluster
          * @return const doc_ptr_vt& 
          */
         inline const sizet_set& getLeaders() { return _leaders; }
+        inline const sizet_vt& getLeadersVec() { return _leadersVec; }
         /**
          * @brief Get the Cluster object
          * 
@@ -94,5 +91,6 @@ class Cluster
 
         bool _init;          // was the cluster initialized?
         sizet_set _leaders; // stores pointer to leader documents inside the doc mngr's map
+        sizet_vt    _leadersVec;
         cluster_mt _cluster; // stores <Doc*, Vector<Doc*>> pairs, the first pointer is a leader document
 };
