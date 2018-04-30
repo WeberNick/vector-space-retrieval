@@ -10,6 +10,7 @@
 #include <nlohmann/json.hpp>
 #include <sstream>
 
+// TODO: Check sorting und so so weil das aktuelle ergebnis scheitn falsch rum zu sein und dann auch bei den cluster schauen ob das richtig ist
 using Comparator = std::function<bool(std::pair<size_t, float>, std::pair<size_t, float>)>;
 
 QueryProcessingEngine::QueryProcessingEngine() :
@@ -41,9 +42,8 @@ void QueryProcessingEngine::read(const std::string& aFile) {
  * @return
  */
 std::vector<std::pair<size_t, float>> QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType) {
-
     // Remove stopwords
-    Utility::IR::removeStopword(query, this->getStopwordlist());
+    Utility::IR::removeStopword(query, getStopwordlist());
 
     // Trim whitespaces
     Utility::StringOp::trim(query);
@@ -52,6 +52,10 @@ std::vector<std::pair<size_t, float>> QueryProcessingEngine::search(std::string&
 
     // Split string by whitespaces
     Utility::StringOp::splitString(query, ' ', proc_query);
+
+    for (auto& elem : proc_query) {
+        std::cout << "string: " << elem << std::endl;
+    }
 
     // Remove eventually empty strings from the query term vector
     Utility::StringOp::removeEmptyStringsFromVec(proc_query);
@@ -63,11 +67,20 @@ std::vector<std::pair<size_t, float>> QueryProcessingEngine::search(std::string&
     std::vector<std::string> preprocessed_content;
 
     for (auto& elem : proc_query) {
-        preprocessed_content.push_back(Utility::IR::stemPorter(elem));
+        std::cout << "string: " << elem << std::endl;
     }
 
-    Document queryDoc(0, preprocessed_content);
+    for (auto& elem : proc_query) {
 
+        std::string preprocess = Utility::IR::stemPorter(elem);
+
+        std::cout << "Preprocessed: " << preprocess << std::endl;
+        preprocessed_content.push_back(preprocess);
+    }
+
+    std::cout << "after pushback: " << std::endl;
+    Document queryDoc("0", preprocessed_content);
+    std::cout << "after queryDoc: " << std::endl;
     std::cout << "Searching for: ";
 
     for (size_t j = 0; j < queryDoc.getContent().size(); ++j) {
@@ -81,11 +94,13 @@ std::vector<std::pair<size_t, float>> QueryProcessingEngine::search(std::string&
 
     // Execute different search workflows based on the search type
     switch (searchType) {
-    case IR_MODE::kVANILLA: //found_indexes = QueryProcessingEngine::searchCollectionCos(&queryDoc, DocumentManager::getInstance().getDocumentMap(), topK); break;
+    case IR_MODE::kVANILLA: // found_indexes = QueryProcessingEngine::searchCollectionCos(&queryDoc, DocumentManager::getInstance().getDocumentMap(), topK);
+                            // break;
     case IR_MODE::kCLUSTER:
 
         // Get cluster leaders sorted according to query
-        std::vector<std::pair<size_t, float>> leader_indexes = QueryProcessingEngine::searchCollectionCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeadersVec(), 0);
+        std::vector<std::pair<size_t, float>> leader_indexes =
+            QueryProcessingEngine::searchCollectionCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeadersVec(), 0);
 
         // Get Docs to search in
         sizet_vt clusterDocIds = IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK);

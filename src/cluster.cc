@@ -52,7 +52,6 @@ void Cluster::chooseLeaders() {
 
 const sizet_vt Cluster::getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, const size_t aTopK)
 {
-    size_t lIDsCount = 0;
     sizet_vt lOutput;
     for(const auto& leader : aLeaders)
     {
