@@ -84,11 +84,8 @@ std::vector<std::pair<size_t, float>> QueryProcessingEngine::search(std::string&
     case IR_MODE::kVANILLA: //found_indexes = QueryProcessingEngine::searchCollectionCos(&queryDoc, DocumentManager::getInstance().getDocumentMap(), topK); break;
     case IR_MODE::kCLUSTER:
 
-        sizet_vt cluserLeaderIds(IndexManager::getInstance().getClusteredIndex().getLeaders().begin(),
-                                 IndexManager::getInstance().getClusteredIndex().getLeaders().end());
-
         // Get cluster leaders sorted according to query
-        std::vector<std::pair<size_t, float>> leader_indexes = QueryProcessingEngine::searchCollectionCos(&queryDoc, cluserLeaderIds, 0);
+        std::vector<std::pair<size_t, float>> leader_indexes = QueryProcessingEngine::searchCollectionCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeadersVec(), 0);
 
         // Get Docs to search in
         sizet_vt clusterDocIds = IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK);

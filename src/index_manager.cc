@@ -66,10 +66,10 @@ void IndexManager::buildIndices(str_postinglist_mt& postinglist_out) {
         _collection_terms.push_back(term);
     }
     _clusteredIndex.chooseLeaders();
-    sizet_vt& leaders = _clusteredIndex.getLeaders();
+    const sizet_vt& leaders = _clusteredIndex.getLeadersVec();
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
-        // const size_t index = QueryProcessingEngine::getInstance().searchCollectionCos(&doc, leaders, 1); // get most similar leader
+        const size_t index = QueryProcessingEngine::getInstance().searchCollectionCos(&doc, leaders, 1)[0].first; // get most similar leader
         _clusteredIndex.addToCluster(index, doc.getID());
         float_vt& tivec = doc.getTfIdfVector();
         tivec.reserve(_collection_terms.size());
