@@ -25,15 +25,18 @@
 #include <random>
 #include <unordered_map>
 #include <vector>
+#include <utility>
+
+#include <set>
+using sizet_set = std::set<size_t>;
 
 class Cluster
 {
-    friend class IndexManager;
-
     public:
-        using cluster_mt = std::unordered_map<const Document*, doc_ptr_vt>;
+        using cluster_mt = std::unordered_map<size_t, sizet_vt>;
 
     private:
+        friend class IndexManager;
         explicit Cluster();
         Cluster(const Cluster&) = default;
         Cluster(Cluster&&) = delete;
@@ -67,6 +70,10 @@ class Cluster
          * 
          */
         void fillCluster();
+        inline void addToCluster(const size_t aLeaderID, const size_t aDocumentID){ _cluster.at(aLeaderID).push_back(aDocumentID); }
+
+    public:
+        const sizet_vt getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, const size_t aTopK);
 
     public:
         /**
@@ -74,7 +81,7 @@ class Cluster
          * 
          * @return const doc_ptr_vt& 
          */
-        inline const doc_ptr_vt& getLeaders() { return _leaders; }
+        inline const sizet_set& getLeaders() { return _leaders; }
         /**
          * @brief Get the Cluster object
          * 
@@ -86,7 +93,7 @@ class Cluster
         const CB* _cb;
 
         bool _init;          // was the cluster initialized?
-        doc_ptr_vt _leaders; // stores pointer to leader documents inside the doc mngr's map
+        sizet_set _leaders; // stores pointer to leader documents inside the doc mngr's map
         cluster_mt _cluster; // stores <Doc*, Vector<Doc*>> pairs, the first pointer is a leader document
 };
 
