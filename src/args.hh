@@ -83,12 +83,10 @@ class Args {
     std::string _collectionPath;
     std::string _tracePath;
     std::string _evalPath;
- 
-    uint    _results;
-    uint    _tiers;
-    uint    _dimensions;
+
+    uint _results;
+    uint _tiers;
+    uint _dimensions;
 };
 
 using argdesc_vt = std::vector<argdescbase_t<Args>*>;
-
-void construct_arg_desc(argdesc_vt& aArgDesc);

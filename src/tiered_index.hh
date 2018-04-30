@@ -12,6 +12,7 @@
 
 #include "document.hh"
 #include "types.hh"
+#include "posting_list.hh"
 
 class TieredIndex {
     friend class IndexManager;

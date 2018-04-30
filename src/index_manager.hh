@@ -49,7 +49,7 @@ class IndexManager {
     inline const string_vt& getCollectionTerms() { return _collection_terms; }
     /**
      * @brief Get the inverse document frequency for the term
-     * 
+     *
      * @param term the term
      * @return const float the inverse document frequency
      */
@@ -72,7 +72,7 @@ class IndexManager {
      *
      * @return const Cluster& the clustered index
      */
-    inline const Cluster& getClusteredIndex() { return _clusteredIndex; }
+    inline Cluster& getClusteredIndex() { return _clusteredIndex; }
 
     /**
      * @brief Get the IndexManager Singleton instance.

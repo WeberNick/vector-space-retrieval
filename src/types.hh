@@ -29,11 +29,13 @@ using str_int_mt = std::map<std::string, uint>;
 using str_float_mt = std::map<std::string, float>;
 using sizet_float_mt = std::map<size_t, float>;
 using float_vector_vt = std::vector<std::vector<float>>;
+using sizet_set = std::set<size_t>;
 
 struct control_block_t {
+
     const bool _trace;   // indicate if tracing is activated
     const bool _measure; // indicate if measurement is activated
-    const bool _plot;   // indicate if tracing/(error) messages shall be printed (cout)
+    const bool _plot;    // indicate if tracing/(error) messages shall be printed (cout)
 
     const std::string _collectionPath; // the path to the document collection
     const std::string _tracePath;
@@ -55,37 +57,15 @@ struct control_block_t {
 };
 using CB = control_block_t;
 
-enum IR_MODE
-{
-    kNoMode = -1,
-    kVANILLA = 0,
-    kTIERED = 1,
-    kCLUSTER = 2,
-    kRANDOM = 3,
-    kNumberOfModes = 4
-};
+enum IR_MODE { kNoMode = -1, kVANILLA = 0, kTIERED = 1, kCLUSTER = 2, kRANDOM = 3, kNumberOfModes = 4 };
 
-inline std::string modeToString(IR_MODE aMode)
-{
-    switch(aMode)
-    {
-        case -1:
-            return "Invalid!";
-            break; //not needed but used for convention
-        case 0:
-            return "VanillaVSM";
-            break; //not needed but used for convention
-        case 1:
-            return "TieredIndex";
-            break; //not needed but used for convention
-        case 2:
-            return "Cluster";
-            break; //not needed but used for convention
-        case 3:
-            return "RandomProjection";
-            break; //not needed but used for convention
-        default:
-            return "Mode not supported";
-            break;
+inline std::string modeToString(IR_MODE aMode) {
+    switch (aMode) {
+    case -1: return "Invalid!"; break;        // not needed but used for convention
+    case 0: return "VanillaVSM"; break;       // not needed but used for convention
+    case 1: return "TieredIndex"; break;      // not needed but used for convention
+    case 2: return "Cluster"; break;          // not needed but used for convention
+    case 3: return "RandomProjection"; break; // not needed but used for convention
+    default: return "Mode not supported"; break;
     }
 }

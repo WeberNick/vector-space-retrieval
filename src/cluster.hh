@@ -1,7 +1,7 @@
 /**
  *	@file 	cluster.hh
  *	@author	Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de)
- *	@brief  Implements the pre-clustering functionality for documents	
+ *	@brief  Implements the pre-clustering functionality for documents
  *	@bugs 	Currently no bugs known
  *	@todos	A cluster can be created and it will automatically initiated itself.
  *	        But: need to add functionality.
@@ -86,13 +86,11 @@ class Cluster
          */
         inline const cluster_mt& getCluster() { return _cluster; }
 
-    private:
-        const CB* _cb;
+  private:
+    const CB* _cb;
 
         bool _init;          // was the cluster initialized?
         sizet_set _leaders; // stores pointer to leader documents inside the doc mngr's map
         sizet_vt    _leadersVec;
         cluster_mt _cluster; // stores <Doc*, Vector<Doc*>> pairs, the first pointer is a leader document
 };
-
-
