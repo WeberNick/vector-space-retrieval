@@ -53,22 +53,11 @@ std::vector<std::pair<size_t, float>> QueryProcessingEngine::search(std::string&
     // Split string by whitespaces
     Utility::StringOp::splitString(query, ' ', proc_query);
 
-    for (auto& elem : proc_query) {
-        std::cout << "string: " << elem << std::endl;
-    }
-
     // Remove eventually empty strings from the query term vector
     Utility::StringOp::removeEmptyStringsFromVec(proc_query);
 
-    // Create doc from query vector
-    Document doc("0", proc_query);
-
     // Preprocess query
     std::vector<std::string> preprocessed_content;
-
-    for (auto& elem : proc_query) {
-        std::cout << "string: " << elem << std::endl;
-    }
 
     for (auto& elem : proc_query) {
 
@@ -78,9 +67,7 @@ std::vector<std::pair<size_t, float>> QueryProcessingEngine::search(std::string&
         preprocessed_content.push_back(preprocess);
     }
 
-    std::cout << "after pushback: " << std::endl;
     Document queryDoc("0", preprocessed_content);
-    std::cout << "after queryDoc: " << std::endl;
     std::cout << "Searching for: ";
 
     for (size_t j = 0; j < queryDoc.getContent().size(); ++j) {
