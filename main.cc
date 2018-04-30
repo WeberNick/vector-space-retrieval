@@ -127,34 +127,18 @@ void testNico(const control_block_t& aControlBlock) {
 void testSearch(std::string query) {
     QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
 
-    // Remove stopwords
-    Utility::IR::removeStopword(query, qpe.getStopwordlist());
-
-    // Trim whitespaces
-    Utility::StringOp::trim(query);
-
-    string_vt proc_query;
-
-    // Split string by whitespaces
-    Utility::StringOp::splitString(query, ' ', proc_query);
-
-    // Remove eventually empty strings from the query term vector
-    Utility::StringOp::removeEmptyStringsFromVec(proc_query);
-
-    // Create doc from query vector
-    Document doc("0", proc_query);
 
     Measure lMeasureQuery;
     lMeasureQuery.start();
-    std::vector<size_t> result = qpe.search(&doc, 50, Utility::VSMType::VANILLA);
+    std::vector<std::pair<size_t, float>> result = qpe.search(query, 50, IR_MODE::kVANILLA);
     lMeasureQuery.stop();
     double lSecondsQuery = lMeasureQuery.mTotalTime();
     std::cout << "Search took " << lSecondsQuery << " sec." << std::endl;
 
     for (size_t j = 0; j < result.size(); ++j) {
-        std::cout << "(" << j << ".) " << DocumentManager::getInstance().getDocument(result[j]).getDocID() << ": ";
+        std::cout << "(" << j << ". - " << result[j].second << ")" << DocumentManager::getInstance().getDocument(result[j].first).getDocID() << ": ";
 
-        for (auto& elem : DocumentManager::getInstance().getDocument(result[j]).getContent()) {
+        for (auto& elem : DocumentManager::getInstance().getDocument(result[j].first).getContent()) {
             std::cout << elem << " ";
         }
         std::cout << std::endl;
@@ -268,8 +252,9 @@ int main(const int argc, const char* argv[]) {
         print_usage(std::cout, argv[0], lArgDesc);
         return 0;
     }
-    const control_block_t lCB = { lArgs.trace(),     lArgs.measure(), lArgs.print(), lArgs.collectionPath(),
-                                  lArgs.tracePath(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
+
+    const control_block_t lCB = { lArgs.trace(),    lArgs.measure(), lArgs.plot(),  lArgs.collectionPath(), lArgs.tracePath(),
+                                  lArgs.evalPath(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
 
     // insert everything here what is not actually meant to be in main
     // test(lCB);

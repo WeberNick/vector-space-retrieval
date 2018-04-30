@@ -41,10 +41,11 @@ class QueryProcessingEngine {
 
   public:
     string_vt getStopwordlist() { return _stopword_list; }
-    std::vector<size_t> search(Document* query, size_t topK, Utility::VSMType searchType);
+    std::vector<std::pair<size_t, float>> search(std::vector& query, size_t topK, IR_MODE searchType);
+    std::vector<std::pair<size_t, float>> searchCollectionCos(const Document *query,
+                                                              const sizet_set collectionIds,
+                                                              size_t topK);
     std::vector<size_t> cosineScoreLSHSearch(const Document* query, const doc_mt& collection, size_t topK);
-    std::vector<size_t> cosineScoreVanillaSearch(const Document* query, const doc_mt& collection, size_t topK);
-    std::vector<size_t> cosineScoreClusterSearch(const Document* query, const doc_ptr_vt& leaders, size_t topK);
     size_t cosineScoreClusterBuilding(const Document* query, const doc_ptr_vt& collection);
 
   private:

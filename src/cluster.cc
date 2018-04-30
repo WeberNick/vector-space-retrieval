@@ -18,6 +18,7 @@ void Cluster::init(const CB& aControlBlock) {
         chooseLeaders();
         fillCluster();
         _init = true;
+        TRACE("Cluster: Initialized.");
     }
 }
 
@@ -50,6 +51,7 @@ void Cluster::chooseLeaders() {
         // default constructs the vector for each leader and adds leader to its own cluster
         _cluster[leaderDocPtr].push_back(leaderDocPtr);
     }
+    TRACE("Cluster: Leaders chosen.");
 }
 
 void Cluster::fillCluster() {
@@ -60,4 +62,5 @@ void Cluster::fillCluster() {
 
         _cluster.at(_leaders[lIndex]).push_back(&doc.second);
     }
+    TRACE("Cluster: All documents are assigned to a cluster");
 }

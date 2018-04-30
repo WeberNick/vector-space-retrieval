@@ -60,6 +60,7 @@ set(HEADER_FILES
         exception.hh
         trace.hh
         measure.hh
+        evaluation.hh
         document.hh
         document_manager.hh
         inverted_index.hh
@@ -75,6 +76,7 @@ set(SOURCE_FILES
         args.cc
         exception.cc
         trace.cc
+        evaluation.cc
         document.cc
         document_manager.cc
         inverted_index.cc

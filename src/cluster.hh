@@ -11,11 +11,14 @@
  */
 #pragma once
 
+#include "types.hh"
+#include "exception.hh"
+#include "trace.hh"
+#include "utility.hh"
+
 #include "document.hh"
 #include "document_manager.hh"
 #include "query_processing_engine.hh"
-#include "types.hh"
-#include "utility.hh"
 
 #include <algorithm>
 #include <cmath>

@@ -45,8 +45,6 @@
  */
 namespace Utility {
 
-    enum VSMType { VANILLA, CLUSTER, TIERED };
-
     /**
      * @brief Generates a random normal distributed double number
      *
@@ -132,19 +130,15 @@ namespace Utility {
      */
     namespace StringOp {
 
-
-
         inline std::string string_vt_2_str(const string_vt& stringVector) {
-           std::string str;
+            std::string str;
 
-          for (int j = 0; j < stringVector.size() - 1; ++j) {
-            str += stringVector[j] + " ";
-          }
-          str += stringVector[stringVector.size()-1];
-           return str;
+            for (int j = 0; j < stringVector.size() - 1; ++j) {
+                str += stringVector[j] + " ";
+            }
+            str += stringVector[stringVector.size() - 1];
+            return str;
         }
-
-
 
         /**
          * @brief Splits a given string by a delimiter and fills the given string vector

@@ -32,7 +32,7 @@ class IndexManager {
      *
      * @param postinglist_out the inverted index postinglists
      */
-    void buildIndices(postinglist_mt& postinglist_out);
+    void buildIndices(str_postinglist_mt& postinglist_out);
 
   public:
     /**
