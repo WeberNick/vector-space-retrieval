@@ -42,15 +42,20 @@ install_word2vec()
   if [ ! -z "$C" ]
   then
     command="$command -DCMAKE_C_COMPILER=$C"
+  else
+    command="$command -DCMAKE_C_COMPILER=$(which gcc)"
   fi
 
   if [ ! -z "$CXX" ]
   then
     command="$command -DCMAKE_CXX_COMPILER=$CXX"
+  else
+    command="$command -DCMAKE_CXX_COMPILER=$(which g++)"
   fi
 
   command="$command -DCMAKE_BUILD_TYPE=Release ../"
   echo "> [Building] word2vec"
+  echo $command
   eval $command
   make
   cd ../../../../
