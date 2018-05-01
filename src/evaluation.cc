@@ -1,43 +1,48 @@
 #include "evaluation.hh"
 
-const CB* Evaluation::_cb = nullptr;
+Evaluation::Evaluation() : 
+    _mode(""), _queryName(""), _evalMap(), _evalPath(""), _measureInstance(nullptr), _time(0), _started(false), _cb(nullptr)
+{}
 
 void Evaluation::init(const CB& aControlBlock)
 {
     if(!_cb)
     {
         _cb = &aControlBlock;
+        _evalPath = std::string(_cb->evalPath()).append("eval/");
+        fs::create_directory(_evalPath);
     }
 }
 
-Evaluation::Evaluation(const std::string& aQueryName, const IR_MODE aMode) : 
-    _queryName(aQueryName), _mode(modeToString(aMode)), _measureInstance(nullptr), _time(0), _evalPath(std::string(_cb->evalPath()).append("eval/")), _evalStream() 
+void Evaluation::start(const IR_MODE aMode, const std::string& aQueryName)
 {
-        fs::create_directory(_evalPath);
-        _evalPath.append(std::string(_queryName).append(".txt"));
+    if(!_started)
+    {
+        _mode = modeToString(aMode);
+        _queryName = aQueryName;
+        _started = true;
+        const std::string lTraceMsg = std::string("Evaluating performance of mode '") + _mode + std::string("' for query '") + _queryName + std::string("'");
+        TRACE(lTraceMsg);
+        _measureInstance = new Measure;
+        _measureInstance->start();
+    }
 }
 
-
-void Evaluation::start()
+void Evaluation::stop()
 {
-    const std::string lTraceMsg = std::string("Evaluating performance of mode '") + _mode + std::string("' for query '") + _queryName + std::string("'");
-    TRACE(lTraceMsg);
-    _measureInstance = new Measure;
-    _measureInstance->start();
-}
-
-double Evaluation::stop()
-{
-    _measureInstance->stop();
-    _time = _measureInstance->mTotalTime();
-    delete _measureInstance;
-    _measureInstance = nullptr;
-    const std::string lTraceMsg = std::string("Time to process query '") + _queryName + std::string("' in mode '") + _mode + std::string("' : ") + std::to_string(_time);
-    TRACE(lTraceMsg);
-    _evalStream.open(_evalPath.c_str(), std::ofstream::out | std::ofstream::app);
-    _evalStream << _mode << ' ' << std::setprecision(3) << std::fixed << std::endl;
-    _evalStream.close();
-    return _time;
+    if(_started)
+    {
+        _measureInstance->stop();
+        _time = _measureInstance->mTotalTime();
+        delete _measureInstance;
+        _measureInstance = nullptr;
+        const std::string lTraceMsg = std::string("Time to process query '") + _queryName + std::string("' in mode '") + _mode + std::string("' : ") + std::to_string(_time);
+        TRACE(lTraceMsg);
+        _evalMap[_mode][_queryName] = _time;
+        _mode = "";
+        _queryName = "";
+        _started = false;
+    }
 }
 
 void Evaluation::evalIR()
@@ -45,38 +50,30 @@ void Evaluation::evalIR()
     //todo: compare query results with gold standard
 }
 
-void Evaluation::plot(const std::string& aQueryName, const std::string aPlotFormat)
+void Evaluation::constructJSON()
 {
-    const std::string lPathToEval = std::string(_cb->evalPath() ).append("eval/");
-    const std::string lPathToQueryFile = std::string(lPathToEval).append(aQueryName);
-    const std::string lInputData = std::string(lPathToQueryFile).append(".txt");
-    const std::string lOutputPath = std::string(lPathToQueryFile).append(aPlotFormat);
-    if(fs::exists(lInputData))
+    json lModes = json::array();    
+    for(const auto& [mode, qMap] : _evalMap)
     {
-		Gnuplot gp;
-		gp << "set terminal " << aPlotFormat << "\n";
-		gp << "set output '" << lOutputPath << "'\n";
-		gp << "set grid\n";
-		gp << "set autoscale\n";
-		gp << "set ylabel 'Time to process query' font ', 8'\n";
-		gp << "set xtics font ',8'\n";
-		gp << "set title 'Processing Time of Query " << aQueryName << " for different IR modes' font ',12'\n";
-		gp << "set boxwidth 0.7 relative\n";
-		gp << "set style data histograms\n";
-		gp << "set style histogram cluster\n";
-		gp << "set style fill solid 1.0 border lt -1\n";
-		gp << "set auto x\n";
-		gp << "set auto y\n";
-		gp << "set key top left font ', 6'\n";
-
-		const std::string command = "plot \n"; //todo, fix command with correct path to inpit file(s) and set labels
-		gp << command;
+        json lMode = json::object();
+        lMode["name"] = mode;
+        json lQueryResults = json::array();
+        for(const auto& [query, time] : qMap)
+        {
+            json lQuery = json::object();
+            lQuery["name"] = query;
+            lQuery["time"] = time;
+            lQueryResults.push_back(lQuery);
+        }
+        lMode["queries"] = lQueryResults;
+        lModes.push_back(lMode);
     }
+    std::time_t lCurrTime = std::time(nullptr);
+    std::string lTime = std::string(std::ctime(&lCurrTime));
+    std::string lPath = _evalPath;
+    lPath.append(lTime.substr(0, lTime.size() - 1).append(".json"));
+    std::ofstream lOutputFile(lPath.c_str(), std::ofstream::out);
+    lOutputFile << lModes << std::endl;
+    lOutputFile.close();
 }
 
-void Evaluation::reuse(const std::string& aQueryName, const IR_MODE aMode)
-{
-    _queryName = aQueryName;
-    _mode = modeToString(aMode);
-    _evalPath = std::string(_cb->evalPath()).append("eval/").append(std::string(_queryName).append(".txt"));
-}

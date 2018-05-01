@@ -88,5 +88,5 @@ class Args {
     uint _tiers;
     uint _dimensions;
 };
-
 using argdesc_vt = std::vector<argdescbase_t<Args>*>;
+void construct_arg_desc(argdesc_vt &aArgDesc);
