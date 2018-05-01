@@ -436,7 +436,6 @@ namespace Utility {
          * //TODO: NEED TO IMPLEMENT
          */
         inline void removeStopword(std::string& str, const string_vt& stopwordList) {
-
             int counter = 0;
             for (auto& elem : stopwordList) {
                 std::regex regex("\\b(" + elem + ")\\b");
@@ -491,6 +490,33 @@ namespace Utility {
             std::string stemmed = os.str();
             StringOp::trim(stemmed);
             return stemmed;
+        }
+
+        /**
+         * @brief 
+         * 
+         * @param first 
+         * @param second 
+         * @return sizet_vt 
+         */
+        inline sizet_vt mergePostingLists(const sizet_vt& first, const sizet_vt& second) {
+            sizet_vt out;
+            return out;
+        }
+
+        /**
+         * @brief 
+         * 
+         * @param vecs 
+         * @param out 
+         */
+        inline void mergePostingLists(std::vector<sizet_vt>& vecs, sizet_vt& out) {
+            std::sort(vecs.begin(), vecs.end(), [](const sizet_vt& a, const sizet_vt& b) { return a.size() < b.size(); });
+            //sizet_vt merged
+            //out.insert(out.end(), ) = vecs.at(0); no
+            // make unique
+            std::sort(out.begin(), out.end());
+            out.erase(unique(out.begin(), out.end()), out.end());
         }
 
     } // namespace IR

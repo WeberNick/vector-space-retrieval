@@ -88,6 +88,12 @@ class DocumentManager {
      * @return size_t number of docs in the collection
      */
     inline size_t getNoDocuments() { return _docs.size(); }
+    /**
+     * @brief Get the ids of all documents in the collection as a size_t vector
+     * 
+     * @return sizet_vt& the ids
+     */
+    inline sizet_vt& getIDs() { return _ids; }
 
     /**
      * @brief Get the document object with id aDocID
@@ -111,7 +117,7 @@ class DocumentManager {
      *
      * @param aControlBlock
      */
-    void init(const control_block_t& aControlBlock, const std::string& aCollectionFile);
+    void init(const control_block_t& aControlBlock);
 
   private:
     const control_block_t* _cb;

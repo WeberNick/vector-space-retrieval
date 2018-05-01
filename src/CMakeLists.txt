@@ -51,7 +51,6 @@ if(NOT EXISTS ${EXTERNAL_DIR}nlohmann)
     )
 endif()
 
-
 set(HEADER_FILES
         argbase.hh
         types.hh

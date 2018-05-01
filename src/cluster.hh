@@ -28,69 +28,77 @@
 #include <utility>
 #include <set>
 
+using cluster_mt = std::unordered_map<size_t, sizet_vt>;
+
 class Cluster
 {
-    public:
-        using cluster_mt = std::unordered_map<size_t, sizet_vt>;
+  private:
+    friend class IndexManager;
+    explicit Cluster();
+    Cluster(const Cluster&) = default;
+    Cluster(Cluster&&) = delete;
+    Cluster& operator=(const Cluster&) = delete;
+    Cluster& operator=(Cluster&&) = delete;
+    ~Cluster();
 
-    private:
-        friend class IndexManager;
-        explicit Cluster();
-        Cluster(const Cluster&) = default;
-        Cluster(Cluster&&) = delete;
-        Cluster& operator=(const Cluster&) = delete;
-        Cluster& operator=(Cluster&&) = delete;
-        ~Cluster();
+  private:
+    /**
+     * @brief Get the Cluster Singleton instance.
+     *
+     * @return Cluster& a reference to the Cluster Singleton instance.
+     */
+    inline static Cluster& getInstance() {
+        static Cluster lInstance;
+        return lInstance;
+    }
+    /**
+     * @brief Initialize control block and cluster
+     *
+     * @param aControlBlock the control block
+     */
+    void init(const CB& aControlBlock, cluster_mt& aCluster);
 
-    private:
-        /**
-         * @brief Get the Cluster Singleton instance.
-         *
-         * @return Cluster& a reference to the Cluster Singleton instance.
-         */
-        inline static Cluster& getInstance() {
-          static Cluster lInstance;
-          return lInstance;
-        }
-        /**
-         * @brief Initialize control block and cluster
-         *
-         * @param aControlBlock the control block
-         */
-        void init(const CB& aControlBlock);
-        /**
-         * @brief Choose Leaders
-         * 
-         */
-        void chooseLeaders();
-        
-        const sizet_vt getRandomLeaders();
+    /**
+     * @brief Choose Leaders
+     *
+     */
+    void chooseLeaders();
 
-        inline void addToCluster(const size_t aLeaderID, const size_t aDocumentID){ _cluster.at(aLeaderID).push_back(aDocumentID); }
+  public:
+    /**
+     * @brief Get the Leaders object
+     *
+     * @return const doc_ptr_vt&
+     */
+    inline const sizet_set& getLeaders() { return _leaders; }
+    /**
+     * @brief Get the Leaders Vec object
+     * 
+     * @return const sizet_vt& 
+     */
+    inline const sizet_vt& getLeadersVec() { return _leadersVec; }
+    /**
+     * @brief Get the Cluster object
+     *
+     * @return const cluster_mt&
+     */
+    inline cluster_mt& getCluster() { return _cluster; }
 
-    public:
-        const sizet_vt getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, const size_t aTopK);
-
-    public:
-        /**
-         * @brief Get the Leaders object
-         * 
-         * @return const doc_ptr_vt& 
-         */
-        inline const sizet_set& getLeaders() { return _leaders; }
-        inline const sizet_vt& getLeadersVec() { return _leadersVec; }
-        /**
-         * @brief Get the Cluster object
-         * 
-         * @return const cluster_mt& 
-         */
-        inline const cluster_mt& getCluster() { return _cluster; }
+  public:
+    /**
+     * @brief 
+     * 
+     * @param aLeaders 
+     * @param aTopK 
+     * @return const sizet_vt 
+     */
+    const sizet_vt getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, const size_t aTopK);
 
   private:
     const CB* _cb;
 
-        bool _init;          // was the cluster initialized?
-        sizet_set _leaders; // stores pointer to leader documents inside the doc mngr's map
-        sizet_vt    _leadersVec;
-        cluster_mt _cluster; // stores <Doc*, Vector<Doc*>> pairs, the first pointer is a leader document
+    bool _init;           // was the cluster initialized?
+    sizet_set _leaders;   // stores IDs of leaders as a set
+    sizet_vt _leadersVec; // stores IDs of leaders as a list
+    cluster_mt _cluster;  // stores <DocID, Vector<DocID>> pairs, the first id represents a leader document
 };

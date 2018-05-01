@@ -14,9 +14,10 @@ InvertedIndex::InvertedIndex() :
  * @brief Destroy the Inverted Index:: Inverted Index object
  * 
  */
-InvertedIndex::~InvertedIndex() {}
+InvertedIndex::~InvertedIndex()
+{}
 
-void InvertedIndex::init(const control_block_t& aControlBlock, str_postinglist_mt aPostingLists) {
+void InvertedIndex::init(const control_block_t& aControlBlock, str_postinglist_mt& aPostingLists) {
     _cb = &aControlBlock;
     if (!_init) {
         _term_posting_map = aPostingLists;
@@ -44,12 +45,12 @@ const PostingList& InvertedIndex::getPostingList(const std::string& aTerm) const
     if (_term_posting_map.find(aTerm) != _term_posting_map.end())
         return _term_posting_map.at(aTerm);
     else
-        throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "The term " + aTerm + " does not appear in the document collection.");
+        throw InvalidArgumentException(FLF, "The term " + aTerm + " does not appear in the document collection.");
 }
 
 size_t InvertedIndex::getNoDocs(const std::string& aTerm) {
     if (_term_posting_map.find(aTerm) != _term_posting_map.end())
         return _term_posting_map.at(aTerm).getPosting().size();
     else
-        throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "The term " + aTerm + " does not appear in the document collection.");
+        throw InvalidArgumentException(FLF, "The term " + aTerm + " does not appear in the document collection.");
 }

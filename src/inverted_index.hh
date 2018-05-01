@@ -76,7 +76,7 @@ class InvertedIndex {
      * @param aControlBlock the control block
      * @param aPostingList the posting lists
      */
-    void init(const control_block_t& aControlBlock, str_postinglist_mt aPostingLists);
+    void init(const control_block_t& aControlBlock, str_postinglist_mt& aPostingLists);
 
   public:
     /**

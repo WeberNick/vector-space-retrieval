@@ -19,7 +19,8 @@ IndexManager::IndexManager() :
  * @brief Destroy the Index Manager:: Index Manager object
  * 
  */
-IndexManager::~IndexManager() {}
+IndexManager::~IndexManager()
+{}
 
 void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
     _cb = &aControlBlock;
@@ -28,18 +29,25 @@ void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
     if (!_init) {
         _collection_terms.reserve(_docs->size());
         str_postinglist_mt postinglist_out;
-        this->buildIndices(postinglist_out);
+        str_tierplmap_mt tieredpostinglist_out;
+        _clusteredIndex.chooseLeaders();
+        cluster_mt& cluster_out = _clusteredIndex.getCluster();
+        const sizet_vt& leaders = _clusteredIndex.getLeadersVec();
+        this->buildIndices(postinglist_out, tieredpostinglist_out, cluster_out, leaders);
 
         _invertedIndex.init(aControlBlock, postinglist_out);
-        _tieredIndex.init(aControlBlock);
-        _clusteredIndex.init(aControlBlock);
+        _tieredIndex.init(aControlBlock, tieredpostinglist_out);
+        _clusteredIndex.init(aControlBlock, cluster_out);
         _init = true;
     }
 }
 
-void IndexManager::buildIndices(str_postinglist_mt& postinglist_out) {
+void IndexManager::buildIndices(str_postinglist_mt& postinglist_out,
+                                str_tierplmap_mt& tieredpostinglist_out,
+                                cluster_mt& cluster_out,
+                                const sizet_vt& leaders) {
     str_int_mt idf_occs;
-    for (const auto & [ id, doc ] : *(_docs)) {
+    for (const auto& [id, doc] : *(_docs)) {
         str_int_mt tf_counts;
         str_float_mt tf_out;
         sizet_float_mt posting;
@@ -52,7 +60,7 @@ void IndexManager::buildIndices(str_postinglist_mt& postinglist_out) {
             }
         }
         int maxFreq = Utility::StringOp::getMaxWordFrequency(con);
-        for (const auto & [ term, count ] : tf_counts) { // this loops through the distinct terms of this document
+        for (const auto& [term, count] : tf_counts) { // this loops through the distinct terms of this document
             tf_out[term] = Utility::IR::calcTf(count, maxFreq);
             postinglist_out[term].setTf(id, tf_out.at(term));
             ++idf_occs[term];
@@ -60,25 +68,27 @@ void IndexManager::buildIndices(str_postinglist_mt& postinglist_out) {
         _docs->at(id).setTermTfMap(tf_out);
     }
     const int N = _docs->size();
-    for (const auto & [ term, occ ] : idf_occs) { // sizeof idf_occs == distinct_terms
+    for (const auto& [term, occ] : idf_occs) { // sizeof idf_occs == distinct_terms
         _idf_map[term] = Utility::IR::calcIdf(N, occ);
         postinglist_out[term].setIdf(_idf_map[term]);
         _collection_terms.push_back(term);
     }
-    _clusteredIndex.chooseLeaders();
-    const sizet_vt& leaders = _clusteredIndex.getLeadersVec();
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
         const size_t index = QueryProcessingEngine::getInstance().searchCollectionCos(&doc, leaders, 1)[0].first; // get most similar leader
-        _clusteredIndex.addToCluster(index, doc.getID());
-        float_vt& tivec = doc.getTfIdfVector();
+        cluster_out.at(index).push_back(doc.getID());
+        float_vt tivec = doc.getTfIdfVector();
         tivec.reserve(_collection_terms.size());
         for (std::string& term : _collection_terms) {
             str_float_mt& termTfMap = doc.getTermTfMap();
             if (termTfMap.find(term) != termTfMap.end()) {
                 tivec.push_back(Utility::IR::calcTfIdf(termTfMap.at(term), _idf_map.at(term)));
-            } else tivec.push_back(0); 
+            } else
+                tivec.push_back(0);
         }
         doc.setNormLength(Utility::SimilarityMeasures::vectorLength(tivec));
+        doc.setTfIdfVector(tivec);
     }
 }
+
+{}

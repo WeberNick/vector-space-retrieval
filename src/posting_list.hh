@@ -48,6 +48,12 @@ class PostingList {
      * @return const sizet_float_mt& the posting for the corresponding term
      */
     inline const sizet_float_mt& getPosting() const { return _posting; }
+    /**
+     * @brief Get all ids from the posting
+     *
+     * @return const sizet_vt a vector with the ids
+     */
+    const sizet_vt getIDs() const;
 
     /**
      * @brief Set the term frequency from this terms posting list to tf for document with id aDocID

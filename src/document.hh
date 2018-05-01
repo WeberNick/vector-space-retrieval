@@ -105,6 +105,12 @@ class Document {
      * @param nl the normalization factor
      */
     inline void setNormLength(float nl) { _norm_length = nl; }
+    /**
+     * @brief Set the tfidf vector of this document
+     * 
+     * @param vec the tfidf vector
+     */
+    inline void setTfIdfVector(const float_vt& vec) { _tf_idf_vec = vec; }
 
     /**
      * @brief Override operator<< for pretty printing a Document object

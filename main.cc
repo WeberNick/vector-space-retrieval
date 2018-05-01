@@ -99,8 +99,8 @@ void testNico(const control_block_t& aControlBlock) {
     Measure lMeasure;
     lMeasure.start();
     DocumentManager& docManager = DocumentManager::getInstance();
-    // docManager.init(aControlBlock, "./data/collection_test_mwe.docs");
-    docManager.init(aControlBlock, "./data/collection.docs");
+    // docManager.init(aControlBlock);
+    docManager.init(aControlBlock);
     doc_mt& docMap = docManager.getDocumentMap();
 
     IndexManager& imInstance = IndexManager::getInstance();
@@ -149,7 +149,7 @@ void testAlex(const control_block_t& aControlBlock) {
     /*Measure lMeasureIndexing;
     lMeasureIndexing.start();
     DocumentManager& docManager = DocumentManager::getInstance();
-    docManager.init(aControlBlock, "./data/collection.docs");
+    docManager.init(aControlBlock);
     doc_mt& docMap = docManager.getDocumentMap();
 
     IndexManager& imInstance = IndexManager::getInstance();
@@ -206,14 +206,14 @@ void testAlex(const control_block_t& aControlBlock) {
     lMeasureIndexing.start();
     std::cout << "test alex 1" << std::endl;
     DocumentManager& docManager = DocumentManager::getInstance();
-    docManager.init(aControlBlock, "./data/collection.docs");
+    docManager.init(aControlBlock);
     doc_mt& docMap = docManager.getDocumentMap();
 
-  std::cout << "test alex 2" << std::endl;
+    std::cout << "test alex 2" << std::endl;
     IndexManager& imInstance = IndexManager::getInstance();
-  std::cout << "test alex 3" << std::endl;
+    std::cout << "test alex 3" << std::endl;
     imInstance.init(aControlBlock, docMap);
-  std::cout << "test alex 4" << std::endl;
+    std::cout << "test alex 4" << std::endl;
 
     lMeasureIndexing.stop();
     double lSeconds = lMeasureIndexing.mTotalTime();
@@ -222,7 +222,7 @@ void testAlex(const control_block_t& aControlBlock) {
     QueryProcessingEngine::getInstance().init(aControlBlock);
 
     testSearch("why deep fried foods may cause cancer");
-    //testSearch("do cholesterol statin drugs cause breast cancer ?");
+    // testSearch("do cholesterol statin drugs cause breast cancer ?");
 }
 
 /**
@@ -257,8 +257,7 @@ int main(const int argc, const char* argv[]) {
     }
 
     const control_block_t lCB = { lArgs.trace(),    lArgs.measure(), lArgs.plot(),  lArgs.collectionPath(), lArgs.tracePath(),
-                                  lArgs.evalPath(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
-
+                                  lArgs.evalPath(), lArgs.stopwordFile(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
 
     Trace::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main

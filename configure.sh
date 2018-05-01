@@ -132,7 +132,7 @@ fi
 
 if [ -d ./tests/lib ];
 then
- if [ ! -z ${ALL+x} ]
+ if [ ! -z ${ALL+x} ];
   then
   echo "Deleting ./tests/lib directory"
   rm -rf ./tests/lib
@@ -144,7 +144,7 @@ fi
 
 # Because word2vec is a static library which is linked in our cmake we have to first download and install it before we build our executable
 # All other libraries we use are header only ones, so we compile them while we build
-if [ ! -d ./src/lib/word2vec++];
+if [ ! -d ./src/lib/word2vec++ ];
 then
   install_word2vec
 fi
