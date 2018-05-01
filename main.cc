@@ -1,3 +1,4 @@
+#include "args.cc"
 #include "args.hh"
 #include "document_manager.hh"
 #include "index_manager.hh"
@@ -10,6 +11,7 @@
 #include <experimental/filesystem>
 #include <iostream>
 #include <vector>
+#include <word_embeddings.hh>
 namespace fs = std::experimental::filesystem;
 
 bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
@@ -18,18 +20,6 @@ bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
 
     double dot = Utility::scalar_product(origVec, randVec);
     if (dot >= 0) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-unsigned int hashExercise2Task2(std::vector<float>& origVec, std::vector<float>& randVec) {
-
-    if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
-
-    double dot = Utility::scalar_product(origVec, randVec);
-    if (dot > 0.75) {
         return 1;
     } else {
         return 0;
@@ -105,12 +95,12 @@ void test(const control_block_t& aControlBlock) {
         std::cout << std::endl;
     }*/
 }
-
 void testNico(const control_block_t& aControlBlock) {
     Measure lMeasure;
     lMeasure.start();
     DocumentManager& docManager = DocumentManager::getInstance();
-    docManager.init(aControlBlock, "./data/collection_test_mwe.docs");
+    // docManager.init(aControlBlock, "./data/collection_test_mwe.docs");
+    docManager.init(aControlBlock, "./data/collection.docs");
     doc_mt& docMap = docManager.getDocumentMap();
 
     IndexManager& imInstance = IndexManager::getInstance();
@@ -121,15 +111,15 @@ void testNico(const control_block_t& aControlBlock) {
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
     std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
-    int count = 0;
+    // int count = 0;
     std::cout << docManager.getDocument(2) << std::endl;
     std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term) << std::endl;
-    for (const auto& [term, idf] : imInstance.getIdfMap()) {
+    /*for (const auto& [term, idf] : imInstance.getIdfMap()) {
         ++count;
         if (count > 100) return;
         std::cout << term << ": ";
         std::cout << idf << std::endl;
-    }
+    }*/
     // testSearch("why deep fried foods may cause cancer");
     // testSearch("do cholesterol statin drugs cause breast cancer ?");
 }
@@ -137,34 +127,17 @@ void testNico(const control_block_t& aControlBlock) {
 void testSearch(std::string query) {
     QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
 
-    // Remove stopwords
-    Utility::IR::removeStopword(query, qpe.getStopwordlist());
-
-    // Trim whitespaces
-    Utility::StringOp::trim(query);
-
-    string_vt proc_query;
-
-    // Split string by whitespaces
-    Utility::StringOp::splitString(query, ' ', proc_query);
-
-    // Remove eventually empty strings from the query term vector
-    Utility::StringOp::removeEmptyStringsFromVec(proc_query);
-
-    // Create doc from query vector
-    Document doc("0", proc_query);
-
     Measure lMeasureQuery;
     lMeasureQuery.start();
-    std::vector<size_t> result = qpe.search(&doc, 50);
+    std::vector<std::pair<size_t, float>> result = qpe.search(query, 50, IR_MODE::kCLUSTER);
     lMeasureQuery.stop();
     double lSecondsQuery = lMeasureQuery.mTotalTime();
     std::cout << "Search took " << lSecondsQuery << " sec." << std::endl;
 
     for (size_t j = 0; j < result.size(); ++j) {
-        std::cout << "(" << j << ".) " << DocumentManager::getInstance().getDocument(result[j]).getDocID() << ": ";
+        std::cout << "(" << j << ". - " << result[j].second << ")" << DocumentManager::getInstance().getDocument(result[j].first).getDocID() << ": ";
 
-        for (auto& elem : DocumentManager::getInstance().getDocument(result[j]).getContent()) {
+        for (auto& elem : DocumentManager::getInstance().getDocument(result[j].first).getContent()) {
             std::cout << elem << " ";
         }
         std::cout << std::endl;
@@ -172,13 +145,72 @@ void testSearch(std::string query) {
 }
 
 void testAlex(const control_block_t& aControlBlock) {
-    Measure lMeasureIndexing;
+
+    /*Measure lMeasureIndexing;
     lMeasureIndexing.start();
     DocumentManager& docManager = DocumentManager::getInstance();
     docManager.init(aControlBlock, "./data/collection.docs");
     doc_mt& docMap = docManager.getDocumentMap();
 
     IndexManager& imInstance = IndexManager::getInstance();
+    imInstance.init(aControlBlock, docMap);
+
+    lMeasureIndexing.stop();
+    double lSeconds = lMeasureIndexing.mTotalTime();
+    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
+
+    WordEmbeddings& wb = WordEmbeddings::getInstance();
+    wb.init(aControlBlock, "./data/w2v/cb_hs_500_10.w2v");
+
+    // create doc2vec model
+    w2v::d2vModel_t d2vModel(wb.getw2v()->vectorSize());
+
+    std::cout << docManager.getDocumentMap().size() << std::endl;
+
+    {
+        w2v::doc2vec_t doc2vec(wb.getw2v(), Utility::StringOp::string_vt_2_str(docManager.getDocument(1).getContent()));
+        // add vector with ID = 1 to the model
+        d2vModel.set(0, doc2vec);
+    }
+
+    {
+        w2v::doc2vec_t doc2vec(wb.getw2v(), Utility::StringOp::string_vt_2_str(docManager.getDocument(2).getContent()));
+        // add vector with ID = 1 to the model
+        d2vModel.set(1, doc2vec);
+    }
+
+    {
+        w2v::doc2vec_t doc2vec(wb.getw2v(), Utility::StringOp::string_vt_2_str(docManager.getDocument(3).getContent()));
+        // add vector with ID = 1 to the model
+        d2vModel.set(2, doc2vec);
+    }
+
+    {
+        w2v::doc2vec_t doc2vec(wb.getw2v(), Utility::StringOp::string_vt_2_str(docManager.getDocument(4).getContent()));
+        // add vector with ID = 1 to the model
+        d2vModel.set(3, doc2vec);
+    }
+
+    w2v::doc2vec_t doc2vec(wb.getw2v(), "do cholesterol statin drugs cause breast cancer ?");
+
+    // get nearest article IDs from the model
+    std::vector<std::pair<std::size_t, float>> nearest;
+    d2vModel.nearest(doc2vec, nearest, d2vModel.modelSize());
+
+    // output result set
+    for (auto const& i : nearest) {
+        std::cout << i.first << ": " << i.second << std::endl;
+    }*/
+
+    Measure lMeasureIndexing;
+    lMeasureIndexing.start();
+
+    DocumentManager& docManager = DocumentManager::getInstance();
+    docManager.init(aControlBlock, "./data/collection.docs");
+    doc_mt& docMap = docManager.getDocumentMap();
+
+    IndexManager& imInstance = IndexManager::getInstance();
+
     imInstance.init(aControlBlock, docMap);
 
     lMeasureIndexing.stop();
@@ -222,16 +254,10 @@ int main(const int argc, const char* argv[]) {
         return 0;
     }
 
-    const control_block_t lCB = { 
-        lArgs.trace(), 
-        lArgs.measure(), 
-        lArgs.print(), 
-        lArgs.collectionPath(), 
-        lArgs.tracePath(),
-        lArgs.results(), 
-        lArgs.tiers(), 
-        lArgs.dimensions() };
+    const control_block_t lCB = { lArgs.trace(),    lArgs.measure(), lArgs.plot(),  lArgs.collectionPath(), lArgs.tracePath(),
+                                  lArgs.evalPath(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
 
+    Trace::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
     // test(lCB);
     // testNico(lCB);

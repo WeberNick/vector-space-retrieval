@@ -27,7 +27,7 @@ void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
     
     if (!_init) {
         _collection_terms.reserve(_docs->size());
-        postinglist_mt postinglist_out;
+        str_postinglist_mt postinglist_out;
         this->buildIndices(postinglist_out);
 
         _invertedIndex.init(aControlBlock, postinglist_out);
@@ -37,7 +37,7 @@ void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
     }
 }
 
-void IndexManager::buildIndices(postinglist_mt& postinglist_out) {
+void IndexManager::buildIndices(str_postinglist_mt& postinglist_out) {
     str_int_mt idf_occs;
     for (const auto & [ id, doc ] : *(_docs)) {
         str_int_mt tf_counts;
@@ -65,8 +65,12 @@ void IndexManager::buildIndices(postinglist_mt& postinglist_out) {
         postinglist_out[term].setIdf(_idf_map[term]);
         _collection_terms.push_back(term);
     }
+    _clusteredIndex.chooseLeaders();
+    const sizet_vt& leaders = _clusteredIndex.getLeadersVec();
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
+        const size_t index = QueryProcessingEngine::getInstance().searchCollectionCos(&doc, leaders, 1)[0].first; // get most similar leader
+        _clusteredIndex.addToCluster(index, doc.getID());
         float_vt& tivec = doc.getTfIdfVector();
         tivec.reserve(_collection_terms.size());
         for (std::string& term : _collection_terms) {

@@ -1,7 +1,7 @@
 /**
  *	@file 	cluster.hh
  *	@author	Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de)
- *	@brief  Implements the pre-clustering functionality for documents	
+ *	@brief  Implements the pre-clustering functionality for documents
  *	@bugs 	Currently no bugs known
  *	@todos	A cluster can be created and it will automatically initiated itself.
  *	        But: need to add functionality.
@@ -11,26 +11,30 @@
  */
 #pragma once
 
+#include "types.hh"
+#include "exception.hh"
+#include "trace.hh"
+#include "utility.hh"
+
 #include "document.hh"
 #include "document_manager.hh"
 #include "query_processing_engine.hh"
-#include "types.hh"
-#include "utility.hh"
 
 #include <algorithm>
 #include <cmath>
 #include <random>
 #include <unordered_map>
 #include <vector>
+#include <utility>
+#include <set>
 
 class Cluster
 {
-    friend class IndexManager;
-
     public:
-        using cluster_mt = std::unordered_map<const Document*, doc_ptr_vt>;
+        using cluster_mt = std::unordered_map<size_t, sizet_vt>;
 
     private:
+        friend class IndexManager;
         explicit Cluster();
         Cluster(const Cluster&) = default;
         Cluster(Cluster&&) = delete;
@@ -59,11 +63,13 @@ class Cluster
          * 
          */
         void chooseLeaders();
-        /**
-         * @brief Fill Clusters
-         * 
-         */
-        void fillCluster();
+        
+        const sizet_vt getRandomLeaders();
+
+        inline void addToCluster(const size_t aLeaderID, const size_t aDocumentID){ _cluster.at(aLeaderID).push_back(aDocumentID); }
+
+    public:
+        const sizet_vt getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, const size_t aTopK);
 
     public:
         /**
@@ -71,7 +77,8 @@ class Cluster
          * 
          * @return const doc_ptr_vt& 
          */
-        inline const doc_ptr_vt& getLeaders() { return _leaders; }
+        inline const sizet_set& getLeaders() { return _leaders; }
+        inline const sizet_vt& getLeadersVec() { return _leadersVec; }
         /**
          * @brief Get the Cluster object
          * 
@@ -79,12 +86,11 @@ class Cluster
          */
         inline const cluster_mt& getCluster() { return _cluster; }
 
-    private:
-        const CB* _cb;
+  private:
+    const CB* _cb;
 
         bool _init;          // was the cluster initialized?
-        doc_ptr_vt _leaders; // stores pointer to leader documents inside the doc mngr's map
+        sizet_set _leaders; // stores pointer to leader documents inside the doc mngr's map
+        sizet_vt    _leadersVec;
         cluster_mt _cluster; // stores <Doc*, Vector<Doc*>> pairs, the first pointer is a leader document
 };
-
-

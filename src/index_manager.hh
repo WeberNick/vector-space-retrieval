@@ -32,7 +32,7 @@ class IndexManager {
      *
      * @param postinglist_out the inverted index postinglists
      */
-    void buildIndices(postinglist_mt& postinglist_out);
+    void buildIndices(str_postinglist_mt& postinglist_out);
 
   public:
     /**
@@ -49,7 +49,7 @@ class IndexManager {
     inline const string_vt& getCollectionTerms() { return _collection_terms; }
     /**
      * @brief Get the inverse document frequency for the term
-     * 
+     *
      * @param term the term
      * @return const float the inverse document frequency
      */
@@ -72,7 +72,7 @@ class IndexManager {
      *
      * @return const Cluster& the clustered index
      */
-    inline const Cluster& getClusteredIndex() { return _clusteredIndex; }
+    inline Cluster& getClusteredIndex() { return _clusteredIndex; }
 
     /**
      * @brief Get the IndexManager Singleton instance.
@@ -98,7 +98,7 @@ class IndexManager {
     str_float_mt _idf_map;
     string_vt _collection_terms; // does not have to be sorted
 
-    InvertedIndex _invertedIndex;
-    TieredIndex _tieredIndex;
-    Cluster _clusteredIndex;
+    InvertedIndex& _invertedIndex;
+    TieredIndex& _tieredIndex;
+    Cluster& _clusteredIndex;
 };
