@@ -2,29 +2,22 @@
 
 /**
  * @brief Construct a new Index Manager:: Index Manager object
- * 
+ *
  */
 IndexManager::IndexManager() :
-    _cb(nullptr),
-    _docs(nullptr),
-    _init(false),
-    _idf_map(),
-    _collection_terms(),
-    _invertedIndex(InvertedIndex::getInstance()),
-    _tieredIndex(TieredIndex::getInstance()),
-    _clusteredIndex(Cluster::getInstance())
-{}
+    _cb(nullptr), _docs(nullptr), _init(false), _idf_map(), _collection_terms(), _invertedIndex(InvertedIndex::getInstance()),
+    _tieredIndex(TieredIndex::getInstance()), _clusteredIndex(Cluster::getInstance()) {}
 
 /**
  * @brief Destroy the Index Manager:: Index Manager object
- * 
+ *
  */
 IndexManager::~IndexManager() {}
 
 void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
     _cb = &aControlBlock;
     _docs = &aDocMap;
-    
+
     if (!_init) {
         _collection_terms.reserve(_docs->size());
         str_postinglist_mt postinglist_out;
@@ -39,7 +32,7 @@ void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
 
 void IndexManager::buildIndices(str_postinglist_mt& postinglist_out) {
     str_int_mt idf_occs;
-    for (const auto & [ id, doc ] : *(_docs)) {
+    for (const auto& [id, doc] : *(_docs)) {
         str_int_mt tf_counts;
         str_float_mt tf_out;
         sizet_float_mt posting;
@@ -52,7 +45,7 @@ void IndexManager::buildIndices(str_postinglist_mt& postinglist_out) {
             }
         }
         int maxFreq = Utility::StringOp::getMaxWordFrequency(con);
-        for (const auto & [ term, count ] : tf_counts) { // this loops through the distinct terms of this document
+        for (const auto& [term, count] : tf_counts) { // this loops through the distinct terms of this document
             tf_out[term] = Utility::IR::calcTf(count, maxFreq);
             postinglist_out[term].setTf(id, tf_out.at(term));
             ++idf_occs[term];
@@ -60,7 +53,7 @@ void IndexManager::buildIndices(str_postinglist_mt& postinglist_out) {
         _docs->at(id).setTermTfMap(tf_out);
     }
     const int N = _docs->size();
-    for (const auto & [ term, occ ] : idf_occs) { // sizeof idf_occs == distinct_terms
+    for (const auto& [term, occ] : idf_occs) { // sizeof idf_occs == distinct_terms
         _idf_map[term] = Utility::IR::calcIdf(N, occ);
         postinglist_out[term].setIdf(_idf_map[term]);
         _collection_terms.push_back(term);
@@ -69,7 +62,7 @@ void IndexManager::buildIndices(str_postinglist_mt& postinglist_out) {
     const sizet_vt& leaders = _clusteredIndex.getLeadersVec();
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
-        const size_t index = QueryProcessingEngine::getInstance().searchCollectionCos(&doc, leaders, 1)[0].first; // get most similar leader
+        const size_t index = QueryProcessingEngine::getInstance().searchCollectionCosFirstIndex(&doc, leaders); // get most similar leader
         _clusteredIndex.addToCluster(index, doc.getID());
         float_vt& tivec = doc.getTfIdfVector();
         tivec.reserve(_collection_terms.size());
@@ -77,7 +70,8 @@ void IndexManager::buildIndices(str_postinglist_mt& postinglist_out) {
             str_float_mt& termTfMap = doc.getTermTfMap();
             if (termTfMap.find(term) != termTfMap.end()) {
                 tivec.push_back(Utility::IR::calcTfIdf(termTfMap.at(term), _idf_map.at(term)));
-            } else tivec.push_back(0); 
+            } else
+                tivec.push_back(0);
         }
         doc.setNormLength(Utility::SimilarityMeasures::vectorLength(tivec));
     }

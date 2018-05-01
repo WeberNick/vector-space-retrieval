@@ -10,8 +10,10 @@
 
 #include <experimental/filesystem>
 #include <iostream>
+#include <lib/nlohmann/single_include/nlohmann/json.hpp>
 #include <vector>
 #include <word_embeddings.hh>
+#include <evaluation.hh>
 namespace fs = std::experimental::filesystem;
 
 bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
@@ -128,9 +130,11 @@ void testSearch(std::string query) {
     QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
 
     Measure lMeasureQuery;
+
     lMeasureQuery.start();
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, 50, IR_MODE::kCLUSTER);
+    std::vector<std::pair<size_t, float>> result = qpe.search(query, 10, IR_MODE::kCLUSTER);
     lMeasureQuery.stop();
+
     double lSecondsQuery = lMeasureQuery.mTotalTime();
     std::cout << "Search took " << lSecondsQuery << " sec." << std::endl;
 
@@ -202,7 +206,7 @@ void testAlex(const control_block_t& aControlBlock) {
         std::cout << i.first << ": " << i.second << std::endl;
     }*/
 
-    Measure lMeasureIndexing;
+    /*Measure lMeasureIndexing;
     lMeasureIndexing.start();
 
     DocumentManager& docManager = DocumentManager::getInstance();
@@ -220,7 +224,12 @@ void testAlex(const control_block_t& aControlBlock) {
     QueryProcessingEngine::getInstance().init(aControlBlock);
 
     testSearch("why deep fried foods may cause cancer");
-    testSearch("do cholesterol statin drugs cause breast cancer ?");
+    // testSearch("do cholesterol statin drugs cause breast cancer ?");*/
+
+    Evaluation eval1("test1",IR_MODE::kVANILLA);
+    eval1.start();
+    eval1.stop();
+
 }
 
 /**
