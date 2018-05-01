@@ -66,7 +66,7 @@ void IndexManager::buildIndices(str_postinglist_mt& postinglist_out) {
         _collection_terms.push_back(term);
     }
     _clusteredIndex.chooseLeaders();
-    const sizet_vt& leaders = _clusteredIndex.getLeadersVec();
+    const sizet_vt& leaders = _clusteredIndex.getLeaders();
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
         const size_t index = QueryProcessingEngine::getInstance().searchCollectionCos(&doc, leaders, 1)[0].first; // get most similar leader
