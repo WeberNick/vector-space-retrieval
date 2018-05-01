@@ -15,6 +15,7 @@
 #include <vector>
 #include <word_embeddings.hh>
 #include <evaluation.hh>
+#include <thread>
 namespace fs = std::experimental::filesystem;
 
 bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
@@ -229,7 +230,7 @@ void testAlex(const control_block_t& aControlBlock) {
         std::cout << i.first << ": " << i.second << std::endl;
     }*/
 
-    /*Measure lMeasureIndexing;
+    Measure lMeasureIndexing;
     lMeasureIndexing.start();
 
     DocumentManager& docManager = DocumentManager::getInstance();
@@ -247,11 +248,8 @@ void testAlex(const control_block_t& aControlBlock) {
     QueryProcessingEngine::getInstance().init(aControlBlock);
 
     testSearch("why deep fried foods may cause cancer");
-    // testSearch("do cholesterol statin drugs cause breast cancer ?");*/
+    // testSearch("do cholesterol statin drugs cause breast cancer ?");
 
-    Evaluation eval1("test1",IR_MODE::kVANILLA);
-    eval1.start();
-    eval1.stop();
 
 }
 
