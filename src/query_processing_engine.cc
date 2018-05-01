@@ -42,12 +42,13 @@ void QueryProcessingEngine::read(const std::string& aFile) {
 std::vector<std::pair<size_t, float>> QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType) {
     Utility::IR::removeStopword(query, getStopwordlist()); // Remove stopwords
     Utility::StringOp::trim(query); // Trim whitespaces
+    
+    string_vt proc_query;
     Utility::StringOp::splitString(query, ' ', proc_query); // Split string by whitespaces
     Utility::StringOp::removeEmptyStringsFromVec(proc_query); // Remove eventually empty strings from the query term vector
 
     std::vector<std::pair<size_t, float>> found_indices; // result vector
 
-    string_vt proc_query;
     std::vector<std::string> preprocessed_content; 
     for (auto& elem : proc_query) { // Preprocess query
         std::string preprocess = Utility::IR::stemPorter(elem);
@@ -64,6 +65,10 @@ std::vector<std::pair<size_t, float>> QueryProcessingEngine::search(std::string&
     std::cout << std::endl;
     
     switch (searchType) { // Execute different search workflows based on the search type
+        case IR_MODE::kNoMode:
+        case IR_MODE::kNumberOfModes:
+        case IR_MODE::kTIERED:
+        case IR_MODE::kRANDOM:
         case IR_MODE::kVANILLA: 
             // found_indices = QueryProcessingEngine::searchCollectionCos(&queryDoc, DocumentManager::getInstance().getDocumentMap(), topK);
             // break;

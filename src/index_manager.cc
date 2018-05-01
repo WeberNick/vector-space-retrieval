@@ -81,8 +81,8 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
     // Test end
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
-        const size_t index = QueryProcessingEngine::getInstance().searchCollectionCosFirstIndex(&doc, _docs->getIDs());
-        cluster_out->at(index).push_back(doc.getID());
+        //const size_t index = QueryProcessingEngine::getInstance().searchCollectionCosFirstIndex(&doc, DocumentManager::getInstance().getIDs());
+        cluster_out->at(0).push_back(doc.getID());
         float_vt tivec = doc.getTfIdfVector();
         tivec.reserve(_collection_terms.size());
         for (std::string& term : _collection_terms) {

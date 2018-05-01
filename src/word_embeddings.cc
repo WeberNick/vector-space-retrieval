@@ -36,4 +36,5 @@ int WordEmbeddings::loadModel(const std::string& aModelFile) {
         std::cerr << "unknown error" << std::endl;
         return 2;
     }
+    return 0; // TODO: Remove (inserted by Nico to remove Warning)
 }
