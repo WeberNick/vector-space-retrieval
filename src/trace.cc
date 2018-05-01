@@ -22,13 +22,13 @@ void Trace::init(const CB& aCB)
     {
         _cb = &aCB;
         _logPath = _cb->tracePath();
-        _logPath.append("logs/");
-        fs::create_directory(_logPath);
-        std::time_t lCurrTime = std::time(nullptr);
-        std::string lTime = std::string(std::ctime(&lCurrTime));
-        _logPath.append(lTime.substr(0, lTime.size() - 1).append(".txt"));
         if(_cb->trace())
         {
+            _logPath.append("logs/");
+            fs::create_directory(_logPath);
+            std::time_t lCurrTime = std::time(nullptr);
+            std::string lTime = std::string(std::ctime(&lCurrTime));
+            _logPath.append(lTime.substr(0, lTime.size() - 1).append(".txt"));
             _logStream.open(_logPath.c_str(), std::ofstream::out | std::ofstream::app);
             TRACE("Log file created and open");
         }

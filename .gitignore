@@ -159,3 +159,5 @@ bin/**
 src/lib/
 src/lib/**
 data/w2v/**
+logs/
+eval/

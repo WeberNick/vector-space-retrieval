@@ -92,10 +92,11 @@ pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size_t top
 
         // Get cluster leaders sorted according to query
         std::vector<std::pair<size_t, float>> leader_indexes =
-            QueryProcessingEngine::searchCollectionCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeadersVec(), 0);
+            QueryProcessingEngine::searchCollectionCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
 
         // Get Docs to search in
-        sizet_vt clusterDocIds = IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK);
+        sizet_vt clusterDocIds;
+        IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK, clusterDocIds);
 
         // Search the docs from the clusters
         found_indexes = QueryProcessingEngine::searchCollectionCos(&queryDoc, clusterDocIds, topK);
