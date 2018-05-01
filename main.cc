@@ -1,5 +1,6 @@
-#include "args.cc"
 #include "args.hh"
+#include "src/types.hh"
+#include "src/evaluation.hh"
 #include "document_manager.hh"
 #include "index_manager.hh"
 #include "inverted_index.hh"
@@ -12,6 +13,12 @@
 #include <iostream>
 #include <vector>
 #include <word_embeddings.hh>
+
+
+#include <chrono>
+#include <thread>
+
+
 namespace fs = std::experimental::filesystem;
 
 bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
@@ -30,18 +37,40 @@ bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
 void test(const control_block_t& aControlBlock) {
     /* Example how to use Measurement class (also described in measure.hh) */
 
-    Measure lMeasure;
-    if (aControlBlock.measure()) { lMeasure.start(); }
-    // do processing
-    lMeasure.stop();
-    double lSeconds = lMeasure.mTotalTime();
-    std::cout << "This print message is just used to prevent unused variable warnings. " << lSeconds << std::endl;
+    //Measure lMeasure;
+    //if (aControlBlock.measure()) { lMeasure.start(); }
+    //// do processing
+    //lMeasure.stop();
+    //double lSeconds = lMeasure.mTotalTime();
+    //std::cout << "This print message is just used to prevent unused variable warnings. " << lSeconds << std::endl;
 
-    DocumentManager& docManager = DocumentManager::getInstance();
-    std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getNoDocuments() << std::endl;
+    //DocumentManager& docManager = DocumentManager::getInstance();
+    //std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getNoDocuments() << std::endl;
 
-    std::string text = "Let me split this into words";
-    std::vector<std::string> results;
+    //std::string text = "Let me split this into words";
+    //std::vector<std::string> results;
+
+
+
+    Evaluation::getInstance().start(kVANILLA, "Med1");
+
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+
+    Evaluation::getInstance().stop();
+
+    Evaluation::getInstance().start(kTIERED, "Med2");
+
+    std::this_thread::sleep_for(std::chrono::seconds(4));
+
+    Evaluation::getInstance().stop();
+
+    Evaluation::getInstance().start(kCLUSTER, "Med3");
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
+    Evaluation::getInstance().stop();
+
+    Evaluation::getInstance().constructJSON();
 
     /*Utility::StringOp::splitString(text, ' ', results);
     for (auto t : results) {
@@ -204,16 +233,14 @@ void testAlex(const control_block_t& aControlBlock) {
 
     Measure lMeasureIndexing;
     lMeasureIndexing.start();
-    std::cout << "test alex 1" << std::endl;
+
     DocumentManager& docManager = DocumentManager::getInstance();
     docManager.init(aControlBlock);
     doc_mt& docMap = docManager.getDocumentMap();
 
-    std::cout << "test alex 2" << std::endl;
     IndexManager& imInstance = IndexManager::getInstance();
-    std::cout << "test alex 3" << std::endl;
+
     imInstance.init(aControlBlock, docMap);
-    std::cout << "test alex 4" << std::endl;
 
     lMeasureIndexing.stop();
     double lSeconds = lMeasureIndexing.mTotalTime();
@@ -222,7 +249,8 @@ void testAlex(const control_block_t& aControlBlock) {
     QueryProcessingEngine::getInstance().init(aControlBlock);
 
     testSearch("why deep fried foods may cause cancer");
-    // testSearch("do cholesterol statin drugs cause breast cancer ?");
+
+    testSearch("do cholesterol statin drugs cause breast cancer ?");
 }
 
 /**
@@ -256,13 +284,15 @@ int main(const int argc, const char* argv[]) {
         return 0;
     }
 
+    // THROW EXCEPTION if numtiers < 2
     const control_block_t lCB = { lArgs.trace(),    lArgs.measure(), lArgs.plot(),  lArgs.collectionPath(), lArgs.tracePath(),
                                   lArgs.evalPath(), lArgs.stopwordFile(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
 
     Trace::getInstance().init(lCB);
+    Evaluation::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
-    // test(lCB);
+     test(lCB);
     // testNico(lCB);
-    testAlex(lCB);
+    //testAlex(lCB);
     return 0;
 }

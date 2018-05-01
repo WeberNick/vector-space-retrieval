@@ -71,7 +71,14 @@ class TieredIndex {
      *
      * @param aControlBlock the control block
      */
-    void init(const control_block_t& aControlBlock, const str_tierplmap_mt& aTermTierMap);
+    void init(const control_block_t& aControlBlock);
+    
+    /**
+     * @brief Get the Term Tier Posting Map object
+     * 
+     * @return str_tierplmap_mt* 
+     */
+    inline str_tierplmap_mt* getTermTierPostingMap() { return &_term_tier_map; }
 
   public:
     // TODO docs

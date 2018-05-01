@@ -33,10 +33,11 @@ class IndexManager {
      * @param postinglist_out the inverted index postinglists
      * @param tieredpostinglist_out the tiered index postinglists
      * @param cluster_out the cluster map
+     * @param leaders the leaders of the clustered index
      */
-    void buildIndices(str_postinglist_mt& postinglist_out,
-                      str_tierplmap_mt& tieredpostinglist_out,
-                      cluster_mt& cluster_out,
+    void buildIndices(str_postinglist_mt* postinglist_out,
+                      str_tierplmap_mt* tieredpostinglist_out,
+                      cluster_mt* cluster_out,
                       const sizet_vt& leaders);
 
   public:

@@ -20,8 +20,8 @@ DocumentManager::DocumentManager() :
 DocumentManager::~DocumentManager() { }
 
 void DocumentManager::init(const control_block_t& aControlBlock) {
-    _cb = &aControlBlock;
     if (!_init) {
+        _cb = &aControlBlock;
         _collectionFile = _cb->collectionPath();
         read(_collectionFile);
         _init = true;

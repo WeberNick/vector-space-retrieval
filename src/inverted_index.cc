@@ -17,10 +17,9 @@ InvertedIndex::InvertedIndex() :
 InvertedIndex::~InvertedIndex()
 {}
 
-void InvertedIndex::init(const control_block_t& aControlBlock, str_postinglist_mt& aPostingLists) {
-    _cb = &aControlBlock;
+void InvertedIndex::init(const control_block_t& aControlBlock) {
     if (!_init) {
-        _term_posting_map = aPostingLists;
+        _cb = &aControlBlock;
         _init = true;
     }
 }

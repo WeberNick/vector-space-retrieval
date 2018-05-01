@@ -14,3 +14,18 @@ TEST(Utils, Dot_Product_Equals_Test) {
     std::vector<float> vec_c(vec_b.begin(), vec_b.end());
     EXPECT_EQ(9.0794126987457275391, Utility::scalar_product(vec_a, vec_c));
 }
+
+TEST(Utils, Pop_Front_Equals_Test) {
+
+    std::vector<float> vec_a = { 5, 4, 2, 1 };
+    std::vector<float> vec_a_first_popped = { 4, 2, 1 };
+    float elem = Utility::pop_front(vec_a);
+    EXPECT_EQ(vec_a_first_popped, vec_a);
+    EXPECT_EQ(elem, 5);
+
+    std::vector<std::string> vec_b = { "Hi", "This", "Is", "John" };
+    std::vector<std::string> vec_b_first_popped = { "This", "Is", "John" };
+    const std::string& str_elem = Utility::pop_front(vec_b);
+    EXPECT_EQ(vec_b_first_popped, vec_b);
+    EXPECT_EQ(str_elem, "Hi");
+}

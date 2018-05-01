@@ -17,20 +17,26 @@
 #include "types.hh"
 #include "trace.hh"
 #include "measure.hh"
-#include "gnuplot-iostream.hh"
+#include "lib/nlohmann/single_include/nlohmann/json.hpp"
+using json = nlohmann::json;
 
 #include <string>
 #include <vector>
 #include <ios>
 #include <fstream>
+#include <ctime>
 #include <iostream>
+#include <unordered_map>
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
 
+using query_mt = std::unordered_map<std::string, double>;
+using eval_mt = std::unordered_map<std::string, query_mt>;
+
 class Evaluation
 {
-    public:
-        explicit Evaluation(const std::string& aQueryName, const IR_MODE aMode);
+    private:
+        explicit Evaluation();
         explicit Evaluation(const Evaluation&) = delete;
         explicit Evaluation(Evaluation&&) = delete;
         Evaluation& operator=(const Evaluation&) = delete;
@@ -38,34 +44,35 @@ class Evaluation
         ~Evaluation() = default;
 
     public:
-        //for run time performance
-        void start();
-        double stop(); //automatically writes performance to file
-        void evalIR();
-    
+        inline static Evaluation& getInstance()
+        {
+            static Evaluation lInstance;
+            return lInstance;
+        }
+        void init(const CB& aControlBlock);
+
     public:
-        static void init(const CB& aControlBlock);
-        //todo: discuss with alex/nico, how to plot exactly.. (per query, cluster of querys, avg of all queries)
-        static void plot(const std::string& aQueryName, const std::string aPlotFormat = "pdf");
+        //for run time performance
+        void start(const IR_MODE aMode, const std::string& aQueryName);
+        void stop(); //automatically writes performance to file
+        void evalIR();
+        void constructJSON();
+    
 
     public:
         //getter
         //setter
-        /**
-         * @brief changes the evaluation parameters to reuse an old evaluation object
-         */
-        void reuse(const std::string& aQueryName, const IR_MODE aMode);
         
     private:
-        static const CB*    _cb;
 
     private:
-        std::string     _queryName;
         std::string     _mode;
+        std::string     _queryName;
+        eval_mt         _evalMap;
+        std::string     _evalPath;
         Measure*        _measureInstance;
         double          _time;
-        std::string     _evalPath;
-        std::ofstream   _evalStream;
+        bool            _started;
 
+        const CB*    _cb;
 };
-

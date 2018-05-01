@@ -18,12 +18,11 @@ Cluster::Cluster() :
 Cluster::~Cluster()
 {}
 
-void Cluster::init(const CB& aControlBlock, cluster_mt& aCluster)
+void Cluster::init(const CB& aControlBlock)
 {
     if (!_init)
     {
         _cb = &aControlBlock;
-        _cluster = aCluster;
         _init = true;
         TRACE("Cluster: Initialized.");
     }
@@ -40,38 +39,36 @@ void Cluster::chooseLeaders()
 
     const size_t lNumberOfDocuments = DocumentManager::getInstance().getNoDocuments();
     const size_t lNumberOfClusters = std::sqrt(lNumberOfDocuments);
+    sizet_set lUniqueLeader;
     size_t lRandomID;
-    while (_leaders.size() != lNumberOfClusters)
+    while(lUniqueLeader.size() != lNumberOfClusters)
     {
-        lRandomID = lDistr(lRNG); // generate random doc id
+        lRandomID = lDistr(lRNG);                             // generate random doc id
         auto lDocIt = lDocs.find(lRandomID);
-        while (lDocIt == lDocs.end()) // doc with ID does not exist or ID in blacklist
+        while (lDocIt == lDocs.end())                         // doc with ID does not exist or ID in blacklist
         {
-            lRandomID = lDistr(lRNG); // generate random doc id
+            lRandomID = lDistr(lRNG);                         // generate random doc id
             lDocIt = lDocs.find(lRandomID);
-        }                                          // valid doc id found
-        _leaders.insert((lDocIt->second).getID()); // only inserted if it is no duplicate
+        }                                                     // valid doc id found
+        lUniqueLeader.insert((lDocIt->second).getID());       // only inserted if it is no duplicate
     }
-    _leadersVec = sizet_vt(_leaders.begin(), _leaders.end());
+    _leaders = sizet_vt(lUniqueLeader.begin(), lUniqueLeader.end());
     for (const size_t leaderID : _leaders)
     {
-        // default constructs the vector for each leader and adds leader to its own cluster
-        _cluster[leaderID].push_back(leaderID);
+        _cluster[leaderID].push_back(leaderID);               // default constructs the vector for each leader and adds leader to its own cluster
     }
     TRACE("Cluster: Leaders chosen.");
 }
 
-const sizet_vt Cluster::getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, const size_t aTopK)
+void Cluster::getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, const size_t aTopK, sizet_vt& aOutputVec)
 {
-    sizet_vt lOutput;
-    for (const auto& leader : aLeaders)
+    for(const auto& leader : aLeaders)
     {
         const sizet_vt& lCluster = _cluster.at(leader.first);
-        lOutput.insert(lOutput.end(), lCluster.begin(), lCluster.end());
-        if (lOutput.size() >= aTopK)
+        aOutputVec.insert(aOutputVec.end(), lCluster.begin(), lCluster.end());
+        if(aOutputVec.size() >= aTopK)
         {
-            return lOutput;
+            break;
         }
     }
-    return lOutput;
 }

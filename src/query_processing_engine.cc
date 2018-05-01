@@ -23,8 +23,8 @@ QueryProcessingEngine::QueryProcessingEngine() :
 {}
 
 void QueryProcessingEngine::init(const control_block_t& aControlBlock) {
-    _cb = &aControlBlock;
     if (!_init) {
+        _cb = &aControlBlock;
         _stopwordFile = _cb->stopwordFile(); // relative path from /path/to/repo/vector-space-retrieval
         read(_stopwordFile);
         _init = true;
@@ -40,76 +40,47 @@ void QueryProcessingEngine::read(const std::string& aFile) {
 }
 
 std::vector<std::pair<size_t, float>> QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType) {
-    // Remove stopwords
-    Utility::IR::removeStopword(query, getStopwordlist());
+    Utility::IR::removeStopword(query, getStopwordlist()); // Remove stopwords
+    Utility::StringOp::trim(query); // Trim whitespaces
+    Utility::StringOp::splitString(query, ' ', proc_query); // Split string by whitespaces
+    Utility::StringOp::removeEmptyStringsFromVec(proc_query); // Remove eventually empty strings from the query term vector
 
-    // Trim whitespaces
-    Utility::StringOp::trim(query);
+    std::vector<std::pair<size_t, float>> found_indices; // result vector
 
     string_vt proc_query;
-
-    // Split string by whitespaces
-    Utility::StringOp::splitString(query, ' ', proc_query);
-
-    for (auto& elem : proc_query) {
-        std::cout << "string: " << elem << std::endl;
-    }
-
-    // Remove eventually empty strings from the query term vector
-    Utility::StringOp::removeEmptyStringsFromVec(proc_query);
-
-    // Create doc from query vector
-    Document doc("0", proc_query);
-
-    // Preprocess query
-    std::vector<std::string> preprocessed_content;
-
-    for (auto& elem : proc_query) {
-        std::cout << "string: " << elem << std::endl;
-    }
-
-    for (auto& elem : proc_query) {
-
+    std::vector<std::string> preprocessed_content; 
+    for (auto& elem : proc_query) { // Preprocess query
         std::string preprocess = Utility::IR::stemPorter(elem);
-
         std::cout << "Preprocessed: " << preprocess << std::endl;
         preprocessed_content.push_back(preprocess);
     }
 
-    std::cout << "after pushback: " << std::endl;
     Document queryDoc("0", preprocessed_content);
-    std::cout << "after queryDoc: " << std::endl;
     std::cout << "Searching for: ";
-
     for (size_t j = 0; j < queryDoc.getContent().size(); ++j) {
         std::cout << "(" << j << "|" << queryDoc.getContent()[j] << ")"
                   << " ";
     }
     std::cout << std::endl;
+    
+    switch (searchType) { // Execute different search workflows based on the search type
+        case IR_MODE::kVANILLA: 
+            // found_indices = QueryProcessingEngine::searchCollectionCos(&queryDoc, DocumentManager::getInstance().getDocumentMap(), topK);
+            // break;
+        case IR_MODE::kCLUSTER:
+            // Get cluster leaders sorted according to query
+            std::vector<std::pair<size_t, float>> leader_indexes =
+            QueryProcessingEngine::searchCollectionCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
 
-    // Set up result vector
-    std::vector<std::pair<size_t, float>> found_indices;
+            sizet_vt clusterDocIds; // Get Docs to search in
+            IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK, clusterDocIds);
 
-    // Execute different search workflows based on the search type
-    switch (searchType) {
-    case IR_MODE::kVANILLA: // found_indices = QueryProcessingEngine::searchCollectionCos(&queryDoc, DocumentManager::getInstance().getDocumentMap(), topK);
-                            // break;
-    case IR_MODE::kCLUSTER:
-
-        // Get cluster leaders sorted according to query
-        std::vector<std::pair<size_t, float>> leader_indexes =
-            QueryProcessingEngine::searchCollectionCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeadersVec(), 0);
-
-        // Get Docs to search in
-        sizet_vt clusterDocIds = IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK);
-
-        // Search the docs from the clusters
-        found_indices = QueryProcessingEngine::searchCollectionCos(&queryDoc, clusterDocIds, topK);
-        break;
+            // Search the docs from the clusters
+            found_indices = QueryProcessingEngine::searchCollectionCos(&queryDoc, clusterDocIds, topK);
+            break;
     }
 
-    // Return search result
-    return found_indices;
+    return found_indices; // Return search result
 }
 
 size_t QueryProcessingEngine::cosineScoreClusterBuilding(const Document* query, const doc_ptr_vt& collection) {
@@ -174,5 +145,6 @@ std::vector<std::pair<size_t, float>> QueryProcessingEngine::searchCollectionCos
 }
 
 std::vector<size_t> QueryProcessingEngine::cosineScoreLSHSearch(const Document* query, const doc_mt& collection, size_t topK) {
+    // TODO implement
     return std::vector<size_t>();
 }

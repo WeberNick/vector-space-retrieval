@@ -1,7 +1,3 @@
-//
-// Created by Alexander Weiß on 27.04.18.
-//
-
 #include "word_embeddings.hh"
 
 /**
@@ -19,13 +15,14 @@ WordEmbeddings::WordEmbeddings() :
 WordEmbeddings::~WordEmbeddings() {}
 
 void WordEmbeddings::init(const control_block_t& aControlBlock, const std::string& aModelFile) {
-    _cb = &aControlBlock;
     if (!_init) {
+        _cb = &aControlBlock;
         _modelFile = aModelFile;
         loadModel(_modelFile);
         _init = true;
     }
 }
+
 int WordEmbeddings::loadModel(const std::string& aModelFile) {
     // load wor2vec model
     try {

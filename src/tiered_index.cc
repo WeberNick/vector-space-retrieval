@@ -18,11 +18,10 @@ TieredIndex::TieredIndex() :
 TieredIndex::~TieredIndex()
 {}
 
-void TieredIndex::init(const control_block_t& aControlBlock, const str_tierplmap_mt& aTermTierMap) {
-    _cb = &aControlBlock;
+void TieredIndex::init(const control_block_t& aControlBlock) {
     if (!_init) {
+        _cb = &aControlBlock;
         _num_tiers = _cb->tiers();
-        _term_tier_map = aTermTierMap;
         _init = true;
     }
 }
@@ -56,7 +55,7 @@ sizet_vt TieredIndex::getDocIDList(const size_t top, const string_vt& terms) {
                 sizet_vt& termIDs = vecs.at(i);
                 termIDs.insert(termIDs.end(), tierIDs.begin(), tierIDs.end());
                 vecs.at(i) = termIDs;
-            } else { // first tier
+            } else {        // first tier
                 vecs.push_back(tierIDs);
             }
         }

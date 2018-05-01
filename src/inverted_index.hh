@@ -76,7 +76,15 @@ class InvertedIndex {
      * @param aControlBlock the control block
      * @param aPostingList the posting lists
      */
-    void init(const control_block_t& aControlBlock, str_postinglist_mt& aPostingLists);
+    void init(const control_block_t& aControlBlock);
+
+    //TODO docs
+    /**
+     * @brief Get the Term Posting Map object
+     * 
+     * @return str_postinglist_mt* 
+     */
+    inline str_postinglist_mt* getTermPostingMap() { return &_term_posting_map; }
 
   public:
     /**

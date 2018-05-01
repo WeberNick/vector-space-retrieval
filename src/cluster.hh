@@ -56,8 +56,14 @@ class Cluster
      *
      * @param aControlBlock the control block
      */
-    void init(const CB& aControlBlock, cluster_mt& aCluster);
+    void init(const CB& aControlBlock);
 
+    /**
+     * @brief Get the Cluster Map object
+     * 
+     * @return cluster_mt* 
+     */
+    inline cluster_mt* getClusterMap() { return &_cluster; }
     /**
      * @brief Choose Leaders
      *
@@ -67,16 +73,10 @@ class Cluster
   public:
     /**
      * @brief Get the Leaders object
-     *
-     * @return const doc_ptr_vt&
-     */
-    inline const sizet_set& getLeaders() { return _leaders; }
-    /**
-     * @brief Get the Leaders Vec object
      * 
-     * @return const sizet_vt& 
+     * @return const doc_ptr_vt& 
      */
-    inline const sizet_vt& getLeadersVec() { return _leadersVec; }
+    inline const sizet_vt& getLeaders() { return _leaders; }
     /**
      * @brief Get the Cluster object
      *
@@ -92,13 +92,12 @@ class Cluster
      * @param aTopK 
      * @return const sizet_vt 
      */
-    const sizet_vt getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, const size_t aTopK);
+    void getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, const size_t aTopK, sizet_vt& aOutputVec);
 
   private:
     const CB* _cb;
 
-    bool _init;           // was the cluster initialized?
-    sizet_set _leaders;   // stores IDs of leaders as a set
-    sizet_vt _leadersVec; // stores IDs of leaders as a list
-    cluster_mt _cluster;  // stores <DocID, Vector<DocID>> pairs, the first id represents a leader document
+    bool _init;          // was the cluster initialized?
+    sizet_vt _leaders;   // stores IDs of leaders as a list
+    cluster_mt _cluster; // stores <DocID, Vector<DocID>> pairs, the first id represents a leader document
 };
