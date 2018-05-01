@@ -42,15 +42,20 @@ install_word2vec()
   if [ ! -z "$C" ]
   then
     command="$command -DCMAKE_C_COMPILER=$C"
+  else
+    command="$command -DCMAKE_C_COMPILER=$(which gcc)"
   fi
 
   if [ ! -z "$CXX" ]
   then
     command="$command -DCMAKE_CXX_COMPILER=$CXX"
+  else
+    command="$command -DCMAKE_CXX_COMPILER=$(which g++)"
   fi
 
   command="$command -DCMAKE_BUILD_TYPE=Release ../"
   echo "> [Building] word2vec"
+  echo $command
   eval $command
   make
   cd ../../../../
@@ -144,7 +149,7 @@ fi
 
 # Because word2vec is a static library which is linked in our cmake we have to first download and install it before we build our executable
 # All other libraries we use are header only ones, so we compile them while we build
-if [ ! -d ./src/lib/word2vec++];
+if [ ! -d ./src/lib/word2vec++ ];
 then
   install_word2vec
 fi
