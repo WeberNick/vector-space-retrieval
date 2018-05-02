@@ -19,8 +19,8 @@
 #pragma once
 
 #include "document_manager.hh"
-#include "exception.hh"
 #include "posting_list.hh"
+#include "exception.hh"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
@@ -39,6 +39,7 @@
 #include <sstream>
 #include <stemming/english_stem.h>
 #include <string>
+#include <vector>
 
 /**
  * @brief Namespace for general utilities
@@ -123,6 +124,14 @@ namespace Utility {
     inline double scalar_product(std::vector<T> const& a, std::vector<T> const& b) {
         if (a.size() != b.size()) { throw std::runtime_error("different sizes"); }
         return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
+    }
+
+    template <typename T>
+    inline T pop_front(std::vector<T>& vec) {
+        assert(!vec.empty());
+        T elem = *vec.begin();
+        vec.erase(vec.begin());
+        return elem;
     }
 
     /**
@@ -436,7 +445,6 @@ namespace Utility {
          * //TODO: NEED TO IMPLEMENT
          */
         inline void removeStopword(std::string& str, const string_vt& stopwordList) {
-
             int counter = 0;
             for (auto& elem : stopwordList) {
                 std::regex regex("\\b(" + elem + ")\\b");
@@ -493,6 +501,79 @@ namespace Utility {
             return stemmed;
         }
 
+        // input: (1, 0.5), (2, 0), (3, 0.45), ..
+        // output: {(0, <PLObj>: (1, 0.4), (3, 0.8), ..), (1, ..), ..}
+        //TODO docs
+        /**
+         * @brief 
+         * 
+         * @param aNumTiers 
+         * @param aPostingList 
+         * @return std::map<size_t, PostingList> 
+         */
+        inline std::map<size_t, PostingList> calculateTiers(const size_t aNumTiers, const PostingList& aPostingList) {
+            const sizet_float_mt& aPosting = aPostingList.getPosting();
+            const float idf = aPostingList.getIdf();
+            std::map<size_t, PostingList> outputMap;
+
+            std::vector<std::pair<size_t, float>> vec; // vector of <id, tf> pairs, will be sorted descending by tf
+            for (auto it = aPosting.begin(); it != aPosting.end(); ++it) {
+                vec.push_back(*it);
+            }
+            std::sort(vec.begin(), vec.end(), [](auto& a, auto& b){ return a.second > b.second; });
+
+            int size = aPosting.size();
+            uint boundary = std::floor((double) size / aNumTiers);
+            for (size_t tier = 0; tier < aNumTiers; ++tier) {
+                sizet_float_mt posting;
+                boundary = (tier == (aNumTiers - 1)) ? vec.size() : boundary;
+                for (size_t i = 0; i < boundary; ++i) {
+                    posting.insert(Utility::pop_front(vec));
+                }
+                PostingList postinglist(idf, posting);
+                outputMap.insert(std::make_pair(tier, postinglist));
+            }
+            return outputMap;
+        }
+
+        /**
+         * @brief 
+         * 
+         * @param first 
+         * @param second 
+         * @return sizet_vt 
+         */
+        inline void mergePostingLists(const sizet_vt& first, const sizet_vt& second, sizet_vt& out) {
+            auto ione = first.begin();
+            auto itwo = second.begin();
+            out.clear();
+            while(ione != first.end() && itwo != second.end()) {
+                if (*ione == *itwo) {
+                    out.push_back(*ione);
+                    ++ione; ++itwo;
+                } else if (*ione < *itwo) {
+                    ++ione;
+                } else ++itwo;
+            }
+        }
+
+        /**
+         * @brief 
+         * 
+         * @param vecs 
+         * @param out 
+         */
+        inline void mergePostingLists(std::vector<sizet_vt>& vecs, sizet_vt& out) {
+            assert(vecs.size() > 1);
+            std::sort(vecs.begin(), vecs.end(), [](const sizet_vt& a, const sizet_vt& b) { return a.size() < b.size(); });
+            out.clear();
+            mergePostingLists(vecs.at(0), vecs.at(1), out);
+            if (vecs.size() == 2) return;
+            for (size_t i = 2; i < vecs.size(); ++i) {
+                sizet_vt out_copy(out);
+                mergePostingLists(out_copy, vecs.at(i), out);
+            }
+        }
     } // namespace IR
 
     /**

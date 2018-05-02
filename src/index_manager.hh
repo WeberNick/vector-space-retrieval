@@ -31,8 +31,14 @@ class IndexManager {
      * @brief Builds all Indices
      *
      * @param postinglist_out the inverted index postinglists
+     * @param tieredpostinglist_out the tiered index postinglists
+     * @param cluster_out the cluster map
+     * @param leaders the leaders of the clustered index
      */
-    void buildIndices(str_postinglist_mt& postinglist_out);
+    void buildIndices(str_postinglist_mt* postinglist_out,
+                      str_tierplmap_mt* tieredpostinglist_out,
+                      cluster_mt* cluster_out,
+                      const sizet_vt& leaders);
 
   public:
     /**
@@ -60,7 +66,7 @@ class IndexManager {
      *
      * @return const InvertedIndex& the inverted index
      */
-    inline const InvertedIndex& getInvertedIndex() { return _invertedIndex; }
+    inline const InvertedIndex& getInvertedIndex() const { return _invertedIndex; }
     /**
      * @brief Get the tiered index object
      *

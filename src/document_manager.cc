@@ -19,10 +19,10 @@ DocumentManager::DocumentManager() :
  */
 DocumentManager::~DocumentManager() { }
 
-void DocumentManager::init(const control_block_t& aControlBlock, const std::string& aCollectionFile) {
-    _cb = &aControlBlock;
+void DocumentManager::init(const control_block_t& aControlBlock) {
     if (!_init) {
-        _collectionFile = aCollectionFile;
+        _cb = &aControlBlock;
+        _collectionFile = _cb->collectionPath();
         read(_collectionFile);
         _init = true;
     }
@@ -39,6 +39,7 @@ void DocumentManager::read(const std::string& aFile) {
         std::string docID = parts[0];
         Document doc(docID, content);
         this->insert(std::make_pair(doc.getID(), doc));
+        _ids.push_back(doc.getID());
     }
 }
 

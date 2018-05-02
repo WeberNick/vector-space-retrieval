@@ -7,17 +7,20 @@
 
 
 /**
- * @brief
+ * @brief DocumentTest Mock class for testing functionalities of the Document Manager
  *
  */
 class DocumentTest : public testing::Test {
   protected:
     virtual void SetUp() {
         docMan = &(DocumentManager::getInstance());
-        const control_block_t lControlBlock = { false, false, false, "", 0, 0, 0 };
-        docMan->init(lControlBlock, "./data/collection_test_mwe.docs");
+        const control_block_t lControlBlock = { false, false, false, "./data/collection_test_mwe.docs", "./tests/_trace_test/" , "./tests/_eval_test/", "./data/stopwords.large", 0, 0, 0 };
+        
+        Trace::getInstance().init(lControlBlock);
+        
+        docMan->init(lControlBlock);
         docMap = &(docMan->getDocumentMap());
-
+        
         indexManager = &(IndexManager::getInstance());
         indexManager->init(lControlBlock, *docMap);
     }
@@ -36,6 +39,7 @@ class DocumentTest : public testing::Test {
  */
 
 TEST_F(DocumentTest, Tf_Equals_Test) {
+
     float tf_jon = docMan->getDocument(1).getTf("jon");
     float tf_sun = docMan->getDocument(3).getTf("sun");
     float tf_lemon = docMan->getDocument(3).getTf("lemon");

@@ -27,8 +27,17 @@ PostingList::PostingList(const PostingList& pl) :
     _posting(pl.getPosting())
 {}
 
+const sizet_vt PostingList::getIDs() const {
+    sizet_vt ids;
+    ids.reserve(_posting.size());
+    for (auto& item : _posting) {
+        ids.push_back(item.first);
+    }
+    return ids;
+}
+
 std::ostream& operator<<(std::ostream& strm, const PostingList& pl) {
-    strm << " -> [";
+    strm << "[";
     std::string sep = ") ";
     for (auto it = pl.getPosting().begin(); it != pl.getPosting().end(); ++it) {
         if (it == std::prev(pl.getPosting().end(), 1)) { sep = ")"; }

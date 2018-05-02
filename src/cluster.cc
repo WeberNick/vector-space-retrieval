@@ -4,23 +4,32 @@
  * @brief Construct a new Cluster:: Cluster object
  *
  */
-Cluster::Cluster() : _cb(nullptr), _init(false), _leaders(), _cluster() {}
+Cluster::Cluster() : 
+    _cb(nullptr),
+    _init(false),
+    _leaders(),
+    _cluster()
+{}
 
 /**
  * @brief Destroy the Cluster:: Cluster object
  *
  */
-Cluster::~Cluster() {}
+Cluster::~Cluster()
+{}
 
-void Cluster::init(const CB& aControlBlock) {
-    if (!_init) {
+void Cluster::init(const CB& aControlBlock)
+{
+    if (!_init)
+    {
         _cb = &aControlBlock;
         _init = true;
         TRACE("Cluster: Initialized.");
     }
 }
 
-void Cluster::chooseLeaders() {
+void Cluster::chooseLeaders()
+{
     const doc_mt& lDocs = DocumentManager::getInstance().getDocumentMap();
     std::random_device lSeeder;                               // the random device that will seed the generator
     std::mt19937 lRNG(lSeeder());                             // then make a mersenne twister engine
@@ -32,21 +41,21 @@ void Cluster::chooseLeaders() {
     const size_t lNumberOfClusters = std::sqrt(lNumberOfDocuments);
     sizet_set lUniqueLeader;
     size_t lRandomID;
-    while(lUniqueLeader.size() != lNumberOfClusters) 
+    while(lUniqueLeader.size() != lNumberOfClusters)
     {
-        lRandomID = lDistr(lRNG); // generate random doc id
+        lRandomID = lDistr(lRNG);                             // generate random doc id
         auto lDocIt = lDocs.find(lRandomID);
-        while(lDocIt == lDocs.end()) // doc with ID does not exist or ID in blacklist
+        while (lDocIt == lDocs.end())                         // doc with ID does not exist or ID in blacklist
         {
-            lRandomID = lDistr(lRNG); // generate random doc id
+            lRandomID = lDistr(lRNG);                         // generate random doc id
             lDocIt = lDocs.find(lRandomID);
-        } // valid doc id found
-        lUniqueLeader.insert((lDocIt->second).getID()); //only inserted if it is no duplicate
+        }                                                     // valid doc id found
+        lUniqueLeader.insert((lDocIt->second).getID());       // only inserted if it is no duplicate
     }
     _leaders = sizet_vt(lUniqueLeader.begin(), lUniqueLeader.end());
-    for (const size_t leaderID : _leaders) {
-        // default constructs the vector for each leader and adds leader to its own cluster
-        _cluster[leaderID].push_back(leaderID);
+    for (const size_t leaderID : _leaders)
+    {
+        _cluster[leaderID].push_back(leaderID);               // default constructs the vector for each leader and adds leader to its own cluster
     }
     TRACE("Cluster: Leaders chosen.");
 }

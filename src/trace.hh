@@ -13,7 +13,7 @@
 
 #include "types.hh"
 #include "exception.hh"
-#include <string>
+
 #include <fstream>
 #include <ctime>
 #include <experimental/filesystem>

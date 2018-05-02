@@ -28,8 +28,8 @@ include_directories(src)
 
 #Add subdirectories and execute their CmakeLists
 add_subdirectory(src)
-#add_subdirectory(tests)
-#add_subdirectory(docs)
+add_subdirectory(tests)
+add_subdirectory(docs)
 
 #Link main executable with code lib
 target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib stdc++fs)
@@ -38,7 +38,7 @@ target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib stdc++
 #src/lib/oleanderStemmingLibrary/stemming/../indexing/string_util.h
 #line number 299 (remove first #):
 
-# 	#pragma GCC diagnostic push
-# 	#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-# 	int* digits = new int[length+1]; std::auto_ptr<int> digitsDeleter(digits);
-# 	#pragma GCC diagnostic pop
+# #pragma GCC diagnostic push
+# #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+# int* digits = new int[length+1]; std::auto_ptr<int> digitsDeleter(digits);
+# #pragma GCC diagnostic pop

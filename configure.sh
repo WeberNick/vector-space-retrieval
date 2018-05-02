@@ -137,7 +137,7 @@ fi
 
 if [ -d ./tests/lib ];
 then
- if [ ! -z ${ALL+x} ]
+ if [ ! -z ${ALL+x} ];
   then
   echo "Deleting ./tests/lib directory"
   rm -rf ./tests/lib
