@@ -10,7 +10,7 @@ size_t Document::_documentCount = 0;
  * @param aContent the content (vector of terms) of the document
  */
 Document::Document(const std::string& aDocID, const string_vt& aContent) :
-    _ID(++Document::_documentCount),
+    _ID(Document::_documentCount++),
     _docID(aDocID),
     _content(aContent),
     _term_tf_map(),

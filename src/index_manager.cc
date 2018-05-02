@@ -6,8 +6,15 @@
  *
  */
 IndexManager::IndexManager() :
-    _cb(nullptr), _docs(nullptr), _init(false), _idf_map(), _collection_terms(), _invertedIndex(InvertedIndex::getInstance()),
-    _tieredIndex(TieredIndex::getInstance()), _clusteredIndex(Cluster::getInstance()) {}
+    _cb(nullptr),
+    _docs(nullptr),
+    _init(false),
+    _idf_map(),
+    _collection_terms(),
+    _invertedIndex(InvertedIndex::getInstance()),
+    _tieredIndex(TieredIndex::getInstance()),
+    _clusteredIndex(Cluster::getInstance())
+{}
 
 /**
  * @brief Destroy the Index Manager:: Index Manager object
@@ -65,16 +72,11 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
     for (const auto& [term, occ] : idf_occs) { // sizeof idf_occs == distinct_terms
         _idf_map[term] = Utility::IR::calcIdf(N, occ);
         (*postinglist_out)[term].setIdf(_idf_map[term]);
+        (*tieredpostinglist_out)[term] = Utility::IR::calculateTiers(_cb->tiers(), (*postinglist_out)[term]);
         _collection_terms.push_back(term);
     }
     for (auto& elem : *(_docs)) {
-        Document& doc = elem.second;
-        Measure m;
-        m.start();
-        const size_t index = QueryProcessingEngine::getInstance().searchCollectionCosFirstIndex(&doc, leaders);
-        m.stop();
-        std::cout << "Measure: " << m.mTotalTime() << std::endl;
-        cluster_out->at(index).push_back(doc.getID());
+        Document& doc = elem.second;  
         float_vt tivec = doc.getTfIdfVector();
         tivec.reserve(_collection_terms.size());
         for (std::string& term : _collection_terms) {
@@ -87,7 +89,9 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
         doc.setNormLength(Utility::SimilarityMeasures::vectorLength(tivec));
         doc.setTfIdfVector(tivec);
     }
-    for (auto& term : _collection_terms) {
-        (*tieredpostinglist_out)[term] = Utility::IR::calculateTiers(_cb->tiers(), (*postinglist_out)[term]);
+    for (auto& elem : *(_docs)) {
+        Document& doc = elem.second;
+        const size_t index = QueryProcessingEngine::getInstance().searchCollectionCosFirstIndex(&doc, leaders);
+        cluster_out->at(index).push_back(doc.getID());
     }
 }
