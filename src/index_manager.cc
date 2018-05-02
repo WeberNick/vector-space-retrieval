@@ -2,22 +2,15 @@
 
 /**
  * @brief Construct a new Index Manager:: Index Manager object
- * 
+ *
  */
 IndexManager::IndexManager() :
-    _cb(nullptr),
-    _docs(nullptr),
-    _init(false),
-    _idf_map(),
-    _collection_terms(),
-    _invertedIndex(InvertedIndex::getInstance()),
-    _tieredIndex(TieredIndex::getInstance()),
-    _clusteredIndex(Cluster::getInstance())
-{}
+    _cb(nullptr), _docs(nullptr), _init(false), _idf_map(), _collection_terms(), _invertedIndex(InvertedIndex::getInstance()),
+    _tieredIndex(TieredIndex::getInstance()), _clusteredIndex(Cluster::getInstance()) {}
 
 /**
  * @brief Destroy the Index Manager:: Index Manager object
- * 
+ *
  */
 IndexManager::~IndexManager()
 {}
@@ -56,7 +49,7 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
             ++tf_counts[term];
             if (postinglist_out->find(term) == postinglist_out->end()) { // term not in map
                 posting[id] = 0;                                         // tf has to be set below
-                (*postinglist_out)[term] = PostingList(0, posting);      // idf has to be set below
+                (*postinglist_out)[term] = PostingList(0, posting);      // idf has to be set below  
             }
         }
         int maxFreq = Utility::StringOp::getMaxWordFrequency(con);
@@ -73,16 +66,10 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
         (*postinglist_out)[term].setIdf(_idf_map[term]);
         _collection_terms.push_back(term);
     }
-    // Test
-    Document& d = _docs->at(0);
-    const str_float_mt& map = d.getTermTfMap();
-    for (const auto& elem : map)
-        std::cout << "PostingList for Term: " << elem.first << _invertedIndex.getInstance().getPostingList(elem.first) << std::endl;
-    // Test end
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
-        //const size_t index = QueryProcessingEngine::getInstance().searchCollectionCosFirstIndex(&doc, DocumentManager::getInstance().getIDs());
-        cluster_out->at(0).push_back(doc.getID());
+        const size_t index = QueryProcessingEngine::getInstance().searchCollectionCosFirstIndex(&doc, leaders);
+        cluster_out->at(index).push_back(doc.getID());
         float_vt tivec = doc.getTfIdfVector();
         tivec.reserve(_collection_terms.size());
         for (std::string& term : _collection_terms) {
@@ -90,7 +77,7 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
             if (termTfMap.find(term) != termTfMap.end())
                 tivec.push_back(Utility::IR::calcTfIdf(termTfMap.at(term), _idf_map.at(term)));
             else
-                tivec.push_back(0);
+                tivec.push_back(0);  
             (*tieredpostinglist_out)[term] = Utility::IR::calculateTiers(_cb->tiers(), (*postinglist_out)[term]);
         }
         doc.setNormLength(Utility::SimilarityMeasures::vectorLength(tivec));

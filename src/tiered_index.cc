@@ -78,3 +78,23 @@ size_t TieredIndex::getNoDocs(const std::string& aTerm, const size_t aTier) {
         throw InvalidArgumentException(FLF, "The term " + aTerm + " does not appear in the document collection.");
 }
 
+std::ostream& operator<<(std::ostream& strm, const TieredIndex& ti) {
+    strm << "[";
+    std::string sepouter = "\n";
+    auto& ttpm = ti.getPostingLists();
+    for (auto itt = ttpm.begin(); itt != ttpm.end(); ++itt) {
+        if (itt == std::prev(ttpm.end(), 1)) { sepouter = ""; }
+        std::string termt = itt->first;
+        const std::map<size_t, PostingList>& tierplmap = itt->second;
+        strm << termt << " -> [";
+        std::string sepout = "\n";
+        for (auto itm = tierplmap.begin(); itm != tierplmap.end(); ++itm) {
+            if (itm == std::prev(tierplmap.end(), 1)) { sepout = ""; }        
+            size_t tier = itm->first;
+            const PostingList& pl = itm->second;    
+            strm << "Tier " << tier << ": " << pl << sepout;
+        }
+        strm << "]" << sepouter << std::endl;
+    }
+    return strm << "]" << std::endl;
+}

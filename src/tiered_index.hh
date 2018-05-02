@@ -87,7 +87,7 @@ class TieredIndex {
      *
      * @return str_tierplmap_mt&
      */
-    inline str_tierplmap_mt& getPostingLists() { return _term_tier_map; }
+    inline const str_tierplmap_mt& getPostingLists() const { return _term_tier_map; }
     // TODO docs
     /**
      * @brief Get the Dictionary Size object
@@ -129,6 +129,16 @@ class TieredIndex {
      * @return size_t
      */
     size_t getNoDocs(const std::string& aTerm, const size_t aTier);
+    
+    // TODO docs
+    /**
+     * @brief Override operator<< for pretty printing a 
+     *
+     * @param strm the output stream
+     * @param ti
+     * @return std::ostream& the output stream to be returned
+     */
+    friend std::ostream& operator<<(std::ostream& strm, const TieredIndex& ti);
 
   private:
     const control_block_t* _cb;

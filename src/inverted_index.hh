@@ -92,7 +92,7 @@ class InvertedIndex {
      *
      * @return const str_postinglist_mt& the posting lists
      */
-    inline const str_postinglist_mt& getPostingLists() { return _term_posting_map; }
+    inline const str_postinglist_mt& getPostingLists() const { return _term_posting_map; }
     /**
      * @brief Get the size of the dictionary
      *
@@ -114,6 +114,16 @@ class InvertedIndex {
      * @return size_t the number of documents in which aTerm appears
      */
     size_t getNoDocs(const std::string& aTerm);
+    
+    // TODO docs
+    /**
+     * @brief 
+     * 
+     * @param strm 
+     * @param ii 
+     * @return std::ostream& 
+     */
+    friend std::ostream& operator<<(std::ostream& strm, const InvertedIndex& ii);
 
   private:
     const control_block_t* _cb;

@@ -524,7 +524,6 @@ namespace Utility {
 
             int size = aPosting.size();
             uint boundary = std::floor((double) size / aNumTiers);
-
             for (size_t tier = 0; tier < aNumTiers; ++tier) {
                 sizet_float_mt posting;
                 boundary = (tier == (aNumTiers - 1)) ? vec.size() : boundary;
@@ -544,9 +543,18 @@ namespace Utility {
          * @param second 
          * @return sizet_vt 
          */
-        inline sizet_vt mergePostingLists(const sizet_vt& first, const sizet_vt& second) {
-            sizet_vt out;
-            return out;
+        inline void mergePostingLists(const sizet_vt& first, const sizet_vt& second, sizet_vt& out) {
+            auto ione = first.begin();
+            auto itwo = second.begin();
+            out.clear();
+            while(ione != first.end() && itwo != second.end()) {
+                if (*ione == *itwo) {
+                    out.push_back(*ione);
+                    ++ione; ++itwo;
+                } else if (*ione < *itwo) {
+                    ++ione;
+                } else ++itwo;
+            }
         }
 
         /**
@@ -556,14 +564,16 @@ namespace Utility {
          * @param out 
          */
         inline void mergePostingLists(std::vector<sizet_vt>& vecs, sizet_vt& out) {
+            assert(vecs.size() > 1);
             std::sort(vecs.begin(), vecs.end(), [](const sizet_vt& a, const sizet_vt& b) { return a.size() < b.size(); });
-            //sizet_vt merged
-            //out.insert(out.end(), ) = vecs.at(0); no
-            // make unique
-            std::sort(out.begin(), out.end());
-            out.erase(unique(out.begin(), out.end()), out.end());
+            out.clear();
+            mergePostingLists(vecs.at(0), vecs.at(1), out);
+            if (vecs.size() == 2) return;
+            for (size_t i = 2; i < vecs.size(); ++i) {
+                sizet_vt out_copy(out);
+                mergePostingLists(out_copy, vecs.at(i), out);
+            }
         }
-
     } // namespace IR
 
     /**

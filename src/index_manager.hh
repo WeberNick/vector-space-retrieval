@@ -66,7 +66,7 @@ class IndexManager {
      *
      * @return const InvertedIndex& the inverted index
      */
-    inline const InvertedIndex& getInvertedIndex() { return _invertedIndex; }
+    inline const InvertedIndex& getInvertedIndex() const { return _invertedIndex; }
     /**
      * @brief Get the tiered index object
      *

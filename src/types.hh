@@ -30,6 +30,7 @@ using str_int_mt = std::map<std::string, uint>;
 using str_float_mt = std::map<std::string, float>;
 using sizet_float_mt = std::map<size_t, float>;
 using float_vector_vt = std::vector<std::vector<float>>;
+using pair_sizet_float_vt = std::vector<std::pair<size_t, float>>;
 using sizet_set = std::set<size_t>;
 
 struct control_block_t {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "document.hh"
+#include "types.hh"
 #include "utility.hh"
 #include <string>
 #include <vector>
@@ -69,7 +70,7 @@ class QueryProcessingEngine {
      * @param searchType What type of search to we process
      * @return
      */
-    std::vector<std::pair<size_t, float>> search(std::string& query, size_t topK, IR_MODE searchType);
+    pair_sizet_float_vt search(std::string& query, size_t topK, IR_MODE searchType);
     /**
      * @brief Search a given set of document ids for a query with cosine similarity
      *
@@ -78,25 +79,25 @@ class QueryProcessingEngine {
      * @param topK
      * @return
      */
-    std::vector<std::pair<size_t, float>> searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK);
-    // TODO docs
+    pair_sizet_float_vt searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK);
     /**
-     * @brief
+     * @brief Returns the doc id of the most similar document (Used for genereating the clustered index)
      *
      * @param query
-     * @param collection
-     * @param topK
-     * @return std::vector<size_t>
-     */
-    std::vector<size_t> cosineScoreLSHSearch(const Document* query, const doc_mt& collection, size_t topK);
-    /**
-     * @brief Returns the index of the most similar document in \collection
-     *
-     * @param query
-     * @param collection
+     * @param collectionIds
      * @return
      */
-    size_t cosineScoreClusterBuilding(const Document* query, const doc_ptr_vt& collection);
+    const size_t searchCollectionCosFirstIndex(const Document* query, const sizet_vt& collectionIds);
+    // TODO docs
+    /**
+     * @brief 
+     * 
+     * @param query 
+     * @param collectionIds 
+     * @param topK 
+     * @return pair_sizet_float_vt 
+     */
+    pair_sizet_float_vt cosineScoreLSHSearch(const Document* query, const sizet_vt& collectionIds, size_t topK);
 
   private:
     const CB*   _cb;

@@ -53,3 +53,23 @@ size_t InvertedIndex::getNoDocs(const std::string& aTerm) {
     else
         throw InvalidArgumentException(FLF, "The term " + aTerm + " does not appear in the document collection.");
 }
+
+std::ostream& operator<<(std::ostream& strm, const InvertedIndex& ii) {
+    std::cout << "H";
+    strm << "[";
+    std::string sepout = "\n";
+    const auto& tpm = ii.getPostingLists();
+    for (auto ito = tpm.begin(); ito != tpm.end(); ++ito) {
+        if (ito == std::prev(tpm.end(), 1)) { sepout = ""; }
+        std::string term = ito->first;
+        const PostingList& pl = ito->second;
+        strm << term << " -> " << pl << sepout;
+        /*std::string& sep = ") ";
+        for (auto it = pl.begin(); it != pl.end(); ++it) {
+            if (it == std::prev(pl.end(), 1)) { sep = ")"; }
+            strm << "(" << it->first << ", " << it->second << sep;
+        }
+        strm << "]" << sepout << std::endl;*/
+    }
+    return strm << "]" << std::endl;
+}

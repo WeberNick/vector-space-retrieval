@@ -11,14 +11,11 @@
 
 #include <experimental/filesystem>
 #include <iostream>
+#include <lib/nlohmann/single_include/nlohmann/json.hpp>
 #include <vector>
 #include <word_embeddings.hh>
-
-
-#include <chrono>
+#include <evaluation.hh>
 #include <thread>
-
-
 namespace fs = std::experimental::filesystem;
 
 bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
@@ -125,6 +122,8 @@ void test(const control_block_t& aControlBlock) {
     }*/
 }
 void testNico(const control_block_t& aControlBlock) {
+
+    //assert(aNumTiers > 1);
     Measure lMeasure;
     lMeasure.start();
     DocumentManager& docManager = DocumentManager::getInstance();
@@ -136,13 +135,38 @@ void testNico(const control_block_t& aControlBlock) {
     imInstance.init(aControlBlock, docMap);
     // std::string term = "sabdariffa";
     std::string term = "today";
-
+    std::cout << "H";
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
-    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
+    
+    std::cout << "H";
+    const InvertedIndex& ii = imInstance.getInvertedIndex();
+        std::cout << "H";
+    std::cout << "[";
+    std::string sepout = "\n";
+    const auto& tpm = ii.getPostingLists();
+    for (auto ito = tpm.begin(); ito != tpm.end(); ++ito) {
+        if (ito == std::prev(tpm.end(), 1)) { sepout = ""; }
+        std::string term = ito->first;
+        const PostingList& pl = ito->second;
+        std::cout << term << " -> " << pl << sepout;
+        /*std::string& sep = ") ";
+        for (auto it = pl.begin(); it != pl.end(); ++it) {
+            if (it == std::prev(pl.end(), 1)) { sep = ")"; }
+            std::cout << "(" << it->first << ", " << it->second << sep;
+        }
+        std::cout << "]" << sepout << std::endl;*/
+    }
+    std::cout << "]" << std::endl;
+    /*const TieredIndex& ti = imInstance.getTieredIndex();
+    std::cout << "Hi" << std::endl;
+    std::cout <<  ii << std::endl;
+    std::cout << "Hi2" << std::endl;
+    std::cout << ti << std::endl;
+    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;*/
     // int count = 0;
-    std::cout << docManager.getDocument(2) << std::endl;
-    std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term) << std::endl;
+    //std::cout << docManager.getDocument(2) << std::endl;
+    //std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term) << std::endl;
     /*for (const auto& [term, idf] : imInstance.getIdfMap()) {
         ++count;
         if (count > 100) return;
@@ -157,9 +181,11 @@ void testSearch(std::string query) {
     QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
 
     Measure lMeasureQuery;
+
     lMeasureQuery.start();
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, 50, IR_MODE::kCLUSTER);
+    std::vector<std::pair<size_t, float>> result = qpe.search(query, 10, IR_MODE::kCLUSTER);
     lMeasureQuery.stop();
+
     double lSecondsQuery = lMeasureQuery.mTotalTime();
     std::cout << "Search took " << lSecondsQuery << " sec." << std::endl;
 
@@ -249,8 +275,7 @@ void testAlex(const control_block_t& aControlBlock) {
     QueryProcessingEngine::getInstance().init(aControlBlock);
 
     testSearch("why deep fried foods may cause cancer");
-
-    testSearch("do cholesterol statin drugs cause breast cancer ?");
+    // testSearch("do cholesterol statin drugs cause breast cancer ?");
 }
 
 /**
@@ -261,6 +286,7 @@ void testAlex(const control_block_t& aControlBlock) {
  * @return int
  */
 int main(const int argc, const char* argv[]) {
+    std::cout << "Test";
     // this is just a test, needs a proper implementation later on
     if (!Utility::StringOp::endsWith(fs::current_path().string(), "vector-space-retrieval")) {
         // todo: change error message
@@ -285,14 +311,16 @@ int main(const int argc, const char* argv[]) {
     }
 
     // THROW EXCEPTION if numtiers < 2
-    const control_block_t lCB = { lArgs.trace(),    lArgs.measure(), lArgs.plot(),  lArgs.collectionPath(), lArgs.tracePath(),
-                                  lArgs.evalPath(), lArgs.stopwordFile(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
+    const control_block_t lCB = 
+    //{ lArgs.trace(),    lArgs.measure(), lArgs.plot(),  lArgs.collectionPath(), lArgs.tracePath(), lArgs.evalPath(), lArgs.stopwordFile(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
+    { false, false, false, "./data/collection_test_mwe.docs", "./tests/_trace_test/" , "./tests/_eval_test/", "./data/stopwords.large", 0, 3, 0 };
 
     Trace::getInstance().init(lCB);
     Evaluation::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
-     test(lCB);
-    // testNico(lCB);
-    //testAlex(lCB);
+    // test(lCB);
+    
+    testNico(lCB);
+    // testAlex(lCB);
     return 0;
 }
