@@ -66,7 +66,7 @@ pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size_t top
     case IR_MODE::kNumberOfModes:
     case IR_MODE::kTIERED:
     case IR_MODE::kRANDOM:
-    case IR_MODE::kVANILLA: found_indices = QueryProcessingEngine::searchCollectionCos(&queryDoc, DocumentManager::getInstance().getDocumentMap(), topK); break;
+    case IR_MODE::kVANILLA: break;//found_indices = QueryProcessingEngine::searchCollectionCos(&queryDoc, DocumentManager::getInstance().getDocumentMap(), topK); break;
     case IR_MODE::kCLUSTER:
         // Get cluster leaders sorted according to query
         std::vector<std::pair<size_t, float>> leader_indexes =
