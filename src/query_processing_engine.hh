@@ -80,6 +80,7 @@ class QueryProcessingEngine {
      * @return
      */
     pair_sizet_float_vt searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK);
+    pair_sizet_float_vt searchClusterCos(const Document* query, const sizet_vt& collectionIds);
     /**
      * @brief Returns the doc id of the most similar document (Used for genereating the clustered index)
      *
