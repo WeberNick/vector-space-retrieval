@@ -1,4 +1,5 @@
 #include "index_manager.hh"
+#include "measure.hh"
 
 /**
  * @brief Construct a new Index Manager:: Index Manager object
@@ -68,7 +69,11 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
     }
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
+        Measure m;
+        m.start();
         const size_t index = QueryProcessingEngine::getInstance().searchCollectionCosFirstIndex(&doc, leaders);
+        m.stop();
+        std::cout << "Measure: " << m.mTotalTime() << std::endl;
         cluster_out->at(index).push_back(doc.getID());
         float_vt tivec = doc.getTfIdfVector();
         tivec.reserve(_collection_terms.size());
@@ -78,9 +83,11 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
                 tivec.push_back(Utility::IR::calcTfIdf(termTfMap.at(term), _idf_map.at(term)));
             else
                 tivec.push_back(0);  
-            (*tieredpostinglist_out)[term] = Utility::IR::calculateTiers(_cb->tiers(), (*postinglist_out)[term]);
         }
         doc.setNormLength(Utility::SimilarityMeasures::vectorLength(tivec));
         doc.setTfIdfVector(tivec);
+    }
+    for (auto& term : _collection_terms) {
+        (*tieredpostinglist_out)[term] = Utility::IR::calculateTiers(_cb->tiers(), (*postinglist_out)[term]);
     }
 }
