@@ -135,13 +135,13 @@ void testNico(const control_block_t& aControlBlock) {
     imInstance.init(aControlBlock, docMap);
     // std::string term = "sabdariffa";
     std::string term = "today";
-    std::cout << "H";
+    std::cout << "H" << std::endl;
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
     
-    std::cout << "H";
+    std::cout << "H" << std::endl;
     const InvertedIndex& ii = imInstance.getInvertedIndex();
-        std::cout << "H";
+        std::cout << "H"<< std::endl;
     std::cout << "[";
     std::string sepout = "\n";
     const auto& tpm = ii.getPostingLists();
@@ -313,14 +313,14 @@ int main(const int argc, const char* argv[]) {
     // THROW EXCEPTION if numtiers < 2
     const control_block_t lCB = 
     //{ lArgs.trace(),    lArgs.measure(), lArgs.plot(),  lArgs.collectionPath(), lArgs.tracePath(), lArgs.evalPath(), lArgs.stopwordFile(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
-    { false, false, false, "./data/collection_test_mwe.docs", "./tests/_trace_test/" , "./tests/_eval_test/", "./data/stopwords.large", 0, 3, 0 };
+    { false, false, false, "./data/collection.docs", "./tests/_trace_test/" , "", "./data/stopwords.large", 0, 3, 0 };
 
     Trace::getInstance().init(lCB);
     Evaluation::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
     // test(lCB);
     
-    testNico(lCB);
-    // testAlex(lCB);
+    // testNico(lCB);
+    testAlex(lCB);
     return 0;
 }
