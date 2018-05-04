@@ -75,23 +75,33 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
         (*tieredpostinglist_out)[term] = Utility::IR::calculateTiers(_cb->tiers(), (*postinglist_out)[term]);
         _collection_terms.push_back(term);
     }
+    RandomProjection::getInstance().init(*_cb, _collection_terms.size());
     for (auto& elem : *(_docs)) {
-        Document& doc = elem.second;  
-        float_vt tivec = doc.getTfIdfVector();
-        tivec.reserve(_collection_terms.size());
-        for (std::string& term : _collection_terms) {
-            str_float_mt& termTfMap = doc.getTermTfMap();
-            if (termTfMap.find(term) != termTfMap.end())
-                tivec.push_back(Utility::IR::calcTfIdf(termTfMap.at(term), _idf_map.at(term)));
-            else
-                tivec.push_back(0);  
-        }
-        doc.setNormLength(Utility::SimilarityMeasures::vectorLength(tivec));
-        doc.setTfIdfVector(tivec);
+        this->buildTfIdfVector(elem.second);
+        this->buildRandProjVector(elem.second);
     }
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
         const size_t index = QueryProcessingEngine::getInstance().searchClusterCosFirstIndex(&doc, leaders);
         cluster_out->at(index).push_back(doc.getID());
     }
+}
+
+void IndexManager::buildTfIdfVector(Document& doc) {
+    float_vt& tivec = doc.getTfIdfVector();
+    tivec.reserve(_collection_terms.size());
+    for (std::string& term : _collection_terms) {
+        str_float_mt& termTfMap = doc.getTermTfMap();
+        if (termTfMap.find(term) != termTfMap.end())
+            tivec.push_back(Utility::IR::calcTfIdf(termTfMap.at(term), _idf_map.at(term)));
+        else
+            tivec.push_back(0);
+    }
+    doc.setNormLength(Utility::SimilarityMeasures::vectorLength(tivec));
+    doc.setTfIdfVector(tivec);
+}
+
+void IndexManager::buildRandProjVector(Document& doc) {
+    const boost::dynamic_bitset<>& rand_proj = RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(), Utility::hash);
+    doc.setRandProjVec(rand_proj);
 }

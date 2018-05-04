@@ -52,7 +52,7 @@ void Cluster::chooseLeaders()
         }                                                     // valid doc id found
         lUniqueLeader.insert((lDocIt->second).getID());       // only inserted if it is no duplicate
     }
-    _leaders = sizet_vt(lUniqueLeader.begin(), lUniqueLeader.end());
+    _leaders.assign(lUniqueLeader.begin(), lUniqueLeader.end());
     for (const size_t leaderID : _leaders)
     {
         _cluster[leaderID].push_back(leaderID);               // default constructs the vector for each leader and adds leader to its own cluster

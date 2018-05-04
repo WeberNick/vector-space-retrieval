@@ -61,7 +61,7 @@ sizet_vt TieredIndex::getDocIDList(const size_t top, const string_vt& terms) {
         }
         Utility::IR::mergePostingLists(vecs, qids);
     } while (qids.size() < top && ++tier < _num_tiers);
-    return qids;
+    return qids; // may return < top if all tiers are processed and we did not find enough qualifying ids
 }
 
 PostingList& TieredIndex::getPostingList(const std::string& aTerm, const size_t aTier) {
