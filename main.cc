@@ -1,21 +1,21 @@
 #include "args.hh"
-#include "src/types.hh"
-#include "src/evaluation.hh"
 #include "document_manager.hh"
 #include "index_manager.hh"
 #include "inverted_index.hh"
 #include "measure.hh"
 #include "query_processing_engine.hh"
 #include "random_projection.hh"
+#include "src/evaluation.hh"
+#include "src/types.hh"
 #include "utility.hh"
 
+#include <evaluation.hh>
 #include <experimental/filesystem>
 #include <iostream>
 #include <lib/nlohmann/single_include/nlohmann/json.hpp>
+#include <thread>
 #include <vector>
 #include <word_embeddings.hh>
-#include <evaluation.hh>
-#include <thread>
 namespace fs = std::experimental::filesystem;
 
 bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
@@ -34,20 +34,18 @@ bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
 void test(const control_block_t& aControlBlock) {
     /* Example how to use Measurement class (also described in measure.hh) */
 
-    //Measure lMeasure;
-    //if (aControlBlock.measure()) { lMeasure.start(); }
+    // Measure lMeasure;
+    // if (aControlBlock.measure()) { lMeasure.start(); }
     //// do processing
-    //lMeasure.stop();
-    //double lSeconds = lMeasure.mTotalTime();
-    //std::cout << "This print message is just used to prevent unused variable warnings. " << lSeconds << std::endl;
+    // lMeasure.stop();
+    // double lSeconds = lMeasure.mTotalTime();
+    // std::cout << "This print message is just used to prevent unused variable warnings. " << lSeconds << std::endl;
 
-    //DocumentManager& docManager = DocumentManager::getInstance();
-    //std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getNoDocuments() << std::endl;
+    // DocumentManager& docManager = DocumentManager::getInstance();
+    // std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getNoDocuments() << std::endl;
 
-    //std::string text = "Let me split this into words";
-    //std::vector<std::string> results;
-
-
+    // std::string text = "Let me split this into words";
+    // std::vector<std::string> results;
 
     Evaluation::getInstance().start(kVANILLA, "Med1");
 
@@ -122,8 +120,9 @@ void test(const control_block_t& aControlBlock) {
     }*/
 }
 void testNico() {
-    const control_block_t& aControlBlock = { false, false, false, "./data/collection_test_mwe.docs", "./tests/_trace_test/" , "", "./data/stopwords.large", 0, 3, 0 };
-    //assert(aNumTiers > 1);
+    const control_block_t& aControlBlock = {false, false, false, "./data/collection_test_mwe.docs", "./tests/_trace_test/", "", "./data/stopwords.large",
+                                            0,     3,     0};
+    // assert(aNumTiers > 1);
     Measure lMeasure;
     lMeasure.start();
     DocumentManager& docManager = DocumentManager::getInstance();
@@ -142,11 +141,9 @@ void testNico() {
     std::cout << ii << std::endl;
     std::cout << ti << std::endl;
 
-    
-    
     // int count = 0;
-    //std::cout << docManager.getDocument(2) << std::endl;
-    //std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term) << std::endl;
+    // std::cout << docManager.getDocument(2) << std::endl;
+    // std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term) << std::endl;
     /*for (const auto& [term, idf] : imInstance.getIdfMap()) {
         ++count;
         if (count > 100) return;
@@ -163,7 +160,7 @@ void testSearch(std::string query) {
     Measure lMeasureQuery;
 
     lMeasureQuery.start();
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, 10, IR_MODE::kCLUSTER);
+    std::vector<std::pair<size_t, float>> result = qpe.search(query, 10, IR_MODE::kVANILLA);
     lMeasureQuery.stop();
 
     double lSecondsQuery = lMeasureQuery.mTotalTime();
@@ -179,7 +176,7 @@ void testSearch(std::string query) {
     }
 }
 
-void testAlex(const control_block_t& aControlBlock) {
+void testAlex() {
 
     /*Measure lMeasureIndexing;
     lMeasureIndexing.start();
@@ -237,6 +234,8 @@ void testAlex(const control_block_t& aControlBlock) {
         std::cout << i.first << ": " << i.second << std::endl;
     }*/
 
+    const control_block_t& aControlBlock = {false, false, false, "./data/collection.docs", "./tests/_trace_test/", "", "./data/stopwords.large", 0, 3, 0};
+
     Measure lMeasureIndexing;
     lMeasureIndexing.start();
 
@@ -291,13 +290,14 @@ int main(const int argc, const char* argv[]) {
     }
 
     // THROW EXCEPTION if numtiers < 2
-    const control_block_t lCB = { lArgs.trace(), lArgs.measure(), lArgs.plot(),  lArgs.collectionPath(), lArgs.tracePath(), lArgs.evalPath(), lArgs.stopwordFile(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
+    const control_block_t lCB = {lArgs.trace(),    lArgs.measure(),      lArgs.plot(),    lArgs.collectionPath(), lArgs.tracePath(),
+                                 lArgs.evalPath(), lArgs.stopwordFile(), lArgs.results(), lArgs.tiers(),          lArgs.dimensions()};
 
     Trace::getInstance().init(lCB);
     Evaluation::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
     // test(lCB);
-    testNico();
-    // testAlex(lCB);
+    // testNico();
+    testAlex();
     return 0;
 }

@@ -81,7 +81,7 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
     }
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
-        const size_t index = QueryProcessingEngine::getInstance().searchCollectionCosFirstIndex(&doc, leaders);
+        const size_t index = QueryProcessingEngine::getInstance().searchClusterCosFirstIndex(&doc, leaders);
         cluster_out->at(index).push_back(doc.getID());
     }
 }
