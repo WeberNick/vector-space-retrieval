@@ -15,17 +15,14 @@ class QueryProcessingEngine {
 
   public:
     /**
-     * @brief 
-     * 
+     * @brief
+     *
      */
     struct SearchHelper {
         uint docId;
         double score;
 
-        SearchHelper(uint docId, double score) : 
-          docId(docId),
-          score(score)
-        {}
+        SearchHelper(uint docId, double score) : docId(docId), score(score) {}
 
         bool operator<(const SearchHelper& e) const { return score < e.score; }
     };
@@ -80,7 +77,7 @@ class QueryProcessingEngine {
      * @return
      */
     pair_sizet_float_vt searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK);
-    pair_sizet_float_vt searchClusterCos(const Document* query, const sizet_vt& collectionIds);
+    pair_sizet_float_vt searchClusterCos(const Document* query, const sizet_vt& collectionIds, size_t topK);
     /**
      * @brief Returns the doc id of the most similar document (Used for genereating the clustered index)
      *
@@ -88,22 +85,22 @@ class QueryProcessingEngine {
      * @param collectionIds
      * @return
      */
-    const size_t searchCollectionCosFirstIndex(const Document* query, const sizet_vt& collectionIds);
+    const size_t searchClusterCosFirstIndex(const Document* query, const sizet_vt& collectionIds);
     // TODO docs
     /**
-     * @brief 
-     * 
-     * @param query 
-     * @param collectionIds 
-     * @param topK 
-     * @return pair_sizet_float_vt 
+     * @brief
+     *
+     * @param query
+     * @param collectionIds
+     * @param topK
+     * @return pair_sizet_float_vt
      */
     pair_sizet_float_vt cosineScoreLSHSearch(const Document* query, const sizet_vt& collectionIds, size_t topK);
 
   private:
-    const CB*   _cb;
+    const CB* _cb;
 
-    bool        _init;
+    bool _init;
     std::string _stopwordFile;
-    string_vt   _stopword_list;
+    string_vt _stopword_list;
 };
