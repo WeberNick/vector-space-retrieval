@@ -80,6 +80,13 @@ class IndexManager {
      */
     inline Cluster& getClusteredIndex() { return _clusteredIndex; }
 
+    //TODO docs
+    /**
+     * @brief 
+     * 
+     */
+    void buildTfIdfVector(Document& doc);
+
     /**
      * @brief Get the IndexManager Singleton instance.
      *

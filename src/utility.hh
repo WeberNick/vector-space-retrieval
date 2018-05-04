@@ -520,15 +520,19 @@ namespace Utility {
             for (auto it = aPosting.begin(); it != aPosting.end(); ++it) {
                 vec.push_back(*it);
             }
-            std::sort(vec.begin(), vec.end(), [](auto& a, auto& b){ return a.second > b.second; });
+            std::sort(vec.begin(), vec.end(), [](auto& a, auto& b) { return a.second > b.second; }); // desc
 
-            int size = aPosting.size();
-            uint boundary = std::floor((double) size / aNumTiers);
+            size_t size = aPosting.size();
+            uint boundary = std::floor((double)size / aNumTiers);
             for (size_t tier = 0; tier < aNumTiers; ++tier) {
                 sizet_float_mt posting;
-                boundary = (tier == (aNumTiers - 1)) ? vec.size() : boundary;
-                for (size_t i = 0; i < boundary; ++i) {
+                if (size < aNumTiers && !vec.empty()) {
                     posting.insert(Utility::pop_front(vec));
+                } else {
+                    boundary = (tier == (aNumTiers - 1)) ? vec.size() : boundary;
+                    for (size_t i = 0; i < boundary; ++i) {
+                        posting.insert(Utility::pop_front(vec));
+                    }
                 }
                 PostingList postinglist(idf, posting);
                 outputMap.insert(std::make_pair(tier, postinglist));
@@ -565,7 +569,7 @@ namespace Utility {
          */
         inline void mergePostingLists(std::vector<sizet_vt>& vecs, sizet_vt& out) {
             assert(vecs.size() > 1);
-            std::sort(vecs.begin(), vecs.end(), [](const sizet_vt& a, const sizet_vt& b) { return a.size() < b.size(); });
+            std::sort(vecs.begin(), vecs.end(), [](const sizet_vt& a, const sizet_vt& b) { return a.size() < b.size(); }); // asc
             out.clear();
             mergePostingLists(vecs.at(0), vecs.at(1), out);
             if (vecs.size() == 2) return;

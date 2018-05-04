@@ -143,6 +143,7 @@ void testNico() {
     std::cout << ti << std::endl;
 
     
+    
     // int count = 0;
     //std::cout << docManager.getDocument(2) << std::endl;
     //std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term) << std::endl;

@@ -15,6 +15,7 @@ Document::Document(const std::string& aDocID, const string_vt& aContent) :
     _content(aContent),
     _term_tf_map(),
     _tf_idf_vec(),
+    _rand_proj_vec(),
     _norm_length(0)
 {}
 
@@ -35,6 +36,7 @@ Document::Document(const Document& doc) :
     _content(doc.getContent()),
     _term_tf_map(doc.getTermTfMap()),
     _tf_idf_vec(doc.getTfIdfVector()),
+    _rand_proj_vec(doc.getRandProjVec()),
     _norm_length(doc.getNormLength())
 {}
 
