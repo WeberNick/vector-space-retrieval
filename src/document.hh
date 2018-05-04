@@ -24,7 +24,7 @@ class Document {
     explicit Document(const std::string& aDocID, const string_vt& aContent);
     explicit Document(const Document&);
     explicit Document() = delete;
-    Document(Document&&) = delete;
+    Document(Document&&) = default;
     Document& operator=(const Document& doc) = delete;
     Document& operator=(Document&&) = delete;
     ~Document();
@@ -81,13 +81,13 @@ class Document {
     inline const float_vt& getTfIdfVector() const { return _tf_idf_vec; }
     /**
      * @brief Get the random projection vector of the document
-     * 
+     *
      * @return boost::dynamic_bitset<>& the random projection vector
      */
     inline boost::dynamic_bitset<>& getRandProjVec() { return _rand_proj_vec; }
     /**
      * @brief Get the random projection vector of the document
-     * 
+     *
      * @return boost::dynamic_bitset<>& the random projection vector
      */
     inline const boost::dynamic_bitset<>& getRandProjVec() const { return _rand_proj_vec; }
@@ -120,15 +120,15 @@ class Document {
     inline void setNormLength(float nl) { _norm_length = nl; }
     /**
      * @brief Set the tfidf vector of this document
-     * 
+     *
      * @param vec the tfidf vector
      */
     inline void setTfIdfVector(const float_vt& vec) { _tf_idf_vec = vec; }
-    //TODO docs
+    // TODO docs
     /**
      * @brief Set the Rand Proj Vec object
-     * 
-     * @param rand_proj 
+     *
+     * @param rand_proj
      */
     inline void setRandProjVec(const boost::dynamic_bitset<>& rand_proj) { _rand_proj_vec = rand_proj; }
 

@@ -1,5 +1,6 @@
 #include "document_manager.hh"
 #include "utility.hh"
+#include "index_manager.hh"
 
 /**
  * @brief Construct a new Document Manager:: Document Manager object
@@ -68,4 +69,24 @@ Document& DocumentManager::getDocument(size_t aDocID) {
         return _docs.at(aDocID);
     else
         throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "This docID does not appear in the document collection.");
+}
+Document DocumentManager::createQueryDoc(std::string &query) {
+    Utility::IR::removeStopword(query, QueryProcessingEngine::getInstance().getStopwordlist()); // Remove stopwords
+    Utility::StringOp::trim(query);                        // Trim whitespaces
+
+    string_vt proc_query;
+    Utility::StringOp::splitString(query, ' ', proc_query);   // Split string by whitespaces
+    Utility::StringOp::removeEmptyStringsFromVec(proc_query); // Remove eventually empty strings from the query term vector
+
+    std::vector<std::string> preprocessed_content;
+    for (auto& elem : proc_query) { // Preprocess query
+        std::string preprocess = Utility::IR::stemPorter(elem);
+        std::cout << "Preprocessed: " << preprocess << std::endl;
+        preprocessed_content.push_back(preprocess);
+    }
+
+    Document d("query-0", preprocessed_content);
+    IndexManager::getInstance().buildTfIdfVector(d);
+    IndexManager::getInstance().buildRandProjVector(d);
+    return d;
 }

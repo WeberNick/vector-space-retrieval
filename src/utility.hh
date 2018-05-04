@@ -19,8 +19,8 @@
 #pragma once
 
 #include "document_manager.hh"
-#include "posting_list.hh"
 #include "exception.hh"
+#include "posting_list.hh"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
@@ -510,13 +510,13 @@ namespace Utility {
 
         // input: (1, 0.5), (2, 0), (3, 0.45), ..
         // output: {(0, <PLObj>: (1, 0.4), (3, 0.8), ..), (1, ..), ..}
-        //TODO docs
+        // TODO docs
         /**
-         * @brief 
-         * 
-         * @param aNumTiers 
-         * @param aPostingList 
-         * @return std::map<size_t, PostingList> 
+         * @brief
+         *
+         * @param aNumTiers
+         * @param aPostingList
+         * @return std::map<size_t, PostingList>
          */
         inline std::map<size_t, PostingList> calculateTiers(const size_t aNumTiers, const PostingList& aPostingList) {
             const sizet_float_mt& aPosting = aPostingList.getPosting();
@@ -548,31 +548,33 @@ namespace Utility {
         }
 
         /**
-         * @brief 
-         * 
-         * @param first 
-         * @param second 
-         * @return sizet_vt 
+         * @brief
+         *
+         * @param first
+         * @param second
+         * @return sizet_vt
          */
         inline void mergePostingLists(const sizet_vt& first, const sizet_vt& second, sizet_vt& out) {
             auto ione = first.begin();
             auto itwo = second.begin();
             out.clear();
-            while(ione != first.end() && itwo != second.end()) {
+            while (ione != first.end() && itwo != second.end()) {
                 if (*ione == *itwo) {
                     out.push_back(*ione);
-                    ++ione; ++itwo;
+                    ++ione;
+                    ++itwo;
                 } else if (*ione < *itwo) {
                     ++ione;
-                } else ++itwo;
+                } else
+                    ++itwo;
             }
         }
 
         /**
-         * @brief 
-         * 
-         * @param vecs 
-         * @param out 
+         * @brief
+         *
+         * @param vecs
+         * @param out
          */
         inline void mergePostingLists(std::vector<sizet_vt>& vecs, sizet_vt& out) {
             assert(vecs.size() > 1);
@@ -704,7 +706,7 @@ namespace Utility {
          * @param vec_b
          * @return
          */
-        inline unsigned int calcHammingDist(boost::dynamic_bitset<>& vec_a, boost::dynamic_bitset<>& vec_b) {
+        inline unsigned int calcHammingDist(const boost::dynamic_bitset<>& vec_a, const boost::dynamic_bitset<>& vec_b) {
             return static_cast<unsigned int>((vec_a ^ vec_b).count());
         }
 
