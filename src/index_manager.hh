@@ -16,6 +16,7 @@
 #include "inverted_index.hh"
 #include "tiered_index.hh"
 #include "utility.hh"
+#include "random_projection.hh"
 
 class IndexManager {
   private:
@@ -86,6 +87,7 @@ class IndexManager {
      * 
      */
     void buildTfIdfVector(Document& doc);
+    void buildRandProjVector(Document& doc);
 
     /**
      * @brief Get the IndexManager Singleton instance.

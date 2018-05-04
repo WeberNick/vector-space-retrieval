@@ -88,15 +88,18 @@ class RandomProjection {
      * @param origVectorSize
      * @return
      */
-    inline bool init(const control_block_t& aCB, const size_t origVectorSize) {
-        _cb = &aCB;
-        _dimension = _cb->_noDimensions;
-        std::cout << "Init with " << _dimension << " dimensions" << std::endl;
+    inline void init(const control_block_t& aCB, const size_t origVectorSize) {
+        if (!_init) {
+            _cb = &aCB;
+            _dimension = _cb->_noDimensions;
 
-        if (_dimension == 0) throw "Random projection dimension equals 0, must be > 0 ";
+            // std::cout << "Init with " << _dimension << " dimensions" << std::endl;
+            if (_dimension == 0) throw "Random projection dimension equals 0, must be > 0 ";
 
-        setOrigVectorSize(origVectorSize);
-        initRandomVectors();
+            setOrigVectorSize(origVectorSize);
+            initRandomVectors();
+            _init = true;
+        }
     }
 
     /**
@@ -118,6 +121,8 @@ class RandomProjection {
 
   private:
     const control_block_t* _cb;
+
+    bool _init;
     float_vector_vt _randomVectors;
     size_t _dimension;
     size_t _origVectorSize;

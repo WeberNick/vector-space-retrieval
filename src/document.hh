@@ -124,6 +124,13 @@ class Document {
      * @param vec the tfidf vector
      */
     inline void setTfIdfVector(const float_vt& vec) { _tf_idf_vec = vec; }
+    //TODO docs
+    /**
+     * @brief Set the Rand Proj Vec object
+     * 
+     * @param rand_proj 
+     */
+    inline void setRandProjVec(const boost::dynamic_bitset<>& rand_proj) { _rand_proj_vec = rand_proj; }
 
     /**
      * @brief Override operator<< for pretty printing a Document object

@@ -75,6 +75,7 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
         (*tieredpostinglist_out)[term] = Utility::IR::calculateTiers(_cb->tiers(), (*postinglist_out)[term]);
         _collection_terms.push_back(term);
     }
+    RandomProjection::getInstance().init(*_cb, _collection_terms.size());
     for (auto& elem : *(_docs)) {
         this->buildTfIdfVector(elem.second);
         this->buildRandProjVector(elem.second);
@@ -101,5 +102,6 @@ void IndexManager::buildTfIdfVector(Document& doc) {
 }
 
 void IndexManager::buildRandProjVector(Document& doc) {
-    
+    const boost::dynamic_bitset<>& rand_proj = RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(), Utility::hash);
+    doc.setRandProjVec(rand_proj);
 }

@@ -231,6 +231,7 @@ const pair_sizet_float_vt QueryProcessingEngine::searchTieredCos(const Document*
         std::sort(results.begin(), results.end(), [](std::pair<size_t, float> elem1, std::pair<size_t, float> elem2) { return elem1.second > elem2.second; });
         return (!topK) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
         */
+       //return nullptr;
 }
 
 /**

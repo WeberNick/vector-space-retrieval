@@ -126,6 +126,13 @@ namespace Utility {
         return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
     }
 
+    inline bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
+        if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
+
+        double dot = scalar_product(origVec, randVec);
+        return dot >= 0 ? 1 : 0;
+    }
+
     template <typename T>
     inline T pop_front(std::vector<T>& vec) {
         assert(!vec.empty());

@@ -18,18 +18,6 @@
 #include <word_embeddings.hh>
 namespace fs = std::experimental::filesystem;
 
-bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
-
-    if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
-
-    double dot = Utility::scalar_product(origVec, randVec);
-    if (dot >= 0) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
 // insert everything here what is not actually meant to be in main
 void test(const control_block_t& aControlBlock) {
     /* Example how to use Measurement class (also described in measure.hh) */
@@ -121,7 +109,7 @@ void test(const control_block_t& aControlBlock) {
 }
 void testNico() {
     const control_block_t& aControlBlock = {false, false, false, "./data/collection_test_mwe.docs", "./tests/_trace_test/", "", "./data/stopwords.large",
-                                            0,     3,     0};
+                                            0,     3,     100};
     // assert(aNumTiers > 1);
     Measure lMeasure;
     lMeasure.start();
@@ -140,6 +128,14 @@ void testNico() {
     const TieredIndex& ti = imInstance.getTieredIndex();
     std::cout << ii << std::endl;
     std::cout << ti << std::endl;
+
+    std::cout << std::endl;
+    Document& d = docManager.getDocument(1);
+    boost::dynamic_bitset<>& bs = d.getRandProjVec();
+    size_t index = bs.find_first();
+    while(index < 100) {
+        std::cout << bs[index++] << " ";
+    }
 
     // int count = 0;
     // std::cout << docManager.getDocument(2) << std::endl;
@@ -297,7 +293,7 @@ int main(const int argc, const char* argv[]) {
     Evaluation::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
     // test(lCB);
-    // testNico();
-    testAlex();
+    testNico();
+    // testAlex();
     return 0;
 }
