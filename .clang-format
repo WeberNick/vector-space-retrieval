@@ -1,6 +1,6 @@
 # See Clang docs: http://clang.llvm.org/docs/ClangFormatStyleOptions.html
 IndentWidth: 4
-Cpp11BracedListStyle: false
+Cpp11BracedListStyle: true
 ColumnLimit: 160
 AccessModifierOffset: -2
 CompactNamespaces: true
