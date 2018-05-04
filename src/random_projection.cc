@@ -27,6 +27,7 @@ boost::dynamic_bitset<> RandomProjection::localitySensitiveHashProjection(std::v
     for (size_t j = 0; j < _dimension; ++j) {
         result[j] = hashFunc(vector, _randomVectors[j]);
     }
+
     return result;
 }
 
