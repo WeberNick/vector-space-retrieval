@@ -37,11 +37,9 @@ const sizet_vt PostingList::getIDs() const {
 }
 
 std::ostream& operator<<(std::ostream& strm, const PostingList& pl) {
-    strm << "[";
-    std::string sep = ") ";
+    strm << "[ ";
     for (auto it = pl.getPosting().begin(); it != pl.getPosting().end(); ++it) {
-        if (it == std::prev(pl.getPosting().end(), 1)) { sep = ")"; }
-        strm << "(" << it->first << ", " << it->second << sep;
+        strm << "(" << it->first << ", " << it->second << ") ";
     }
-    return strm << "]" << std::endl;
+    return strm << "]";
 }
