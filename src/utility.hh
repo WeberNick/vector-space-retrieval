@@ -346,8 +346,7 @@ namespace Utility {
          * @param vec
          */
         inline void removeEmptyStringsFromVec(std::vector<std::string>& vec) {
-            auto it = vec.erase(std::remove_if(vec.begin(), vec.end(), [](const std::string& s) { return s.empty(); }));
-            vec.erase(it, vec.end());
+            vec.erase(std::remove_if(vec.begin(), vec.end(), [](const std::string& s) { return s.empty(); }), vec.end());
         }
 
         /**

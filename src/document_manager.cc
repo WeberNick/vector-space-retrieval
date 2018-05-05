@@ -60,13 +60,16 @@ Document& DocumentManager::getDocument(size_t aDocID) {
 
 // TODO: Wenn wir das in nem loop, mit testsearch aufrufen bekomme ich ne bad malloc
 Document DocumentManager::createQueryDoc(std::string& query) {
+    std::cout << "before remove stopword" << std::endl;
     Utility::IR::removeStopword(query, QueryProcessingEngine::getInstance().getStopwordlist()); // Remove stopwords
-    Utility::StringOp::trim(query);                                                             // Trim whitespaces
-
+    std::cout << "after remove stopword before trim" << std::endl;
+    Utility::StringOp::trim(query); // Trim whitespaces
+    std::cout << "after trying before split string" << std::endl;
     string_vt proc_query;
     Utility::StringOp::splitString(query, ' ', proc_query); // Split string by whitespaces
+    std::cout << "after split string" << std::endl;
     Utility::StringOp::removeEmptyStringsFromVec(proc_query); // Remove eventually empty strings from the query term vector
-
+    std::cout << "after remove empty string" << std::endl;
     std::vector<std::string> preprocessed_content;
     for (auto& elem : proc_query) { // Preprocess query
         std::string preprocess = Utility::IR::stemPorter(elem);

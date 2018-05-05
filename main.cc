@@ -255,7 +255,7 @@ void testAlex() {
 
     std::cout << "[Ready]" << std::endl;
 
-    //testSearch("why deep fried foods may cause cancer");
+    testSearch("why deep fried foods may cause cancer");
     //testSearch("do cholesterol statin drugs cause breast cancer ?");
 
     while (true) {
