@@ -160,6 +160,7 @@ void testSearch(std::string query) {
 
     lMeasureQuery.start();
     std::vector<std::pair<size_t, float>> result = qpe.search(query, 10, IR_MODE::kRANDOM);
+    std::cout << query << std::endl;
     lMeasureQuery.stop();
 
     double lSecondsQuery = lMeasureQuery.mTotalTime();
@@ -254,12 +255,15 @@ void testAlex() {
 
     std::cout << "[Ready]" << std::endl;
 
-    std::string search;
-    std::cout << "Your query > ";
-    std::cin.ignore();
-    std::getline(std::cin, search);
-    testSearch("why deep fried foods may cause cancer");
-    testSearch("do cholesterol statin drugs cause breast cancer ?");
+    //testSearch("why deep fried foods may cause cancer");
+    //testSearch("do cholesterol statin drugs cause breast cancer ?");
+
+    while (true) {
+        std::cout << "Your query >";
+        std::string line;
+        std::getline(std::cin, line);
+        testSearch(line);
+    }
 }
 
 /**

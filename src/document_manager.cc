@@ -7,12 +7,9 @@
  * @brief Construct a new Document Manager:: Document Manager object
  *
  */
-DocumentManager::DocumentManager()
-    : _cb(nullptr),
-      _init(false),
-      _collectionFile(),  // relative path from /path/to/repo/vector-space-retrieval
-      _delimiter('~'),
-      _docs() {}
+DocumentManager::DocumentManager() :
+    _cb(nullptr), _init(false), _collectionFile(), // relative path from /path/to/repo/vector-space-retrieval
+    _delimiter('~'), _docs() {}
 
 /**
  * @brief Destroy the Document Manager:: Document Manager object
@@ -61,16 +58,17 @@ Document& DocumentManager::getDocument(size_t aDocID) {
         throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "This docID does not appear in the document collection.");
 }
 
+// TODO: Wenn wir das in nem loop, mit testsearch aufrufen bekomme ich ne bad malloc
 Document DocumentManager::createQueryDoc(std::string& query) {
-    Utility::IR::removeStopword(query, QueryProcessingEngine::getInstance().getStopwordlist());  // Remove stopwords
-    Utility::StringOp::trim(query);                                                              // Trim whitespaces
+    Utility::IR::removeStopword(query, QueryProcessingEngine::getInstance().getStopwordlist()); // Remove stopwords
+    Utility::StringOp::trim(query);                                                             // Trim whitespaces
 
     string_vt proc_query;
-    Utility::StringOp::splitString(query, ' ', proc_query);    // Split string by whitespaces
-    Utility::StringOp::removeEmptyStringsFromVec(proc_query);  // Remove eventually empty strings from the query term vector
+    Utility::StringOp::splitString(query, ' ', proc_query); // Split string by whitespaces
+    Utility::StringOp::removeEmptyStringsFromVec(proc_query); // Remove eventually empty strings from the query term vector
 
     std::vector<std::string> preprocessed_content;
-    for (auto& elem : proc_query) {  // Preprocess query
+    for (auto& elem : proc_query) { // Preprocess query
         std::string preprocess = Utility::IR::stemPorter(elem);
         std::cout << "Preprocessed: " << preprocess << std::endl;
         preprocessed_content.push_back(preprocess);
@@ -88,7 +86,7 @@ Document DocumentManager::createQueryDoc(std::string& query) {
     }
 
     int maxFreq = Utility::StringOp::getMaxWordFrequency(con);
-    for (const auto & [ term, count ] : tf_counts) {  // this loops through the distinct terms of this document
+    for (const auto& [term, count] : tf_counts) { // this loops through the distinct terms of this document
         tf_out[term] = Utility::IR::calcTf(count, maxFreq);
     }
     d.setTermTfMap(tf_out);

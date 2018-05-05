@@ -340,6 +340,7 @@ namespace Utility {
         }
 
         /**
+         * TODO: This will fail if the use while an stdin to read in search queries
          * @brief Removes empty strings from a string vector
          *
          * @param vec
