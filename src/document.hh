@@ -13,6 +13,7 @@
 #include "exception.hh"
 #include "types.hh"
 
+#include <boost/dynamic_bitset.hpp>
 #include <map>
 #include <string>
 #include <utility>
@@ -23,7 +24,7 @@ class Document {
     explicit Document(const std::string& aDocID, const string_vt& aContent);
     explicit Document(const Document&);
     explicit Document() = delete;
-    Document(Document&&) = delete;
+    Document(Document&&) = default;
     Document& operator=(const Document& doc) = delete;
     Document& operator=(Document&&) = delete;
     ~Document();
@@ -69,15 +70,27 @@ class Document {
     /**
      * @brief Get the tf idf vector of the document
      *
-     * @return const float_vt&
+     * @return const float_vt& the tf idf vector
      */
     inline float_vt& getTfIdfVector() { return _tf_idf_vec; }
     /**
      * @brief Get the tf idf vector of the document
      *
-     * @return const float_vt&
+     * @return const float_vt& tf idf vector
      */
     inline const float_vt& getTfIdfVector() const { return _tf_idf_vec; }
+    /**
+     * @brief Get the random projection vector of the document
+     *
+     * @return boost::dynamic_bitset<>& the random projection vector
+     */
+    inline boost::dynamic_bitset<>& getRandProjVec() { return _rand_proj_vec; }
+    /**
+     * @brief Get the random projection vector of the document
+     *
+     * @return boost::dynamic_bitset<>& the random projection vector
+     */
+    inline const boost::dynamic_bitset<>& getRandProjVec() const { return _rand_proj_vec; }
     /**
      * @brief Get the normalization factor of the document
      *
@@ -107,10 +120,17 @@ class Document {
     inline void setNormLength(float nl) { _norm_length = nl; }
     /**
      * @brief Set the tfidf vector of this document
-     * 
+     *
      * @param vec the tfidf vector
      */
     inline void setTfIdfVector(const float_vt& vec) { _tf_idf_vec = vec; }
+    // TODO docs
+    /**
+     * @brief Set the Rand Proj Vec object
+     *
+     * @param rand_proj
+     */
+    inline void setRandProjVec(const boost::dynamic_bitset<>& rand_proj) { _rand_proj_vec = rand_proj; }
 
     /**
      * @brief Override operator<< for pretty printing a Document object
@@ -124,12 +144,13 @@ class Document {
   private:
     static size_t _documentCount;
 
-    size_t _ID;                // e.g. 5
-    std::string _docID;        // e.g. MED-123
-    string_vt _content;        // e.g. [studi, run, ...]
-    str_float_mt _term_tf_map; // stores TF values
-    float_vt _tf_idf_vec;      // e.g. <0, 2, 1.5, 3, .84, ..>
-    float _norm_length;        // normalization factor of _tf_idf_vec
+    size_t _ID;                             // e.g. 5
+    std::string _docID;                     // e.g. MED-123
+    string_vt _content;                     // e.g. [studi, run, ...]
+    str_float_mt _term_tf_map;              // stores TF values
+    float_vt _tf_idf_vec;                   // e.g. <0, 2, 1.5, 3, .84, ..>
+    boost::dynamic_bitset<> _rand_proj_vec; // e.g. <0, 1, 1, 1, 0, 1, ..>
+    float _norm_length;                     // normalization factor of _tf_idf_vec
 };
 
 using doc_ptr_vt = std::vector<const Document*>;

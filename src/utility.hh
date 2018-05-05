@@ -19,8 +19,8 @@
 #pragma once
 
 #include "document_manager.hh"
-#include "posting_list.hh"
 #include "exception.hh"
+#include "posting_list.hh"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
@@ -124,6 +124,13 @@ namespace Utility {
     inline double scalar_product(std::vector<T> const& a, std::vector<T> const& b) {
         if (a.size() != b.size()) { throw std::runtime_error("different sizes"); }
         return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
+    }
+
+    inline bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
+        if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
+
+        double dot = scalar_product(origVec, randVec);
+        return dot >= 0 ? 1 : 0;
     }
 
     template <typename T>
@@ -503,13 +510,13 @@ namespace Utility {
 
         // input: (1, 0.5), (2, 0), (3, 0.45), ..
         // output: {(0, <PLObj>: (1, 0.4), (3, 0.8), ..), (1, ..), ..}
-        //TODO docs
+        // TODO docs
         /**
-         * @brief 
-         * 
-         * @param aNumTiers 
-         * @param aPostingList 
-         * @return std::map<size_t, PostingList> 
+         * @brief
+         *
+         * @param aNumTiers
+         * @param aPostingList
+         * @return std::map<size_t, PostingList>
          */
         inline std::map<size_t, PostingList> calculateTiers(const size_t aNumTiers, const PostingList& aPostingList) {
             const sizet_float_mt& aPosting = aPostingList.getPosting();
@@ -520,15 +527,19 @@ namespace Utility {
             for (auto it = aPosting.begin(); it != aPosting.end(); ++it) {
                 vec.push_back(*it);
             }
-            std::sort(vec.begin(), vec.end(), [](auto& a, auto& b){ return a.second > b.second; });
+            std::sort(vec.begin(), vec.end(), [](auto& a, auto& b) { return a.second > b.second; }); // desc
 
-            int size = aPosting.size();
-            uint boundary = std::floor((double) size / aNumTiers);
+            size_t size = aPosting.size();
+            uint boundary = std::floor((double)size / aNumTiers);
             for (size_t tier = 0; tier < aNumTiers; ++tier) {
                 sizet_float_mt posting;
-                boundary = (tier == (aNumTiers - 1)) ? vec.size() : boundary;
-                for (size_t i = 0; i < boundary; ++i) {
+                if (size < aNumTiers && !vec.empty()) {
                     posting.insert(Utility::pop_front(vec));
+                } else {
+                    boundary = (tier == (aNumTiers - 1)) ? vec.size() : boundary;
+                    for (size_t i = 0; i < boundary; ++i) {
+                        posting.insert(Utility::pop_front(vec));
+                    }
                 }
                 PostingList postinglist(idf, posting);
                 outputMap.insert(std::make_pair(tier, postinglist));
@@ -537,35 +548,37 @@ namespace Utility {
         }
 
         /**
-         * @brief 
-         * 
-         * @param first 
-         * @param second 
-         * @return sizet_vt 
+         * @brief
+         *
+         * @param first
+         * @param second
+         * @return sizet_vt
          */
         inline void mergePostingLists(const sizet_vt& first, const sizet_vt& second, sizet_vt& out) {
             auto ione = first.begin();
             auto itwo = second.begin();
             out.clear();
-            while(ione != first.end() && itwo != second.end()) {
+            while (ione != first.end() && itwo != second.end()) {
                 if (*ione == *itwo) {
                     out.push_back(*ione);
-                    ++ione; ++itwo;
+                    ++ione;
+                    ++itwo;
                 } else if (*ione < *itwo) {
                     ++ione;
-                } else ++itwo;
+                } else
+                    ++itwo;
             }
         }
 
         /**
-         * @brief 
-         * 
-         * @param vecs 
-         * @param out 
+         * @brief
+         *
+         * @param vecs
+         * @param out
          */
         inline void mergePostingLists(std::vector<sizet_vt>& vecs, sizet_vt& out) {
             assert(vecs.size() > 1);
-            std::sort(vecs.begin(), vecs.end(), [](const sizet_vt& a, const sizet_vt& b) { return a.size() < b.size(); });
+            std::sort(vecs.begin(), vecs.end(), [](const sizet_vt& a, const sizet_vt& b) { return a.size() < b.size(); }); // asc
             out.clear();
             mergePostingLists(vecs.at(0), vecs.at(1), out);
             if (vecs.size() == 2) return;
@@ -693,7 +706,7 @@ namespace Utility {
          * @param vec_b
          * @return
          */
-        inline unsigned int calcHammingDist(boost::dynamic_bitset<>& vec_a, boost::dynamic_bitset<>& vec_b) {
+        inline unsigned int calcHammingDist(const boost::dynamic_bitset<>& vec_a, const boost::dynamic_bitset<>& vec_b) {
             return static_cast<unsigned int>((vec_a ^ vec_b).count());
         }
 

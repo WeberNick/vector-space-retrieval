@@ -90,10 +90,18 @@ class DocumentManager {
     inline size_t getNoDocuments() { return _docs.size(); }
     /**
      * @brief Get the ids of all documents in the collection as a size_t vector
-     * 
+     *
      * @return sizet_vt& the ids
      */
     inline sizet_vt& getIDs() { return _ids; }
+
+    /**
+     * @brief Creates a preprocessed document query out of a string
+     *
+     * @param query The raw query string
+     * @return Document
+     */
+    Document createQueryDoc(std::string& query);
 
     /**
      * @brief Get the document object with id aDocID

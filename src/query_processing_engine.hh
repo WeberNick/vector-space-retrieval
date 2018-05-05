@@ -15,22 +15,6 @@ class QueryProcessingEngine {
 
   public:
     /**
-     * @brief 
-     * 
-     */
-    struct SearchHelper {
-        uint docId;
-        double score;
-
-        SearchHelper(uint docId, double score) : 
-          docId(docId),
-          score(score)
-        {}
-
-        bool operator<(const SearchHelper& e) const { return score < e.score; }
-    };
-
-    /**
      * @brief Get the Instance object
      *
      * @return QueryProcessingEngine&
@@ -39,71 +23,83 @@ class QueryProcessingEngine {
         static QueryProcessingEngine lInstance;
         return lInstance;
     }
-    /**
-     * @brief
-     *
-     * @param aControlBlock
-     */
+
     void init(const CB& aControlBlock);
 
   private:
-    // TODO docs
     /**
-     * @brief
+     * @brief Reads a stopwords file for the function @see QueryProcessingEngine#createQueryDoc
      *
-     * @param aFile
+     * @param aFile The file containing stopwords separated by ","
      */
     void read(const std::string& aFile);
 
   public:
-    /**
-     * @brief Get the Stopwordlist
-     *
-     * @return string_vt the Stopwordlist
-     */
     inline string_vt getStopwordlist() { return _stopword_list; }
+
     /**
-     * @brief Entry point for the search. Here the query will get preprocessed and it gets decided which search type to execute
+     * @brief A top level implementation of the search function. Use a string and type to search for similar documents
      *
-     * @param query The actual query
-     * @param topK  How many results to retrieve
-     * @param searchType What type of search to we process
-     * @return
+     * @param query The raw string query
+     * @param topK How many results are retrieved
+     * @param searchType What type of search should be executed
+     * @return pair_sizet_float_vt A list of document - similarity pairs ordered descending
      */
-    pair_sizet_float_vt search(std::string& query, size_t topK, IR_MODE searchType);
+    const pair_sizet_float_vt search(std::string& query, size_t topK, IR_MODE searchType);
+
     /**
-     * @brief Search a given set of document ids for a query with cosine similarity
+     * @brief Search function for searching the whole document collection
      *
-     * @param query
-     * @param collectionIds
-     * @param topK
-     * @return
+     * @param query A preprocessed query document
+     * @param collectionIds IDs of docs to search in
+     * @param topK How many results are retrieved
+     * @return pair_sizet_float_vt  A list of document - similarity pairs ordered descending
      */
-    pair_sizet_float_vt searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK);
-    pair_sizet_float_vt searchClusterCos(const Document* query, const sizet_vt& collectionIds);
+    const pair_sizet_float_vt searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK);
+
     /**
-     * @brief Returns the doc id of the most similar document (Used for genereating the clustered index)
+     * @brief Search function for searching the cluster representation
      *
-     * @param query
-     * @param collectionIds
-     * @return
+     * @param query A preprocessed query document
+     * @param collectionIds IDs of docs to search in
+     * @param topK How many results are retrieved
+     * @return pair_sizet_float_vt  A list of document - similarity pairs ordered descending
      */
-    const size_t searchCollectionCosFirstIndex(const Document* query, const sizet_vt& collectionIds);
-    // TODO docs
+    const pair_sizet_float_vt searchClusterCos(const Document* query, const sizet_vt& collectionIds, size_t topK);
+
     /**
-     * @brief 
-     * 
-     * @param query 
-     * @param collectionIds 
-     * @param topK 
-     * @return pair_sizet_float_vt 
+     * @brief Just a wrapper function for @see QueryProcessingEngine::searchClusterCos to retrieve the docId of the most similar doc
+     *
+     * @param query A preprocessed query document
+     * @param collectionIds IDs of docs to search in
+     * @return const size_t docId of the most similar doc
      */
-    pair_sizet_float_vt cosineScoreLSHSearch(const Document* query, const sizet_vt& collectionIds, size_t topK);
+    const size_t searchClusterCosFirstIndex(const Document* query, const sizet_vt& collectionIds);
+
+    /**
+     * @brief Search function for Search function for searching the tiered index representation
+     *
+     * @param query A preprocessed query document
+     * @param collectionIds IDs of docs to search in
+     * @param topK How many results are retrieved
+     * @return pair_sizet_float_vt  A list of document - similarity pairs ordered descending
+     */
+    const pair_sizet_float_vt searchTieredCos(const Document* query, const sizet_vt& collectionIds, size_t topK);
+
+    /**
+     * @brief Search function for searching when random projections are used
+     *
+     * @param query A preprocessed query document
+     * @param collectionIds IDs of docs to search in
+     * @param topK How many results are retrieved
+     * @return pair_sizet_float_vt  A list of document - similarity pairs ordered descending
+     */
+    const pair_sizet_float_vt searchRandomProjCos(const Document* query, const sizet_vt& collectionIds, size_t topK);
 
   private:
-    const CB*   _cb;
+    const CB* _cb;
 
-    bool        _init;
+    bool _init;
     std::string _stopwordFile;
-    string_vt   _stopword_list;
+    string_vt _stopword_list;
 };

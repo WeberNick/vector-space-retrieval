@@ -1,53 +1,39 @@
 #include "args.hh"
-#include "src/types.hh"
-#include "src/evaluation.hh"
 #include "document_manager.hh"
 #include "index_manager.hh"
 #include "inverted_index.hh"
 #include "measure.hh"
 #include "query_processing_engine.hh"
 #include "random_projection.hh"
+#include "src/evaluation.hh"
+#include "src/types.hh"
 #include "utility.hh"
 
+#include <evaluation.hh>
 #include <experimental/filesystem>
 #include <iostream>
 #include <lib/nlohmann/single_include/nlohmann/json.hpp>
+#include <thread>
 #include <vector>
 #include <word_embeddings.hh>
-#include <evaluation.hh>
-#include <thread>
 namespace fs = std::experimental::filesystem;
-
-bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
-
-    if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
-
-    double dot = Utility::scalar_product(origVec, randVec);
-    if (dot >= 0) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
 
 // insert everything here what is not actually meant to be in main
 void test(const control_block_t& aControlBlock) {
     /* Example how to use Measurement class (also described in measure.hh) */
 
-    //Measure lMeasure;
-    //if (aControlBlock.measure()) { lMeasure.start(); }
+    // Measure lMeasure;
+    // if (aControlBlock.measure()) { lMeasure.start(); }
     //// do processing
-    //lMeasure.stop();
-    //double lSeconds = lMeasure.mTotalTime();
-    //std::cout << "This print message is just used to prevent unused variable warnings. " << lSeconds << std::endl;
+    // lMeasure.stop();
+    // double lSeconds = lMeasure.mTotalTime();
+    // std::cout << "This print message is just used to prevent unused variable warnings. " << lSeconds << std::endl;
 
-    //DocumentManager& docManager = DocumentManager::getInstance();
-    //std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getNoDocuments() << std::endl;
+    // DocumentManager& docManager = DocumentManager::getInstance();
+    // std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getNoDocuments() << std::endl;
 
-    //std::string text = "Let me split this into words";
-    //std::vector<std::string> results;
-
-
+    // std::string text = "Let me split this into words";
+    // std::vector<std::string> results;
 
     Evaluation::getInstance().start(kVANILLA, "Med1");
 
@@ -121,52 +107,42 @@ void test(const control_block_t& aControlBlock) {
         std::cout << std::endl;
     }*/
 }
-void testNico(const control_block_t& aControlBlock) {
-
-    //assert(aNumTiers > 1);
+void testNico() {
+    const control_block_t& aControlBlock = {false, false, false, "./data/collection_test_mwe.docs", "./tests/_trace_test/", "", "./data/stopwords.large",
+                                            0,     3,     1000};
+    // assert(aNumTiers > 1);
     Measure lMeasure;
     lMeasure.start();
     DocumentManager& docManager = DocumentManager::getInstance();
     // docManager.init(aControlBlock);
     docManager.init(aControlBlock);
+
     doc_mt& docMap = docManager.getDocumentMap();
 
     IndexManager& imInstance = IndexManager::getInstance();
     imInstance.init(aControlBlock, docMap);
-    // std::string term = "sabdariffa";
-    std::string term = "today";
-    std::cout << "H" << std::endl;
     lMeasure.stop();
     double lSeconds = lMeasure.mTotalTime();
-    
-    std::cout << "H" << std::endl;
+    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
     const InvertedIndex& ii = imInstance.getInvertedIndex();
-        std::cout << "H"<< std::endl;
-    std::cout << "[";
-    std::string sepout = "\n";
-    const auto& tpm = ii.getPostingLists();
-    for (auto ito = tpm.begin(); ito != tpm.end(); ++ito) {
-        if (ito == std::prev(tpm.end(), 1)) { sepout = ""; }
-        std::string term = ito->first;
-        const PostingList& pl = ito->second;
-        std::cout << term << " -> " << pl << sepout;
-        /*std::string& sep = ") ";
-        for (auto it = pl.begin(); it != pl.end(); ++it) {
-            if (it == std::prev(pl.end(), 1)) { sep = ")"; }
-            std::cout << "(" << it->first << ", " << it->second << sep;
-        }
-        std::cout << "]" << sepout << std::endl;*/
-    }
-    std::cout << "]" << std::endl;
-    /*const TieredIndex& ti = imInstance.getTieredIndex();
-    std::cout << "Hi" << std::endl;
-    std::cout <<  ii << std::endl;
-    std::cout << "Hi2" << std::endl;
+    const TieredIndex& ti = imInstance.getTieredIndex();
+    std::cout << ii << std::endl;
     std::cout << ti << std::endl;
-    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;*/
+
+    std::cout << std::endl;
+    Document& d = docManager.getDocument(0);
+    Document& d2 = docManager.getDocument(1);
+    Document& d3 = docManager.getDocument(2);
+
+    std::cout << Utility::SimilarityMeasures::calcCosDist(d, d2) << std::endl;
+    std::cout << Utility::SimilarityMeasures::calcCosDist(d, d3) << std::endl;
+
+    std::cout << Utility::SimilarityMeasures::calcHammingDist(d.getRandProjVec(), d2.getRandProjVec()) << std::endl;
+    std::cout << Utility::SimilarityMeasures::calcHammingDist(d.getRandProjVec(), d3.getRandProjVec()) << std::endl;
+
     // int count = 0;
-    //std::cout << docManager.getDocument(2) << std::endl;
-    //std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term) << std::endl;
+    // std::cout << docManager.getDocument(2) << std::endl;
+    // std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term) << std::endl;
     /*for (const auto& [term, idf] : imInstance.getIdfMap()) {
         ++count;
         if (count > 100) return;
@@ -183,7 +159,7 @@ void testSearch(std::string query) {
     Measure lMeasureQuery;
 
     lMeasureQuery.start();
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, 10, IR_MODE::kCLUSTER);
+    std::vector<std::pair<size_t, float>> result = qpe.search(query, 10, IR_MODE::kRANDOM);
     lMeasureQuery.stop();
 
     double lSecondsQuery = lMeasureQuery.mTotalTime();
@@ -199,7 +175,7 @@ void testSearch(std::string query) {
     }
 }
 
-void testAlex(const control_block_t& aControlBlock) {
+void testAlex() {
 
     /*Measure lMeasureIndexing;
     lMeasureIndexing.start();
@@ -257,15 +233,17 @@ void testAlex(const control_block_t& aControlBlock) {
         std::cout << i.first << ": " << i.second << std::endl;
     }*/
 
+    const control_block_t& aControlBlock = {false, false, false, "./data/collection.docs", "./tests/_trace_test/", "", "./data/stopwords.large", 0, 3, 1000};
+
     Measure lMeasureIndexing;
     lMeasureIndexing.start();
 
     DocumentManager& docManager = DocumentManager::getInstance();
     docManager.init(aControlBlock);
+
     doc_mt& docMap = docManager.getDocumentMap();
 
     IndexManager& imInstance = IndexManager::getInstance();
-
     imInstance.init(aControlBlock, docMap);
 
     lMeasureIndexing.stop();
@@ -274,8 +252,14 @@ void testAlex(const control_block_t& aControlBlock) {
 
     QueryProcessingEngine::getInstance().init(aControlBlock);
 
+    std::cout << "[Ready]" << std::endl;
+
+    std::string search;
+    std::cout << "Your query > ";
+    std::cin.ignore();
+    std::getline(std::cin, search);
     testSearch("why deep fried foods may cause cancer");
-    // testSearch("do cholesterol statin drugs cause breast cancer ?");
+    testSearch("do cholesterol statin drugs cause breast cancer ?");
 }
 
 /**
@@ -311,16 +295,14 @@ int main(const int argc, const char* argv[]) {
     }
 
     // THROW EXCEPTION if numtiers < 2
-    const control_block_t lCB = 
-    //{ lArgs.trace(),    lArgs.measure(), lArgs.plot(),  lArgs.collectionPath(), lArgs.tracePath(), lArgs.evalPath(), lArgs.stopwordFile(), lArgs.results(), lArgs.tiers(), lArgs.dimensions() };
-    { false, false, false, "./data/collection.docs", "./tests/_trace_test/" , "", "./data/stopwords.large", 0, 3, 0 };
+    const control_block_t lCB = {lArgs.trace(),    lArgs.measure(),      lArgs.plot(),    lArgs.collectionPath(), lArgs.tracePath(),
+                                 lArgs.evalPath(), lArgs.stopwordFile(), lArgs.results(), lArgs.tiers(),          lArgs.dimensions()};
 
     Trace::getInstance().init(lCB);
     Evaluation::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
     // test(lCB);
-    
-    // testNico(lCB);
-    testAlex(lCB);
+    // testNico();
+    testAlex();
     return 0;
 }

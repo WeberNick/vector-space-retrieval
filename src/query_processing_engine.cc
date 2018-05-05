@@ -1,13 +1,11 @@
 #include "query_processing_engine.hh"
 #include "index_manager.hh"
-#include "posting_list.hh"
 #include "measure.hh"
+#include "posting_list.hh"
 
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <sstream>
-
-using Comparator = std::function<bool(std::pair<size_t, float>, std::pair<size_t, float>)>;
 
 /**
  * @brief Construct a new Query Processing Engine:: Query Processing Engine object
@@ -15,7 +13,7 @@ using Comparator = std::function<bool(std::pair<size_t, float>, std::pair<size_t
 QueryProcessingEngine::QueryProcessingEngine() : _cb(nullptr), _init(false), _stopwordFile() {}
 
 /**
- * @brief initializes the singleton
+ * @brief Initializes the singleton
  *
  * @param aControlBlock
  */
@@ -36,24 +34,9 @@ void QueryProcessingEngine::read(const std::string& aFile) {
     }
 }
 
-pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType) {
-    Utility::IR::removeStopword(query, getStopwordlist()); // Remove stopwords
-    Utility::StringOp::trim(query);                        // Trim whitespaces
+const pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType) {
+    Document queryDoc = DocumentManager::getInstance().createQueryDoc(query);
 
-    string_vt proc_query;
-    Utility::StringOp::splitString(query, ' ', proc_query);   // Split string by whitespaces
-    Utility::StringOp::removeEmptyStringsFromVec(proc_query); // Remove eventually empty strings from the query term vector
-
-    pair_sizet_float_vt found_indices; // result vector
-
-    std::vector<std::string> preprocessed_content;
-    for (auto& elem : proc_query) { // Preprocess query
-        std::string preprocess = Utility::IR::stemPorter(elem);
-        std::cout << "Preprocessed: " << preprocess << std::endl;
-        preprocessed_content.push_back(preprocess);
-    }
-
-    Document queryDoc("0", preprocessed_content);
     std::cout << "Searching for: ";
     for (size_t j = 0; j < queryDoc.getContent().size(); ++j) {
         std::cout << "(" << j << "|" << queryDoc.getContent()[j] << ")"
@@ -61,62 +44,38 @@ pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size_t top
     }
     std::cout << std::endl;
 
-    switch (searchType) { // Execute different search workflows based on the search type
-    case IR_MODE::kNoMode:
-    case IR_MODE::kNumberOfModes:
-    case IR_MODE::kTIERED:
-    case IR_MODE::kRANDOM:
-    case IR_MODE::kVANILLA: found_indices = QueryProcessingEngine::searchCollectionCos(&queryDoc, DocumentManager::getInstance().getDocumentMap(), topK); break;
-    case IR_MODE::kCLUSTER:
-        // Get cluster leaders sorted according to query
-        std::vector<std::pair<size_t, float>> leader_indexes =
-            QueryProcessingEngine::searchCollectionCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
+    pair_sizet_float_vt found_indices; // result vector
 
-        sizet_vt clusterDocIds; // Get Docs to search in
+    switch (searchType) {
+    case IR_MODE ::kVANILLA: {
+        found_indices = QueryProcessingEngine::searchCollectionCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
+    } break;
+    case IR_MODE ::kCLUSTER: {
+        std::vector<std::pair<size_t, float>> leader_indexes =
+            QueryProcessingEngine::searchClusterCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
+
+        // Get docIds from the clusters to search in, vector will be filled from the IndexManager::getInstance().getClusteredIndex().getIDs() method
+        sizet_vt clusterDocIds;
         IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK, clusterDocIds);
 
         // Search the docs from the clusters
-        found_indices = QueryProcessingEngine::searchCollectionCos(&queryDoc, clusterDocIds, topK);
-        break;
+        found_indices = QueryProcessingEngine::searchClusterCos(&queryDoc, clusterDocIds, topK);
+    } break;
+    case IR_MODE ::kTIERED: {
+        found_indices = QueryProcessingEngine::searchTieredCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
+    } break;
+    case IR_MODE ::kRANDOM: {
+        found_indices = QueryProcessingEngine::searchRandomProjCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
+    } break;
+    case IR_MODE ::kNoMode: break;
+    case IR_MODE ::kNumberOfModes: break;
     }
-    return found_indices; // Return search result
+
+    // Return search result
+    return found_indices;
 }
 
-pair_sizet_float_vt QueryProcessingEngine::searchClusterCos(const Document* query, const sizet_vt& collectionIds) {
-    std::map<size_t, float> docId2Length;
-    for (auto& elem : collectionIds) { // Map of doc id to length og that doc
-        docId2Length[elem] = DocumentManager::getInstance().getDocumentMap().at(elem).getNormLength();
-    }
-
-    Measure m;
-    m.start();
-    std::map<size_t, float> docId2Scores;
-    const string_vt& qcontent = query->getContent();
-    for (size_t id : collectionIds) {
-        for (const std::string& term : qcontent) {
-            float tf = query->getTf(term);
-            if (!tf) continue;
-            float idf = IndexManager::getInstance().getIdf(term);
-            if (!idf) continue;
-            docId2Scores[id] += tf*idf * Utility::IR::calcTf(term, qcontent)*idf;
-        }
-    }m.stop(); std::cout << "Measure Func: " << m.mTotalTime() << std::endl;
-
-    for (const auto& elem : docId2Length) { // Divide every score of a doc by the length of the document
-        docId2Scores[elem.first] = docId2Scores[elem.first] / docId2Length[elem.first];
-    }
-    
-    std::vector<std::pair<size_t, float>> results;
-    for (const auto& elem : docId2Scores) { // Convert map into vector of pairs
-        results.push_back(elem);
-    }
-
-    // Sort vector desc
-    std::sort(results.begin(), results.end(), [](std::pair<size_t, float> elem1, std::pair<size_t, float> elem2) { return elem1.second > elem2.second; });
-    return results;
-}
-
-pair_sizet_float_vt QueryProcessingEngine::searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
+const pair_sizet_float_vt QueryProcessingEngine::searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
     std::map<size_t, float> docId2Length;
     for (auto& elem : collectionIds) { // Map of doc id to length og that doc
         docId2Length[elem] = DocumentManager::getInstance().getDocumentMap().at(elem).getNormLength();
@@ -124,15 +83,15 @@ pair_sizet_float_vt QueryProcessingEngine::searchCollectionCos(const Document* q
 
     std::map<size_t, float> docId2Scores;
     const string_vt& qcontent = query->getContent();
-    // Calculate weightings per doc using the tf-idf of the word in the doc collection times the tf-idf of the term in the query
-    for (const auto& term : qcontent) { 
-        const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList(term);
-        for (auto& [id, tf] : postingList.getPosting()) {
-            if (!tf) continue;
-            float idf = IndexManager::getInstance().getIdf(term);
-            if (!idf) continue;
-            docId2Scores[id] += (tf * postingList.getIdf() * (Utility::IR::calcTf(term, qcontent) * postingList.getIdf()));
-        }
+    for (const auto& term :
+         qcontent) { // Calculate weightings per doc using the tf-idf of the word in the doc collection times the tf-idf of the term in the query
+        try {
+            const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList(term);
+            for (auto& [id, tf] : postingList.getPosting()) {
+                float idf = IndexManager::getInstance().getIdf(term);
+                docId2Scores[id] += (tf * idf * (Utility::IR::calcTf(term, qcontent) * idf));
+            }
+        } catch (const InvalidArgumentException& e) { std::cout << e.what() << std::endl; }
     }
 
     for (const auto& elem : docId2Length) { // Divide every score of a doc by the length of the document
@@ -146,21 +105,15 @@ pair_sizet_float_vt QueryProcessingEngine::searchCollectionCos(const Document* q
 
     // Sort vector desc
     std::sort(results.begin(), results.end(), [](std::pair<size_t, float> elem1, std::pair<size_t, float> elem2) { return elem1.second > elem2.second; });
-    return (!topK) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
+    return (!topK || topK > results.size()) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
 }
 
-const size_t QueryProcessingEngine::searchCollectionCosFirstIndex(const Document* query, const sizet_vt& collectionIds) {
-    //return QueryProcessingEngine::getInstance().searchClusterCos(query, collectionIds)[0].first; // get most similar leader
-    return QueryProcessingEngine::getInstance().searchCollectionCos(query, collectionIds, 1)[0].first; // get most similar leader
-}
-
-pair_sizet_float_vt QueryProcessingEngine::cosineScoreLSHSearch(const Document* query, const sizet_vt& collectionIds, size_t topK) {
+const pair_sizet_float_vt QueryProcessingEngine::searchClusterCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
     std::map<size_t, float> docId2Scores;
 
-    // for (auto& elem : collectionIds) {
-    // docId2Scores[elem] = Utility::SimilarityMeasures::calcHammingDist(query.getLSHBitvec(),
-    // DocumentManager::getInstance().getDocumentMap().at(elem).getLSHBitvec());
-    //}
+    for (auto& elem : collectionIds) {
+        docId2Scores[elem] = Utility::SimilarityMeasures::calcCosDist(*query, DocumentManager::getInstance().getDocument(elem));
+    }
 
     // Convert map into vector of pairs
     std::vector<std::pair<size_t, float>> results;
@@ -170,5 +123,66 @@ pair_sizet_float_vt QueryProcessingEngine::cosineScoreLSHSearch(const Document* 
 
     // Sort vector desc
     std::sort(results.begin(), results.end(), [](std::pair<size_t, float> elem1, std::pair<size_t, float> elem2) { return elem1.second > elem2.second; });
-    return (!topK) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
+    return (!topK || topK > results.size()) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
+    return results;
+}
+
+const size_t QueryProcessingEngine::searchClusterCosFirstIndex(const Document* query, const sizet_vt& collectionIds) {
+    return QueryProcessingEngine::getInstance().searchClusterCos(query, collectionIds, 1)[0].first; // get most similar leader
+}
+
+const pair_sizet_float_vt QueryProcessingEngine::searchTieredCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
+
+    /*
+        std::map<size_t, float> docId2Length;
+        for (auto& elem : collectionIds) { // Map of doc id to length og that doc
+            docId2Length[elem] = DocumentManager::getInstance().getDocumentMap().at(elem).getNormLength();
+        }
+
+        std::map<size_t, float> docId2Scores;
+        const string_vt& qcontent = query->getContent();
+        for (const auto& term :
+             qcontent) { // Calculate weightings per doc using the tf-idf of the word in the doc collection times the tf-idf of the term in the query
+            try {
+                const PostingList& postingList = IndexManager::getInstance().getTieredIndex().getPostingList(term, //tier);
+                for (auto& [id, tf] : postingList.getPosting()) {
+                    float idf = IndexManager::getInstance().getIdf(term);
+                    docId2Scores[id] += (tf * idf * (Utility::IR::calcTf(term, qcontent) * idf));
+                }
+            } catch (const InvalidArgumentException& e) { std::cout << e.what() << std::endl; }
+        }
+
+        for (const auto& elem : docId2Length) { // Divide every score of a doc by the length of the document
+            docId2Scores[elem.first] = docId2Scores[elem.first] / docId2Length[elem.first];
+        }
+
+        std::vector<std::pair<size_t, float>> results;
+        for (const auto& elem : docId2Scores) { // Convert map into vector of pairs
+            results.push_back(elem);
+        }
+
+        // Sort vector desc
+        std::sort(results.begin(), results.end(), [](std::pair<size_t, float> elem1, std::pair<size_t, float> elem2) { return elem1.second > elem2.second; });
+        return (!topK) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
+        */
+    // return nullptr;
+}
+
+const pair_sizet_float_vt QueryProcessingEngine::searchRandomProjCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
+    std::map<size_t, float> docId2Scores;
+
+    for (auto& elem : collectionIds) {
+        docId2Scores[elem] =
+            Utility::SimilarityMeasures::calcHammingDist(query->getRandProjVec(), DocumentManager::getInstance().getDocumentMap().at(elem).getRandProjVec());
+    }
+
+    // Convert map into vector of pairs
+    std::vector<std::pair<size_t, float>> results;
+    for (const auto& elem : docId2Scores) {
+        results.push_back(elem);
+    }
+
+    // Sort vector ascending as this is a DISTANCE measure
+    std::sort(results.begin(), results.end(), [](std::pair<size_t, float> elem1, std::pair<size_t, float> elem2) { return elem1.second < elem2.second; });
+    return (!topK || topK > results.size()) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
 }

@@ -109,7 +109,7 @@ class TieredIndex {
      *
      * @param top at least top ids
      * @param terms
-     * @return sizet_vt
+     * @return std::map<size_t, sizet_vt>
      */
     sizet_vt getDocIDList(const size_t top, const string_vt& terms);
     /**

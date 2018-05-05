@@ -10,11 +10,12 @@ size_t Document::_documentCount = 0;
  * @param aContent the content (vector of terms) of the document
  */
 Document::Document(const std::string& aDocID, const string_vt& aContent) :
-    _ID(++Document::_documentCount),
+    _ID(Document::_documentCount++),
     _docID(aDocID),
     _content(aContent),
     _term_tf_map(),
     _tf_idf_vec(),
+    _rand_proj_vec(),
     _norm_length(0)
 {}
 
@@ -35,6 +36,7 @@ Document::Document(const Document& doc) :
     _content(doc.getContent()),
     _term_tf_map(doc.getTermTfMap()),
     _tf_idf_vec(doc.getTfIdfVector()),
+    _rand_proj_vec(doc.getRandProjVec()),
     _norm_length(doc.getNormLength())
 {}
 

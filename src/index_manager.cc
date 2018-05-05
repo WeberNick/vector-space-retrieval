@@ -13,15 +13,14 @@ IndexManager::IndexManager() :
  * @brief Destroy the Index Manager:: Index Manager object
  *
  */
-IndexManager::~IndexManager()
-{}
+IndexManager::~IndexManager() {}
 
-void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {    
+void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
     if (!_init) {
         _cb = &aControlBlock;
         _docs = &aDocMap;
         _collection_terms.reserve(_docs->size());
-        
+
         _clusteredIndex.chooseLeaders();
         const sizet_vt& leaders = _clusteredIndex.getLeaders();
         cluster_mt* cluster_out = _clusteredIndex.getClusterMap();
@@ -36,9 +35,7 @@ void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
     }
 }
 
-void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
-                                str_tierplmap_mt* tieredpostinglist_out,
-                                cluster_mt* cluster_out,
+void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplmap_mt* tieredpostinglist_out, cluster_mt* cluster_out,
                                 const sizet_vt& leaders) {
     str_int_mt idf_occs;
     for (const auto& [id, doc] : *(_docs)) {
@@ -50,7 +47,7 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
             ++tf_counts[term];
             if (postinglist_out->find(term) == postinglist_out->end()) { // term not in map
                 posting[id] = 0;                                         // tf has to be set below
-                (*postinglist_out)[term] = PostingList(0, posting);      // idf has to be set below  
+                (*postinglist_out)[term] = PostingList(0, posting);      // idf has to be set below
             }
         }
         int maxFreq = Utility::StringOp::getMaxWordFrequency(con);
@@ -65,29 +62,36 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
     for (const auto& [term, occ] : idf_occs) { // sizeof idf_occs == distinct_terms
         _idf_map[term] = Utility::IR::calcIdf(N, occ);
         (*postinglist_out)[term].setIdf(_idf_map[term]);
+        (*tieredpostinglist_out)[term] = Utility::IR::calculateTiers(_cb->tiers(), (*postinglist_out)[term]);
         _collection_terms.push_back(term);
+    }
+    RandomProjection::getInstance().init(*_cb, _collection_terms.size());
+    for (auto& elem : *(_docs)) {
+        this->buildTfIdfVector(elem.second);
+        this->buildRandProjVector(elem.second);
     }
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
-        Measure m;
-        m.start();
-        const size_t index = QueryProcessingEngine::getInstance().searchCollectionCosFirstIndex(&doc, leaders);
-        m.stop();
-        std::cout << "Measure: " << m.mTotalTime() << std::endl;
+        const size_t index = QueryProcessingEngine::getInstance().searchClusterCosFirstIndex(&doc, leaders);
         cluster_out->at(index).push_back(doc.getID());
-        float_vt tivec = doc.getTfIdfVector();
-        tivec.reserve(_collection_terms.size());
-        for (std::string& term : _collection_terms) {
-            str_float_mt& termTfMap = doc.getTermTfMap();
-            if (termTfMap.find(term) != termTfMap.end())
-                tivec.push_back(Utility::IR::calcTfIdf(termTfMap.at(term), _idf_map.at(term)));
-            else
-                tivec.push_back(0);  
-        }
-        doc.setNormLength(Utility::SimilarityMeasures::vectorLength(tivec));
-        doc.setTfIdfVector(tivec);
     }
-    for (auto& term : _collection_terms) {
-        (*tieredpostinglist_out)[term] = Utility::IR::calculateTiers(_cb->tiers(), (*postinglist_out)[term]);
+}
+
+void IndexManager::buildTfIdfVector(Document& doc) {
+    float_vt& tivec = doc.getTfIdfVector();
+    tivec.reserve(_collection_terms.size());
+    for (std::string& term : _collection_terms) {
+        str_float_mt& termTfMap = doc.getTermTfMap();
+        if (termTfMap.find(term) != termTfMap.end())
+            tivec.push_back(Utility::IR::calcTfIdf(termTfMap.at(term), _idf_map.at(term)));
+        else
+            tivec.push_back(0);
     }
+    doc.setNormLength(Utility::SimilarityMeasures::vectorLength(tivec));
+    doc.setTfIdfVector(tivec);
+}
+
+void IndexManager::buildRandProjVector(Document& doc) {
+    const boost::dynamic_bitset<>& rand_proj = RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(), Utility::hash);
+    doc.setRandProjVec(rand_proj);
 }
