@@ -33,12 +33,3 @@ add_subdirectory(tests)
 
 #Link main executable with code lib
 target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib stdc++fs)
-
-#NICK: Use this to supress deprecated warning in file
-#src/lib/oleanderStemmingLibrary/stemming/../indexing/string_util.h
-#line number 299 (remove first #):
-
-# #pragma GCC diagnostic push
-# #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-# int* digits = new int[length+1]; std::auto_ptr<int> digitsDeleter(digits);
-# #pragma GCC diagnostic pop

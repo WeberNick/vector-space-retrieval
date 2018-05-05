@@ -6,29 +6,21 @@
  *
  */
 IndexManager::IndexManager() :
-    _cb(nullptr),
-    _docs(nullptr),
-    _init(false),
-    _idf_map(),
-    _collection_terms(),
-    _invertedIndex(InvertedIndex::getInstance()),
-    _tieredIndex(TieredIndex::getInstance()),
-    _clusteredIndex(Cluster::getInstance())
-{}
+    _cb(nullptr), _docs(nullptr), _init(false), _idf_map(), _collection_terms(), _invertedIndex(InvertedIndex::getInstance()),
+    _tieredIndex(TieredIndex::getInstance()), _clusteredIndex(Cluster::getInstance()) {}
 
 /**
  * @brief Destroy the Index Manager:: Index Manager object
  *
  */
-IndexManager::~IndexManager()
-{}
+IndexManager::~IndexManager() {}
 
-void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {    
+void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
     if (!_init) {
         _cb = &aControlBlock;
         _docs = &aDocMap;
         _collection_terms.reserve(_docs->size());
-        
+
         _clusteredIndex.chooseLeaders();
         const sizet_vt& leaders = _clusteredIndex.getLeaders();
         cluster_mt* cluster_out = _clusteredIndex.getClusterMap();
@@ -43,9 +35,7 @@ void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
     }
 }
 
-void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
-                                str_tierplmap_mt* tieredpostinglist_out,
-                                cluster_mt* cluster_out,
+void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplmap_mt* tieredpostinglist_out, cluster_mt* cluster_out,
                                 const sizet_vt& leaders) {
     str_int_mt idf_occs;
     for (const auto& [id, doc] : *(_docs)) {
@@ -57,7 +47,7 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
             ++tf_counts[term];
             if (postinglist_out->find(term) == postinglist_out->end()) { // term not in map
                 posting[id] = 0;                                         // tf has to be set below
-                (*postinglist_out)[term] = PostingList(0, posting);      // idf has to be set below  
+                (*postinglist_out)[term] = PostingList(0, posting);      // idf has to be set below
             }
         }
         int maxFreq = Utility::StringOp::getMaxWordFrequency(con);

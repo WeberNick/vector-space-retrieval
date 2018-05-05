@@ -252,8 +252,14 @@ void testAlex() {
 
     QueryProcessingEngine::getInstance().init(aControlBlock);
 
+    std::cout << "[Ready]" << std::endl;
+
+    std::string search;
+    std::cout << "Your query > ";
+    std::cin.ignore();
+    std::getline(std::cin, search);
     testSearch("why deep fried foods may cause cancer");
-    // testSearch("do cholesterol statin drugs cause breast cancer ?");
+    testSearch("do cholesterol statin drugs cause breast cancer ?");
 }
 
 /**
