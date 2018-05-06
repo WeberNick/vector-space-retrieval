@@ -9,11 +9,11 @@ DATA_PATH = '../../data'
 RAW_FOLDER = 'raw'
 
 def qrel(folders, files, end):
-    ''' Aggregate query relevance '''
+    ''' Preprocess query relevance '''
     for folder in folders:
         for filename in files:
             result = set()
-            with open('{}/{}/{}/{}.{}'.format(DATA_PATH, folder, RAW_FOLDER, filename, end)) as file_from:
+            with open('{}/{}/{}/{}.{}'.format(DATA_PATH, folder, RAW_FOLDER, filename, end), 'r') as file_from:
                 for line in file_from.readlines():
                     content = re.split(r'\t+', line.rstrip('\t\n'))
                     del content[1]
@@ -21,27 +21,29 @@ def qrel(folders, files, end):
             _write(result, '{}/{}/{}.{}'.format(DATA_PATH, folder, filename, end))
 
 def docs(folders, filename, end):
-    ''' Aggregate document collection '''
+    ''' Preprocess document collection '''
     stemmer = SnowballStemmer(language='english')
     regex = re.compile('[%s]' % re.escape(string.punctuation))
+    with open('{}/{}'.format(DATA_PATH, 'stopwords.large'), 'r') as stopwordfile:
+        stopwords = stopwordfile.readline().strip("\"").split(",")
     for folder in folders:
         result = set()
-        with open('{}/{}/{}/{}.{}'.format(DATA_PATH, folder, RAW_FOLDER, filename, end)) as file_from:
+        with open('{}/{}/{}/{}.{}'.format(DATA_PATH, folder, RAW_FOLDER, filename, end), 'r') as file_from:
             for line in file_from.readlines():
                 content = re.split(r'\t+', line.rstrip('\t\n'))
                 words = [regex.sub('', w) for w in content[1].split()]
                 words = [stemmer.stem(w) for w in words]
-                words = [w for w in words if len(w) > 1]
+                words = [w for w in words if len(w) > 1 and w not in stopwords]
                 doc = [content[0], ' '.join(words)]
                 result.add('~'.join(doc))
         _write(result, '{}/{}/{}.{}'.format(DATA_PATH, folder, filename, end))
 
 def quer(folders, files, end):
-    ''' Aggregate queries '''
+    ''' Preprocess queries '''
     for folder in folders:
         for filename in files:
             result = set()
-            with open('{}/{}/{}/{}.{}'.format(DATA_PATH, folder, RAW_FOLDER, filename, end)) as file_from:
+            with open('{}/{}/{}/{}.{}'.format(DATA_PATH, folder, RAW_FOLDER, filename, end), 'r') as file_from:
                 for line in file_from.readlines():
                     content = re.split(r'\t+', line.rstrip('\t\n'))
                     result.add('~'.join(content))
