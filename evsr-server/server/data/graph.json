@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Cluster",
+    "queries": [
+      { "name": "Med1", "time": 2.004811 },
+      { "name": "Med2", "time": 2.634234 },
+      { "name": "Med3", "time": 3.004811 }
+    ]
+  },
+  {
+    "name": "VanillaVSM",
+    "queries": [
+      { "name": "Med1", "time": 3.003269 },
+      { "name": "Med2", "time": 4.0012369 },
+      { "name": "Med3", "time": 6.91823 }
+    ]
+  },
+  {
+    "name": "TieredIndex",
+    "queries": [
+      { "name": "Med1", "time": 4.004984 },
+      { "name": "Med2", "time": 4.90984 },
+      { "name": "Med3", "time": 6.512984 }
+    ]
+  }
+]

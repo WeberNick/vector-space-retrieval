@@ -161,3 +161,25 @@ src/lib/**
 data/w2v/**
 logs/
 eval/
+
+# dependencies
+evsr-server/client/node_modules
+evsr-server/server/node_modules
+
+# testing
+evsr-server/client/coverage
+
+# production
+evsr-server/client/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+evsr-server/server/server.log*
+evsr-server/npm-debug.log*
+evsr-server/yarn-debug.log*
+evsr-server/yarn-error.log*

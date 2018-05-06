@@ -1,0 +1,23 @@
+{
+  "name": "evsr-server",
+  "version": "0.0.1",
+  "description": "The evsr server",
+  "private": true,
+  "author": "Alexander Weiß",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.4",
+    "express": "^4.16.3",
+    "socket.io": "^2.1.0",
+    "winston": "^2.4.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1"
+  },
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "babel-node server.js"
+  }
+}

@@ -87,7 +87,7 @@ const pair_sizet_float_vt QueryProcessingEngine::searchCollectionCos(const Docum
          qcontent) { // Calculate weightings per doc using the tf-idf of the word in the doc collection times the tf-idf of the term in the query
         try {
             const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList(term);
-            for (auto & [ id, tf ] : postingList.getPosting()) {
+            for (auto& [id, tf] : postingList.getPosting()) {
                 float idf = IndexManager::getInstance().getIdf(term);
                 docId2Scores[id] += (tf * idf * (Utility::IR::calcTf(term, qcontent) * idf));
             }
@@ -114,7 +114,9 @@ const pair_sizet_float_vt QueryProcessingEngine::searchClusterCos(const Document
     std::map<size_t, float> docId2Scores;
 
     for (auto& elem : collectionIds) {
-        docId2Scores[elem] = Utility::SimilarityMeasures::calcCosDist(*query, DocumentManager::getInstance().getDocument(elem));
+      float sim = Utility::SimilarityMeasures::calcCosDist(*query, DocumentManager::getInstance().getDocument(elem));
+      std::cout << "similiarty: " << sim << std::endl;
+      docId2Scores[elem] = sim;
     }
 
     // Convert map into vector of pairs
