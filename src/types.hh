@@ -85,3 +85,16 @@ inline std::string modeToString(IR_MODE aMode) {
             return "Mode not supported"; break;
     }
 }
+
+inline IR_MODE stringToMode(std::string aMode) {
+
+    if (aMode.compare("kVANILLA") == 0) {
+        return kVANILLA;
+    } else if (aMode.compare("kTIERED") == 0) {
+        return kTIERED;
+    } else if (aMode.compare("kCLUSTER") == 0) {
+        return kCLUSTER;
+    } else {
+        return IR_MODE ::kNoMode;
+    }
+}
