@@ -109,7 +109,7 @@ void test(const control_block_t& aControlBlock) {
 }
 void testNico() {
     const control_block_t& aControlBlock = {false, false, false, "./data/collection_test_mwe.docs", "./tests/_trace_test/", "", "./data/stopwords.large",
-                                            0,     3,     100};
+                                            0,     3,     1000};
     // assert(aNumTiers > 1);
     Measure lMeasure;
     lMeasure.start();
@@ -130,12 +130,15 @@ void testNico() {
     std::cout << ti << std::endl;
 
     std::cout << std::endl;
-    Document& d = docManager.getDocument(1);
-    boost::dynamic_bitset<>& bs = d.getRandProjVec();
-    size_t index = bs.find_first();
-    while(index < 100) {
-        std::cout << bs[index++] << " ";
-    }
+    Document& d = docManager.getDocument(0);
+    Document& d2 = docManager.getDocument(1);
+    Document& d3 = docManager.getDocument(2);
+
+    std::cout << Utility::SimilarityMeasures::calcCosDist(d, d2) << std::endl;
+    std::cout << Utility::SimilarityMeasures::calcCosDist(d, d3) << std::endl;
+
+    std::cout << Utility::SimilarityMeasures::calcHammingDist(d.getRandProjVec(), d2.getRandProjVec()) << std::endl;
+    std::cout << Utility::SimilarityMeasures::calcHammingDist(d.getRandProjVec(), d3.getRandProjVec()) << std::endl;
 
     // int count = 0;
     // std::cout << docManager.getDocument(2) << std::endl;
@@ -156,7 +159,8 @@ void testSearch(std::string query) {
     Measure lMeasureQuery;
 
     lMeasureQuery.start();
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, 10, IR_MODE::kVANILLA);
+    std::vector<std::pair<size_t, float>> result = qpe.search(query, 10, IR_MODE::kRANDOM);
+    std::cout << query << std::endl;
     lMeasureQuery.stop();
 
     double lSecondsQuery = lMeasureQuery.mTotalTime();
@@ -230,7 +234,7 @@ void testAlex() {
         std::cout << i.first << ": " << i.second << std::endl;
     }*/
 
-    const control_block_t& aControlBlock = {false, false, false, "./data/collection.docs", "./tests/_trace_test/", "", "./data/stopwords.large", 0, 3, 0};
+    const control_block_t& aControlBlock = {false, false, false, "./data/collection.docs", "./tests/_trace_test/", "", "./data/stopwords.large", 0, 3, 1000};
 
     Measure lMeasureIndexing;
     lMeasureIndexing.start();
@@ -249,8 +253,17 @@ void testAlex() {
 
     QueryProcessingEngine::getInstance().init(aControlBlock);
 
+    std::cout << "[Ready]" << std::endl;
+
     testSearch("why deep fried foods may cause cancer");
-    // testSearch("do cholesterol statin drugs cause breast cancer ?");
+    //testSearch("do cholesterol statin drugs cause breast cancer ?");
+
+    while (true) {
+        std::cout << "Your query >";
+        std::string line;
+        std::getline(std::cin, line);
+        testSearch(line);
+    }
 }
 
 /**
@@ -293,7 +306,7 @@ int main(const int argc, const char* argv[]) {
     Evaluation::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
     // test(lCB);
-    testNico();
-    // testAlex();
+    // testNico();
+    testAlex();
     return 0;
 }
