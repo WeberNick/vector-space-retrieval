@@ -42,7 +42,7 @@ void TieredIndex::erase(const tiered_posting_map_iter_t aIterator) {
     _term_tier_map.erase(aIterator);
 }
 
-sizet_vt TieredIndex::getDocIDList(const size_t top, const string_vt& terms) {
+sizet_vt TieredIndex::getDocIDList(const size_t top, const string_vt& terms) const {
     sizet_vt qids;
     size_t tier = 0;
 
@@ -64,7 +64,7 @@ sizet_vt TieredIndex::getDocIDList(const size_t top, const string_vt& terms) {
     return qids; // may return < top if all tiers are processed and we did not find enough qualifying ids
 }
 
-PostingList& TieredIndex::getPostingList(const std::string& aTerm, const size_t aTier) {
+const PostingList& TieredIndex::getPostingList(const std::string& aTerm, const size_t aTier) const {
     if(_term_tier_map.find(aTerm) != _term_tier_map.end())
         return _term_tier_map.at(aTerm).at(aTier);
     else

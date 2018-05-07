@@ -111,7 +111,7 @@ class TieredIndex {
      * @param terms
      * @return std::map<size_t, sizet_vt>
      */
-    sizet_vt getDocIDList(const size_t top, const string_vt& terms);
+    sizet_vt getDocIDList(const size_t top, const string_vt& terms) const;
     /**
      * @brief Get the Posting List object
      *
@@ -119,7 +119,7 @@ class TieredIndex {
      * @param aTier
      * @return PostingList&
      */
-    PostingList& getPostingList(const std::string& aTerm, const size_t aTier);
+    const PostingList& getPostingList(const std::string& aTerm, const size_t aTier) const;
     // TODO docs
     /**
      * @brief Get the No Docs object

@@ -78,7 +78,6 @@ export function listenToSockets(httpServer) {
       evsr.call(
         data => {
           data = data.toString();
-          console.log('-' + data);
           if (data.substring(0, 7) === '[Ready]') {
             logger.info('evsr ready');
             ready = true;
@@ -129,7 +128,7 @@ export function listenToSockets(httpServer) {
     });
 
     socket.on('client:getEvalData', data => {
-      logger.info('Client is requesting evaluation data');
+      logger.info('Client requested evaluation data');
       fs.readFile(`${__dirname}/../data/graph.json`, 'utf8', function(
         err,
         data,

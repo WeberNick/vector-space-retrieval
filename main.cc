@@ -261,13 +261,13 @@ void testAlex(Args& lArgs) {
 
     std::cout << "[Ready]" << std::endl;
 
-    search("Why breast cancer", 10, IR_MODE::kCLUSTER);
+    //search("Why breast cancer", 10, IR_MODE::kCLUSTER);
 
-    /*while (true) {
+    while (true) {
         json j;
         std::cin >> j;
         search(j["query"].get<std::string>(), j["topK"].get<size_t>(), stringToMode(j["mode"].get<std::string>()));
-    }*/
+    }
 }
 
 /**
