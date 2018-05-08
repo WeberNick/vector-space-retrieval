@@ -15,8 +15,7 @@ class Box extends Component {
           <div className="media-content">
             <div className="content">
               <p>
-                <strong>{doc.title}</strong> <small>@Similarity</small> :{' '}
-                <small>{doc.similarity}</small>
+                <strong>{doc.id}</strong>
                 <br />
                 {this.truncate(doc.content)}
               </p>

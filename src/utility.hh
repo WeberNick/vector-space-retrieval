@@ -47,13 +47,13 @@
 namespace Utility {
 
     /**
-     * @brief Generates a random normal distributed double number
-     *
+     * @brief Generates a random normal distributed double number based on the Box muller method
+     * @see https://stackoverflow.com/a/28551411
      * @param mean
      * @param stddev
-     * @return
+     * @return normal distributed random value
      */
-    inline double rand_normal(double mean, double stddev) { // Box muller method
+    inline double rand_normal(double mean, double stddev) {
         static double n2 = 0.0;
         static int n2_cached = 0;
         if (!n2_cached) {
@@ -122,15 +122,15 @@ namespace Utility {
      */
     template <typename T>
     inline double scalar_product(std::vector<T> const& a, std::vector<T> const& b) {
-        if (a.size() != b.size()) { throw std::runtime_error("different sizes"); }
+        if (a.size() != b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
         return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
     }
 
-    inline bool hash(std::vector<float>& origVec, std::vector<float>& randVec) {
+    inline bool randomProjectionHash(std::vector<float> &origVec, std::vector<float> &randVec) {
         if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
 
         double dot = scalar_product(origVec, randVec);
-        return dot >= 0 ? 1 : 0;
+        return dot >= 0;
     }
 
     template <typename T>
@@ -146,6 +146,12 @@ namespace Utility {
      */
     namespace StringOp {
 
+        /**
+         * @brief Joins a string vector into a normal std::string. Entries in \string_vt are separated by whitespace
+         *
+         * @param stringVector
+         * @return std::string
+         */
         inline std::string string_vt_2_str(const string_vt& stringVector) {
             std::string str;
 
@@ -205,7 +211,6 @@ namespace Utility {
             std::transform(data.begin(), data.end(), data.begin(), ::tolower);
             return data;
         }
-
 
         /**
          * @brief Lower case a given vector of strings
@@ -276,7 +281,7 @@ namespace Utility {
         }
 
         /**
-         * @brief Calculates the appearance of a single word inside a string
+         * @brief Calculates the appearance of a single word inside a string vector
          *
          * @param str the sentence to check for the word
          * @param word the word to count
@@ -296,9 +301,9 @@ namespace Utility {
         }
 
         /**
-         * @brief Returns the frequency of the most frequent term in the document
+         * @brief Returns the frequency of the most frequent term a string
          *
-         * @param str
+         * @param str std:string
          * @return
          */
         inline int getMaxWordFrequency(const std::string& str) {
@@ -316,9 +321,9 @@ namespace Utility {
         }
 
         /**
-         * @brief Returns the frequency of the most frequent term in the document
+         * @brief Returns the frequency of the most frequent term in a string vector
          *
-         * @param str
+         * @param str std::vector<std::string>
          * @return
          */
         inline int getMaxWordFrequency(std::vector<std::string> vec) {
@@ -341,10 +346,9 @@ namespace Utility {
         }
 
         /**
-         * TODO: This will fail if the use while an stdin to read in search queries
          * @brief Removes empty strings from a string vector
          *
-         * @param vec
+         * @param vec std::vector<std::string>
          */
         inline void removeEmptyStringsFromVec(std::vector<std::string>& vec) {
             vec.erase(std::remove_if(vec.begin(), vec.end(), [](const std::string& s) { return s.empty(); }), vec.end());
@@ -353,7 +357,7 @@ namespace Utility {
         /**
          * @brief Trims the left side of a string in place
          *
-         * @param s
+         * @param s std::string
          */
         static inline void ltrim(std::string& s) {
             s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) { return !std::isspace(ch); }));
@@ -362,7 +366,7 @@ namespace Utility {
         /**
          * @brief Trims the right side of a string in place
          *
-         * @param s
+         * @param s std::string
          */
         static inline void rtrim(std::string& s) {
             s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) { return !std::isspace(ch); }).base(), s.end());
@@ -371,7 +375,7 @@ namespace Utility {
         /**
          * @brief Trims the left and right side of a string in place
          *
-         * @param s
+         * @param s std::string
          */
         static inline void trim(std::string& s) {
             ltrim(s);
@@ -381,7 +385,7 @@ namespace Utility {
         /**
          * @brief Trims the left side of a string
          *
-         * @param s
+         * @param s std::string
          * @return
          */
         static inline std::string ltrim_copy(std::string s) {
@@ -392,7 +396,7 @@ namespace Utility {
         /**
          * @brief Trims the right side of a string
          *
-         * @param s
+         * @param s std::string
          * @return
          */
         static inline std::string rtrim_copy(std::string s) {
@@ -403,7 +407,7 @@ namespace Utility {
         /**
          * @brief Trims the left and right side of a string
          *
-         * @param s
+         * @param s std::string
          * @return
          */
         static inline std::string trim_copy(std::string s) {
@@ -419,16 +423,16 @@ namespace Utility {
     namespace IR {
 
         /**
-         * @brief Calculates the
+         * @brief Calculates the term frequency a term
          *
-         * @param term
-         * @param max
+         * @param term count of the term
+         * @param max maximum count of another term in a document
          * @return float
          */
         inline float calcTf(const float term, const float max) { return static_cast<float>((1 + log10(term)) / (1 + log10(max))); }
 
         /**
-         * @brief Calculates the
+         * @brief Calculates the IDF of a term
          *
          * @param term
          * @param max
@@ -443,14 +447,13 @@ namespace Utility {
          * @param idf  the inverse document frequency
          * @return the idf value
          */
-        inline float calcTfIdf(const float tf, const float idf) { return static_cast<float>(tf * idf); }
+        inline float calcTfIdf(const float tf, const float idf) { return tf * idf; }
 
         /**
          * @brief Removes all stopwords specified in \stopwordList from \str
          *
-         * @param str
+         * @param str std::string
          * @param stopwordList
-         * //TODO: NEED TO IMPLEMENT
          */
         inline void removeStopword(std::string& str, const string_vt& stopwordList) {
             int counter = 0;
@@ -610,7 +613,7 @@ namespace Utility {
         }
 
         /**
-         * @brief Calculates the cosine similarity between \a aTfIdf_a and \a aTfIdf_b
+         * @brief Calculates the cosine similarity between \aTfIdf_a and \aTfIdf_b
          *
          * @param aTfIdf_a a tf-idf vector
          * @param aTfIdf_b a tf-idf vector
@@ -733,20 +736,15 @@ namespace Utility {
          */
         inline float calcAngSimHamming(std::vector<bool>& vec_a, std::vector<bool>& vec_b) {
             int hamming = calcHammingDist(vec_a, vec_b);
-            std::cout << "Hamming: " << hamming << std::endl;
-            std::cout << "Vec size: " << vec_a.size() << std::endl;
-
-            double result = cos(hamming / vec_a.size() * 3.14);
-            std::cout << result << std::endl;
 
             double theta = acosf(cos(((hamming / vec_a.size()) * M_PI)));
-            std::cout << theta << std::endl;
+
 
             return static_cast<float>(1 - (theta / M_PI));
         }
 
         /**
-         * @brief Calculates the euclidean distance between \a doc_a and \a doc_b
+         * @brief Calculates the euclidean distance between \doc_a and \doc_b
          *
          * @param doc_a a document
          * @param doc_b a document
@@ -763,7 +761,7 @@ namespace Utility {
         }
 
         /**
-         * @brief Calculates the normalized euclidean distance between \a doc_a and \a doc_b
+         * @brief Calculates the normalized euclidean distance between \doc_a and \doc_b
          *
          * @param doc_a a document
          * @param doc_b a document

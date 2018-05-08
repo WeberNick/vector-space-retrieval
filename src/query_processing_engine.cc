@@ -34,39 +34,51 @@ void QueryProcessingEngine::read(const std::string& aFile) {
     }
 }
 
-const pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType) {
+const pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh) {
     Document queryDoc = DocumentManager::getInstance().createQueryDoc(query);
-
-    /*std::cout << "Searching for: ";
-    for (size_t j = 0; j < queryDoc.getContent().size(); ++j) {
-        std::cout << "(" << j << "|" << queryDoc.getContent()[j] << ")"
-                  << " ";
-    }
-    std::cout << std::endl;*/
 
     pair_sizet_float_vt found_indices; // result vector
 
     switch (searchType) {
     case IR_MODE ::kVANILLA: {
-        found_indices = QueryProcessingEngine::searchCollectionCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
+
+        if (use_lsh) {
+            found_indices = this->searchRandomProjCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
+        } else {
+            found_indices = this->searchCollectionCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
+        }
     } break;
     case IR_MODE ::kCLUSTER: {
+        if (use_lsh) {
+            std::vector<std::pair<size_t, float>> leader_indexes =
+                this->searchRandomProjCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
 
-        std::cout << "Find leader indexes" << std::endl;
-        std::vector<std::pair<size_t, float>> leader_indexes =
-            QueryProcessingEngine::searchClusterCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
+            // Get docIds from the clusters to search in, vector will be filled from the IndexManager::getInstance().getClusteredIndex().getIDs() method
+            sizet_vt clusterDocIds;
+            IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK, clusterDocIds);
 
-        // Get docIds from the clusters to search in, vector will be filled from the IndexManager::getInstance().getClusteredIndex().getIDs() method
-        sizet_vt clusterDocIds;
-        IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK, clusterDocIds);
+            // Search the docs from the clusters
+            found_indices = this->searchRandomProjCos(&queryDoc, clusterDocIds, topK);
+        } else {
+            std::vector<std::pair<size_t, float>> leader_indexes =
+                this->searchClusterCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
 
-        // Search the docs from the clusters
-        std::cout << "Search leader indexes" << std::endl;
-        found_indices = QueryProcessingEngine::searchClusterCos(&queryDoc, clusterDocIds, topK);
+            // Get docIds from the clusters to search in, vector will be filled from the IndexManager::getInstance().getClusteredIndex().getIDs() method
+            sizet_vt clusterDocIds;
+            IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK, clusterDocIds);
+
+            // Search the docs from the clusters
+            found_indices = this->searchClusterCos(&queryDoc, clusterDocIds, topK);
+        }
     } break;
     case IR_MODE ::kTIERED: {
-        found_indices =
-            QueryProcessingEngine::searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
+        if (use_lsh) {
+            found_indices = QueryProcessingEngine::searchRandomProjCos(
+                &queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
+        } else {
+            found_indices =
+                QueryProcessingEngine::searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
+        }
     } break;
     case IR_MODE ::kRANDOM: {
         found_indices = QueryProcessingEngine::searchRandomProjCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
@@ -111,7 +123,6 @@ const pair_sizet_float_vt QueryProcessingEngine::searchCollectionCos(const Docum
     return (!topK || topK > results.size()) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
 }
 
-// TODO: Please check, docIdScoresElem seems to only have 1 as score ???
 const pair_sizet_float_vt QueryProcessingEngine::searchClusterCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
     std::map<size_t, float> docId2Scores;
 
@@ -130,7 +141,7 @@ const pair_sizet_float_vt QueryProcessingEngine::searchClusterCos(const Document
     std::sort(results.begin(), results.end(), [](std::pair<size_t, float> elem1, std::pair<size_t, float> elem2) { return elem1.second > elem2.second; });
 
     std::cout << "sorted cluster search results" << std::endl;
-    for (int j = 0; j < results.size(); ++j) {
+    for (size_t j = 0; j < results.size(); ++j) {
         std::cout << "docIndex" << results[j].first << " similarity" << results[j].second << std::endl;
     }
 
@@ -160,14 +171,16 @@ const pair_sizet_float_vt QueryProcessingEngine::searchTieredCos(const Document*
     std::sort(results.begin(), results.end(), [](std::pair<size_t, float> elem1, std::pair<size_t, float> elem2) { return elem1.second > elem2.second; });
 
     std::cout << "sorted cluster search results" << std::endl;
-    for (int j = 0; j < results.size(); ++j) {
-        std::cout << "docIndex" << results[j].first << " similarity" << results[j].second << std::endl;
+    for (auto &result : results) {
+        std::cout << "docIndex" << result.first << " similarity" << result.second << std::endl;
     }
 
     return (!topK || topK > results.size()) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
 }
 
 const pair_sizet_float_vt QueryProcessingEngine::searchRandomProjCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
+
+    std::cout << "using rand projections vectors " << std::endl;
     std::map<size_t, float> docId2Scores;
 
     for (auto& elem : collectionIds) {

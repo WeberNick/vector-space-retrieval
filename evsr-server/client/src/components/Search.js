@@ -9,81 +9,6 @@ import Box from './Box';
 import socket from '../socket';
 import styled from 'styled-components';
 
-const docs = [
-  {
-    id: 1,
-    similarity: 0.72856192,
-    title:
-      'Intake of fried meat and risk of cancer: a follow-up study in Finland',
-    content:
-      'It has been suggested that mutagens in fried meat may be involved in the cancer process. Therefore the relationships between intake of fried meat and subsequent risk of cancers at different sites were studied among 9,990 Finnish men and women, 15-99 years of age and initially free of cancer. The baseline study was carried out in 1966-1972, and cases of cancer were identified through data linkage with the Finnish Cancer Registry. During a 24-year follow-up, 853 cancer cases were diagnosed. The intake of fried meat was estimated from a dietary history interview covering the total diet of the participants during the previous year. There was a positive association between fried meat intake and the risk of female-hormone-related cancers, i.e., cancer of the breast, endometrium and ovary combined. The relative risk of these cancers combined between persons in the highest and lowest tertiles of daily intake of fried meat adjusted for age, personal characteristics and intake of other main food groups was 1.77 (95% confidence interval = 1.11-2.84). Pancreatic and nervous system cancers also presented non-significant suggestive associations. No associations were observed with respect to other single cancer sites studied or to all sites of cancer combined. Further epidemiological efforts are needed to ascertain the potential link between fried-food mutagens and cancer risk.',
-  },
-  {
-    id: 2,
-    similarity: 0.72856192,
-    title:
-      'Intake of fried meat and risk of cancer: a follow-up study in Finland',
-    content:
-      'It has been suggested that mutagens in fried meat may be involved in the cancer process. Therefore the relationships between intake of fried meat and subsequent risk of cancers at different sites were studied among 9,990 Finnish men and women, 15-99 years of age and initially free of cancer. The baseline study was carried out in 1966-1972, and cases of cancer were identified through data linkage with the Finnish Cancer Registry. During a 24-year follow-up, 853 cancer cases were diagnosed. The intake of fried meat was estimated from a dietary history interview covering the total diet of the participants during the previous year. There was a positive association between fried meat intake and the risk of female-hormone-related cancers, i.e., cancer of the breast, endometrium and ovary combined. The relative risk of these cancers combined between persons in the highest and lowest tertiles of daily intake of fried meat adjusted for age, personal characteristics and intake of other main food groups was 1.77 (95% confidence interval = 1.11-2.84). Pancreatic and nervous system cancers also presented non-significant suggestive associations. No associations were observed with respect to other single cancer sites studied or to all sites of cancer combined. Further epidemiological efforts are needed to ascertain the potential link between fried-food mutagens and cancer risk.',
-  },
-  {
-    id: 3,
-    similarity: 0.72856192,
-    title:
-      'Intake of fried meat and risk of cancer: a follow-up study in Finland',
-    content:
-      'It has been suggested that mutagens in fried meat may be involved in the cancer process. Therefore the relationships between intake of fried meat and subsequent risk of cancers at different sites were studied among 9,990 Finnish men and women, 15-99 years of age and initially free of cancer. The baseline study was carried out in 1966-1972, and cases of cancer were identified through data linkage with the Finnish Cancer Registry. During a 24-year follow-up, 853 cancer cases were diagnosed. The intake of fried meat was estimated from a dietary history interview covering the total diet of the participants during the previous year. There was a positive association between fried meat intake and the risk of female-hormone-related cancers, i.e., cancer of the breast, endometrium and ovary combined. The relative risk of these cancers combined between persons in the highest and lowest tertiles of daily intake of fried meat adjusted for age, personal characteristics and intake of other main food groups was 1.77 (95% confidence interval = 1.11-2.84). Pancreatic and nervous system cancers also presented non-significant suggestive associations. No associations were observed with respect to other single cancer sites studied or to all sites of cancer combined. Further epidemiological efforts are needed to ascertain the potential link between fried-food mutagens and cancer risk.',
-  },
-  {
-    id: 4,
-    similarity: 0.72856192,
-    title:
-      'Intake of fried meat and risk of cancer: a follow-up study in Finland',
-    content:
-      'It has been suggested that mutagens in fried meat may be involved in the cancer process. Therefore the relationships between intake of fried meat and subsequent risk of cancers at different sites were studied among 9,990 Finnish men and women, 15-99 years of age and initially free of cancer. The baseline study was carried out in 1966-1972, and cases of cancer were identified through data linkage with the Finnish Cancer Registry. During a 24-year follow-up, 853 cancer cases were diagnosed. The intake of fried meat was estimated from a dietary history interview covering the total diet of the participants during the previous year. There was a positive association between fried meat intake and the risk of female-hormone-related cancers, i.e., cancer of the breast, endometrium and ovary combined. The relative risk of these cancers combined between persons in the highest and lowest tertiles of daily intake of fried meat adjusted for age, personal characteristics and intake of other main food groups was 1.77 (95% confidence interval = 1.11-2.84). Pancreatic and nervous system cancers also presented non-significant suggestive associations. No associations were observed with respect to other single cancer sites studied or to all sites of cancer combined. Further epidemiological efforts are needed to ascertain the potential link between fried-food mutagens and cancer risk.',
-  },
-  {
-    id: 5,
-    similarity: 0.72856192,
-    title:
-      'Intake of fried meat and risk of cancer: a follow-up study in Finland',
-    content:
-      'It has been suggested that mutagens in fried meat may be involved in the cancer process. Therefore the relationships between intake of fried meat and subsequent risk of cancers at different sites were studied among 9,990 Finnish men and women, 15-99 years of age and initially free of cancer. The baseline study was carried out in 1966-1972, and cases of cancer were identified through data linkage with the Finnish Cancer Registry. During a 24-year follow-up, 853 cancer cases were diagnosed. The intake of fried meat was estimated from a dietary history interview covering the total diet of the participants during the previous year. There was a positive association between fried meat intake and the risk of female-hormone-related cancers, i.e., cancer of the breast, endometrium and ovary combined. The relative risk of these cancers combined between persons in the highest and lowest tertiles of daily intake of fried meat adjusted for age, personal characteristics and intake of other main food groups was 1.77 (95% confidence interval = 1.11-2.84). Pancreatic and nervous system cancers also presented non-significant suggestive associations. No associations were observed with respect to other single cancer sites studied or to all sites of cancer combined. Further epidemiological efforts are needed to ascertain the potential link between fried-food mutagens and cancer risk.',
-  },
-  {
-    id: 6,
-    similarity: 0.72856192,
-    title:
-      'Intake of fried meat and risk of cancer: a follow-up study in Finland',
-    content:
-      'It has been suggested that mutagens in fried meat may be involved in the cancer process. Therefore the relationships between intake of fried meat and subsequent risk of cancers at different sites were studied among 9,990 Finnish men and women, 15-99 years of age and initially free of cancer. The baseline study was carried out in 1966-1972, and cases of cancer were identified through data linkage with the Finnish Cancer Registry. During a 24-year follow-up, 853 cancer cases were diagnosed. The intake of fried meat was estimated from a dietary history interview covering the total diet of the participants during the previous year. There was a positive association between fried meat intake and the risk of female-hormone-related cancers, i.e., cancer of the breast, endometrium and ovary combined. The relative risk of these cancers combined between persons in the highest and lowest tertiles of daily intake of fried meat adjusted for age, personal characteristics and intake of other main food groups was 1.77 (95% confidence interval = 1.11-2.84). Pancreatic and nervous system cancers also presented non-significant suggestive associations. No associations were observed with respect to other single cancer sites studied or to all sites of cancer combined. Further epidemiological efforts are needed to ascertain the potential link between fried-food mutagens and cancer risk.',
-  },
-  {
-    id: 7,
-    similarity: 0.72856192,
-    title:
-      'Intake of fried meat and risk of cancer: a follow-up study in Finland',
-    content:
-      'It has been suggested that mutagens in fried meat may be involved in the cancer process. Therefore the relationships between intake of fried meat and subsequent risk of cancers at different sites were studied among 9,990 Finnish men and women, 15-99 years of age and initially free of cancer. The baseline study was carried out in 1966-1972, and cases of cancer were identified through data linkage with the Finnish Cancer Registry. During a 24-year follow-up, 853 cancer cases were diagnosed. The intake of fried meat was estimated from a dietary history interview covering the total diet of the participants during the previous year. There was a positive association between fried meat intake and the risk of female-hormone-related cancers, i.e., cancer of the breast, endometrium and ovary combined. The relative risk of these cancers combined between persons in the highest and lowest tertiles of daily intake of fried meat adjusted for age, personal characteristics and intake of other main food groups was 1.77 (95% confidence interval = 1.11-2.84). Pancreatic and nervous system cancers also presented non-significant suggestive associations. No associations were observed with respect to other single cancer sites studied or to all sites of cancer combined. Further epidemiological efforts are needed to ascertain the potential link between fried-food mutagens and cancer risk.',
-  },
-  {
-    id: 8,
-    similarity: 0.72856192,
-    title:
-      'Intake of fried meat and risk of cancer: a follow-up study in Finland',
-    content:
-      'It has been suggested that mutagens in fried meat may be involved in the cancer process. Therefore the relationships between intake of fried meat and subsequent risk of cancers at different sites were studied among 9,990 Finnish men and women, 15-99 years of age and initially free of cancer. The baseline study was carried out in 1966-1972, and cases of cancer were identified through data linkage with the Finnish Cancer Registry. During a 24-year follow-up, 853 cancer cases were diagnosed. The intake of fried meat was estimated from a dietary history interview covering the total diet of the participants during the previous year. There was a positive association between fried meat intake and the risk of female-hormone-related cancers, i.e., cancer of the breast, endometrium and ovary combined. The relative risk of these cancers combined between persons in the highest and lowest tertiles of daily intake of fried meat adjusted for age, personal characteristics and intake of other main food groups was 1.77 (95% confidence interval = 1.11-2.84). Pancreatic and nervous system cancers also presented non-significant suggestive associations. No associations were observed with respect to other single cancer sites studied or to all sites of cancer combined. Further epidemiological efforts are needed to ascertain the potential link between fried-food mutagens and cancer risk.',
-  },
-  {
-    id: 9,
-    similarity: 0.72856192,
-    title:
-      'Intake of fried meat and risk of cancer: a follow-up study in Finland',
-    content:
-      'It has been suggested that mutagens in fried meat may be involved in the cancer process. Therefore the relationships between intake of fried meat and subsequent risk of cancers at different sites were studied among 9,990 Finnish men and women, 15-99 years of age and initially free of cancer. The baseline study was carried out in 1966-1972, and cases of cancer were identified through data linkage with the Finnish Cancer Registry. During a 24-year follow-up, 853 cancer cases were diagnosed. The intake of fried meat was estimated from a dietary history interview covering the total diet of the participants during the previous year. There was a positive association between fried meat intake and the risk of female-hormone-related cancers, i.e., cancer of the breast, endometrium and ovary combined. The relative risk of these cancers combined between persons in the highest and lowest tertiles of daily intake of fried meat adjusted for age, personal characteristics and intake of other main food groups was 1.77 (95% confidence interval = 1.11-2.84). Pancreatic and nervous system cancers also presented non-significant suggestive associations. No associations were observed with respect to other single cancer sites studied or to all sites of cancer combined. Further epidemiological efforts are needed to ascertain the potential link between fried-food mutagens and cancer risk.',
-  },
-];
-
 const SearchHeader = styled.div`
   display: grid;
   grid-template-columns: 1fr 0.1fr 1fr;
@@ -115,14 +40,16 @@ class Search extends Component {
     running: false,
     ready: false,
     result: [],
-    search_value: '',
+
+    search: {
+      value: '',
+      lsh: false,
+      vsm_type: 'kVANILLA',
+      number_results: 10,
+    },
     config: {
       number_tiers: 10,
-      number_clusters: 10,
-      vsm_type: 'kVANILLA',
-      lsh: false,
-      lsh_dim: 0,
-      number_results: 10,
+      lsh_dim: 1,
     },
   };
 
@@ -135,15 +62,7 @@ class Search extends Component {
           number_tiers: data.config.number_tiers
             ? data.config.number_tiers
             : 10,
-          number_clusters: data.config.number_clusters
-            ? data.config.number_clusters
-            : 10,
-          vsm_type: data.config.vsm_type ? data.config.vsm_type : 'kVANILLA',
-          lsh: data.config.lsh ? data.config.lsh : false,
-          lsh_dim: data.config.lsh_dim ? data.config.lsh_dim : 0,
-          number_results: data.config.number_results
-            ? data.config.number_results
-            : 10,
+          lsh_dim: data.config.lsh_dim ? data.config.lsh_dim : 1,
         },
       });
     });
@@ -173,9 +92,10 @@ class Search extends Component {
       searching: true,
     });
     socket.emit('client:search', {
-      query: this.state.search_value,
-      topK: this.state.config.number_results,
-      mode: this.state.config.vsm_type,
+      query: this.state.search.value,
+      topK: this.state.search.number_results,
+      mode: this.state.search.vsm_type,
+      lsh: this.state.search.lsh,
     });
   };
 
@@ -211,9 +131,21 @@ class Search extends Component {
     });
   };
 
-  handleSearchValueChange = e => {
+  handleSearchConfigChange = e => {
+    var search = { ...this.state.search };
+
+    const target = e.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    if (!isNaN(parseInt(value)) && isFinite(value)) {
+      search[name] = parseInt(value);
+    } else {
+      search[name] = value;
+    }
+
     this.setState({
-      search_value: e.target.value,
+      search: search,
     });
   };
 
@@ -225,16 +157,108 @@ class Search extends Component {
         <SearchHeader>
           <SearchBarBox>
             <h4 className="title is-4">Search</h4>
+
+            {/*type of search*/}
+            <div className="field is-horizontal">
+              <div className="field-label">
+                <label className="label">Type</label>
+              </div>
+              <div className="field-body">
+                <div className="field is-narrow">
+                  <div className="control">
+                    <label className="radio">
+                      <input
+                        type="radio"
+                        name="vsm_type"
+                        value="kVANILLA"
+                        disabled={!this.state.ready}
+                        onChange={this.handleSearchConfigChange}
+                        checked={this.state.search.vsm_type === 'kVANILLA'}
+                      />
+                      Vanilla
+                    </label>
+                    <label className="radio">
+                      <input
+                        type="radio"
+                        name="vsm_type"
+                        value="kTIERED"
+                        disabled={!this.state.ready}
+                        onChange={this.handleSearchConfigChange}
+                        checked={this.state.search.vsm_type === 'kTIERED'}
+                      />
+                      Tiered
+                    </label>
+                    <label className="radio">
+                      <input
+                        type="radio"
+                        name="vsm_type"
+                        value="kCLUSTER"
+                        disabled={!this.state.ready}
+                        onChange={this.handleSearchConfigChange}
+                        checked={this.state.search.vsm_type === 'kCLUSTER'}
+                      />
+                      Cluster
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/*use random projections*/}
+            <div className="field is-horizontal">
+              <div className="field-label">
+                <label className="label">Use LSH</label>
+              </div>
+              <div className="field-body">
+                <div className="field is-narrow">
+                  <div className="control">
+                    <label className="checkbox">
+                      <input
+                        type="checkbox"
+                        name="lsh"
+                        disabled={!this.state.ready}
+                        defaultChecked={this.state.search.lsh}
+                        onChange={this.handleSearchConfigChange}
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/*topK results*/}
+            <div className="field is-horizontal">
+              <div className="field-label">
+                <label className="label">Results</label>
+              </div>
+              <div className="field-body">
+                <div className="field is-narrow">
+                  <div className="control">
+                    <input
+                      className="input"
+                      type="number"
+                      name="number_results"
+                      min="1"
+                      disabled={!this.state.ready}
+                      value={this.state.search.number_results}
+                      onChange={this.handleSearchConfigChange}
+                      placeholder="Number of results to output"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div className="field has-addons">
               <p className="control has-icons-left is-expanded">
                 <input
                   className="input"
                   type="email"
-                  name="search_value"
-                  value={this.state.search_value}
+                  name="value"
+                  value={this.state.search.value}
                   placeholder="Search medical docs"
                   disabled={!this.state.ready}
-                  onChange={this.handleSearchValueChange}
+                  onChange={this.handleSearchConfigChange}
                 />
                 <span className="icon is-small is-left">
                   <i className="fas fa-search" />
@@ -256,66 +280,7 @@ class Search extends Component {
           <div className="is-divider-vertical" />
           <AppConfigBox>
             <h4 className="title is-4">Config</h4>
-            <div className="field is-horizontal">
-              <div className="field-label">
-                <label className="label">Type</label>
-              </div>
-              <div className="field-body">
-                <div className="field is-narrow">
-                  <div className="control">
-                    <label className="radio">
-                      <input
-                        type="radio"
-                        name="vsm_type"
-                        value="kVANILLA"
-                        onChange={this.handleConfigChange}
-                        checked={this.state.config.vsm_type === 'kVANILLA'}
-                      />
-                      Vanilla
-                    </label>
-                    <label className="radio">
-                      <input
-                        type="radio"
-                        name="vsm_type"
-                        value="kTIERED"
-                        onChange={this.handleConfigChange}
-                        checked={this.state.config.vsm_type === 'kTIERED'}
-                      />
-                      Tiered
-                    </label>
-                    <label className="radio">
-                      <input
-                        type="radio"
-                        name="vsm_type"
-                        value="kCLUSTER"
-                        onChange={this.handleConfigChange}
-                        checked={this.state.config.vsm_type === 'kCLUSTER'}
-                      />
-                      Cluster
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="field is-horizontal">
-              <div className="field-label">
-                <label className="label">Use LSH</label>
-              </div>
-              <div className="field-body">
-                <div className="field is-narrow">
-                  <div className="control">
-                    <label className="checkbox">
-                      <input
-                        type="checkbox"
-                        name="lsh"
-                        defaultChecked={this.state.config.lsh}
-                        onChange={this.handleConfigChange}
-                      />
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
+
             <div className="field is-horizontal">
               <div className="field-label">
                 <label className="label">LSH Dim</label>
@@ -327,9 +292,9 @@ class Search extends Component {
                       className="input"
                       type="number"
                       name="lsh_dim"
-                      min="0"
+                      min="1"
+                      disabled={this.state.ready}
                       value={this.state.config.lsh_dim}
-                      disabled={!this.state.config.lsh}
                       onChange={this.handleConfigChange}
                       placeholder="Dimensions of LSH Vectors"
                     />
@@ -337,6 +302,7 @@ class Search extends Component {
                 </div>
               </div>
             </div>
+
             <div className="field is-horizontal">
               <div className="field-label">
                 <label className="label">Tiers</label>
@@ -349,47 +315,8 @@ class Search extends Component {
                       type="number"
                       name="number_tiers"
                       min="0"
+                      disabled={this.state.ready}
                       value={this.state.config.number_tiers}
-                      onChange={this.handleConfigChange}
-                      placeholder="Number of results to output"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="field is-horizontal">
-              <div className="field-label">
-                <label className="label">Clusters</label>
-              </div>
-              <div className="field-body">
-                <div className="field is-narrow">
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="number"
-                      name="number_clusters"
-                      min="0"
-                      value={this.state.config.number_clusters}
-                      onChange={this.handleConfigChange}
-                      placeholder="Number of clusters"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="field is-horizontal">
-              <div className="field-label">
-                <label className="label">Results</label>
-              </div>
-              <div className="field-body">
-                <div className="field is-narrow">
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="number"
-                      name="number_results"
-                      min="1"
-                      value={this.state.config.number_results}
                       onChange={this.handleConfigChange}
                       placeholder="Number of results to output"
                     />
@@ -423,6 +350,7 @@ class Search extends Component {
                 </a>
               </p>
             </div>
+
             <div className="field">
               <p className="control">
                 <span

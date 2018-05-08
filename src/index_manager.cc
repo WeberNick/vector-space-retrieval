@@ -99,6 +99,8 @@ void IndexManager::buildTfIdfVector(Document& doc) {
 }
 
 void IndexManager::buildRandProjVector(Document& doc) {
-    const boost::dynamic_bitset<>& rand_proj = RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(), Utility::hash);
+    const boost::dynamic_bitset<>& rand_proj =
+        RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(),
+                                                                        Utility::randomProjectionHash);
     doc.setRandProjVec(rand_proj);
 }

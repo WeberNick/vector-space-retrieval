@@ -7,13 +7,13 @@
 #include <vector>
 
 class QueryProcessingEngine {
-   private:
-    QueryProcessingEngine();                                                  // Constructor hidden
-    QueryProcessingEngine(QueryProcessingEngine const&) = delete;             // Nick: modified to delete
-    QueryProcessingEngine& operator=(QueryProcessingEngine const&) = delete;  // Nick: modified to delete
-    ~QueryProcessingEngine() {}                                               // Destructor hidden
+  private:
+    QueryProcessingEngine();                                                 // Constructor hidden
+    QueryProcessingEngine(QueryProcessingEngine const&) = delete;            // Nick: modified to delete
+    QueryProcessingEngine& operator=(QueryProcessingEngine const&) = delete; // Nick: modified to delete
+    ~QueryProcessingEngine() {}                                              // Destructor hidden
 
-   public:
+  public:
     /**
      * @brief Get the Instance object
      *
@@ -26,7 +26,7 @@ class QueryProcessingEngine {
 
     void init(const CB& aControlBlock);
 
-   private:
+  private:
     /**
      * @brief Reads a stopwords file for the function @see QueryProcessingEngine#createQueryDoc
      *
@@ -34,7 +34,7 @@ class QueryProcessingEngine {
      */
     void read(const std::string& aFile);
 
-   public:
+  public:
     inline string_vt getStopwordlist() { return _stopword_list; }
 
     /**
@@ -45,7 +45,7 @@ class QueryProcessingEngine {
      * @param searchType What type of search should be executed
      * @return pair_sizet_float_vt A list of document - similarity pairs ordered descending
      */
-    const pair_sizet_float_vt search(std::string& query, size_t topK, IR_MODE searchType);
+    const pair_sizet_float_vt search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh);
 
     /**
      * @brief Search function for searching the whole document collection
@@ -96,10 +96,10 @@ class QueryProcessingEngine {
      */
     const pair_sizet_float_vt searchRandomProjCos(const Document* query, const sizet_vt& collectionIds, size_t topK);
 
-   private:
+  private:
     const CB* _cb;
 
-    bool        _init;
+    bool _init;
     std::string _stopwordFile;
     string_vt _stopword_list;
 };

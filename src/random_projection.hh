@@ -12,7 +12,6 @@
 
 #include "types.hh"
 #include "utility.hh"
-#include <Eigen/Dense>
 #include <bitset>
 #include <boost/dynamic_bitset.hpp>
 #include <string>
@@ -30,12 +29,13 @@ class RandomProjection {
 
   public:
     static RandomProjection& getInstance();
-    const Eigen::MatrixXf projectMatrix();
+    /**
+     * @brief Uses
+     *
+     * @param vector
+     * @return boost::dynamic_bitset<>
+     */
     boost::dynamic_bitset<> localitySensitiveHashProjection(std::vector<float>& vector, std::function<unsigned int(std::vector<float>&, std::vector<float>&)>);
-
-  private:
-    const int dimension(int& sample, float eps = 0.1);
-    Eigen::MatrixXf createRandomMatrix(int rows, int cols, bool JLT, double eps = 0.1, std::string projection = "gaussian");
 
   public:
     inline const float_vector_vt& getRandomVectors() { return _randomVectors; }
@@ -69,8 +69,7 @@ class RandomProjection {
      * @brief Set the Orig Vector Size object
      *
      * @param origVectorSize
-     * @return true
-     * @return false
+     * @return bool indicating whether the orig size has been set
      */
     inline bool setOrigVectorSize(const size_t origVectorSize) {
         if (_origVectorSize) {
@@ -93,7 +92,6 @@ class RandomProjection {
             _cb = &aCB;
             _dimension = _cb->_noDimensions;
 
-            // std::cout << "Init with " << _dimension << " dimensions" << std::endl;
             if (_dimension == 0) throw "Random projection dimension equals 0, must be > 0 ";
 
             setOrigVectorSize(origVectorSize);
@@ -106,7 +104,7 @@ class RandomProjection {
      * @brief Initilaizes the random vectors
      *
      * @return true
-     * @return false
+     * @return bool indicating whether the random vectors have been set
      */
     inline bool initRandomVectors() {
         if (_dimension) {

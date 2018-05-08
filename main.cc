@@ -156,13 +156,13 @@ void testNico() {
     // search("do cholesterol statin drugs cause breast cancer ?");
 }
 
-void search(std::string query, size_t topK, IR_MODE mode) {
+void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
     QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
 
     Measure lMeasureQuery;
 
     lMeasureQuery.start();
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode);
+    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode, use_lsh);
     lMeasureQuery.stop();
 
     double lSecondsQuery = lMeasureQuery.mTotalTime();
@@ -243,7 +243,8 @@ void testAlex(Args& lArgs) {
     }*/
 
     // const control_block_t& aControlBlock = {false, false, false, "./data/collection.docs", "./tests/_trace_test/", "", "./data/stopwords.large", 0, 3, 1000};
-    const control_block_t& aControlBlock = {false, false, false, lArgs.collectionPath(), "./tests/_trace_test/", "", lArgs.stopwordPath(), 0, 3, 1000};
+    const control_block_t& aControlBlock = {
+        false, false, false, lArgs.collectionPath(), "./tests/_trace_test/", "", lArgs.stopwordPath(), 0, lArgs.tiers(), lArgs.dimensions()};
 
     Measure lMeasureIndexing;
     lMeasureIndexing.start();
@@ -264,12 +265,12 @@ void testAlex(Args& lArgs) {
 
     std::cout << "[Ready]" << std::endl;
 
-    //search("Why breast cancer", 10, IR_MODE::kCLUSTER);
+    // search("Why breast cancer", 10, IR_MODE::kCLUSTER);
 
     while (true) {
         json j;
         std::cin >> j;
-        search(j["query"].get<std::string>(), j["topK"].get<size_t>(), stringToMode(j["mode"].get<std::string>()));
+        search(j["query"].get<std::string>(), j["topK"].get<size_t>(), stringToMode(j["mode"].get<std::string>()), j["lsh"].get<bool>());
     }
 }
 
