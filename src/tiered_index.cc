@@ -50,7 +50,9 @@ sizet_vt TieredIndex::getDocIDList(const size_t top, const string_vt& terms) con
     vecs.reserve(terms.size());
     do {
         for (size_t i = 0; i < terms.size(); ++i) {
-            const sizet_vt& tierIDs = this->getPostingList(terms.at(i), tier).getIDs();
+            try {
+                const sizet_vt& tierIDs = this->getPostingList(terms.at(i), tier).getIDs();
+            } catch (const InvalidArgumentException& e) { continue; /* One of the (query) terms does not appear in the document collection. */ }
             if (tier > 0) { // all other tiers: concatenate ids
                 sizet_vt& termIDs = vecs.at(i);
                 termIDs.insert(termIDs.end(), tierIDs.begin(), tierIDs.end());

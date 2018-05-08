@@ -87,16 +87,14 @@ const pair_sizet_float_vt QueryProcessingEngine::searchCollectionCos(const Docum
 
     std::map<size_t, float> docId2Scores;
     const string_vt& qcontent = query->getContent();
-    for (const auto& term :
-         qcontent) { // Calculate weightings per doc using the tf-idf of the word in the doc collection times the tf-idf of the term in the query
+    for (const auto& term : qcontent) { // Calculate weightings per doc using the tf-idf of the word in the doc collection times the tf-idf of the term in the query
         try {
             const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList(term);
             for (auto& [id, tf] : postingList.getPosting()) {
                 float idf = IndexManager::getInstance().getIdf(term);
                 docId2Scores[id] += (tf * idf * (Utility::IR::calcTf(term, qcontent) * idf));
             }
-        } catch (const InvalidArgumentException& e) { /*std::cout << e.what() << std::endl;*/
-        }
+        } catch (const InvalidArgumentException& e) { continue; /* One of the query terms does not appear in the document collection. */ }
     }
 
     for (const auto& elem : docId2Length) { // Divide every score of a doc by the length of the document
