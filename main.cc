@@ -108,7 +108,7 @@ void test(const control_block_t& aControlBlock) {
     }*/
 }
 void testNico() {
-    const control_block_t& aControlBlock = {false, false, false, "./data/collection_test_mwe.docs", "./tests/_trace_test/", "", "./data/stopwords.large",
+    const control_block_t& aControlBlock = {false, false, false, "./data/dev/d-collection.docs", "./tests/_trace_test/", "", "./data/stopwords.large",
                                             0,     3,     1000};
     // assert(aNumTiers > 1);
     Measure lMeasure;
@@ -139,6 +139,9 @@ void testNico() {
 
     std::cout << Utility::SimilarityMeasures::calcHammingDist(d.getRandProjVec(), d2.getRandProjVec()) << std::endl;
     std::cout << Utility::SimilarityMeasures::calcHammingDist(d.getRandProjVec(), d3.getRandProjVec()) << std::endl;
+
+
+    std::cout << "num terms: " << imInstance.getCollectionTerms().size() << std::endl;
 
     // int count = 0;
     // std::cout << docManager.getDocument(2) << std::endl;
@@ -306,7 +309,7 @@ int main(const int argc, const char* argv[]) {
     Evaluation::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
     // test(lCB);
-    // testNico();
-    testAlex();
+    testNico();
+    // testAlex();
     return 0;
 }
