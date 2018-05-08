@@ -59,14 +59,14 @@ class Args {
     inline const std::string& collectionPath() { return _collectionPath; }
     inline void collectionPath(const std::string& x) { _collectionPath = x; }
 
+    inline const std::string& stopwordPath() { return _stopwordPath; }
+    inline void stopwordPath(const std::string& x) { _stopwordPath = x; }
+
     inline const std::string& tracePath() { return _tracePath; }
     inline void tracePath(const std::string& x) { _tracePath = x; }
 
     inline const std::string& evalPath() { return _evalPath; }
     inline void evalPath(const std::string& x) { _evalPath = x; }
-
-    inline const std::string& stopwordFile() { return _stopwordFile; }
-    inline void stopwordPath(const std::string& x) { _stopwordFile = x; }
 
     inline uint results() { return _results; }
     inline void results(const uint& x) { _results = x; }
@@ -84,13 +84,13 @@ class Args {
     bool _plot;
 
     std::string _collectionPath;
+    std::string _stopwordPath;
     std::string _tracePath;
     std::string _evalPath;
-    std::string _stopwordFile;
 
     uint _results;
     uint _tiers;
     uint _dimensions;
 };
 using argdesc_vt = std::vector<argdescbase_t<Args>*>;
-void construct_arg_desc(argdesc_vt &aArgDesc);
+void construct_arg_desc(argdesc_vt& aArgDesc);

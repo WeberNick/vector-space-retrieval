@@ -12,7 +12,7 @@
 #include <evaluation.hh>
 #include <experimental/filesystem>
 #include <iostream>
-#include <lib/nlohmann/single_include/nlohmann/json.hpp>
+#include <nlohmann/json.hpp>
 #include <thread>
 #include <vector>
 #include <word_embeddings.hh>
@@ -152,34 +152,39 @@ void testNico() {
         std::cout << term << ": ";
         std::cout << idf << std::endl;
     }*/
-    // testSearch("why deep fried foods may cause cancer");
-    // testSearch("do cholesterol statin drugs cause breast cancer ?");
+    // search("why deep fried foods may cause cancer");
+    // search("do cholesterol statin drugs cause breast cancer ?");
 }
 
-void testSearch(std::string query) {
+void search(std::string query, size_t topK, IR_MODE mode) {
     QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
 
     Measure lMeasureQuery;
 
     lMeasureQuery.start();
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, 10, IR_MODE::kRANDOM);
-    std::cout << query << std::endl;
+    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode);
     lMeasureQuery.stop();
 
     double lSecondsQuery = lMeasureQuery.mTotalTime();
-    std::cout << "Search took " << lSecondsQuery << " sec." << std::endl;
+    // std::cout << "Search took " << lSecondsQuery << " sec." << std::endl;
+
+    using json = nlohmann::json;
+    json json_result = json::array();
 
     for (size_t j = 0; j < result.size(); ++j) {
-        std::cout << "(" << j << ". - " << result[j].second << ")" << DocumentManager::getInstance().getDocument(result[j].first).getDocID() << ": ";
 
-        for (auto& elem : DocumentManager::getInstance().getDocument(result[j].first).getContent()) {
-            std::cout << elem << " ";
-        }
-        std::cout << std::endl;
+        Document& d = DocumentManager::getInstance().getDocument(result[j].first);
+        json json_doc = json::object();
+        json_doc["id"] = d.getDocID();
+        json_doc["similarity"] = result[j].second;
+        json_doc["content"] = Utility::StringOp::string_vt_2_str(d.getContent());
+        json_result.push_back(json_doc);
     }
+
+    std::cout << "[Your result]:" << json_result << std::endl;
 }
 
-void testAlex() {
+void testAlex(Args& lArgs) {
 
     /*Measure lMeasureIndexing;
     lMeasureIndexing.start();
@@ -237,7 +242,8 @@ void testAlex() {
         std::cout << i.first << ": " << i.second << std::endl;
     }*/
 
-    const control_block_t& aControlBlock = {false, false, false, "./data/collection.docs", "./tests/_trace_test/", "", "./data/stopwords.large", 0, 3, 1000};
+    // const control_block_t& aControlBlock = {false, false, false, "./data/collection.docs", "./tests/_trace_test/", "", "./data/stopwords.large", 0, 3, 1000};
+    const control_block_t& aControlBlock = {false, false, false, lArgs.collectionPath(), "./tests/_trace_test/", "", lArgs.stopwordPath(), 0, 3, 1000};
 
     Measure lMeasureIndexing;
     lMeasureIndexing.start();
@@ -252,20 +258,18 @@ void testAlex() {
 
     lMeasureIndexing.stop();
     double lSeconds = lMeasureIndexing.mTotalTime();
-    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
+    // std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
 
     QueryProcessingEngine::getInstance().init(aControlBlock);
 
     std::cout << "[Ready]" << std::endl;
 
-    testSearch("why deep fried foods may cause cancer");
-    //testSearch("do cholesterol statin drugs cause breast cancer ?");
+    //search("Why breast cancer", 10, IR_MODE::kCLUSTER);
 
     while (true) {
-        std::cout << "Your query >";
-        std::string line;
-        std::getline(std::cin, line);
-        testSearch(line);
+        json j;
+        std::cin >> j;
+        search(j["query"].get<std::string>(), j["topK"].get<size_t>(), stringToMode(j["mode"].get<std::string>()));
     }
 }
 
@@ -277,14 +281,14 @@ void testAlex() {
  * @return int
  */
 int main(const int argc, const char* argv[]) {
-    std::cout << "Test";
+    // std::cout << "Test";
     // this is just a test, needs a proper implementation later on
-    if (!Utility::StringOp::endsWith(fs::current_path().string(), "vector-space-retrieval")) {
+    /*if (!Utility::StringOp::endsWith(fs::current_path().string(), "vector-space-retrieval")) {
         // todo: change error message
         std::cerr << "Incorrect execution path! Please start the executable from the path ending with 'vector-space-retrieval'" << std::endl;
         std::cout << "Current Working Directory: " << fs::current_path() << std::endl;
         return -1;
-    }
+    }*/
 
     /* How to use class Args is described in args.hh */
     Args lArgs;
@@ -303,13 +307,13 @@ int main(const int argc, const char* argv[]) {
 
     // THROW EXCEPTION if numtiers < 2
     const control_block_t lCB = {lArgs.trace(),    lArgs.measure(),      lArgs.plot(),    lArgs.collectionPath(), lArgs.tracePath(),
-                                 lArgs.evalPath(), lArgs.stopwordFile(), lArgs.results(), lArgs.tiers(),          lArgs.dimensions()};
+                                 lArgs.evalPath(), lArgs.stopwordPath(), lArgs.results(), lArgs.tiers(),          lArgs.dimensions()};
 
     Trace::getInstance().init(lCB);
     Evaluation::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
     // test(lCB);
-    testNico();
-    // testAlex();
+    // testNico();
+    testAlex(lArgs);
     return 0;
 }

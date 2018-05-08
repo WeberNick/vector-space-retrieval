@@ -58,22 +58,17 @@ Document& DocumentManager::getDocument(size_t aDocID) {
         throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "This docID does not appear in the document collection.");
 }
 
-// TODO: Wenn wir das in nem loop, mit testsearch aufrufen bekomme ich ne bad malloc
 Document DocumentManager::createQueryDoc(std::string& query) {
-    std::cout << "before remove stopword" << std::endl;
+   query = Utility::StringOp::toLower(query);
     Utility::IR::removeStopword(query, QueryProcessingEngine::getInstance().getStopwordlist()); // Remove stopwords
-    std::cout << "after remove stopword before trim" << std::endl;
-    Utility::StringOp::trim(query); // Trim whitespaces
-    std::cout << "after trying before split string" << std::endl;
+    Utility::StringOp::trim(query); // Trim whitespaces at front and end
     string_vt proc_query;
     Utility::StringOp::splitString(query, ' ', proc_query); // Split string by whitespaces
-    std::cout << "after split string" << std::endl;
     Utility::StringOp::removeEmptyStringsFromVec(proc_query); // Remove eventually empty strings from the query term vector
-    std::cout << "after remove empty string" << std::endl;
     std::vector<std::string> preprocessed_content;
     for (auto& elem : proc_query) { // Preprocess query
         std::string preprocess = Utility::IR::stemPorter(elem);
-        std::cout << "Preprocessed: " << preprocess << std::endl;
+        //std::cout << "Preprocessed: " << preprocess << std::endl;
         preprocessed_content.push_back(preprocess);
     }
 
@@ -98,7 +93,7 @@ Document DocumentManager::createQueryDoc(std::string& query) {
     IndexManager::getInstance().buildTfIdfVector(d);
     IndexManager::getInstance().buildRandProjVector(d);
 
-    std::cout << "For query: " << query << std::endl;
+    /*std::cout << "For query: " << query << std::endl;
     std::cout << "TFID:";
 
     for (size_t j = 0; j < d.getTfIdfVector().size(); ++j) {
@@ -110,7 +105,7 @@ Document DocumentManager::createQueryDoc(std::string& query) {
     for (size_t j = 0; j < d.getRandProjVec().size(); ++j) {
         std::cout << d.getRandProjVec()[j];
     }
-    std::cout << std::endl;
+    std::cout << std::endl;*/
 
     return d;
 }
