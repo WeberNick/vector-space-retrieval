@@ -49,8 +49,7 @@ class Search extends Component {
     },
     config: {
       number_tiers: 10,
-      number_clusters: 10,
-      lsh_dim: 0,
+      lsh_dim: 1,
     },
   };
 
@@ -63,10 +62,7 @@ class Search extends Component {
           number_tiers: data.config.number_tiers
             ? data.config.number_tiers
             : 10,
-          number_clusters: data.config.number_clusters
-            ? data.config.number_clusters
-            : 10,
-          lsh_dim: data.config.lsh_dim ? data.config.lsh_dim : 0,
+          lsh_dim: data.config.lsh_dim ? data.config.lsh_dim : 1,
         },
       });
     });
@@ -296,7 +292,7 @@ class Search extends Component {
                       className="input"
                       type="number"
                       name="lsh_dim"
-                      min="0"
+                      min="1"
                       disabled={this.state.ready}
                       value={this.state.config.lsh_dim}
                       onChange={this.handleConfigChange}
@@ -328,29 +324,6 @@ class Search extends Component {
                 </div>
               </div>
             </div>
-
-            <div className="field is-horizontal">
-              <div className="field-label">
-                <label className="label">Clusters</label>
-              </div>
-              <div className="field-body">
-                <div className="field is-narrow">
-                  <div className="control">
-                    <input
-                      className="input"
-                      type="number"
-                      name="number_clusters"
-                      min="0"
-                      disabled={this.state.ready}
-                      value={this.state.config.number_clusters}
-                      onChange={this.handleConfigChange}
-                      placeholder="Number of clusters"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <div className="field has-addons">
               <p className="control">
                 <a

@@ -16,14 +16,22 @@ var ready = false;
  * @description Start up webserver sockets to allow a bidirectional communication between client and server.
  * <br />  <strong>Possible events: </strong>
  *      <ul>
+ *        <li>client:requestStatus - client requests the current status of the application</li>
  *        <li>client:init - inits the evsr application with given configuration</li>
  *        <li>client:search - inits a search with the given search_value using the running evsr application</li>
+ *        <li>client:stop - client stops the evsr application</li>
+ *        <li>client:getEvalData - clients want to display evaluation data</li>
  *      </ul>
  * @return {void}
  */
 export function listenToSockets(httpServer) {
   var io = new SocketIO(httpServer);
 
+  /**
+   * @function returnStatus
+   * @param {*} socket
+   * @description Sends the current status to a specific socket or all connected clients
+   */
   function returnStatus(socket) {
     if (socket) {
       socket.emit('server:returnStatus', {
@@ -40,8 +48,12 @@ export function listenToSockets(httpServer) {
     }
   }
 
-  function returnResult(socket, data) {
-    console.log(socket.id);
+  /**
+   * @function returnResult
+   * @param {object} data
+   * @description Sends the search result to every client connected
+   */
+  function returnResult(data) {
     io.emit('server:searchResult', data);
   }
 
@@ -52,6 +64,9 @@ export function listenToSockets(httpServer) {
 
     logger.info(`Client is connected ${socket.id}`);
 
+    /**
+     * Event when the client requests the current status of the application
+     */
     socket.on('client:requestStatus', data => {
       logger.info('Client requested current status');
       returnStatus(socket);
@@ -64,8 +79,14 @@ export function listenToSockets(httpServer) {
       logger.info('Initialize evsr with: ' + JSON.stringify(data));
       currentConfig = data;
 
-      // Append start paramaters
+      // Append start paramaters, delete old ones if needed
+      if (evsr.args.length != 0) {
+        evsr.args = new Array();
+      }
+
       evsr.data([
+        '--tiers',
+        currentConfig.number_tiers,
         '--dimensions',
         currentConfig.lsh_dim,
         '--collection-path',
@@ -78,13 +99,15 @@ export function listenToSockets(httpServer) {
       evsr.call(
         data => {
           data = data.toString();
+
+          // Grab ready string
           if (data.substring(0, 7) === '[Ready]') {
             logger.info('evsr ready');
             ready = true;
             returnStatus();
           }
 
-          //[Your result]:
+          // Grab result and parse the JSON
           if (data.substring(0, 14) === '[Your result]:') {
             try {
               returnResult(
@@ -97,7 +120,7 @@ export function listenToSockets(httpServer) {
           }
         },
         result => {
-          console.log('result:' + result);
+          // Executed if the process stops
           ready = false;
           returnStatus(socket);
         },
@@ -120,6 +143,9 @@ export function listenToSockets(httpServer) {
       }
     });
 
+    /**
+     * Event when the client wants to stop the evsr application
+     */
     socket.on('client:stop', data => {
       logger.info('Stop evsr application');
       evsr.kill();
@@ -127,6 +153,9 @@ export function listenToSockets(httpServer) {
       returnStatus();
     });
 
+    /**
+     * Event when the client wants to load evaluation data
+     */
     socket.on('client:getEvalData', data => {
       logger.info('Client requested evaluation data');
       fs.readFile(`${__dirname}/../data/graph.json`, 'utf8', function(

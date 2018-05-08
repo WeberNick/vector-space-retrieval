@@ -116,7 +116,7 @@ export class Shell {
    */
   kill() {
     if (this.isRunning) {
-      logger.log('info', 'Manually killing ' + process.pid);
+      logger.log('info', 'Manually killing ' + this.process.pid);
       this.process.kill('SIGINT');
     }
   }
