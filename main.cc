@@ -153,13 +153,13 @@ void testNico() {
     // search("do cholesterol statin drugs cause breast cancer ?");
 }
 
-void search(std::string query, size_t topK, IR_MODE mode) {
+void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
     QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
 
     Measure lMeasureQuery;
 
     lMeasureQuery.start();
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode);
+    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode, use_lsh);
     lMeasureQuery.stop();
 
     double lSecondsQuery = lMeasureQuery.mTotalTime();
@@ -266,7 +266,7 @@ void testAlex(Args& lArgs) {
     while (true) {
         json j;
         std::cin >> j;
-        search(j["query"].get<std::string>(), j["topK"].get<size_t>(), stringToMode(j["mode"].get<std::string>()));
+        search(j["query"].get<std::string>(), j["topK"].get<size_t>(), stringToMode(j["mode"].get<std::string>()), j["lsh"].get<bool>());
     }
 }
 

@@ -67,7 +67,7 @@ export function listenToSockets(httpServer) {
       // Append start paramaters
       evsr.data([
         '--dimensions',
-        '5',
+        currentConfig.lsh_dim,
         '--collection-path',
         './evsr/data/collection.docs',
         '--stopword-path',
