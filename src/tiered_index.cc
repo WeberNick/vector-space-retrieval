@@ -2,21 +2,15 @@
 
 /**
  * @brief Construct a new Tiered Index:: Tiered Index object
- * 
+ *
  */
-TieredIndex::TieredIndex() :
-    _cb(nullptr),
-    _init(false),
-    _num_tiers(),
-    _term_tier_map()
-{}
+TieredIndex::TieredIndex() : _cb(nullptr), _init(false), _num_tiers(), _term_tier_map() {}
 
 /**
  * @brief Destroy the Tiered Index:: Tiered Index object
- * 
+ *
  */
-TieredIndex::~TieredIndex()
-{}
+TieredIndex::~TieredIndex() {}
 
 void TieredIndex::init(const control_block_t& aControlBlock) {
     if (!_init) {
@@ -30,62 +24,55 @@ bool TieredIndex::insert(const std::string& aTerm, const std::map<size_t, Postin
     return _term_tier_map.insert(std::make_pair(aTerm, aTierMap)).second;
 }
 
-tiered_posting_map_iter_t TieredIndex::find(const std::string& aKey) {
-    return _term_tier_map.find(aKey);
-}
+tiered_posting_map_iter_t TieredIndex::find(const std::string& aKey) { return _term_tier_map.find(aKey); }
 
-void TieredIndex::erase(const std::string& aKey) {
-    _term_tier_map.erase(aKey);
-}
+void TieredIndex::erase(const std::string& aKey) { _term_tier_map.erase(aKey); }
 
-void TieredIndex::erase(const tiered_posting_map_iter_t aIterator) {
-    _term_tier_map.erase(aIterator);
-}
+void TieredIndex::erase(const tiered_posting_map_iter_t aIterator) { _term_tier_map.erase(aIterator); }
 
 sizet_vt TieredIndex::getDocIDList(const size_t top, const string_vt& terms) const {
     sizet_vt qids;
     size_t tier = 0;
 
     std::vector<sizet_vt> vecs;
-    vecs.reserve(terms.size());
+    vecs.resize(terms.size());
     do {
         for (size_t i = 0; i < terms.size(); ++i) {
-             std::cout << "HERE" << i << ", Term: " << terms.at(i) <<std::endl;
             try {
-                std::cout << "HERE" << i << ", Tier: " << tier <<std::endl;
                 const PostingList& pl2 = this->getPostingList(terms.at(i), tier);
-                std::cout << "HERE" << i << ",nachPL Tier: " << tier <<std::endl;
                 const sizet_vt& tierIDs = pl2.getIDs();
+
                 if (tier > 0) { // all other tiers: concatenate ids
                     sizet_vt& termIDs = vecs.at(i);
-                    std::cout << "HERE" << i <<std::endl;
                     termIDs.insert(termIDs.end(), tierIDs.begin(), tierIDs.end());
                     vecs.at(i) = termIDs;
-                } else {        // first tier
-                std::cout << "HERE" << i <<std::endl;
+                } else { // first tier
                     vecs.push_back(tierIDs);
-                    std::cout << "HERE" << i <<std::endl;
                 }
             } catch (const InvalidArgumentException& e) {
-                std::cout << "ex" << i <<std::endl;
-                 continue; /* One of the (query) terms does not appear in the document collection. */ }
+                continue; /* One of the (query) terms does not appear in the document collection. */
+            }
         }
-        std::cout << "HERE" <<std::endl;
         Utility::IR::mergePostingLists(vecs, qids);
-        std::cout << "HERE" <<std::endl;
     } while (qids.size() < top && ++tier < _num_tiers);
+
+    std::cout << "qids end result " << std::endl;
+    for (size_t j = 0; j < qids.size(); ++j) {
+        std::cout << qids[j] << std::endl;
+    }
+
     return qids; // may return < top if all tiers are processed and we did not find enough qualifying ids
 }
 
 const PostingList& TieredIndex::getPostingList(const std::string& aTerm, const size_t aTier) const {
-    if(_term_tier_map.find(aTerm) != _term_tier_map.end())
+    if (_term_tier_map.find(aTerm) != _term_tier_map.end())
         return _term_tier_map.at(aTerm).at(aTier);
     else
         throw InvalidArgumentException(FLF, "The term " + aTerm + " does not appear in the document collection.");
 }
 
 size_t TieredIndex::getNoDocs(const std::string& aTerm, const size_t aTier) {
-    if(_term_tier_map.find(aTerm) != _term_tier_map.end())
+    if (_term_tier_map.find(aTerm) != _term_tier_map.end())
         return _term_tier_map.at(aTerm).at(aTier).getPosting().size();
     else
         throw InvalidArgumentException(FLF, "The term " + aTerm + " does not appear in the document collection.");
@@ -99,10 +86,11 @@ std::ostream& operator<<(std::ostream& strm, const TieredIndex& ti) {
         strm << termt << " -> [ ";
         for (auto itm = tierplmap.begin(); itm != tierplmap.end(); ++itm) {
             size_t tier = itm->first;
-            const PostingList& pl = itm->second;    
+            const PostingList& pl = itm->second;
             strm << "T" << tier << ": " << pl << " ";
         }
-        strm << "]" << "\n";
+        strm << "]"
+             << "\n";
     }
     return strm;
 }

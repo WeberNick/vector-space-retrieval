@@ -126,7 +126,7 @@ namespace Utility {
         return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
     }
 
-    inline bool randomProjectionHash(std::vector<float> &origVec, std::vector<float> &randVec) {
+    inline bool randomProjectionHash(std::vector<float>& origVec, std::vector<float>& randVec) {
         if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
 
         double dot = scalar_product(origVec, randVec);
@@ -561,9 +561,26 @@ namespace Utility {
         inline void mergePostingLists(const sizet_vt& first, const sizet_vt& second, sizet_vt& out) {
             auto ione = first.begin();
             auto itwo = second.begin();
+
+
+            std::cout << "First list" << std::endl;
+            for(auto& elem: first) {
+                std::cout << elem << ",";
+            }
+            std::cout << std::endl;
+
+            std::cout << "Second list" << std::endl;
+            for(auto& elem: second) {
+                std::cout << elem << ",";
+            }
+            std::cout << std::endl;
+
+
             out.clear();
             while (ione != first.end() && itwo != second.end()) {
+
                 if (*ione == *itwo) {
+                    std::cout << "match" << std::endl;
                     out.push_back(*ione);
                     ++ione;
                     ++itwo;
@@ -581,14 +598,19 @@ namespace Utility {
          * @param out
          */
         inline void mergePostingLists(std::vector<sizet_vt>& vecs, sizet_vt& out) {
+
             if (vecs.size() > 1) {
-                std::sort(vecs.begin(), vecs.end(), [](const sizet_vt& a, const sizet_vt& b) { return a.size() < b.size(); }); // asc
+                for (auto& elem : vecs) {
+                    std::sort(elem.begin(), elem.end(), [](const size_t& a, const size_t& b) { return a < b; }); // asc
+                }
+
                 out.clear();
                 mergePostingLists(vecs.at(0), vecs.at(1), out);
                 if (vecs.size() == 2) return;
                 for (size_t i = 2; i < vecs.size(); ++i) {
                     sizet_vt out_copy(out);
                     mergePostingLists(out_copy, vecs.at(i), out);
+                    std::cout << "posting merge end" << std::endl;
                 }
             } else {
                 out = vecs.at(0);
@@ -741,7 +763,6 @@ namespace Utility {
             int hamming = calcHammingDist(vec_a, vec_b);
 
             double theta = acosf(cos(((hamming / vec_a.size()) * M_PI)));
-
 
             return static_cast<float>(1 - (theta / M_PI));
         }
