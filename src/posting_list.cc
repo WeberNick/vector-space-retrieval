@@ -28,10 +28,15 @@ PostingList::PostingList(const PostingList& pl) :
 {}
 
 const sizet_vt PostingList::getIDs() const {
+    std::cout << "<<HERE" <<std::endl;
     sizet_vt ids;
+    std::cout << "<<HERE" <<std::endl;
     ids.reserve(_posting.size());
+    std::cout << "<<HERE" <<std::endl;
     for (auto& item : _posting) {
+        std::cout << "<<HERELOOP" <<std::endl;
         ids.push_back(item.first);
+        std::cout << "<<HERELOOP2" <<std::endl;
     }
     return ids;
 }

@@ -581,14 +581,17 @@ namespace Utility {
          * @param out
          */
         inline void mergePostingLists(std::vector<sizet_vt>& vecs, sizet_vt& out) {
-            assert(vecs.size() > 1);
-            std::sort(vecs.begin(), vecs.end(), [](const sizet_vt& a, const sizet_vt& b) { return a.size() < b.size(); }); // asc
-            out.clear();
-            mergePostingLists(vecs.at(0), vecs.at(1), out);
-            if (vecs.size() == 2) return;
-            for (size_t i = 2; i < vecs.size(); ++i) {
-                sizet_vt out_copy(out);
-                mergePostingLists(out_copy, vecs.at(i), out);
+            if (vecs.size() > 1) {
+                std::sort(vecs.begin(), vecs.end(), [](const sizet_vt& a, const sizet_vt& b) { return a.size() < b.size(); }); // asc
+                out.clear();
+                mergePostingLists(vecs.at(0), vecs.at(1), out);
+                if (vecs.size() == 2) return;
+                for (size_t i = 2; i < vecs.size(); ++i) {
+                    sizet_vt out_copy(out);
+                    mergePostingLists(out_copy, vecs.at(i), out);
+                }
+            } else {
+                out = vecs.at(0);
             }
         }
     } // namespace IR

@@ -107,8 +107,37 @@ void test(const control_block_t& aControlBlock) {
         std::cout << std::endl;
     }*/
 }
+
+void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
+    QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
+
+    Measure lMeasureQuery;
+    std::cout << "HERE" << std::endl;
+    lMeasureQuery.start();
+    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode, use_lsh);
+    lMeasureQuery.stop();
+
+    double lSecondsQuery = lMeasureQuery.mTotalTime();
+    // std::cout << "Search took " << lSecondsQuery << " sec." << std::endl;
+
+    using json = nlohmann::json;
+    json json_result = json::array();
+
+    for (size_t j = 0; j < result.size(); ++j) {
+
+        Document& d = DocumentManager::getInstance().getDocument(result[j].first);
+        json json_doc = json::object();
+        json_doc["id"] = d.getDocID();
+        json_doc["similarity"] = result[j].second;
+        json_doc["content"] = Utility::StringOp::string_vt_2_str(d.getContent());
+        json_result.push_back(json_doc);
+    }
+
+    std::cout << "[Your result]:" << json_result << std::endl;
+}
+
 void testNico() {
-    const control_block_t& aControlBlock = {false, false, false, "./data/dev/d-collection.docs", "./tests/_trace_test/", "", "./data/stopwords.large",
+    const control_block_t& aControlBlock = {false, false, false, "./data/collection_test.docs", "./tests/_trace_test/", "", "./data/stopwords.large",
                                             0,     3,     1000};
     // assert(aNumTiers > 1);
     Measure lMeasure;
@@ -134,14 +163,16 @@ void testNico() {
     Document& d2 = docManager.getDocument(1);
     Document& d3 = docManager.getDocument(2);
 
-    std::cout << Utility::SimilarityMeasures::calcCosDist(d, d2) << std::endl;
+    /*std::cout << Utility::SimilarityMeasures::calcCosDist(d, d2) << std::endl;
     std::cout << Utility::SimilarityMeasures::calcCosDist(d, d3) << std::endl;
 
     std::cout << Utility::SimilarityMeasures::calcHammingDist(d.getRandProjVec(), d2.getRandProjVec()) << std::endl;
-    std::cout << Utility::SimilarityMeasures::calcHammingDist(d.getRandProjVec(), d3.getRandProjVec()) << std::endl;
+    std::cout << Utility::SimilarityMeasures::calcHammingDist(d.getRandProjVec(), d3.getRandProjVec()) << std::endl;*/
 
+    QueryProcessingEngine::getInstance().init(aControlBlock);
 
-    std::cout << "num terms: " << imInstance.getCollectionTerms().size() << std::endl;
+    std::string qs = "Util";
+    search(qs, 10, IR_MODE::kTIERED, false);
 
     // int count = 0;
     // std::cout << docManager.getDocument(2) << std::endl;
@@ -154,34 +185,6 @@ void testNico() {
     }*/
     // search("why deep fried foods may cause cancer");
     // search("do cholesterol statin drugs cause breast cancer ?");
-}
-
-void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
-    QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
-
-    Measure lMeasureQuery;
-
-    lMeasureQuery.start();
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode, use_lsh);
-    lMeasureQuery.stop();
-
-    double lSecondsQuery = lMeasureQuery.mTotalTime();
-    // std::cout << "Search took " << lSecondsQuery << " sec." << std::endl;
-
-    using json = nlohmann::json;
-    json json_result = json::array();
-
-    for (size_t j = 0; j < result.size(); ++j) {
-
-        Document& d = DocumentManager::getInstance().getDocument(result[j].first);
-        json json_doc = json::object();
-        json_doc["id"] = d.getDocID();
-        json_doc["similarity"] = result[j].second;
-        json_doc["content"] = Utility::StringOp::string_vt_2_str(d.getContent());
-        json_result.push_back(json_doc);
-    }
-
-    std::cout << "[Your result]:" << json_result << std::endl;
 }
 
 void testAlex(Args& lArgs) {
@@ -242,9 +245,8 @@ void testAlex(Args& lArgs) {
         std::cout << i.first << ": " << i.second << std::endl;
     }*/
 
-    // const control_block_t& aControlBlock = {false, false, false, "./data/collection.docs", "./tests/_trace_test/", "", "./data/stopwords.large", 0, 3, 1000};
-    const control_block_t& aControlBlock = {
-        false, false, false, lArgs.collectionPath(), "./tests/_trace_test/", "", lArgs.stopwordPath(), 0, lArgs.tiers(), lArgs.dimensions()};
+    const control_block_t& aControlBlock = {false, false, false, "./data/collection_test.docs", "./tests/_trace_test/", "", "./data/stopwords.large", 0, 10, 100};
+    // const control_block_t& aControlBlock = {false, false, false, lArgs.collectionPath(), "./tests/_trace_test/", "", lArgs.stopwordPath(), 0, lArgs.tiers(), lArgs.dimensions()};
 
     Measure lMeasureIndexing;
     lMeasureIndexing.start();
@@ -256,6 +258,9 @@ void testAlex(Args& lArgs) {
 
     IndexManager& imInstance = IndexManager::getInstance();
     imInstance.init(aControlBlock, docMap);
+
+    const TieredIndex& ti = imInstance.getTieredIndex();
+    std::cout << ti << std::endl;
 
     lMeasureIndexing.stop();
     double lSeconds = lMeasureIndexing.mTotalTime();
