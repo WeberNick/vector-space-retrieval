@@ -41,26 +41,15 @@ sizet_vt TieredIndex::getDocIDList(const size_t top, const string_vt& terms) con
             try {
                 const PostingList& pl2 = this->getPostingList(terms.at(i), tier);
                 const sizet_vt& tierIDs = pl2.getIDs();
+                sizet_vt& termIDs = vecs.at(i);
+                termIDs.insert(termIDs.end(), tierIDs.begin(), tierIDs.end());
+                vecs.at(i) = termIDs;
 
-                if (tier > 0) { // all other tiers: concatenate ids
-                    sizet_vt& termIDs = vecs.at(i);
-                    termIDs.insert(termIDs.end(), tierIDs.begin(), tierIDs.end());
-                    vecs.at(i) = termIDs;
-                } else { // first tier
-                    vecs.push_back(tierIDs);
-                }
-            } catch (const InvalidArgumentException& e) {
-                continue; /* One of the (query) terms does not appear in the document collection. */
-            }
+            } catch (const InvalidArgumentException& e) { continue; /* One of the (query) terms does not appear in the document collection. */ }
         }
+
         Utility::IR::mergePostingLists(vecs, qids);
     } while (qids.size() < top && ++tier < _num_tiers);
-
-    std::cout << "qids end result " << std::endl;
-    for (size_t j = 0; j < qids.size(); ++j) {
-        std::cout << qids[j] << std::endl;
-    }
-
     return qids; // may return < top if all tiers are processed and we did not find enough qualifying ids
 }
 

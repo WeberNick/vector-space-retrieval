@@ -112,7 +112,6 @@ void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
     QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
 
     Measure lMeasureQuery;
-    std::cout << "HERE" << std::endl;
     lMeasureQuery.start();
     std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode, use_lsh);
     lMeasureQuery.stop();
@@ -245,8 +244,10 @@ void testAlex(Args& lArgs) {
         std::cout << i.first << ": " << i.second << std::endl;
     }*/
 
-    const control_block_t& aControlBlock = {false, false, false, "./data/collection_test.docs", "./tests/_trace_test/", "", "./data/stopwords.large", 0, 10, 100};
-    // const control_block_t& aControlBlock = {false, false, false, lArgs.collectionPath(), "./tests/_trace_test/", "", lArgs.stopwordPath(), 0, lArgs.tiers(), lArgs.dimensions()};
+    const control_block_t& aControlBlock = {false, false, false, "./data/collection_test.docs", "./tests/_trace_test/", "", "./data/stopwords.large",
+                                            0,     10,    100};
+    // const control_block_t& aControlBlock = {false, false, false, lArgs.collectionPath(), "./tests/_trace_test/", "", lArgs.stopwordPath(), 0, lArgs.tiers(),
+    // lArgs.dimensions()};
 
     Measure lMeasureIndexing;
     lMeasureIndexing.start();
@@ -321,5 +322,24 @@ int main(const int argc, const char* argv[]) {
     // test(lCB);
     // testNico();
     testAlex(lArgs);
+
+    /*std::vector<sizet_vt> vecs;
+    sizet_vt out;
+
+    sizet_vt stvt1 = {9};
+    sizet_vt stvt2 = {9};
+  sizet_vt stvt3 = {9};
+
+    vecs.push_back(stvt1);
+    vecs.push_back(stvt2);
+    vecs.push_back(stvt3);
+
+    Utility::IR::mergePostingLists(vecs, out);
+
+    std::cout << "result" << std::endl;
+    for(auto& elem: out) {
+      std::cout << elem << std::endl;
+    }*/
+
     return 0;
 }

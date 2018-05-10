@@ -561,26 +561,10 @@ namespace Utility {
         inline void mergePostingLists(const sizet_vt& first, const sizet_vt& second, sizet_vt& out) {
             auto ione = first.begin();
             auto itwo = second.begin();
-
-
-            std::cout << "First list" << std::endl;
-            for(auto& elem: first) {
-                std::cout << elem << ",";
-            }
-            std::cout << std::endl;
-
-            std::cout << "Second list" << std::endl;
-            for(auto& elem: second) {
-                std::cout << elem << ",";
-            }
-            std::cout << std::endl;
-
-
             out.clear();
             while (ione != first.end() && itwo != second.end()) {
 
                 if (*ione == *itwo) {
-                    std::cout << "match" << std::endl;
                     out.push_back(*ione);
                     ++ione;
                     ++itwo;
