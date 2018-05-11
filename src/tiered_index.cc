@@ -50,29 +50,20 @@ sizet_vt TieredIndex::getDocIDList(const size_t top, const string_vt& terms) con
     vecs.reserve(terms.size());
     do {
         for (size_t i = 0; i < terms.size(); ++i) {
-             std::cout << "HERE" << i << ", Term: " << terms.at(i) <<std::endl;
             try {
-                std::cout << "HERE" << i << ", Tier: " << tier <<std::endl;
                 const PostingList& pl2 = this->getPostingList(terms.at(i), tier);
-                std::cout << "HERE" << i << ",nachPL Tier: " << tier <<std::endl;
                 const sizet_vt& tierIDs = pl2.getIDs();
                 if (tier > 0) { // all other tiers: concatenate ids
                     sizet_vt& termIDs = vecs.at(i);
-                    std::cout << "HERE" << i <<std::endl;
                     termIDs.insert(termIDs.end(), tierIDs.begin(), tierIDs.end());
                     vecs.at(i) = termIDs;
                 } else {        // first tier
-                std::cout << "HERE" << i <<std::endl;
                     vecs.push_back(tierIDs);
-                    std::cout << "HERE" << i <<std::endl;
                 }
             } catch (const InvalidArgumentException& e) {
-                std::cout << "ex" << i <<std::endl;
                  continue; /* One of the (query) terms does not appear in the document collection. */ }
         }
-        std::cout << "HERE" <<std::endl;
         Utility::IR::mergePostingLists(vecs, qids);
-        std::cout << "HERE" <<std::endl;
     } while (qids.size() < top && ++tier < _num_tiers);
     return qids; // may return < top if all tiers are processed and we did not find enough qualifying ids
 }
