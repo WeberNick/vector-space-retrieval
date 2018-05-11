@@ -559,11 +559,12 @@ namespace Utility {
          * @return sizet_vt
          */
         inline void mergePostingLists(const sizet_vt& first, const sizet_vt& second, sizet_vt& out) {
+            std::sort(first.begin(), first.end(), [](const size_t a, const size_t b) { return a < b; });
+            std::sort(second.begin(), second.end(), [](const size_t a, const size_t b) { return a < b; });
             auto ione = first.begin();
             auto itwo = second.begin();
             out.clear();
             while (ione != first.end() && itwo != second.end()) {
-
                 if (*ione == *itwo) {
                     out.push_back(*ione);
                     ++ione;
@@ -582,7 +583,6 @@ namespace Utility {
          * @param out
          */
         inline void mergePostingLists(std::vector<sizet_vt>& vecs, sizet_vt& out) {
-
            if (vecs.size() > 1) {
                 std::sort(vecs.begin(), vecs.end(), [](const sizet_vt& a, const sizet_vt& b) { return a.size() < b.size(); }); // asc
                 out.clear();
