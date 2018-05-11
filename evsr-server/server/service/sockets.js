@@ -99,7 +99,6 @@ export function listenToSockets(httpServer) {
       evsr.call(
         data => {
           data = data.toString();
-
           // Grab ready string
           if (data.substring(0, 7) === '[Ready]') {
             logger.info('evsr ready');
@@ -110,11 +109,11 @@ export function listenToSockets(httpServer) {
           // Grab result and parse the JSON
           if (data.substring(0, 14) === '[Your result]:') {
             try {
-              returnResult(
-                socket,
-                JSON.parse(data.substring(14, data.length + 2)),
-              );
+              const results = JSON.parse(data.substring(14, data.length + 2));
+              //console.log(results);
+              io.emit('server:searchResult', results);
             } catch (err) {
+              logger.error(err);
               socket.emit('server:searchError', { error: err.toString() });
             }
           }

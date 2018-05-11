@@ -244,10 +244,10 @@ void testAlex(Args& lArgs) {
         std::cout << i.first << ": " << i.second << std::endl;
     }*/
 
-    const control_block_t& aControlBlock = {false, false, false, "./data/collection_test.docs", "./tests/_trace_test/", "", "./data/stopwords.large",
-                                            0,     10,    100};
-    // const control_block_t& aControlBlock = {false, false, false, lArgs.collectionPath(), "./tests/_trace_test/", "", lArgs.stopwordPath(), 0, lArgs.tiers(),
-    // lArgs.dimensions()};
+    //const control_block_t& aControlBlock = {false, false, false, "./data/collection_test.docs", "./tests/_trace_test/", "", "./data/stopwords.large",
+    //                                        0,     10,    100};
+     const control_block_t& aControlBlock = {false, false, false, lArgs.collectionPath(), "./tests/_trace_test/", "", lArgs.stopwordPath(), 0, lArgs.tiers(),
+     lArgs.dimensions()};
 
     Measure lMeasureIndexing;
     lMeasureIndexing.start();
@@ -260,8 +260,8 @@ void testAlex(Args& lArgs) {
     IndexManager& imInstance = IndexManager::getInstance();
     imInstance.init(aControlBlock, docMap);
 
-    const TieredIndex& ti = imInstance.getTieredIndex();
-    std::cout << ti << std::endl;
+    //const TieredIndex& ti = imInstance.getTieredIndex();
+    //std::cout << ti << std::endl;
 
     lMeasureIndexing.stop();
     double lSeconds = lMeasureIndexing.mTotalTime();

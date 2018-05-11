@@ -558,7 +558,7 @@ namespace Utility {
          * @param second
          * @return sizet_vt
          */
-        inline void mergePostingLists(const sizet_vt& first, const sizet_vt& second, sizet_vt& out) {
+        inline void mergePostingLists(sizet_vt& first, sizet_vt& second, sizet_vt& out) {
             std::sort(first.begin(), first.end(), [](const size_t a, const size_t b) { return a < b; });
             std::sort(second.begin(), second.end(), [](const size_t a, const size_t b) { return a < b; });
             auto ione = first.begin();
