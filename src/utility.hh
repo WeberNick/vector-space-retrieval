@@ -126,7 +126,7 @@ namespace Utility {
         return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
     }
 
-    inline bool randomProjectionHash(std::vector<float> &origVec, std::vector<float> &randVec) {
+    inline bool randomProjectionHash(std::vector<float>& origVec, std::vector<float>& randVec) {
         if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
 
         double dot = scalar_product(origVec, randVec);
@@ -563,6 +563,7 @@ namespace Utility {
             auto itwo = second.begin();
             out.clear();
             while (ione != first.end() && itwo != second.end()) {
+
                 if (*ione == *itwo) {
                     out.push_back(*ione);
                     ++ione;
@@ -581,7 +582,8 @@ namespace Utility {
          * @param out
          */
         inline void mergePostingLists(std::vector<sizet_vt>& vecs, sizet_vt& out) {
-            if (vecs.size() > 1) {
+
+           if (vecs.size() > 1) {
                 std::sort(vecs.begin(), vecs.end(), [](const sizet_vt& a, const sizet_vt& b) { return a.size() < b.size(); }); // asc
                 out.clear();
                 mergePostingLists(vecs.at(0), vecs.at(1), out);
@@ -741,7 +743,6 @@ namespace Utility {
             int hamming = calcHammingDist(vec_a, vec_b);
 
             double theta = acosf(cos(((hamming / vec_a.size()) * M_PI)));
-
 
             return static_cast<float>(1 - (theta / M_PI));
         }
