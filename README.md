@@ -38,7 +38,7 @@ You need to have Boost installed on your machine in order to build the binary. I
 
 ```
  SYNOPSIS
-    configure.sh [-h] [-c[compiler_path]]  [-cxx[compiler_path]]
+    configure.sh [-h] [-c[compiler_path]]  [-cxx[compiler_path]] [-b[boost_path]] [-a]
 
  DESCRIPTION
     Setting up CMake, directory structure and compile everything to start the main evsr executable
@@ -46,9 +46,11 @@ You need to have Boost installed on your machine in order to build the binary. I
  OPTIONS
     -c [path], --c [path]         Set a custom C compiler path
     -cxx [path], --cxx [path]     Set a custom C++ compiler path
+    -b, --boost                   Set path to your boost library
+    -a, --all                     Also delete external lib folders and clone again
 
  EXAMPLES
-    configure.sh -c "/usr/local/Cellar/gcc/7.3.0_1/bin/gcc-7 -cxx /usr/local/Cellar/gcc/7.3.0_1/bin/g++-7
+    ./configure.sh -c /usr/local/Cellar/gcc/7.3.0_1/bin/gcc-7 -cxx /usr/local/Cellar/gcc/7.3.0_1/bin/g++-7 -b /usr/local/Cellar/boost/1.66.0/ -a
 ```
 
 # Server

@@ -9,6 +9,8 @@ import { listenToSockets } from './service/sockets';
 const app = express();
 
 app.use(express.static(path.join(__dirname, '/../client/build')));
+app.use(express.static(path.join(__dirname, '/../presentation')));
+console.log(path.join(__dirname, '/../presentation'));
 app.use(
   '*',
   cors({
@@ -16,11 +18,11 @@ app.use(
   }),
 );
 
-app.get('/ping', function(req, res) {
-  return res.send('pong');
+app.get('/presentation', (req, res) => {
+  res.sendFile(path.join(__dirname + '/../presentation/index.html'));
 });
 
-app.get('/', function(req, res) {
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname + '/../client/build/index.html'));
 });
 

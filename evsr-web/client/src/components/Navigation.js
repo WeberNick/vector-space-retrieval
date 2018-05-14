@@ -73,6 +73,11 @@ class Navigation extends Component {
               <NavItem>
                 <Link to={'/evaluation'}>Evaluation</Link>
               </NavItem>
+              <NavItem>
+                <Link to="/presentation" target="_self">
+                  Presentation
+                </Link>
+              </NavItem>
             </NavStart>
           </NavMenu>
         </Container>
