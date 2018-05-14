@@ -558,7 +558,7 @@ namespace Utility {
          * @param second
          * @return sizet_vt
          */
-        inline void mergePostingLists(sizet_vt& first, sizet_vt& second, sizet_vt& out) {
+        inline void andPostingLists(sizet_vt& first, sizet_vt& second, sizet_vt& out) {
             std::sort(first.begin(), first.end(), [](const size_t a, const size_t b) { return a < b; });
             std::sort(second.begin(), second.end(), [](const size_t a, const size_t b) { return a < b; });
             auto ione = first.begin();
@@ -582,20 +582,36 @@ namespace Utility {
          * @param vecs
          * @param out
          */
-        inline void mergePostingLists(std::vector<sizet_vt>& vecs, sizet_vt& out) {
-           if (vecs.size() > 1) {
+        inline void andPostingLists(std::vector<sizet_vt>& vecs, sizet_vt& out) {
+            out.clear();
+            if (vecs.size() > 1) {
                 std::sort(vecs.begin(), vecs.end(), [](const sizet_vt& a, const sizet_vt& b) { return a.size() < b.size(); }); // asc
-                out.clear();
-                mergePostingLists(vecs.at(0), vecs.at(1), out);
+                andPostingLists(vecs.at(0), vecs.at(1), out);
                 if (vecs.size() == 2) return;
                 for (size_t i = 2; i < vecs.size(); ++i) {
                     sizet_vt out_copy(out);
-                    mergePostingLists(out_copy, vecs.at(i), out);
+                    andPostingLists(out_copy, vecs.at(i), out);
                 }
             } else {
                 out = vecs.at(0);
             }
         }
+
+        inline void orPostingLists(std::vector<sizet_vt>& vecs, sizet_vt& out) {
+            out.clear();
+            if (vecs.size() > 1) {
+                for (auto& vec : vecs) {
+                    for (auto& elem : vec) {
+                        out.push_back(elem);
+                    }
+                }
+            } else {
+                out = vecs.at(0);
+            }
+            std::sort(out.begin(), out.end(), [](const size_t a, const size_t b){ return a < b; }); // asc
+            out.erase(std::unique(out.begin(), out.end()), out.end());
+        }
+        
     } // namespace IR
 
     /**

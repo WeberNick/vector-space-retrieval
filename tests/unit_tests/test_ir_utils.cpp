@@ -1,9 +1,13 @@
 #include "utility.hh"
 #include "gtest/gtest.h"
 
-TEST(IR, Threshold_Equals_Test) {
-    
-    const sizet_float_mt posting = { {1, 0.5}, {2, 0}, {3, 0.45}, {4, 0.6}, {5, 0.23}, {6, 0.34}, {7, 0.87},
-                                     {8, 0.87}, {9, 0.91}, {10, 0.11}, {11, 0.22}, {12, 0.33}, {13, 0.44}, {14, 0.55} };
-    EXPECT_EQ(true, Utility::IR::getThresholds("Thisends", "sends"));
+TEST(IR, OrPostingLists_Equals_Test) {
+
+    const sizet_vt& vec_a = {1, 2, 4};
+    const sizet_vt& vec_b = {5, 4};
+    std::vector<sizet_vt> vecs = {vec_a, vec_b};
+    const sizet_vt& result = {1, 2, 4, 5};
+    sizet_vt out;
+    Utility::IR::orPostingLists(vecs, out);
+    EXPECT_EQ(result, out);
 }

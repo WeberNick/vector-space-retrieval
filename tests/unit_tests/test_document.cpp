@@ -14,7 +14,7 @@ class DocumentTest : public testing::Test {
   protected:
     virtual void SetUp() {
         docMan = &(DocumentManager::getInstance());
-        const control_block_t lControlBlock = { false, false, false, "./data/collection_test_mwe.docs", "./tests/_trace_test/" , "./tests/_eval_test/", "./data/stopwords.large", 0, 0, 0 };
+        const control_block_t lControlBlock = { false, false, false, "./data/collection_test_mwe.docs", "" , "", "./data/stopwords.large", 0, 0, 0 };
         
         Trace::getInstance().init(lControlBlock);
         

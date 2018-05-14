@@ -45,7 +45,7 @@ sizet_vt TieredIndex::getDocIDList(const size_t top, const string_vt& terms) con
                 vecs.at(i) = termIDs;
             } catch (const InvalidArgumentException& e) { continue; /* One of the (query) terms does not appear in the document collection. */ }
         }
-        Utility::IR::mergePostingLists(vecs, qids);
+        Utility::IR::orPostingLists(vecs, qids);
     } while (qids.size() < top && ++tier < _num_tiers);
     return qids; // may return < top if all tiers are processed and we did not find enough qualifying ids
 }
