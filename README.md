@@ -56,33 +56,45 @@ You need to have Boost installed on your machine in order to build the binary. I
 To use a UI to interact with the binary, you need to have `Node.js` and `npm` installed on your machine.
 Issue the following commands :
 
-Build the React application:
+Install dependencies:
 
 ```
-$ cd ./evsr-server/client
-$ npm run build
+$ cd ./evsr-web
+$ npm install
 ```
 
-Start the server and visit [localhost:8080](localhost:8080)
+```
+$ cd ./evsr-web/client
+$ npm install
+```
 
 ```
-$ cd ./evsr-server/server
+$ cd ./evsr-web/server
+$ npm install
+```
+
+Build the React application & start server, then [localhost:8080](localhost:8080)
+
+```
+$ cd ./evsr-web
 $ npm run start
 ```
+
+Build
 
 The server uses the build version of the React application. If you want to not use the build React application, issue the following commands in two separate terminal sessions.
 
 1st Terminal
 
 ```
-$ cd ./evsr-server/client
+$ cd ./evsr-web/client
 $ npm run start
 ```
 
 2nd Terminal
 
 ```
-$ cd ./evsr-server/server
+$ cd ./evsr-web/server
 $ npm run start
 ```
 

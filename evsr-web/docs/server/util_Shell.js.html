@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>util/Shell.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="module-ForeignCode-Shell.html">Shell</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ForeignCode-Shell.html#.call">call</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ForeignCode-Shell.html#.callSync">callSync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ForeignCode-Shell.html#.data">data</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ForeignCode-Shell.html#.kill">kill</a></span></li><li class="nav-heading">Modules</li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-ForeignCode.html">ForeignCode</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-ForeignCode.html#~ShellHelper">ShellHelper</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-Logger.html">Logger</a></span></li><li class="nav-heading"><span class="nav-item-type type-module">M</span><span class="nav-item-name"><a href="module-Sockets.html">Sockets</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-Sockets.html#~listenToSockets">listenToSockets</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-Sockets.html#~returnResult">returnResult</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="module-Sockets.html#~returnStatus">returnStatus</a></span></li>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">util/Shell.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @module ForeignCode
+ *  @description Contains methods for spawning child processes for other programming languages. This is not an exhaustive implementation.
+ * It could provide more functionality here, but because this is not the real purpose, just only the necessary methods are available.
+ */
+import child_process from 'child_process';
+import logger from './Logger';
+
+const defaults = {
+  env: process.env,
+  encoding: 'utf8',
+  maxBuffer: 2000 * 1024,
+};
+
+/**
+ * @function ShellHelper
+ * @param  {String} path Path to the executable file
+ * @description Instantiates a new Shell object.
+ * @returns {Object} A Shell object
+ */
+export function ShellHelper(path) {
+  var obj = new Shell(path);
+  return obj;
+}
+
+/**
+ * @class Shell
+ * @param {String} path Path to the executable file
+ * @classdesc Class for executing Jar files
+ */
+export class Shell {
+  constructor(path) {
+    this.path = path;
+    this.args = [];
+    this.output = '';
+    this.process = null;
+    this.isRunning = false;
+  }
+
+  /**
+   * @function data
+   * @param  {Array} data Array of command line arguments
+   * @description Add command line arguments to the execution of the file
+   * @memberof module:ForeignCode~Shell
+   * @returns {Object} Java object instance
+   */
+  data(data) {
+    data.forEach(element => {
+      this.args.push(element.toString());
+    });
+    return this;
+  }
+
+  /**
+   * @function call
+   * @param  {Function} onEndCallback Function which handles if there is no more data on the buffer to consume
+   * @param  {Function} onExitCallback Function to handle if the prcocess exits
+   * @description Spawns a child process and executes the specified Jar file asynchronously
+   * @memberof module:ForeignCode~Shell
+   * @returns {void}
+   */
+  call(onEndCallback, onExitCallback) {
+    logger.info(`Spawning ${this.path} ${this.args.join(' ')}`);
+    this.process = child_process.spawn(this.path, this.args, defaults);
+    this.isRunning = true;
+
+    this.process.stdout.on('data', data => {
+      this.output += '' + data;
+      if (data.toString().endsWith('\n')) {
+        onEndCallback(this.output.trim());
+        this.output = '';
+      }
+    });
+
+    this.process.stdout.on('end', () => {
+      if (typeof onEndCallback === 'function') {
+        onEndCallback(this.output);
+      }
+      this.output = '';
+    });
+
+    this.process.stderr.on('data', data => {
+      logger.error(`stderr: ${data}`);
+    });
+
+    this.process.on('exit', code => {
+      this.isRunning = false;
+      logger.info(`child process ${this.process.pid} exited with code ${code}`);
+      if (typeof onExitCallback === 'function') {
+        onExitCallback(this.output);
+      }
+    });
+  }
+
+  writeToProcess(text) {
+    this.process.stdin.write(text);
+    this.process.stdin.write('\n');
+  }
+
+  /**
+   * @function callSync
+   * @description Spawns a child process and executes the specified Jar file synchronously
+   * @returns {String} The stdout of the process
+   * @memberof module:ForeignCode~Shell
+   */
+  callSync() {
+    this.process = child_process.spawnSync(this.path, this.args, defaults);
+    if (this.process.stderr) logger.error(`stderr: ${process.stderr}`);
+    return this.process.stdout;
+  }
+
+  /**
+   * @function kill
+   * @description Kills the executed process by sending 'SIGINT' to it. It is like pressing CTRL+C
+   * @memberof module:ForeignCode~Shell
+   */
+  kill() {
+    if (this.isRunning) {
+      logger.log('info', 'Manually killing ' + this.process.pid);
+      this.process.kill('SIGINT');
+    }
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon May 14 2018 10:10:34 GMT+0200 (CEST) using the Minami theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

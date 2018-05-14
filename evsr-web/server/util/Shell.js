@@ -6,17 +6,16 @@ import child_process from 'child_process';
 import logger from './Logger';
 
 const defaults = {
-  cwd: global.appRoot,
   env: process.env,
   encoding: 'utf8',
   maxBuffer: 2000 * 1024,
 };
 
 /**
- * @function Shell
- * @param  {String}  path    Path to the Jar file to execute
+ * @function ShellHelper
+ * @param  {String} path Path to the executable file
  * @description Instantiates a new Shell object.
- * @returns {Object}  A Shell object
+ * @returns {Object} A Shell object
  */
 export function ShellHelper(path) {
   var obj = new Shell(path);
@@ -24,8 +23,8 @@ export function ShellHelper(path) {
 }
 
 /**
- * @class Java
- * @param {String} path  Path to the Jar file to execute
+ * @class Shell
+ * @param {String} path Path to the executable file
  * @classdesc Class for executing Jar files
  */
 export class Shell {

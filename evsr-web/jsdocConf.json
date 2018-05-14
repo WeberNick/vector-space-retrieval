@@ -1,0 +1,19 @@
+{
+  "source": {
+    "includePattern": ".*\\.(js|jsx)$",
+    "exclude": ["server/node_modules/"]
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": true,
+    "useLongnameInNav": false,
+    "showInheritedInNav": false
+  },
+  "opts": {
+    "template": "./node_modules/minami"
+  },
+  "plugins": ["plugins/markdown"],
+  "markdown": {
+    "idInHeadings": true
+  }
+}

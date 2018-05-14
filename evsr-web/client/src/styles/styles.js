@@ -74,6 +74,10 @@ const gloablStyles = injectGlobal`
     color: #fff
   }
 
+  .radio input{
+    margin-right: 5px;
+  }
+
   .shadow-bottom {
     box-shadow: 0 14px 25px rgba(0, 0, 0, 0.16);
   }

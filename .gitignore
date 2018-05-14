@@ -163,14 +163,15 @@ logs/
 eval/
 
 # dependencies
-evsr-server/client/node_modules
-evsr-server/server/node_modules
+evsr-web/client/node_modules
+evsr-web/server/node_modules
+evsr-web/node_modules
 
 # testing
-evsr-server/client/coverage
+evsr-web/client/coverage
 
 # production
-evsr-server/client/build
+evsr-web/client/build
 
 # misc
 .DS_Store
@@ -179,7 +180,9 @@ evsr-server/client/build
 .env.test.local
 .env.production.local
 
-evsr-server/server/server.log*
-evsr-server/npm-debug.log*
-evsr-server/yarn-debug.log*
-evsr-server/yarn-error.log*
+
+
+evsr-web/server/server.log*
+evsr-web/npm-debug.log*
+evsr-web/yarn-debug.log*
+evsr-web/yarn-error.log*
