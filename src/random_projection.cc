@@ -1,8 +1,5 @@
 #include "random_projection.hh"
-#include "cmath"
-#include "utility.hh"
-#include <iostream>
-#include <vector>
+
 
 RandomProjection::~RandomProjection() = default;
 

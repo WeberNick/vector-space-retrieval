@@ -28,38 +28,6 @@ SCRIPT_NAME="$(basename ${0})"
 usage() { printf "Usage: "; head -${SCRIPT_HEADSIZE:-99} ${0} | grep -e "^#+" | sed -e "s/^#+[ ]*//g" -e "s/\${SCRIPT_NAME}/${SCRIPT_NAME}/g" ; }
 usagefull() { head -${SCRIPT_HEADSIZE:-99} ${0} | grep -e "^#[%+-]" | sed -e "s/^#[%+-]//g" -e "s/\${SCRIPT_NAME}/${SCRIPT_NAME}/g" ; }
 
-install_word2vec()
-{
-  echo "> [Downloading] word2vec - external static dependency"
-  cd ./src/lib
-  git clone https://github.com/maxoodf/word2vec.git word2vec++
-  cd word2vec++
-  mkdir build
-  cd build
-  command="cmake "
-
-  if [ ! -z "$C" ]
-  then
-    command="$command -DCMAKE_C_COMPILER=$C"
-  else
-    command="$command -DCMAKE_C_COMPILER=$(which gcc)"
-  fi
-
-  if [ ! -z "$CXX" ]
-  then
-    command="$command -DCMAKE_CXX_COMPILER=$CXX"
-  else
-    command="$command -DCMAKE_CXX_COMPILER=$(which g++)"
-  fi
-
-  command="$command -DCMAKE_BUILD_TYPE=Release ../"
-  echo "> [Building] word2vec"
-  echo $command
-  eval $command
-  make
-  cd ../../../../
-}
-
 
 POSITIONAL=()
 while [[ $# -gt 0 ]]
@@ -143,14 +111,6 @@ then
   else
      echo "Not deleting ./tests/lib  directory - googletest is not cloned again!"
   fi
-fi
-
-
-# Because word2vec is a static library which is linked in our cmake we have to first download and install it before we build our executable
-# All other libraries we use are header only ones, so we compile them while we build
-if [ ! -d ./src/lib/word2vec++ ];
-then
-  install_word2vec
 fi
 
 # Create necessary directories

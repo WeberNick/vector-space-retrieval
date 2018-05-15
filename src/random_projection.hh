@@ -12,9 +12,13 @@
 
 #include "types.hh"
 #include "utility.hh"
+
 #include <bitset>
 #include <boost/dynamic_bitset.hpp>
+#include <cmath>
+#include <iostream>
 #include <string>
+#include <vector>
 
 class RandomProjection {
   private:

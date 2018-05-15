@@ -1,11 +1,7 @@
 #include "query_processing_engine.hh"
 #include "index_manager.hh"
-#include "measure.hh"
-#include "posting_list.hh"
 
-#include <iostream>
-#include <nlohmann/json.hpp>
-#include <sstream>
+
 
 /**
  * @brief Construct a new Query Processing Engine:: Query Processing Engine object
@@ -99,7 +95,8 @@ const pair_sizet_float_vt QueryProcessingEngine::searchCollectionCos(const Docum
 
     std::map<size_t, float> docId2Scores;
     const string_vt& qcontent = query->getContent();
-    for (const auto& term : qcontent) { // Calculate weightings per doc using the tf-idf of the word in the doc collection times the tf-idf of the term in the query
+    for (const auto& term :
+         qcontent) { // Calculate weightings per doc using the tf-idf of the word in the doc collection times the tf-idf of the term in the query
         try {
             const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList(term);
             for (auto& [id, tf] : postingList.getPosting()) {

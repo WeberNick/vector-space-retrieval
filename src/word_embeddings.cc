@@ -22,19 +22,3 @@ void WordEmbeddings::init(const control_block_t& aControlBlock, const std::strin
         _init = true;
     }
 }
-
-int WordEmbeddings::loadModel(const std::string& aModelFile) {
-    // load wor2vec model
-    try {
-        _w2vModel.reset(new w2v::w2vModel_t());
-        // load w2v model file
-        if (!_w2vModel->load(aModelFile)) { throw std::runtime_error(_w2vModel->errMsg()); }
-    } catch (const std::exception& _e) {
-        std::cerr << _e.what() << std::endl;
-        return 2;
-    } catch (...) {
-        std::cerr << "unknown error" << std::endl;
-        return 2;
-    }
-    return 0; // TODO: Remove (inserted by Nico to remove Warning)
-}

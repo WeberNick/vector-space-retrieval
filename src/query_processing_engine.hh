@@ -1,10 +1,16 @@
 #pragma once
 
 #include "document.hh"
+#include "posting_list.hh"
 #include "types.hh"
 #include "utility.hh"
+
+#include <iostream>
+#include <nlohmann/json.hpp>
+#include <sstream>
 #include <string>
 #include <vector>
+
 
 class QueryProcessingEngine {
   private:

@@ -17,6 +17,7 @@
 #include "tiered_index.hh"
 #include "utility.hh"
 #include "random_projection.hh"
+#include "types.hh"
 
 class IndexManager {
   private:

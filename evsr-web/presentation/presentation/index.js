@@ -3,6 +3,7 @@ import React from 'react';
 
 // Import Spectacle Core tags
 import {
+  Appear,
   BlockQuote,
   CodePane,
   Cite,
@@ -67,16 +68,40 @@ export default class Presentation extends React.Component {
             Making Vector Space Retrieval Lightning Fast ⚡
           </Text>
         </Slide>
-        <Slide transition={['slide']} bgColor="tertiary">
+        <Slide align="center center" transition={['slide']} bgColor="tertiary">
           <Heading size={6} textColor="primary" caps>
             Agenda
           </Heading>
           <List textColor="primary">
-            <ListItem>Our Idea</ListItem>
-            <ListItem>Why this ?</ListItem>
+            <ListItem>Task</ListItem>
             <ListItem>Implementation</ListItem>
             <ListItem>Results</ListItem>
           </List>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading size={6} textColor="secondary" caps>
+            The Task 📝
+          </Heading>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Appear>
+            <div>
+              <Heading
+                size={6}
+                textColor="tertiary"
+                caps
+                style={{ marginBottom: '100px' }}
+              >
+                Building following indexes
+              </Heading>
+              <List textColor="secondary">
+                <ListItem>Inverted Index</ListItem>
+                <ListItem>Tiered Index</ListItem>
+                <ListItem>Clustered Index</ListItem>
+                <ListItem>Results</ListItem>
+              </List>
+            </div>
+          </Appear>
         </Slide>
         <Slide transition={['slide']}>
           <Heading
@@ -146,7 +171,7 @@ export default class Presentation extends React.Component {
           </Layout>
         </Slide>
         <Slide>
-          <Image src={images.kat.replace('/', '')} margin="0px auto 40px" />
+          <Image src={images.kat} margin="0px auto 40px" />
         </Slide>
       </Deck>
     );

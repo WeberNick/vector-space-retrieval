@@ -5,7 +5,6 @@
 #pragma once
 
 #include "types.hh"
-#include <lib/word2vec++/include/word2vec.h>
 #include <string>
 
 class WordEmbeddings {
@@ -26,7 +25,7 @@ class WordEmbeddings {
     int loadModel(const std::string& aModelFile);
 
   public:
-    inline std::unique_ptr<w2v::w2vModel_t>& getw2v() { return _w2vModel; }
+    void read(const std::string& aFile);
 
     /**
      * @brief Get the Instance object
@@ -49,5 +48,4 @@ class WordEmbeddings {
     bool _init;
 
     std::string _modelFile;
-    std::unique_ptr<w2v::w2vModel_t> _w2vModel;
 };

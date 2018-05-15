@@ -27,14 +27,6 @@ endif()
 set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/src/lib/)
 
 # Clone non-boost external libs
-## Clone Eigen
-if(NOT EXISTS ${EXTERNAL_DIR}eigen)
-    find_package(Git REQUIRED)
-    execute_process(
-        COMMAND ${GIT_EXECUTABLE}  clone https://github.com/eigenteam/eigen-git-mirror --branch 3.3.4 --single-branch ${EXTERNAL_DIR}eigen
-    )
-endif()
-
 ## Clone /OleanderStemmingLibrary
 if(NOT EXISTS ${EXTERNAL_DIR}oleanderStemmingLibrary)
     find_package(Git REQUIRED)
@@ -100,8 +92,7 @@ else()
 endif ()
 
 #Inlcude non-boost libraries
-target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/eigen")
 target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/oleanderStemmingLibrary")
 target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/nlohmann/single_include/")
 
-target_link_libraries(${CMAKE_PROJECT_NAME}_lib ${CMAKE_SOURCE_DIR}/src/lib/word2vec++/bin/lib/libword2vec.a)
+
