@@ -17,6 +17,7 @@
 #include <map>
 #include <vector>
 #include <set>
+#include <utility>
 
 using size_t = std::size_t;
 using byte = std::byte;
@@ -39,8 +40,9 @@ struct control_block_t {
     const bool _plot;    // indicate if tracing/(error) messages shall be printed (cout)
 
     const std::string _collectionPath; // the path to the document collection
+    const std::string _relScoresPath;  // the path to the relevance scores
     const std::string _tracePath;      // the path to the trace logs
-    const std::string _evalPath;       // the path to the evaluation
+    const std::string _evalPath;       // the path to the evaluation file
     const std::string _stopwordFile;   // the path to the stopword file
 
     const uint _noResults;    // the number of results to return for each query
@@ -51,6 +53,7 @@ struct control_block_t {
     bool measure() const { return _measure; }
     bool plot() const { return _plot; }
     const std::string& collectionPath() const { return _collectionPath; }
+    const std::string& relevanceScoresPath() const { return _relScoresPath; }
     const std::string& tracePath() const { return _tracePath; }
     const std::string& evalPath() const { return _evalPath; }
     const std::string& stopwordFile() const { return _stopwordFile; }
@@ -64,23 +67,32 @@ enum IR_MODE {
     kNoMode = -1,
     kVANILLA = 0,
     kTIERED = 1,
-    kCLUSTER = 2,
-    kRANDOM = 3,
-    kNumberOfModes = 4
+    kTIEREDW2V = 2,
+    kCLUSTER = 3,
+    kCLUSTERW2V = 4,
+    kRANDOM = 5,
+    kRANDOMW2V = 6,
+    kNumberOfModes = 7
 };
 
 inline std::string modeToString(IR_MODE aMode) {
     switch (aMode) {
-        case -1:
+        case kNoMode:
             return "Invalid!"; break;        // not needed but used for convention
-        case 0: 
+        case kVANILLA: 
             return "VanillaVSM"; break;       // not needed but used for convention
-        case 1: 
+        case kTIERED: 
             return "TieredIndex"; break;      // not needed but used for convention
-        case 2: 
+        case kTIEREDW2V: 
+            return "TieredIndexW2V"; break;      // not needed but used for convention
+        case kCLUSTER: 
             return "Cluster"; break;          // not needed but used for convention
-        case 3: 
+        case kCLUSTERW2V: 
+            return "ClusterW2V"; break;          // not needed but used for convention
+        case kRANDOM: 
             return "RandomProjection"; break; // not needed but used for convention
+        case kRANDOMW2V: 
+            return "RandomProjectionW2V"; break; // not needed but used for convention
         default:
             return "Mode not supported"; break;
     }

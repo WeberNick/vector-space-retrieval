@@ -313,8 +313,8 @@ int main(const int argc, const char* argv[]) {
     }
 
     // THROW EXCEPTION if numtiers < 2
-    const control_block_t lCB = {lArgs.trace(),    lArgs.measure(),      lArgs.plot(),    lArgs.collectionPath(), lArgs.tracePath(),
-                                 lArgs.evalPath(), lArgs.stopwordPath(), lArgs.results(), lArgs.tiers(),          lArgs.dimensions()};
+    const control_block_t lCB = {lArgs.trace(),    lArgs.measure(),     lArgs.plot(),   lArgs.collectionPath(), lArgs.relevanceScoresPath(), 
+                                lArgs.tracePath(), lArgs.evalPath(),    lArgs.stopwordPath(), lArgs.results(), lArgs.tiers(), lArgs.dimensions()};
 
     Trace::getInstance().init(lCB);
     Evaluation::getInstance().init(lCB);
