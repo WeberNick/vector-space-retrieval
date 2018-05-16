@@ -93,7 +93,7 @@ class DocumentManager {
      *
      * @return sizet_vt& the ids
      */
-    inline sizet_vt& getIDs() { return _ids; }
+    inline sizet_vt& getIDs() { return _docids; }
 
     /**
      * @brief Creates a preprocessed document query out of a string
@@ -129,10 +129,14 @@ class DocumentManager {
 
   private:
     const control_block_t* _cb;
-
     bool _init;
-    std::string _collectionFile;
     const char _delimiter; // defined manually
-    sizet_vt _ids;
+
+    std::string _collectionFile;
+    
+    sizet_vt _docids;
     doc_mt _docs;
+
+    sizet_vt _queryids;
+    doc_mt _queries;
 };

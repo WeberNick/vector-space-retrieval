@@ -75,6 +75,7 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
     RandomProjection::getInstance().init(*_cb, _collection_terms.size());
     for (auto& elem : *(_docs)) {
         this->buildTfIdfVector(elem.second);
+        this->buildWordEmbeddingsVector(elem.second);
         this->buildRandProjVector(elem.second);
     }
     for (auto& elem : *(_docs)) {
@@ -82,6 +83,16 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
         const size_t index = QueryProcessingEngine::getInstance().searchClusterCosFirstIndex(&doc, leaders);
         cluster_out->at(index).push_back(doc.getID());
     }
+}
+
+void IndexManager::buildWordEmbeddingsVector(Document& doc) {
+    float_vt& wevec = doc.getWordEmbeddingsVector();
+    wevec.reserve(300);
+    string_vt& content = doc.getContent();
+    //TODO
+    // test make_unique
+    Utility::IR::calcWordEmbeddingsVector(content, wevec);
+    doc.setWordEmbeddingsVector(wevec);
 }
 
 void IndexManager::buildTfIdfVector(Document& doc) {
@@ -99,8 +110,8 @@ void IndexManager::buildTfIdfVector(Document& doc) {
 }
 
 void IndexManager::buildRandProjVector(Document& doc) {
-    const boost::dynamic_bitset<>& rand_proj =
-        RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(),
-                                                                        Utility::randomProjectionHash);
-    doc.setRandProjVec(rand_proj);
+    const boost::dynamic_bitset<>& rand_proj_ti = RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(), Utility::randomProjectionHash);
+    doc.setRandProjTiVec(rand_proj_ti);
+    const boost::dynamic_bitset<>& rand_proj_we = RandomProjection::getInstance().localitySensitiveHashProjection(doc.getWordEmbeddingsVector(), Utility::randomProjectionHash);
+    doc.setRandProjWeVec(rand_proj_we);
 }

@@ -37,7 +37,7 @@ void DocumentManager::read(const std::string& aFile) {
         std::string docID = parts[0];
         Document doc(docID, content);
         this->insert(std::make_pair(doc.getID(), doc));
-        _ids.push_back(doc.getID());
+        _docids.push_back(doc.getID());
     }
 }
 
