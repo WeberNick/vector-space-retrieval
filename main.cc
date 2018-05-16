@@ -188,96 +188,69 @@ void testNico() {
 
 void testAlex(Args& lArgs) {
 
-    /*Measure lMeasureIndexing;
-    lMeasureIndexing.start();
-    DocumentManager& docManager = DocumentManager::getInstance();
-    docManager.init(aControlBlock);
-    doc_mt& docMap = docManager.getDocumentMap();
+    const control_block_t& aControlBlock = {false,
+                                            false,
+                                            false,
+                                            lArgs.collectionPath(),
+                                            "./tests/_trace_test/",
+                                            "",
+                                            lArgs.stopwordPath(),
+                                            lArgs.wordEmeddingsPath(),
+                                            0,
+                                            lArgs.tiers(),
+                                            lArgs.dimensions()};
 
-    IndexManager& imInstance = IndexManager::getInstance();
-    imInstance.init(aControlBlock, docMap);
 
-    lMeasureIndexing.stop();
-    double lSeconds = lMeasureIndexing.mTotalTime();
-    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
+   Measure lMeasureIndexing;
+   lMeasureIndexing.start();
 
-    WordEmbeddings& wb = WordEmbeddings::getInstance();
-    wb.init(aControlBlock, "./data/w2v/cb_hs_500_10.w2v");
+   DocumentManager& docManager = DocumentManager::getInstance();
+   docManager.init(aControlBlock);
 
-    // create doc2vec model
-    w2v::d2vModel_t d2vModel(wb.getw2v()->vectorSize());
+   doc_mt& docMap = docManager.getDocumentMap();
 
-    std::cout << docManager.getDocumentMap().size() << std::endl;
+   IndexManager& imInstance = IndexManager::getInstance();
+   imInstance.init(aControlBlock, docMap);
 
-    {
-        w2v::doc2vec_t doc2vec(wb.getw2v(), Utility::StringOp::string_vt_2_str(docManager.getDocument(1).getContent()));
-        // add vector with ID = 1 to the model
-        d2vModel.set(0, doc2vec);
+   const TieredIndex& ti = imInstance.getTieredIndex();
+   std::cout << ti << std::endl;
+
+   lMeasureIndexing.stop();
+   double lSeconds = lMeasureIndexing.mTotalTime();
+  std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
+
+
+    std::cout << "number of embeddings: " << imInstance.getWordEmbeddingsIndex().getNoWordEmbeddings() << std::endl;
+
+    std::string word = "the";
+
+    for(auto& elem: imInstance.getWordEmbeddingsIndex().getWordEmbeddings(word)) {
+        std::cout << elem  << ",";
     }
+    std::cout << std::endl;
 
-    {
-        w2v::doc2vec_t doc2vec(wb.getw2v(), Utility::StringOp::string_vt_2_str(docManager.getDocument(2).getContent()));
-        // add vector with ID = 1 to the model
-        d2vModel.set(1, doc2vec);
-    }
+    std::cout << imInstance.getWordEmbeddingsIndex().getWordEmbeddings(word).size() << std::endl;
 
-    {
-        w2v::doc2vec_t doc2vec(wb.getw2v(), Utility::StringOp::string_vt_2_str(docManager.getDocument(3).getContent()));
-        // add vector with ID = 1 to the model
-        d2vModel.set(2, doc2vec);
-    }
 
-    {
-        w2v::doc2vec_t doc2vec(wb.getw2v(), Utility::StringOp::string_vt_2_str(docManager.getDocument(4).getContent()));
-        // add vector with ID = 1 to the model
-        d2vModel.set(3, doc2vec);
-    }
 
-    w2v::doc2vec_t doc2vec(wb.getw2v(), "do cholesterol statin drugs cause breast cancer ?");
+   //
 
-    // get nearest article IDs from the model
-    std::vector<std::pair<std::size_t, float>> nearest;
-    d2vModel.nearest(doc2vec, nearest, d2vModel.modelSize());
+   /*QueryProcessingEngine::getInstance().init(aControlBlock);
 
-    // output result set
-    for (auto const& i : nearest) {
-        std::cout << i.first << ": " << i.second << std::endl;
-    }*/
+   std::cout << "[Ready]" << std::endl;
 
-    //const control_block_t& aControlBlock = {false, false, false, "./data/collection_test.docs", "./tests/_trace_test/", "", "./data/stopwords.large",
-    //                                        0,     10,    100};
-     const control_block_t& aControlBlock = {false, false, false, "./data/collection_test.docs", "./tests/_trace_test/", "", lArgs.stopwordPath(), 0, lArgs.tiers(),
-     lArgs.dimensions()};
+   // search("Why breast cancer", 10, IR_MODE::kCLUSTER);
 
-    Measure lMeasureIndexing;
-    lMeasureIndexing.start();
+   while (true) {
+       json j;
+       std::cin >> j;
+       search(j["query"].get<std::string>(), j["topK"].get<size_t>(), stringToMode(j["mode"].get<std::string>()), j["lsh"].get<bool>());
+   }*/
 
-    DocumentManager& docManager = DocumentManager::getInstance();
-    docManager.init(aControlBlock);
 
-    doc_mt& docMap = docManager.getDocumentMap();
 
-    IndexManager& imInstance = IndexManager::getInstance();
-    imInstance.init(aControlBlock, docMap);
 
-    const TieredIndex& ti = imInstance.getTieredIndex();
-    std::cout << ti << std::endl;
 
-    lMeasureIndexing.stop();
-    double lSeconds = lMeasureIndexing.mTotalTime();
-    // std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
-
-    QueryProcessingEngine::getInstance().init(aControlBlock);
-
-    std::cout << "[Ready]" << std::endl;
-
-    // search("Why breast cancer", 10, IR_MODE::kCLUSTER);
-
-    while (true) {
-        json j;
-        std::cin >> j;
-        search(j["query"].get<std::string>(), j["topK"].get<size_t>(), stringToMode(j["mode"].get<std::string>()), j["lsh"].get<bool>());
-    }
 }
 
 /**
@@ -313,8 +286,8 @@ int main(const int argc, const char* argv[]) {
     }
 
     // THROW EXCEPTION if numtiers < 2
-    const control_block_t lCB = {lArgs.trace(),    lArgs.measure(),      lArgs.plot(),    lArgs.collectionPath(), lArgs.tracePath(),
-                                 lArgs.evalPath(), lArgs.stopwordPath(), lArgs.results(), lArgs.tiers(),          lArgs.dimensions()};
+    const control_block_t lCB = {lArgs.trace(),        lArgs.measure(),           lArgs.plot(),    lArgs.collectionPath(), lArgs.tracePath(), lArgs.evalPath(),
+                                 lArgs.stopwordPath(), lArgs.wordEmeddingsPath(), lArgs.results(), lArgs.tiers(),          lArgs.dimensions()};
 
     Trace::getInstance().init(lCB);
     Evaluation::getInstance().init(lCB);
@@ -328,7 +301,7 @@ int main(const int argc, const char* argv[]) {
 
     sizet_vt stvt1 = {9};
     sizet_vt stvt2 = {9};
-  sizet_vt stvt3 = {9};
+    sizet_vt stvt3 = {9};
 
     vecs.push_back(stvt1);
     vecs.push_back(stvt2);

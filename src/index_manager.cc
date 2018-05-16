@@ -5,15 +5,16 @@
  * @brief Construct a new Index Manager:: Index Manager object
  *
  */
-IndexManager::IndexManager()
-    : _cb(nullptr),
-      _docs(nullptr),
-      _init(false),
-      _idf_map(),
-      _collection_terms(),
-      _invertedIndex(InvertedIndex::getInstance()),
-      _tieredIndex(TieredIndex::getInstance()),
-      _clusteredIndex(Cluster::getInstance()) {}
+IndexManager::IndexManager() :
+    _cb(nullptr),
+    _docs(nullptr),
+    _init(false),
+    _idf_map(),
+    _collection_terms(),
+    _invertedIndex(InvertedIndex::getInstance()),
+    _tieredIndex(TieredIndex::getInstance()),
+    _clusteredIndex(Cluster::getInstance()),
+    _wordEmbeddingsIndex(WordEmbeddings::getInstance()) {}
 
 /**
  * @brief Destroy the Index Manager:: Index Manager object
@@ -36,6 +37,7 @@ void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
         _invertedIndex.init(aControlBlock);
         _tieredIndex.init(aControlBlock);
         _clusteredIndex.init(aControlBlock);
+        _wordEmbeddingsIndex.init(aControlBlock);
         this->buildIndices(postinglist_out, tieredpostinglist_out, cluster_out, leaders);
         _init = true;
     }
@@ -44,21 +46,21 @@ void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
 void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplmap_mt* tieredpostinglist_out, cluster_mt* cluster_out,
                                 const sizet_vt& leaders) {
     str_int_mt idf_occs;
-    for (const auto & [ id, doc ] : *(_docs)) {
+    for (const auto& [id, doc] : *(_docs)) {
         str_int_mt tf_counts;
         str_float_mt tf_out;
         sizet_float_mt posting;
         const string_vt& con = doc.getContent();
         for (const std::string& term : con) {
             ++tf_counts[term];
-            if (postinglist_out->find(term) == postinglist_out->end()) {  // term not in map
-                posting[id] = 0;                                          // tf has to be set below
-                (*postinglist_out)[term] = PostingList(0, posting);       // idf has to be set below
+            if (postinglist_out->find(term) == postinglist_out->end()) { // term not in map
+                posting[id] = 0;                                         // tf has to be set below
+                (*postinglist_out)[term] = PostingList(0, posting);      // idf has to be set below
             }
         }
         int maxFreq = Utility::StringOp::getMaxWordFrequency(con);
-        for (const auto & [ term, count ] : tf_counts) {  // this loops through the distinct terms of this
-                                                          // document
+        for (const auto& [term, count] : tf_counts) { // this loops through the distinct terms of this
+                                                      // document
             tf_out[term] = Utility::IR::calcTf(count, maxFreq);
             (*postinglist_out)[term].setTf(id, tf_out.at(term));
             ++idf_occs[term];
@@ -66,7 +68,7 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
         _docs->at(id).setTermTfMap(tf_out);
     }
     const int N = _docs->size();
-    for (const auto & [ term, occ ] : idf_occs) {  // sizeof idf_occs == distinct_terms
+    for (const auto& [term, occ] : idf_occs) { // sizeof idf_occs == distinct_terms
         _idf_map[term] = Utility::IR::calcIdf(N, occ);
         (*postinglist_out)[term].setIdf(_idf_map[term]);
         (*tieredpostinglist_out)[term] = Utility::IR::calculateTiers(_cb->tiers(), (*postinglist_out)[term]);
