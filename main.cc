@@ -21,91 +21,29 @@ namespace fs = std::experimental::filesystem;
 // insert everything here what is not actually meant to be in main
 void test(const control_block_t& aControlBlock) {
     /* Example how to use Measurement class (also described in measure.hh) */
+    
+    Evaluation& e = Evaluation::getInstance();
 
-    // Measure lMeasure;
-    // if (aControlBlock.measure()) { lMeasure.start(); }
-    //// do processing
-    // lMeasure.stop();
-    // double lSeconds = lMeasure.mTotalTime();
-    // std::cout << "This print message is just used to prevent unused variable warnings. " << lSeconds << std::endl;
-
-    // DocumentManager& docManager = DocumentManager::getInstance();
-    // std::cout << "This print message is just used to prevent unused variable warnings. " << docManager.getNoDocuments() << std::endl;
-
-    // std::string text = "Let me split this into words";
-    // std::vector<std::string> results;
-
-    Evaluation::getInstance().start(kVANILLA, "Med1");
+    e.start(kVANILLA, "Med1");
 
     std::this_thread::sleep_for(std::chrono::seconds(3));
 
-    Evaluation::getInstance().stop();
+    e.stop();
 
-    Evaluation::getInstance().start(kTIERED, "Med2");
+    e.start(kTIERED, "Med2");
 
     std::this_thread::sleep_for(std::chrono::seconds(4));
 
-    Evaluation::getInstance().stop();
+    e.stop();
 
-    Evaluation::getInstance().start(kCLUSTER, "Med3");
+    e.start(kCLUSTER, "Med3");
 
     std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    Evaluation::getInstance().stop();
+    e.stop();
 
-    Evaluation::getInstance().constructJSON();
+    e.constructJSON();
 
-    /*Utility::StringOp::splitString(text, ' ', results);
-    for (auto t : results) {
-        std::cout << "Word: " << t << std::endl;
-    }*/
-
-    /*std::vector<double> doc_a = { 1, 3, 5, 8, 100, 100 };
-    std::vector<double> doc_b = { 2, 4, 5, 1, 2, 0 };
-
-    std::cout << similarity_measures::tf_idf(5.0, 10.0) << std::endl;
-
-    double euclid_sim = similarity_measures::calcEuclideanDistanceNormalized(doc_a, doc_b);
-    double cos_sim = similarity_measures::calcCosineSimilarity(doc_a, doc_b);
-
-    random_projection::createRandomMatrix(0, 1, true, 0.1, "gaussian");
-
-    std::cout << euclid_sim << std::endl;
-    std::cout << cos_sim << std::endl;
-    int dimension = 1;
-    std::cout << random_projection::dimension(dimension, 0.1) << std::endl;
-    std::cout << "Hello CMake" << std::endl;*/
-
-    // random_projection::createRandomMatrix(100, 500, true, 0.1, "gaussian");
-
-    /*std::vector<float> doc_a = Utility::generateRandomVector(10, 0, 1);
-    std::vector<float> doc_b = Utility::generateRandomVector(10, 0, 1);
-    std::vector<float> doc_c = Utility::generateRandomVector(10, 0, 1);
-
-    RandomProjection::getInstance().setDimensions(5);
-    RandomProjection::getInstance().setOrigVectorSize(doc_a.size());
-    RandomProjection::getInstance().initRandomVectors();
-
-    for (int j = 0; j < doc_a.size(); ++j) {
-        std::cout << doc_a[j] << ",";
-    }
-    std::cout << std::endl;
-    for (int j = 0; j < doc_b.size(); ++j) {
-        std::cout << doc_b[j] << ",";
-    }
-    std::cout << std::endl;
-    for (int j = 0; j < doc_c.size(); ++j) {
-        std::cout << doc_c[j] << ",";
-    }
-    std::cout << std::endl;
-    std::cout << "Dimension inside RandomProjection = " << RandomProjection::getInstance().getDimensions() << std::endl;
-
-    for (auto& elem : RandomProjection::getInstance().getRandomVectors()) {
-        for (auto& dimValue : elem) {
-            std::cout << dimValue << ",";
-        }
-        std::cout << std::endl;
-    }*/
 }
 
 void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
@@ -294,9 +232,9 @@ int main(const int argc, const char* argv[]) {
     Trace::getInstance().init(lCB);
     Evaluation::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
-    // test(lCB);
+     //test(lCB);
     // testNico();
-    testAlex(lArgs);
+    //testAlex(lArgs);
 
     /*std::vector<sizet_vt> vecs;
     sizet_vt out;
