@@ -210,10 +210,9 @@ class Evaluation
                  */
                 double nDCG(const std::string& aQueryID, const sizet_vt& aRanking, const bool aBDCG = true);
 
-            public:
-                inline const scores_vt& getQueryScores(const std::string& aQueryID){ return _queryScores.at(aQueryID); }
-
             private:
+                const scores_vt& getQueryScores(const std::string& aQueryID);
+                sizet_vt getRelevantDocIDs(const std::string& aQueryID);
                 uint getScore(const std::string& aQueryID, const std::string& aDocID);
 
             private:

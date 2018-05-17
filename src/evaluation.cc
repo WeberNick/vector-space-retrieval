@@ -26,22 +26,11 @@ void IRPM::init(const CB& aControlBlock)
 void IRPM::tp_tn_fp_fn(const std::string& aQueryID, const sizet_vt& aRanking, size_t& aTP, size_t& aTN, size_t& aFP, size_t& aFN)
 {
     const DocumentManager& lDocMngr = DocumentManager::getInstance();
-
     sizet_vt lDocIDs = lDocMngr.getIDs(); //ids of the doc collection
     sizet_vt lRetrieved = aRanking; //ids of the retrieved docs
     sizet_vt lNotRetrieved = Utility::VecUtil::difference(lDocIDs, lRetrieved); //ids of the not retrieved docs
-
-    const auto& lQueryScores = getQueryScores(aQueryID); //rel score objects for the query
-
-    sizet_vt lRelevant; //ids of the relevant docs
-    lRelevant.reserve(lQueryScores.size()); //reserve enough memory
-    //search for all doc IDs relevant
-    for(const auto& relScore : lQueryScores)
-    {
-        lRelevant.push_back(lDocMngr.getDocument(relScore.getDocumentID()).getID());    
-    }
+    sizet_vt lRelevant = getRelevantDocIDs(aQueryID); //ids of the relevant docs
     sizet_vt lNotRelevant = Utility::VecUtil::difference(lDocIDs, lRelevant); //ids of the not relevant docs
-
     aTP = Utility::VecUtil::intersectionCount(lRelevant, lRetrieved);
     aTN = Utility::VecUtil::intersectionCount(lNotRelevant, lNotRetrieved);
     aFP = Utility::VecUtil::intersectionCount(lNotRelevant, lRetrieved);
@@ -86,14 +75,7 @@ double IRPM::fMeasure(const std::string& aQueryID, const sizet_vt& aRanking, con
 
 double IRPM::avgPrecision(const std::string& aQueryID, const sizet_vt& aRanking)
 {
-    const auto& lQueryScores = getQueryScores(aQueryID); //rel score objects for the query
-    sizet_vt lRelevant; //ids of the relevant docs
-    lRelevant.reserve(lQueryScores.size()); //reserve enough memory
-    //search for all doc IDs relevant
-    for(const auto& relScore : lQueryScores)
-    {
-        lRelevant.push_back(DocumentManager::getInstance().getDocument(relScore.getDocumentID()).getID());    
-    }
+    sizet_vt lRelevant = getRelevantDocIDs(aQueryID); //ids of the relevant docs
     double lSum = 0;
     for(size_t id : lRelevant)
     {
@@ -104,7 +86,7 @@ double IRPM::avgPrecision(const std::string& aQueryID, const sizet_vt& aRanking)
             lSum += precision(aQueryID, lSub);
         }
     }
-    return lSum / 1; //todo
+    return lSum / lRelevant.size(); //todo
 }
 
 double IRPM::meanAvgPrecision(const std::unordered_map<std::string, double>& aAvgPrecisionMap)
@@ -157,6 +139,22 @@ double IRPM::nDCG(const std::string& aQueryID, const sizet_vt& aRanking, const b
 {
     double lDCG = (aBDCG) ? bDCG(aQueryID, aRanking) : rDCG(aQueryID, aRanking);
     return (lDCG / iDCG(aQueryID));
+}
+
+const IRPM::scores_vt& IRPM::getQueryScores(const std::string& aQueryID)
+{ 
+    return _queryScores.at(aQueryID); 
+}
+
+sizet_vt IRPM::getRelevantDocIDs(const std::string& aQueryID)
+{
+    const auto& lQueryScores = getQueryScores(aQueryID); 
+    sizet_vt lRelevantDocIDs;
+    lRelevantDocIDs.reserve(lQueryScores.size());
+    for(const auto& score : lQueryScores)
+    {
+        lRelevantDocIDs.push_back(DocumentManager::getInstance().getDocument(score.getDocumentID()).getID());
+    } 
 }
 
 uint IRPM::getScore(const std::string& aQueryID, const std::string& aDocID)
