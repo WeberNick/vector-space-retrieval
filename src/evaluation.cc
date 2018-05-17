@@ -244,14 +244,37 @@ void Evaluation::evalIR(const IR_MODE aMode, const std::string& aQueryName, cons
 
 void Evaluation::evalIR(const IR_MODE aMode, const std::string& aQueryName, const sizet_vt& aRanking)
 {
-    EvalResults& lER = _evalResults.at(modeToString(aMode));
+    const std::string lMode = modeToString(aMode);
+    EvalResults& lER = _evalResults.at(lMode);
+    std::string lTraceMsg = "";
+    const std::string lMsgEnd(std::string(" (query: '") + aQueryName + std::string("', mode: '") + lMode + std::string("')"));
     lER.setAccuracy(aQueryName, _irpm.accuracy(aQueryName, aRanking));
+    lTraceMsg = std::to_string(lER.getPerfAccuracy(aQueryName)) + std::string(" accuracy") + lMsgEnd;
+    TRACE(lTraceMsg);
+
     lER.setPrecision(aQueryName, _irpm.precision(aQueryName, aRanking));
+    lTraceMsg = std::to_string(lER.getPerfPrecision(aQueryName)) + std::string(" precision") + lMsgEnd;
+    TRACE(lTraceMsg);
+    
     lER.setRecall(aQueryName, _irpm.recall(aQueryName, aRanking));
+    lTraceMsg = std::to_string(lER.getPerfRecall(aQueryName)) + std::string(" recall") + lMsgEnd;
+    TRACE(lTraceMsg);
+    
     lER.setFMeasure(aQueryName, _irpm.fMeasure(aQueryName, aRanking));
+    lTraceMsg = std::to_string(lER.getPerfFMeasure(aQueryName)) + std::string(" F-Measure") + lMsgEnd;
+    TRACE(lTraceMsg);
+    
     lER.setAvgPrecision(aQueryName, _irpm.avgPrecision(aQueryName, aRanking));
+    lTraceMsg = std::to_string(lER.getPerfAvgPrecision(aQueryName)) + std::string(" avg. precision") + lMsgEnd;
+    TRACE(lTraceMsg);
+    
     lER.setDCG(aQueryName, _irpm.nDCG(aQueryName, aRanking));
+    lTraceMsg = std::to_string(lER.getPerfDCG(aQueryName)) + std::string(" nDCG") + lMsgEnd;
+    TRACE(lTraceMsg);
+    
     lER.setMAP(_irpm.meanAvgPrecision(lER.getPerfAvgPrecision()));
+    lTraceMsg = std::to_string(lER.getPerfMAP()) + std::string(" MAP (mode: '") + lMode + std::string("')");
+    TRACE(lTraceMsg);
 }
 
 void Evaluation::constructJSON()

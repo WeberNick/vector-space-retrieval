@@ -256,13 +256,28 @@ class Evaluation
             public:
                 //getter
                 inline const query_rtp_mt& getPerfRuntime() const { return _perfRuntime; }
+                inline double getPerfRuntime(const std::string& aQueryID) const { return getPerfRuntime().at(aQueryID); }
+                inline double getPerfRuntime(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfRuntime(aQueryID); }
                 inline const query_acc_mt& getPerfAccuracy() const { return _perfAccuracy; }
+                inline double getPerfAccuracy(const std::string& aQueryID) const { return getPerfAccuracy().at(aQueryID); }
+                inline double getPerfAccuracy(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfAccuracy(aQueryID);}
                 inline const query_pre_mt& getPerfPrecision() const { return _perfPrecision; }
+                inline double getPerfPrecision(const std::string& aQueryID) const { return getPerfPrecision().at(aQueryID); }
+                inline double getPerfPrecision(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfPrecision(aQueryID);}
                 inline const query_rec_mt& getPerfRecall() const { return _perfRecall; }
+                inline double getPerfRecall(const std::string& aQueryID) const { return getPerfRecall().at(aQueryID); }
+                inline double getPerfRecall(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfRecall(aQueryID);}
                 inline const query_fms_mt& getPerfFMeasure() const { return _perfFmeasure; }
+                inline double getPerfFMeasure(const std::string& aQueryID) const { return getPerfFMeasure().at(aQueryID); }
+                inline double getPerfFMeasure(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfFMeasure(aQueryID);}
                 inline const query_apr_mt& getPerfAvgPrecision() const { return _perfAvgPrecision; }
+                inline double getPerfAvgPrecision(const std::string& aQueryID) const { return getPerfAvgPrecision().at(aQueryID); }
+                inline double getPerfAvgPrecision(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfAvgPrecision(aQueryID);}
                 inline const query_dcg_mt& getPerfDCG() const { return _perfDCG; }
-                inline double              getPerfMAP() const { return _perfMAP; }
+                inline double getPerfDCG(const std::string& aQueryID) const { return getPerfDCG().at(aQueryID); }
+                inline double getPerfDCG(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfDCG(aQueryID);}
+                inline double getPerfMAP() const { return _perfMAP; }
+                inline double getPerfMAP() { return static_cast<const EvalResults&>(*this).getPerfMAP();}
                 //setter
                 inline void init(const std::string& aMode){if(_mode==""){_mode=aMode;}}
                 inline void setTime(const std::string& aQueryName, const double aTime)
