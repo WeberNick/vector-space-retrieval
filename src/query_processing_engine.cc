@@ -170,7 +170,7 @@ const pair_sizet_float_vt QueryProcessingEngine::searchRandomProjCos(const Docum
 
     for (auto& elem : collectionIds) {
         docId2Scores[elem] =
-            Utility::SimilarityMeasures::calcHammingDist(query->getRandProjVec(), DocumentManager::getInstance().getDocumentMap().at(elem).getRandProjVec());
+            Utility::SimilarityMeasures::calcHammingDist(query->getRandProjTiVec(), DocumentManager::getInstance().getDocumentMap().at(elem).getRandProjTiVec());
     }
 
     // Convert map into vector of pairs

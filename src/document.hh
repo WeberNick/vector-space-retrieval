@@ -160,7 +160,9 @@ class Document {
      *
      * @param rand_proj
      */
-    inline void setRandProjVec(const boost::dynamic_bitset<>& rand_proj) { _rand_proj_ti_vec = rand_proj; }
+    inline void setRandProjTiVec(const boost::dynamic_bitset<>& rand_proj) { _rand_proj_ti_vec = rand_proj; }
+
+  inline void setRandProjWeVec(const boost::dynamic_bitset<>& rand_proj) { _rand_proj_we_vec = rand_proj; }
 
     /**
      * @brief Override operator<< for pretty printing a Document object

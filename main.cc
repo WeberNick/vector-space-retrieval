@@ -200,57 +200,59 @@ void testAlex(Args& lArgs) {
                                             lArgs.tiers(),
                                             lArgs.dimensions()};
 
+    Measure lMeasureIndexing;
+    lMeasureIndexing.start();
 
-   Measure lMeasureIndexing;
-   lMeasureIndexing.start();
+    DocumentManager& docManager = DocumentManager::getInstance();
+    docManager.init(aControlBlock);
 
-   DocumentManager& docManager = DocumentManager::getInstance();
-   docManager.init(aControlBlock);
+    doc_mt& docMap = docManager.getDocumentMap();
 
-   doc_mt& docMap = docManager.getDocumentMap();
+    IndexManager& imInstance = IndexManager::getInstance();
+    imInstance.init(aControlBlock, docMap);
 
-   IndexManager& imInstance = IndexManager::getInstance();
-   imInstance.init(aControlBlock, docMap);
-
-   const TieredIndex& ti = imInstance.getTieredIndex();
-   std::cout << ti << std::endl;
-
-   lMeasureIndexing.stop();
-   double lSeconds = lMeasureIndexing.mTotalTime();
-  std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
-
+    lMeasureIndexing.stop();
+    double lSeconds = lMeasureIndexing.mTotalTime();
+    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
 
     std::cout << "number of embeddings: " << imInstance.getWordEmbeddingsIndex().getNoWordEmbeddings() << std::endl;
 
-    std::string word = "the";
+    float_vt result;
+    result.resize(300);
+    string_vt content = {"the", "to"};
+
+    imInstance.getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, result);
+
+
+    std::cout << result.size() << std::endl;
+
+    for (auto& elem : result) {
+        std::cout << elem << ",";
+    }
+    std::cout << std::endl;
+
+    /*std::string word = "the";
 
     for(auto& elem: imInstance.getWordEmbeddingsIndex().getWordEmbeddings(word)) {
         std::cout << elem  << ",";
     }
     std::cout << std::endl;
 
-    std::cout << imInstance.getWordEmbeddingsIndex().getWordEmbeddings(word).size() << std::endl;
+    std::cout << imInstance.getWordEmbeddingsIndex().getWordEmbeddings(word).size() << std::endl;*/
 
+    //
 
+    /*QueryProcessingEngine::getInstance().init(aControlBlock);
 
-   //
+    std::cout << "[Ready]" << std::endl;
 
-   /*QueryProcessingEngine::getInstance().init(aControlBlock);
+    // search("Why breast cancer", 10, IR_MODE::kCLUSTER);
 
-   std::cout << "[Ready]" << std::endl;
-
-   // search("Why breast cancer", 10, IR_MODE::kCLUSTER);
-
-   while (true) {
-       json j;
-       std::cin >> j;
-       search(j["query"].get<std::string>(), j["topK"].get<size_t>(), stringToMode(j["mode"].get<std::string>()), j["lsh"].get<bool>());
-   }*/
-
-
-
-
-
+    while (true) {
+        json j;
+        std::cin >> j;
+        search(j["query"].get<std::string>(), j["topK"].get<size_t>(), stringToMode(j["mode"].get<std::string>()), j["lsh"].get<bool>());
+    }*/
 }
 
 /**

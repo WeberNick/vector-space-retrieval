@@ -96,6 +96,7 @@ class IndexManager {
      */
     void buildTfIdfVector(Document& doc);
     void buildRandProjVector(Document& doc);
+    void buildWordEmbeddingsVector(Document& doc);
 
     /**
      * @brief Get the IndexManager Singleton instance.

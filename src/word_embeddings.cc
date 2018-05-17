@@ -12,11 +12,7 @@ WordEmbeddings::WordEmbeddings() :
  * @brief Destroy the  WordEmbeddingsManager object
  *
  */
-WordEmbeddings::~WordEmbeddings() {
-  delete _wordEmbeddings;
-}
-
-
+WordEmbeddings::~WordEmbeddings() { delete _wordEmbeddings; }
 
 void WordEmbeddings::init(const control_block_t& aControlBlock) {
     if (!_init) {
@@ -27,7 +23,7 @@ void WordEmbeddings::init(const control_block_t& aControlBlock) {
     }
 }
 
-void WordEmbeddings::read(const std::string &aFile) {
+void WordEmbeddings::read(const std::string& aFile) {
     std::ifstream file(aFile);
     std::string line;
     while (std::getline(file, line)) {
@@ -37,18 +33,28 @@ void WordEmbeddings::read(const std::string &aFile) {
         std::string word = parts[0];
         for (size_t j = 1; j < parts.size(); ++j) {
             embedding.push_back(stof(parts[j]));
-
         }
         this->insert(std::make_pair(word, embedding));
     }
-
 }
 
 bool WordEmbeddings::insert(const word_embedding_map_elem_t& aElement) { return (*_wordEmbeddings).insert(aElement).second; }
 
-float_vt& WordEmbeddings::getWordEmbeddings(std::string &word) {
-  if ((*_wordEmbeddings).find(word) != (*_wordEmbeddings).end())
-    return (*_wordEmbeddings).at(word);
-  else
-    throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "This term does not appear in the word embeddings collection.");
+float_vt& WordEmbeddings::getWordEmbeddings(const std::string& word) {
+    if ((*_wordEmbeddings).find(word) != (*_wordEmbeddings).end())
+        return (*_wordEmbeddings).at(word);
+    else
+        throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "This term does not appear in the word embeddings collection.");
+}
+
+void WordEmbeddings::calcWordEmbeddingsVector(const string_vt& doc_content, float_vt& out) {
+    int count = 0;
+    for (auto& word : doc_content) {
+        try {
+            float_vt& wordEmbeddings = WordEmbeddings::getInstance().getWordEmbeddings(word);
+            std::transform(out.begin(), out.end(), wordEmbeddings.begin(), out.begin(), std::plus<float>());
+            count++;
+        } catch (InvalidArgumentException e) { std::cout << e.what() << std::endl; }
+    }
+    std::transform(out.begin(), out.end(), out.begin(), [count](float i){return i/count;});
 }

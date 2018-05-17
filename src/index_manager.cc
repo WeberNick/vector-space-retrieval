@@ -90,10 +90,10 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
 void IndexManager::buildWordEmbeddingsVector(Document& doc) {
     float_vt& wevec = doc.getWordEmbeddingsVector();
     wevec.reserve(300);
-    string_vt& content = doc.getContent();
+    const string_vt& content = doc.getContent();
     //TODO
     // test make_unique
-    Utility::IR::calcWordEmbeddingsVector(content, wevec);
+    this->getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, wevec);
     doc.setWordEmbeddingsVector(wevec);
 }
 
@@ -114,6 +114,7 @@ void IndexManager::buildTfIdfVector(Document& doc) {
 void IndexManager::buildRandProjVector(Document& doc) {
     const boost::dynamic_bitset<>& rand_proj_ti = RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(), Utility::randomProjectionHash);
     doc.setRandProjTiVec(rand_proj_ti);
-    const boost::dynamic_bitset<>& rand_proj_we = RandomProjection::getInstance().localitySensitiveHashProjection(doc.getWordEmbeddingsVector(), Utility::randomProjectionHash);
-    doc.setRandProjWeVec(rand_proj_we);
+    //TODO das geht nicht so einfach, weil wir vorher ja die dimension setzen
+    //const boost::dynamic_bitset<>& rand_proj_we = RandomProjection::getInstance().localitySensitiveHashProjection(doc.getWordEmbeddingsVector(), Utility::randomProjectionHash);
+    //doc.setRandProjWeVec(rand_proj_we);
 }
