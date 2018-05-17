@@ -4,7 +4,7 @@
  *	@brief  The document manager handles everything regarding the document collection. It parses the
  *          document collection and creates a document map
  *	@bugs 	Currently no bugs known
- *	@todos	Write DESCRIPTION
+ *	@todos	Write DESCRIPTION, implement a datastructure with mapping from doc string id to doc size_t id
  *
  *	@section DESCRIPTION
  *	TODO
@@ -13,6 +13,7 @@
 
 #include "document.hh"
 #include "exception.hh"
+#include "trace.hh"
 #include "types.hh"
 
 #include <fstream>
@@ -93,7 +94,8 @@ class DocumentManager {
      *
      * @return sizet_vt& the ids
      */
-    inline sizet_vt& getIDs() { return _docids; }
+    inline const sizet_vt& getIDs() const { return _docids; }
+    inline sizet_vt& getIDs() { return const_cast<sizet_vt &>(static_cast<const DocumentManager&>(*this).getIDs()); }
 
     /**
      * @brief Creates a preprocessed document query out of a string
@@ -109,7 +111,19 @@ class DocumentManager {
      * @param aDocID the id of the document
      * @return Document& the document with id aDocID
      */
-    Document& getDocument(size_t aDocID);
+    inline const Document& getDocument(size_t aDocID) const 
+    { 
+        try{ return _docs.at(aDocID); }
+        catch(const std::out_of_range& ex)
+        { 
+            const std::string lErrMsg("This docID does not appear in the document collection.");
+            TRACE(lErrMsg);
+            throw InvalidArgumentException(FLF, lErrMsg);
+        }
+    }
+    inline const Document& getDocument(size_t aDocID) { return static_cast<const DocumentManager&>(*this).getDocument(aDocID); }
+    inline const Document& getDocument(const std::string& aDocID) const { return getDocument(0); } //@Nico implement this
+    inline const Document& getDocument(const std::string& aDocID) { return static_cast<const DocumentManager&>(*this).getDocument(aDocID); }
 
     /**
      * @brief Get the Instance object

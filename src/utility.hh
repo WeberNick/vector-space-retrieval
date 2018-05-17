@@ -5,9 +5,11 @@
  *          Namespace Nesting:
  *
  *          namespace Utility {
+ *              
  *              namespace StringOp { ... }
  *              namespace IR { ... }
  *              namespace SimilarityMeasures { ... }
+ *              namespace VecUtil { ... }
  *          }
  *
  *	@bugs 	Currently no bugs known
@@ -18,6 +20,7 @@
  */
 #pragma once
 
+#include "types.hh"
 #include "document_manager.hh"
 #include "exception.hh"
 #include "posting_list.hh"
@@ -800,4 +803,24 @@ namespace Utility {
         }
 
     } // namespace SimilarityMeasures
+    namespace VecUtil{
+        inline sizet_vt difference(sizet_vt& v1, sizet_vt& v2)
+        {
+            sizet_vt lDifference;
+            std::sort(v1.begin(), v1.end());
+            std::sort(v2.begin(), v2.end());
+            std::set_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), std::inserter(lDifference, lDifference.begin())); 
+            return lDifference;
+        }
+
+
+        inline size_t intersectionCount(sizet_vt& v1, sizet_vt& v2)
+        {
+            sizet_vt lIntersection;
+            std::sort(v1.begin(), v1.end());
+            std::sort(v2.begin(), v2.end());
+            std::set_intersection(v1.begin(), v1.end(), v2.begin(), v2.end(), std::inserter(lIntersection, lIntersection.begin()));
+            return lIntersection.size();
+        }
+    } //namespace VecUtil
 } // namespace Utility

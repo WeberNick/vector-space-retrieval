@@ -51,12 +51,6 @@ void DocumentManager::erase(const size_t aKey) { _docs.erase(aKey); }
 
 void DocumentManager::erase(const doc_map_iter_t aIterator) { _docs.erase(aIterator); }
 
-Document& DocumentManager::getDocument(size_t aDocID) {
-    if (_docs.find(aDocID) != _docs.end())
-        return _docs.at(aDocID);
-    else
-        throw InvalidArgumentException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "This docID does not appear in the document collection.");
-}
 
 Document DocumentManager::createQueryDoc(std::string& query) {
    query = Utility::StringOp::toLower(query);

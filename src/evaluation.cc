@@ -1,15 +1,11 @@
 #include "evaluation.hh"
 #include "utility.hh"
 
-Evaluation::IR_PerformanceManager::RelScore::RelScore(const std::string& aQueryID, const std::string& aDocID, const uint aScore) :
-    _qID(aQueryID), _dID(aDocID), _score(aScore)
-{}
-
-Evaluation::IR_PerformanceManager::IR_PerformanceManager() : 
+IRPM::IR_PerformanceManager() : 
     _queryScores(), _cb(nullptr)
 {}
                 
-void Evaluation::IR_PerformanceManager::init(const CB& aControlBlock)
+void IRPM::init(const CB& aControlBlock)
 {
     if(!_cb)
     {
@@ -27,40 +23,124 @@ void Evaluation::IR_PerformanceManager::init(const CB& aControlBlock)
     }
 }
 
-uint Evaluation::IR_PerformanceManager::getScore(const std::string& aQueryID, const std::string& aDocID)
+void IRPM::tp_tn_fp_fn(const std::string& aQueryID, const sizet_vt& aRanking, size_t& aTP, size_t& aTN, size_t& aFP, size_t& aFN)
 {
-    const scores_vt& lRelScores = getQueryScores(aQueryID);
-    for(const RelScore& relScore : lRelScores)
+    const DocumentManager& lDocMngr = DocumentManager::getInstance();
+
+    sizet_vt lDocIDs = lDocMngr.getIDs(); //ids of the doc collection
+    sizet_vt lRetrieved = aRanking; //ids of the retrieved docs
+    sizet_vt lNotRetrieved = Utility::VecUtil::difference(lDocIDs, lRetrieved); //ids of the not retrieved docs
+
+    const auto& lQueryScores = getQueryScores(aQueryID); //rel score objects for the query
+
+    sizet_vt lRelevant; //ids of the relevant docs
+    lRelevant.reserve(lQueryScores.size()); //reserve enough memory
+    //search for all doc IDs relevant
+    for(const auto& relScore : lQueryScores)
     {
-        if(relScore.getDocumentID() == aDocID){ return relScore.getScore(); } 
+        lRelevant.push_back(lDocMngr.getDocument(relScore.getDocumentID()).getID());    
     }
-    return 0;
+    sizet_vt lNotRelevant = Utility::VecUtil::difference(lDocIDs, lRelevant); //ids of the not relevant docs
+
+    aTP = Utility::VecUtil::intersectionCount(lRelevant, lRetrieved);
+    aTN = Utility::VecUtil::intersectionCount(lNotRelevant, lNotRetrieved);
+    aFP = Utility::VecUtil::intersectionCount(lNotRelevant, lRetrieved);
+    aFN = Utility::VecUtil::intersectionCount(lRelevant, lNotRetrieved);
+}
+    
+double IRPM::accuracy(const std::string& aQueryID, const sizet_vt& aRanking)
+{
+    size_t lTP = 0, lTN = 0, lFP = 0, lFN = 0;
+    tp_tn_fp_fn(aQueryID, aRanking, lTP, lTN, lFP, lFN);
+    const double lNumerator = static_cast<double>(lTP) + static_cast<double>(lTN);
+    const double lDenominator = lNumerator + static_cast<double>(lFP) + static_cast<double>(lFN);
+    return lNumerator / lDenominator;
 }
 
-double Evaluation::IR_PerformanceManager::bDCG(const std::string& aQueryID, const pair_sizet_float_vt& aRanking)
+double IRPM::precision(const std::string& aQueryID, const sizet_vt& aRanking)
+{
+    size_t lTP = 0, lTN = 0, lFP = 0, lFN = 0;
+    tp_tn_fp_fn(aQueryID, aRanking, lTP, lTN, lFP, lFN);
+    const double lNumerator = static_cast<double>(lTP);
+    const double lDenominator = lNumerator + static_cast<double>(lFP);
+    return lNumerator / lDenominator;
+}
+
+double IRPM::recall(const std::string& aQueryID, const sizet_vt& aRanking)
+{
+    size_t lTP = 0, lTN = 0, lFP = 0, lFN = 0;
+    tp_tn_fp_fn(aQueryID, aRanking, lTP, lTN, lFP, lFN);
+    const double lNumerator = static_cast<double>(lTP);
+    const double lDenominator = lNumerator + static_cast<double>(lFN);
+    return lNumerator / lDenominator;
+}
+
+double IRPM::fMeasure(const std::string& aQueryID, const sizet_vt& aRanking, const double aBeta)
+{
+    const double lPrecision = precision(aQueryID, aRanking);
+    const double lRecall = recall(aQueryID, aRanking);
+    const double lNumerator = (std::pow(aBeta, 2) + 1) * lPrecision * lRecall; 
+    const double lDenominator = (std::pow(aBeta, 2) * lPrecision) + lRecall;
+    return lNumerator / lDenominator;
+}
+
+double IRPM::avgPrecision(const std::string& aQueryID, const sizet_vt& aRanking)
+{
+    const auto& lQueryScores = getQueryScores(aQueryID); //rel score objects for the query
+    sizet_vt lRelevant; //ids of the relevant docs
+    lRelevant.reserve(lQueryScores.size()); //reserve enough memory
+    //search for all doc IDs relevant
+    for(const auto& relScore : lQueryScores)
+    {
+        lRelevant.push_back(DocumentManager::getInstance().getDocument(relScore.getDocumentID()).getID());    
+    }
+    double lSum = 0;
+    for(size_t id : lRelevant)
+    {
+        size_t pos = std::distance(aRanking.cbegin(), std::find(aRanking.cbegin(), aRanking.cend(), id));
+        if(pos < aRanking.size()) //found
+        {
+            const sizet_vt lSub(aRanking.cbegin(), aRanking.cbegin() + pos);
+            lSum += precision(aQueryID, lSub);
+        }
+    }
+    return lSum / 1; //todo
+}
+
+double IRPM::meanAvgPrecision(const std::unordered_map<std::string, double>& aAvgPrecisionMap)
+{
+    double lSum = 0;
+    for(const auto& elem : aAvgPrecisionMap)
+    {
+        lSum += elem.second;
+    }
+    return lSum / aAvgPrecisionMap.size();
+}
+
+double IRPM::bDCG(const std::string& aQueryID, const sizet_vt& aRanking)
 {    
     double lSum = 0;
     for(size_t i = 0; i < aRanking.size(); ++i)
     {
-        const uint lScore = getScore(aQueryID, DocumentManager::getInstance().getDocument(aRanking[i].first).getDocID());
+        const uint lScore = getScore(aQueryID, DocumentManager::getInstance().getDocument(aRanking[i]).getDocID());
         lSum += (lScore / std::log2(i + 1));
     }
     return lSum;
 }
 
-double Evaluation::IR_PerformanceManager::rDCG(const std::string& aQueryID, const pair_sizet_float_vt& aRanking)
+double IRPM::rDCG(const std::string& aQueryID, const sizet_vt& aRanking)
 {
     double lSum = 0;
     for(size_t i = 0; i < aRanking.size(); ++i)
     {
-        const uint lScore = getScore(aQueryID, DocumentManager::getInstance().getDocument(aRanking[i].first).getDocID());
+        const uint lScore = getScore(aQueryID, DocumentManager::getInstance().getDocument(aRanking[i]).getDocID());
         const double lNumerator = std::pow(2, lScore) - 1;
         lSum += (lNumerator / std::log2(i + 1));
     }
     return lSum;
 }
 
-double Evaluation::IR_PerformanceManager::iDCG(const std::string& aQueryID)
+double IRPM::iDCG(const std::string& aQueryID)
 {
     const scores_vt& lRelScores = getQueryScores(aQueryID);
     double lSum = 0;
@@ -73,15 +153,21 @@ double Evaluation::IR_PerformanceManager::iDCG(const std::string& aQueryID)
     return lSum;
 }
 
-double Evaluation::IR_PerformanceManager::nDCG(const std::string& aQueryID, const pair_sizet_float_vt& aRanking, const bool aBDCG = true)
+double IRPM::nDCG(const std::string& aQueryID, const sizet_vt& aRanking, const bool aBDCG)
 {
     double lDCG = (aBDCG) ? bDCG(aQueryID, aRanking) : rDCG(aQueryID, aRanking);
     return (lDCG / iDCG(aQueryID));
 }
 
-Evaluation::EvalResults::EvalResults() :
-    _mode(""), _perfRT(), _perfIR()
-{}
+uint IRPM::getScore(const std::string& aQueryID, const std::string& aDocID)
+{
+    const scores_vt& lRelScores = getQueryScores(aQueryID);
+    for(const RelScore& relScore : lRelScores)
+    {
+        if(relScore.getDocumentID() == aDocID){ return relScore.getScore(); } 
+    }
+    return 0;
+}
 
 Evaluation::Evaluation() : 
     _irpm(IR_PerformanceManager::getInstance()), 
@@ -145,10 +231,23 @@ void Evaluation::stop()
     }
 }
 
-void Evaluation::evalIR(const IR_MODE aMode, const std::string& aQueryName, const std::vector<std::pair<size_t, float>>& aRanking)
+void Evaluation::evalIR(const IR_MODE aMode, const std::string& aQueryName, const pair_sizet_float_vt& aRanking)
 {
-    //todo: compare query results with gold standard
-   
+    sizet_vt lRanking;
+    lRanking.reserve(aRanking.size());
+    //convert pair vector to ID only vector
+    for(const auto& elem : aRanking)
+    {
+        lRanking.push_back(elem.first);
+    }
+    EvalResults& lER = _evalResults.at(modeToString(aMode));
+    lER.setAccuracy(aQueryName, _irpm.accuracy(aQueryName, lRanking));
+    lER.setPrecision(aQueryName, _irpm.precision(aQueryName, lRanking));
+    lER.setRecall(aQueryName, _irpm.recall(aQueryName, lRanking));
+    lER.setFMeasure(aQueryName, _irpm.fMeasure(aQueryName, lRanking));
+    lER.setAvgPrecision(aQueryName, _irpm.avgPrecision(aQueryName, lRanking));
+    lER.setDCG(aQueryName, _irpm.nDCG(aQueryName, lRanking));
+    lER.setMAP(_irpm.meanAvgPrecision(lER.getPerfAvgPrecision()));
 }
 
 void Evaluation::constructJSON()
@@ -159,9 +258,14 @@ void Evaluation::constructJSON()
         json lMode = json::object();
         lMode["name"] = mode;
         json lQueryResults = json::array();
-        const auto& lPerfRT = results.getPerfRT(); 
-        const auto& lPerfIR = results.getPerfIR(); 
-        for(const auto& [query, time] : lPerfRT)
+        const auto& lPerfRuntime = results.getPerfRuntime(); 
+        const auto& lPerfAccuracy = results.getPerfAccuracy(); 
+        const auto& lPerfPrecision = results.getPerfPrecision(); 
+        const auto& lPerfRecall = results.getPerfRecall(); 
+        const auto& lPerfFMeasure = results.getPerfFMeasure(); 
+        const auto& lPerfAvgPrecision = results.getPerfAvgPrecision(); 
+        const auto& lPerfDCG = results.getPerfDCG(); 
+        for(const auto& [query, time] : lPerfRuntime)
         {
             json lQuery = json::object();
             lQuery["name"] = query;
