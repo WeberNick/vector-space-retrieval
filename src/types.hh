@@ -52,6 +52,7 @@ struct control_block_t {
     bool measure() const { return _measure; }
     bool plot() const { return _plot; }
     const std::string& collectionPath() const { return _collectionPath; }
+    const std::string& relevanceScoresPath() const { return _relScoresPath; }
     const std::string& tracePath() const { return _tracePath; }
     const std::string& evalPath() const { return _evalPath; }
     const std::string& stopwordFile() const { return _stopwordFile; }
@@ -62,16 +63,38 @@ struct control_block_t {
 };
 using CB = control_block_t;
 
-enum IR_MODE { kNoMode = -1, kVANILLA = 0, kTIERED = 1, kCLUSTER = 2, kRANDOM = 3, kNumberOfModes = 4 };
+enum IR_MODE {
+    kNoMode = -1,
+    kVANILLA = 0,
+    kTIERED = 1,
+    kTIEREDW2V = 2,
+    kCLUSTER = 3,
+    kCLUSTERW2V = 4,
+    kRANDOM = 5,
+    kRANDOMW2V = 6,
+    kNumberOfModes = 7
+};
 
 inline std::string modeToString(IR_MODE aMode) {
     switch (aMode) {
-    case -1: return "Invalid!"; break;        // not needed but used for convention
-    case 0: return "VanillaVSM"; break;       // not needed but used for convention
-    case 1: return "TieredIndex"; break;      // not needed but used for convention
-    case 2: return "Cluster"; break;          // not needed but used for convention
-    case 3: return "RandomProjection"; break; // not needed but used for convention
-    default: return "Mode not supported"; break;
+        case kNoMode:
+            return "Invalid!"; break;        // not needed but used for convention
+        case kVANILLA: 
+            return "VanillaVSM"; break;       // not needed but used for convention
+        case kTIERED: 
+            return "TieredIndex"; break;      // not needed but used for convention
+        case kTIEREDW2V: 
+            return "TieredIndexW2V"; break;      // not needed but used for convention
+        case kCLUSTER: 
+            return "Cluster"; break;          // not needed but used for convention
+        case kCLUSTERW2V: 
+            return "ClusterW2V"; break;          // not needed but used for convention
+        case kRANDOM: 
+            return "RandomProjection"; break; // not needed but used for convention
+        case kRANDOMW2V: 
+            return "RandomProjectionW2V"; break; // not needed but used for convention
+        default:
+            return "Mode not supported"; break;
     }
 }
 

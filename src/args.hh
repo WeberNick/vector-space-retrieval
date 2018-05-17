@@ -3,7 +3,7 @@
  *	@author	Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de)
  *	@brief	Implementation of command line arguements
  *	@bugs 	Currently no bugs known
- *	@todos	Currently no todos
+ *	@todos  Assign correct default paths in .cc to collection/relScores etc,,	
  *
  *	@section DESCRIPTION
  *	        This class implements the command line arguements. A command line arguement has the form:
@@ -41,7 +41,7 @@ class Args {
     Args(Args&&) = delete;
     Args& operator=(const Args&) = delete;
     Args& operator=(Args&&) = delete;
-    ~Args();
+    ~Args() = default;
 
   public:
     inline bool help() { return _help; }
@@ -58,6 +58,9 @@ class Args {
 
     inline const std::string& collectionPath() { return _collectionPath; }
     inline void collectionPath(const std::string& x) { _collectionPath = x; }
+
+    inline const std::string& relevanceScoresPath() { return _relScoresPath; }
+    inline void relevanceScoresPath(const std::string& x) { _relScoresPath = x; }
 
     inline const std::string& stopwordPath() { return _stopwordPath; }
     inline void stopwordPath(const std::string& x) { _stopwordPath = x; }
@@ -87,6 +90,7 @@ class Args {
     bool _plot;
 
     std::string _collectionPath;
+    std::string _relScoresPath;
     std::string _stopwordPath;
     std::string _tracePath;
     std::string _evalPath;
