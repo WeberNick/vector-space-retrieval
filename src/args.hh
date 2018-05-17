@@ -71,6 +71,9 @@ class Args {
     inline const std::string& evalPath() { return _evalPath; }
     inline void evalPath(const std::string& x) { _evalPath = x; }
 
+    inline const std::string& wordEmeddingsPath() { return _wordEmeddingsPath; }
+    inline void wordEmeddingsPath(const std::string& x) { _wordEmeddingsPath = x; }
+
     inline uint results() { return _results; }
     inline void results(const uint& x) { _results = x; }
 
@@ -91,6 +94,7 @@ class Args {
     std::string _stopwordPath;
     std::string _tracePath;
     std::string _evalPath;
+    std::string _wordEmeddingsPath;
 
     uint _results;
     uint _tiers;

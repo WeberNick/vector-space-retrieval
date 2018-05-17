@@ -18,6 +18,7 @@
 #include "utility.hh"
 #include "random_projection.hh"
 #include "types.hh"
+#include "word_embeddings.hh"
 
 class IndexManager {
   private:
@@ -81,6 +82,12 @@ class IndexManager {
      * @return const Cluster& the clustered index
      */
     inline Cluster& getClusteredIndex() { return _clusteredIndex; }
+  /**
+   * @brief Get the word embeddings index objectt
+   *
+   * @return const WordEmbeddings& the word embeddings index
+   */
+  inline WordEmbeddings& getWordEmbeddingsIndex() { return _wordEmbeddingsIndex; }
 
     //TODO docs
     /**
@@ -89,6 +96,7 @@ class IndexManager {
      */
     void buildTfIdfVector(Document& doc);
     void buildRandProjVector(Document& doc);
+    void buildWordEmbeddingsVector(Document& doc);
 
     /**
      * @brief Get the IndexManager Singleton instance.
@@ -117,4 +125,6 @@ class IndexManager {
     InvertedIndex& _invertedIndex;
     TieredIndex& _tieredIndex;
     Cluster& _clusteredIndex;
+    WordEmbeddings& _wordEmbeddingsIndex;
+
 };

@@ -19,6 +19,7 @@ void construct_arg_desc(argdesc_vt& x) {
     x.push_back(new sarg_t("--trace-path", "./", &Args::tracePath, "path to the log directory. relative path from repo root directory or absolute path possible"));
     x.push_back(new sarg_t("--eval-path", "./", &Args::evalPath, "path to the evaluation directory. relative path from repo root directory or absolute path possible"));
     x.push_back(new sarg_t("--stopword-path", "./data/", &Args::stopwordPath, "path to the data directory. relative path from repo root directory or absolute path possible"));
+    x.push_back(new sarg_t("--word_embeddings-path", "./data/", &Args::wordEmeddingsPath, "path to the data directory. relative path from repo root directory or absolute path possible"));
 
     x.push_back(new uarg_t("--results", 10, &Args::results, "the maximum number of results a query shall return"));
     x.push_back(new uarg_t("--tiers", 0, &Args::tiers, "the number of tiers used for the tiered index. TODO: assign appropriate default value"));

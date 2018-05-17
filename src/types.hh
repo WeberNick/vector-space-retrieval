@@ -13,11 +13,10 @@
 #include <cstddef>
 #include <cstdint>
 #include <iostream>
-#include <string>
 #include <map>
-#include <vector>
 #include <set>
-#include <utility>
+#include <string>
+#include <vector>
 
 using size_t = std::size_t;
 using byte = std::byte;
@@ -39,11 +38,11 @@ struct control_block_t {
     const bool _measure; // indicate if measurement is activated
     const bool _plot;    // indicate if tracing/(error) messages shall be printed (cout)
 
-    const std::string _collectionPath; // the path to the document collection
-    const std::string _relScoresPath;  // the path to the relevance scores
-    const std::string _tracePath;      // the path to the trace logs
-    const std::string _evalPath;       // the path to the evaluation file
-    const std::string _stopwordFile;   // the path to the stopword file
+    const std::string _collectionPath;     // the path to the document collection
+    const std::string _tracePath;          // the path to the trace logs
+    const std::string _evalPath;           // the path to the evaluation
+    const std::string _stopwordFile;       // the path to the stopword file
+    const std::string _wordEmbeddingsFile; // the path to the word embeddings file
 
     const uint _noResults;    // the number of results to return for each query
     const uint _noTiers;      // number of tiers for the tiered index
@@ -57,6 +56,7 @@ struct control_block_t {
     const std::string& tracePath() const { return _tracePath; }
     const std::string& evalPath() const { return _evalPath; }
     const std::string& stopwordFile() const { return _stopwordFile; }
+  const std::string& wordEmbeddingsFile() const { return _wordEmbeddingsFile; }
     uint results() const { return _noResults; }
     uint tiers() const { return _noTiers; }
     uint dimensions() const { return _noDimensions; }

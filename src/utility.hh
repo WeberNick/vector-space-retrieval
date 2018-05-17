@@ -24,6 +24,7 @@
 #include "document_manager.hh"
 #include "exception.hh"
 #include "posting_list.hh"
+#include "word_embeddings.hh"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
@@ -614,7 +615,6 @@ namespace Utility {
             std::sort(out.begin(), out.end(), [](const size_t a, const size_t b){ return a < b; }); // asc
             out.erase(std::unique(out.begin(), out.end()), out.end());
         }
-        
     } // namespace IR
 
     /**
