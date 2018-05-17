@@ -14,6 +14,7 @@
 #include <cstdint>
 #include <iostream>
 #include <map>
+#include <unordered_map>
 #include <set>
 #include <string>
 #include <vector>
@@ -28,6 +29,7 @@ using sizet_vt = std::vector<size_t>;
 using string_vt = std::vector<std::string>;
 using str_int_mt = std::map<std::string, uint>;
 using str_float_mt = std::map<std::string, float>;
+using str_sizet_mt = std::unordered_map<std::string, size_t>;
 using sizet_float_mt = std::map<size_t, float>;
 using float_vector_vt = std::vector<std::vector<float>>;
 using pair_sizet_float_vt = std::vector<std::pair<size_t, float>>;
@@ -39,6 +41,7 @@ struct control_block_t {
     const bool _plot;    // indicate if tracing/(error) messages shall be printed (cout)
 
     const std::string _collectionPath;     // the path to the document collection
+    const std::string _relScoresPath;
     const std::string _tracePath;          // the path to the trace logs
     const std::string _evalPath;           // the path to the evaluation
     const std::string _stopwordFile;       // the path to the stopword file

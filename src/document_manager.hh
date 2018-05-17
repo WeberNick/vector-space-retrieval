@@ -82,13 +82,15 @@ class DocumentManager {
      *
      * @return doc_mt& the document map
      */
-    inline doc_mt& getDocumentMap() { return _docs; }
+    inline const doc_mt& getDocumentMap() const { return _docs; }
+    inline doc_mt& getDocumentMap() { return const_cast<doc_mt&>(static_cast<const DocumentManager&>(*this).getDocumentMap()); }
     /**
      * @brief Get the number of documents in the collection
      *
      * @return size_t number of docs in the collection
      */
-    inline size_t getNoDocuments() { return _docs.size(); }
+    inline size_t getNoDocuments() const { return _docs.size(); }
+    inline size_t getNoDocuments() { return static_cast<const DocumentManager&>(*this).getNoDocuments(); }
     /**
      * @brief Get the ids of all documents in the collection as a size_t vector
      *
@@ -121,9 +123,9 @@ class DocumentManager {
             throw InvalidArgumentException(FLF, lErrMsg);
         }
     }
-    inline const Document& getDocument(size_t aDocID) { return static_cast<const DocumentManager&>(*this).getDocument(aDocID); }
-    inline const Document& getDocument(const std::string& aDocID) const { return getDocument(0); } //@Nico implement this
-    inline const Document& getDocument(const std::string& aDocID) { return static_cast<const DocumentManager&>(*this).getDocument(aDocID); }
+    inline Document& getDocument(size_t aDocID) { return const_cast<Document&>(static_cast<const DocumentManager&>(*this).getDocument(aDocID)); }
+    inline const Document& getDocument(const std::string& aDocID) const { return getDocument(_strDocID.at(aDocID)); } 
+    inline Document& getDocument(const std::string& aDocID) { return const_cast<Document&>(static_cast<const DocumentManager&>(*this).getDocument(aDocID)); }
 
     /**
      * @brief Get the Instance object
@@ -153,4 +155,7 @@ class DocumentManager {
 
     sizet_vt _queryids;
     doc_mt _queries;
+
+    str_sizet_mt _strDocID; //Nico, fill this map accordingly
+
 };

@@ -37,12 +37,42 @@ using json = nlohmann::json;
 namespace fs = std::experimental::filesystem;
 
 
+/**
+ * @brief This singleton class is used for evaluating runtime and information retrieval performance.
+ * 
+ * @section	DESCRIPTION
+ * This class consists of several nested classes not visible to the outside. The nested classes all 
+ * handle different functionalities of evaluation. The nested class IR_PerformanceManager provides
+ * several IR evaluation methods such as accuracy, F-measure, MAP and DCG. For more details, read
+ * the description of the nested class. Users of this class do not have to worry about the internal 
+ * details. A simple call to start/stop measures the runtime performance between the start and stop
+ * call. To Evaluate IR performance, a call to evalIR is enough to evaluate the ranking with all
+ * implemented IR evaluation techniques (as named above).
+ * 
+ * @section USE
+ * 1. By calling Evaluation::getInstance(), the caller gets access to the evaluation instance.
+ * 2. Calling start on the evaluation object, starts run time measurement. Two arguments have to be 
+ * provided: the enum value of the current IR mode to measure and a query name
+ * 3. Calling stop on the evaluation object, stops the runtime measurement and persists the 
+ * measurement results in an internal data structure
+ * 4. Calling evalIR with the same arguments as start plus a ranking will calculate all IR evaluation 
+ * methods and persist them in an internal data structure
+ * 5. A call to constructJSON will create the JSON object which can be used to parse the results etc..
+ */
 class Evaluation
 {
     private:
+        /**
+         * @brief Class to handle the IR evaluation
+         * @section DESCRIPTION
+         * TBD
+         */
         class IR_PerformanceManager
         {
             public:
+                /**
+                 * @brief Class representing a single relevance score for a query - document pair
+                 */
                 class RelScore
                 {
                     public:
@@ -182,6 +212,8 @@ class Evaluation
 
             public:
                 inline const scores_vt& getQueryScores(const std::string& aQueryID){ return _queryScores.at(aQueryID); }
+
+            private:
                 uint getScore(const std::string& aQueryID, const std::string& aDocID);
 
             private:
@@ -285,16 +317,32 @@ class Evaluation
         void init(const CB& aControlBlock);
 
     public:
-        //for run time performance
+        /**
+         * @brief starts the run time performance measurement
+         * @param aMode the mode for which the measurement is done (enum representing vanilla, tiered, etc..)
+         * @pram aQueryName the name of the current query to evaluate
+         */
         void start(const IR_MODE aMode, const std::string& aQueryName);
-        void stop(); //automatically writes performance to file
-        void evalIR(const IR_MODE aMode, const std::string& aQueryName, const pair_sizet_float_vt& aRanking);
-        void constructJSON();
-    
 
-    public:
-        //getter
-        //setter
+        /**
+         * @brief stops the run time performance measurement and inserts the measurement result into 
+         *        an internal data structure
+         */
+        void stop();
+
+        /**
+         * @brief evaluates the information retrieval performance and stores results in an internal data structure
+         * @param aMode the mode for which the evaluation is done (enum representing vanilla, tiered, etc..)
+         * @param aQueryName the name of the current query to evaluate
+         * @param aRanking the ranking to evaluate
+         */
+        void evalIR(const IR_MODE aMode, const std::string& aQueryName, const pair_sizet_float_vt& aRanking);
+        void evalIR(const IR_MODE aMode, const std::string& aQueryName, const sizet_vt& aRanking);
+
+        /**
+         * @brief constructs the physical JSON object with all evaluation results
+         */
+        void constructJSON();
 
     private:
         IR_PerformanceManager& _irpm;

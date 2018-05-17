@@ -240,13 +240,19 @@ void Evaluation::evalIR(const IR_MODE aMode, const std::string& aQueryName, cons
     {
         lRanking.push_back(elem.first);
     }
+    evalIR(aMode, aQueryName, lRanking);
+}
+
+
+void Evaluation::evalIR(const IR_MODE aMode, const std::string& aQueryName, const sizet_vt& aRanking)
+{
     EvalResults& lER = _evalResults.at(modeToString(aMode));
-    lER.setAccuracy(aQueryName, _irpm.accuracy(aQueryName, lRanking));
-    lER.setPrecision(aQueryName, _irpm.precision(aQueryName, lRanking));
-    lER.setRecall(aQueryName, _irpm.recall(aQueryName, lRanking));
-    lER.setFMeasure(aQueryName, _irpm.fMeasure(aQueryName, lRanking));
-    lER.setAvgPrecision(aQueryName, _irpm.avgPrecision(aQueryName, lRanking));
-    lER.setDCG(aQueryName, _irpm.nDCG(aQueryName, lRanking));
+    lER.setAccuracy(aQueryName, _irpm.accuracy(aQueryName, aRanking));
+    lER.setPrecision(aQueryName, _irpm.precision(aQueryName, aRanking));
+    lER.setRecall(aQueryName, _irpm.recall(aQueryName, aRanking));
+    lER.setFMeasure(aQueryName, _irpm.fMeasure(aQueryName, aRanking));
+    lER.setAvgPrecision(aQueryName, _irpm.avgPrecision(aQueryName, aRanking));
+    lER.setDCG(aQueryName, _irpm.nDCG(aQueryName, aRanking));
     lER.setMAP(_irpm.meanAvgPrecision(lER.getPerfAvgPrecision()));
 }
 

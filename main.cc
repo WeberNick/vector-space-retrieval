@@ -124,7 +124,7 @@ void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
 
     for (size_t j = 0; j < result.size(); ++j) {
 
-        Document& d = DocumentManager::getInstance().getDocument(result[j].first);
+        const Document& d = DocumentManager::getInstance().getDocument(result[j].first);
         json json_doc = json::object();
         json_doc["id"] = d.getDocID();
         json_doc["similarity"] = result[j].second;
@@ -136,7 +136,7 @@ void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
 }
 
 void testNico() {
-    const control_block_t& aControlBlock = {false, false, false, "./data/collection_test.docs", "./tests/_trace_test/", "", "./data/stopwords.large",
+    const control_block_t& aControlBlock = {false, false, false, "./data/collection_test.docs", "", "./tests/_trace_test/", "", "./data/stopwords.large", "",
                                             0,     3,     1000};
     // assert(aNumTiers > 1);
     Measure lMeasure;
@@ -158,9 +158,9 @@ void testNico() {
     std::cout << ti << std::endl;
 
     std::cout << std::endl;
-    Document& d = docManager.getDocument(0);
-    Document& d2 = docManager.getDocument(1);
-    Document& d3 = docManager.getDocument(2);
+    const Document& d = docManager.getDocument(0);
+    const Document& d2 = docManager.getDocument(1);
+    const Document& d3 = docManager.getDocument(2);
 
     /*std::cout << Utility::SimilarityMeasures::calcCosDist(d, d2) << std::endl;
     std::cout << Utility::SimilarityMeasures::calcCosDist(d, d3) << std::endl;
@@ -288,7 +288,7 @@ int main(const int argc, const char* argv[]) {
     }
 
     // THROW EXCEPTION if numtiers < 2
-    const control_block_t lCB = {lArgs.trace(),        lArgs.measure(),           lArgs.plot(),    lArgs.collectionPath(), lArgs.tracePath(), lArgs.evalPath(),
+    const control_block_t lCB = {lArgs.trace(),        lArgs.measure(),           lArgs.plot(),    lArgs.collectionPath(), lArgs.relevanceScoresPath(), lArgs.tracePath(), lArgs.evalPath(),
                                  lArgs.stopwordPath(), lArgs.wordEmeddingsPath(), lArgs.results(), lArgs.tiers(),          lArgs.dimensions()};
 
     Trace::getInstance().init(lCB);

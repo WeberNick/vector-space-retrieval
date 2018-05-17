@@ -49,6 +49,10 @@ float Document::getTf(const std::string& aTerm) const {
         return 0;
 }
 
+float Document::getTf(const std::string& aTerm){
+    return static_cast<const Document&>(*this).getTf(aTerm);
+}
+
 std::ostream& operator<<(std::ostream& strm, const Document& doc) {
     strm << "Document: " << doc.getID() << ": ";
     std::string sep = ") ";
