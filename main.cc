@@ -197,6 +197,7 @@ void testEval(const control_block_t& aControlBlock) {
     QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
 
     Evaluation& e = Evaluation::getInstance();
+    e.init(aControlBlock);
     str_set queryNamesSet;
 
     std::cout << "Start eval " << std::endl;

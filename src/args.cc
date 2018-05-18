@@ -32,7 +32,7 @@ Args::Args() :
     _measure(false),
     _collectionPath("./data/d-collection.docs"),
     _queryPath("./data/"),
-    _relScoresPath("./data/"),
+    _relScoresPath("./data/s-3.qrel"),
     _stopwordPath("./data/stopwords.large"),
     _wordEmbeddingsPath("./data/w2v/glove.6B.300d.txt"),
     _tracePath("./"),
