@@ -70,8 +70,8 @@ Document DocumentManager::createQuery(std::string& content, const std::string& q
     Utility::IR::removeStopword(content, QueryProcessingEngine::getInstance().getStopwordlist()); // Remove stopwords
     Utility::StringOp::trim(content);                                                             // Trim whitespaces at front and end
     string_vt proc_query;
-    Utility::StringOp::splitStringBoost(content, ' ', proc_query); // Split string by whitespaces
-    Utility::StringOp::removeEmptyStringsFromVec(proc_query);      // Remove eventually empty strings from the query term vector
+    Utility::StringOp::splitStringBoost(content, ' ', proc_query);                                // Split string by whitespaces
+    Utility::StringOp::removeEmptyStringsFromVec(proc_query);                                     // Remove eventually empty strings from the query term vector
 
     std::vector<std::string> preprocessed_content;
     for (auto& elem : proc_query) { // Preprocess query
