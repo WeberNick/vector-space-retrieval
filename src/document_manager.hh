@@ -38,7 +38,8 @@ class DocumentManager {
      *
      * @param aFile the collection file to read
      */
-    void read(const std::string& aFile);
+    void readDocs(const std::string& aFile);
+    void readQueries(const string_vt& aFile);
     /**
      * @brief Insert element into manager (by std::pair element)
      *
@@ -105,7 +106,7 @@ class DocumentManager {
      * @param query The raw query string
      * @return Document
      */
-    Document createQueryDoc(std::string& query);
+    Document createQuery(std::string& query);
 
     /**
      * @brief Get the document object with id aDocID
@@ -113,18 +114,18 @@ class DocumentManager {
      * @param aDocID the id of the document
      * @return Document& the document with id aDocID
      */
-    inline const Document& getDocument(size_t aDocID) const 
-    { 
-        try{ return _docs.at(aDocID); }
-        catch(const std::out_of_range& ex)
-        { 
+    inline const Document& getDocument(size_t aDocID) const {
+        try {
+            return _docs.at(aDocID);
+        } catch (const std::out_of_range& ex) {
             const std::string lErrMsg("This docID does not appear in the document collection.");
             TRACE(lErrMsg);
             throw InvalidArgumentException(FLF, lErrMsg);
         }
     }
+
     inline Document& getDocument(size_t aDocID) { return const_cast<Document&>(static_cast<const DocumentManager&>(*this).getDocument(aDocID)); }
-    inline const Document& getDocument(const std::string& aDocID) const { return getDocument(_strDocID.at(aDocID)); } 
+    inline const Document& getDocument(const std::string& aDocID) const { return getDocument(_str_docid.at(aDocID)); } 
     inline Document& getDocument(const std::string& aDocID) { return const_cast<Document&>(static_cast<const DocumentManager&>(*this).getDocument(aDocID)); }
 
     /**
@@ -149,13 +150,12 @@ class DocumentManager {
     const char _delimiter; // defined manually
 
     std::string _collectionFile;
+    string_vt _queryFiles;
     
     sizet_vt _docids;
     doc_mt _docs;
+    str_sizet_mt _str_docid;
 
     sizet_vt _queryids;
     doc_mt _queries;
-
-    str_sizet_mt _strDocID; //Nico, fill this map accordingly
-
 };

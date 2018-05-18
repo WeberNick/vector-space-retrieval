@@ -43,7 +43,9 @@ void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
     }
 }
 
-void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplmap_mt* tieredpostinglist_out, cluster_mt* cluster_out,
+void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
+                                str_tierplmap_mt* tieredpostinglist_out,
+                                cluster_mt* cluster_out,
                                 const sizet_vt& leaders) {
     str_int_mt idf_occs;
     for (const auto& [id, doc] : *(_docs)) {

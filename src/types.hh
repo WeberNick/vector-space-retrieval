@@ -41,6 +41,7 @@ struct control_block_t {
     const bool _plot;    // indicate if tracing/(error) messages shall be printed (cout)
 
     const std::string _collectionPath;     // the path to the document collection
+    const std::string _queryPath;
     const std::string _relScoresPath;
     const std::string _tracePath;          // the path to the trace logs
     const std::string _evalPath;           // the path to the evaluation
@@ -55,11 +56,12 @@ struct control_block_t {
     bool measure() const { return _measure; }
     bool plot() const { return _plot; }
     const std::string& collectionPath() const { return _collectionPath; }
+    const std::string& queryPath() const { return _queryPath; }
     const std::string& relevanceScoresPath() const { return _relScoresPath; }
     const std::string& tracePath() const { return _tracePath; }
     const std::string& evalPath() const { return _evalPath; }
     const std::string& stopwordFile() const { return _stopwordFile; }
-  const std::string& wordEmbeddingsFile() const { return _wordEmbeddingsFile; }
+    const std::string& wordEmbeddingsFile() const { return _wordEmbeddingsFile; }
     uint results() const { return _noResults; }
     uint tiers() const { return _noTiers; }
     uint dimensions() const { return _noDimensions; }
@@ -102,7 +104,6 @@ inline std::string modeToString(IR_MODE aMode) {
 }
 
 inline IR_MODE stringToMode(std::string aMode) {
-
     if (aMode.compare("kVANILLA") == 0) {
         return kVANILLA;
     } else if (aMode.compare("kTIERED") == 0) {

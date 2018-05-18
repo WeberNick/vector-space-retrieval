@@ -130,6 +130,7 @@ void testAlex(Args& lArgs) {
                                             false,
                                             false,
                                             lArgs.collectionPath(),
+                                            lArgs.queryPath(),
                                             "./tests/_trace_test/",
                                             "",
                                             lArgs.stopwordPath(),
@@ -160,7 +161,6 @@ void testAlex(Args& lArgs) {
     string_vt content = {"the", "to"};
 
     imInstance.getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, result);
-
 
     std::cout << result.size() << std::endl;
 
@@ -226,8 +226,9 @@ int main(const int argc, const char* argv[]) {
     }
 
     // THROW EXCEPTION if numtiers < 2
-    const control_block_t lCB = {lArgs.trace(),        lArgs.measure(),           lArgs.plot(),    lArgs.collectionPath(), lArgs.relevanceScoresPath(), lArgs.tracePath(), lArgs.evalPath(),
-                                 lArgs.stopwordPath(), lArgs.wordEmeddingsPath(), lArgs.results(), lArgs.tiers(),          lArgs.dimensions()};
+    const control_block_t lCB = { lArgs.trace(),               lArgs.measure(),   lArgs.plot(),     lArgs.collectionPath(), lArgs.queryPath(),
+                                  lArgs.relevanceScoresPath(), lArgs.tracePath(), lArgs.evalPath(), lArgs.stopwordPath(),
+                                  lArgs.wordEmeddingsPath(),   lArgs.results(),   lArgs.tiers(),    lArgs.dimensions()};
 
     Trace::getInstance().init(lCB);
     Evaluation::getInstance().init(lCB);

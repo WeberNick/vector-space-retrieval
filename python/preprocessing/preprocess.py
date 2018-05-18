@@ -10,15 +10,15 @@ RAW_FOLDER = 'raw'
 
 def qrel(folders, files, end):
     ''' Preprocess query relevance '''
-    for folder in folders:
-        for filename in files:
-            result = set()
+    for filename in files:
+        result = set()
+        for folder in folders:
             with open('{}/{}/{}/{}.{}'.format(DATA_PATH, folder, RAW_FOLDER, filename, end), 'r') as file_from:
                 for line in file_from.readlines():
                     content = re.split(r'\t+', line.rstrip('\t\n'))
                     del content[1]
                     result.add('~'.join(content))
-            _write(result, '{}/{}/{}.{}'.format(DATA_PATH, folder, filename, end))
+        _write(result, '{}/{}.{}'.format(DATA_PATH, filename, end))
 
 def docs(folders, filename, end):
     ''' Preprocess document collection '''
@@ -26,8 +26,8 @@ def docs(folders, filename, end):
     regex = re.compile('[%s]' % re.escape(string.punctuation))
     with open('{}/{}'.format(DATA_PATH, 'stopwords.large'), 'r') as stopwordfile:
         stopwords = stopwordfile.readline().strip("\"").split(",")
+    result = set()
     for folder in folders:
-        result = set()
         with open('{}/{}/{}/{}.{}'.format(DATA_PATH, folder, RAW_FOLDER, filename, end), 'r') as file_from:
             for line in file_from.readlines():
                 content = re.split(r'\t+', line.rstrip('\t\n'))
@@ -36,18 +36,18 @@ def docs(folders, filename, end):
                 words = [w for w in words if len(w) > 1 and w not in stopwords]
                 doc = [content[0], ' '.join(words)]
                 result.add('~'.join(doc))
-        _write(result, '{}/{}/{}.{}'.format(DATA_PATH, folder, filename, end))
+    _write(result, '{}/{}.{}'.format(DATA_PATH, filename, end))
 
 def quer(folders, files, end):
     ''' Preprocess queries '''
-    for folder in folders:
-        for filename in files:
-            result = set()
+    for filename in files:
+        result = set()
+        for folder in folders:
             with open('{}/{}/{}/{}.{}'.format(DATA_PATH, folder, RAW_FOLDER, filename, end), 'r') as file_from:
                 for line in file_from.readlines():
                     content = re.split(r'\t+', line.rstrip('\t\n'))
                     result.add('~'.join(content))
-            _write(result, '{}/{}/{}.{}'.format(DATA_PATH, folder, filename, end))
+        _write(result, '{}/{}.{}'.format(DATA_PATH, filename, end))
 
 def _write(result_set, filename):
     ''' Write results to a file '''

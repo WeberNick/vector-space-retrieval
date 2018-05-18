@@ -59,6 +59,9 @@ class Args {
     inline const std::string& collectionPath() { return _collectionPath; }
     inline void collectionPath(const std::string& x) { _collectionPath = x; }
 
+    inline const std::string& queryPath() { return _queryPath; }
+    inline void queryPath(const std::string& x) { _queryPath = x; }
+
     inline const std::string& relevanceScoresPath() { return _relScoresPath; }
     inline void relevanceScoresPath(const std::string& x) { _relScoresPath = x; }
 
@@ -90,6 +93,7 @@ class Args {
     bool _plot;
 
     std::string _collectionPath;
+    std::string _queryPath;
     std::string _relScoresPath;
     std::string _stopwordPath;
     std::string _tracePath;
