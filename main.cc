@@ -73,7 +73,8 @@ void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
 }
 
 void testNico() {
-    const control_block_t& aControlBlock = {false, false, false, "./data/collection_test.docs", "", "./tests/_trace_test/", "", "./data/stopwords.large", "",
+    
+    const control_block_t& aControlBlock = {false, false, "./data/collection_test.docs", "", "", "./data/stopwords.large", "", "./tests/_trace_test/", "",
                                             0,     3,     1000};
     // assert(aNumTiers > 1);
     Measure lMeasure;
@@ -144,6 +145,17 @@ void testAlex(const control_block_t& aControlBlock) {
 
     std::cout << "number of embeddings: " << imInstance.getWordEmbeddingsIndex().getNoWordEmbeddings() << std::endl;
 
+    float_vt result;
+    result.resize(300);
+    string_vt content = {"the", "to"};
+
+    imInstance.getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, result);
+
+
+    std::cout << result.size() << std::endl;
+
+    for (auto& elem : result) {
+        std::cout << elem << ",";
     for(auto& elem: docManager.getDocument("MED-241").getWordEmbeddingsVector()) {
         std::cout << elem  << ",";
     }
@@ -205,6 +217,18 @@ int main(const int argc, const char* argv[]) {
         return -1;
     }*/
 
+ /*   if(!(fs::exists(lArgs.collectionPath())))
+    {
+        std::cerr << "Given path to the master partition is invalid." << std::endl;
+        //return -1; //wait until boot and so on works and uncomment this
+    }
+    if(lArgs.trace() && !fs::exists(lArgs.tracePath()))
+    {
+        std::cerr << "The path where to store the trace file is invalid." << std::endl;
+        return -1;
+    }
+*/
+
     /* How to use class Args is described in args.hh */
     Args lArgs;
     argdesc_vt lArgDesc;
@@ -222,9 +246,20 @@ int main(const int argc, const char* argv[]) {
     }
 
     // THROW EXCEPTION if numtiers < 2
-    const control_block_t lCB = { lArgs.trace(),               lArgs.measure(),   lArgs.plot(),     lArgs.collectionPath(), lArgs.queryPath(),
-                                  lArgs.relevanceScoresPath(), lArgs.tracePath(), lArgs.evalPath(), lArgs.stopwordPath(),
-                                  lArgs.wordEmeddingsPath(),   lArgs.results(),   lArgs.tiers(),    lArgs.dimensions()};
+    const control_block_t lCB = {
+                                lArgs.trace(), //trace activated?
+                                lArgs.measure(), //measure runtime/IR performance?
+                                lArgs.collectionPath(), //path to doc collection file
+                                lArgs.queryPath(), //path to directory with query files
+                                lArgs.relevanceScoresPath(), //path to relevance score path
+                                lArgs.stopwordPath(), //path to stopword file
+                                lArgs.wordEmbeddingsPath(), //path to word embeddings file
+                                lArgs.tracePath(), //path to trace log file
+                                lArgs.evalPath(), //path to evaluation results (JSON object is stored here)
+                                lArgs.results(), //topK argument
+                                lArgs.tiers(), //number of tiers
+                                lArgs.dimensions() //number of dimensions
+                            };
 
 
     Trace::getInstance().init(lCB);

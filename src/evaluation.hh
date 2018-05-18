@@ -356,7 +356,7 @@ class Evaluation
         /**
          * @brief constructs the physical JSON object with all evaluation results
          */
-        void constructJSON();
+        void constructJSON(const str_set& aQueryNames);
 
     private:
         IR_PerformanceManager& _irpm;

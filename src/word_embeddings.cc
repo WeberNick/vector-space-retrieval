@@ -17,7 +17,7 @@ WordEmbeddings::~WordEmbeddings() { delete _wordEmbeddings; }
 void WordEmbeddings::init(const control_block_t& aControlBlock) {
     if (!_init) {
         _cb = &aControlBlock;
-        _modelFile = _cb->wordEmbeddingsFile();
+        _modelFile = _cb->wordEmbeddingsPath();
         read(_modelFile);
         _init = true;
     }

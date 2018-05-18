@@ -1,12 +1,14 @@
 #include "query_processing_engine.hh"
 #include "index_manager.hh"
 
-
-
 /**
  * @brief Construct a new Query Processing Engine:: Query Processing Engine object
  */
-QueryProcessingEngine::QueryProcessingEngine() : _cb(nullptr), _init(false), _stopwordFile() {}
+QueryProcessingEngine::QueryProcessingEngine() : 
+    _cb(nullptr),
+    _init(false),
+    _stopwordFile()
+{}
 
 /**
  * @brief Initializes the singleton
@@ -16,7 +18,7 @@ QueryProcessingEngine::QueryProcessingEngine() : _cb(nullptr), _init(false), _st
 void QueryProcessingEngine::init(const control_block_t& aControlBlock) {
     if (!_init) {
         _cb = &aControlBlock;
-        _stopwordFile = _cb->stopwordFile(); // relative path from /path/to/repo/vector-space-retrieval
+        _stopwordFile = _cb->stopwordPath(); // relative path from /path/to/repo/vector-space-retrieval
         read(_stopwordFile);
         _init = true;
     }

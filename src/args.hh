@@ -53,9 +53,6 @@ class Args {
     inline bool measure() { return _measure; }
     inline void measure(const bool& x) { _measure = x; }
 
-    inline bool plot() { return _plot; }
-    inline void plot(const bool& x) { _plot = x; }
-
     inline const std::string& collectionPath() { return _collectionPath; }
     inline void collectionPath(const std::string& x) { _collectionPath = x; }
 
@@ -68,14 +65,14 @@ class Args {
     inline const std::string& stopwordPath() { return _stopwordPath; }
     inline void stopwordPath(const std::string& x) { _stopwordPath = x; }
 
+    inline const std::string& wordEmbeddingsPath() { return _wordEmbeddingsPath; }
+    inline void wordEmbeddingsPath(const std::string& x) { _wordEmbeddingsPath = x; }
+
     inline const std::string& tracePath() { return _tracePath; }
     inline void tracePath(const std::string& x) { _tracePath = x; }
 
     inline const std::string& evalPath() { return _evalPath; }
     inline void evalPath(const std::string& x) { _evalPath = x; }
-
-    inline const std::string& wordEmeddingsPath() { return _wordEmeddingsPath; }
-    inline void wordEmeddingsPath(const std::string& x) { _wordEmeddingsPath = x; }
 
     inline uint results() { return _results; }
     inline void results(const uint& x) { _results = x; }
@@ -90,15 +87,14 @@ class Args {
     bool _help;
     bool _trace;
     bool _measure;
-    bool _plot;
 
     std::string _collectionPath;
     std::string _queryPath;
     std::string _relScoresPath;
     std::string _stopwordPath;
+    std::string _wordEmbeddingsPath;
     std::string _tracePath;
     std::string _evalPath;
-    std::string _wordEmeddingsPath;
 
     uint _results;
     uint _tiers;

@@ -11,8 +11,9 @@ DocumentManager::DocumentManager() :
     _cb(nullptr),
     _init(false),
     _delimiter('~'),
-    _collectionFile(), // relative path from /path/to/repo/vector-space-retrieval
+    _collectionFile(),
     _queryFiles(),
+    _queryTypes({ "all", "nontopictitles", "titles", "viddesc", "vidtitles" }),
     _docids(),
     _docs(),
     _str_docid(),
@@ -31,9 +32,8 @@ void DocumentManager::init(const control_block_t& aControlBlock) {
         _cb = &aControlBlock;
         _collectionFile = _cb->collectionPath();
         const std::string& queryPath = _cb->queryPath();
-        string_vt qFiles = { "q-all.queries", "q-nontopictitles.queries", "q-titles.queries", "q-viddesc.queries", "q-vidtitles.queries" };
-        for(const std::string& q : qFiles) {
-            _queryFiles.push_back(queryPath + q);
+        for(const std::string& q : _queryTypes) {
+            _queryFiles.push_back(queryPath + "q-" + q + ".queries");
         }
         readDocs(_collectionFile);
         readQueries(_queryFiles);
@@ -61,6 +61,8 @@ void DocumentManager::readQueries(const string_vt& aFiles) {
     for (const auto& aFile : aFiles) {
         std::ifstream file(aFile);
         std::string line;
+        doc_mt queries; 
+        sizet_vt queryids;
         while (std::getline(file, line)) {
             string_vt parts;
             Utility::StringOp::splitStringBoost(line, _delimiter, parts);
@@ -68,9 +70,11 @@ void DocumentManager::readQueries(const string_vt& aFiles) {
             Utility::StringOp::splitStringBoost(parts[1], ' ', content);
             std::string queryID = parts[0];
             Document query(queryID, content);
-            _queries.insert(std::make_pair(query.getID(), query));
-            _queryids.push_back(query.getID());
+            queries.insert(std::make_pair(query.getID(), query));
+            queryids.push_back(query.getID());
         }
+        _queries[aFile] = queries;
+        _queryids[aFile] = queryids;
     }
 }
 

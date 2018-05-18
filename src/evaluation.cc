@@ -75,7 +75,7 @@ double IRPM::fMeasure(const std::string& aQueryID, const sizet_vt& aRanking, con
 
 double IRPM::avgPrecision(const std::string& aQueryID, const sizet_vt& aRanking)
 {
-    sizet_vt lRelevant = getRelevantDocIDs(aQueryID); //ids of the relevant docs
+    const sizet_vt lRelevant = getRelevantDocIDs(aQueryID); //ids of the relevant docs
     double lSum = 0;
     for(size_t id : lRelevant)
     {
@@ -86,7 +86,7 @@ double IRPM::avgPrecision(const std::string& aQueryID, const sizet_vt& aRanking)
             lSum += precision(aQueryID, lSub);
         }
     }
-    return lSum / lRelevant.size(); //todo
+    return lSum / lRelevant.size();
 }
 
 double IRPM::meanAvgPrecision(const std::unordered_map<std::string, double>& aAvgPrecisionMap)
@@ -277,7 +277,7 @@ void Evaluation::evalIR(const IR_MODE aMode, const std::string& aQueryName, cons
     TRACE(lTraceMsg);
 }
 
-void Evaluation::constructJSON()
+void Evaluation::constructJSON(const str_set& aQueryNames)
 {
     json lModes = json::array();    
     for(const auto& [mode, results] : _evalResults)
@@ -292,15 +292,21 @@ void Evaluation::constructJSON()
         const auto& lPerfFMeasure = results.getPerfFMeasure(); 
         const auto& lPerfAvgPrecision = results.getPerfAvgPrecision(); 
         const auto& lPerfDCG = results.getPerfDCG(); 
-        for(const auto& [query, time] : lPerfRuntime)
+        for(const auto& query : aQueryNames)
         {
             json lQuery = json::object();
             lQuery["name"] = query;
-            lQuery["time"] = time;
-            lQuery["fmeasure"] = lPerfFMeasure.at(query);
+            lQuery["perf_rnt"] = lPerfRuntime.at(query);
+            lQuery["perf_acc"] = lPerfAccuracy.at(query);
+            lQuery["perf_pre"] = lPerfPrecision.at(query);
+            lQuery["perf_rec"] = lPerfRecall.at(query);
+            lQuery["perf_fms"] = lPerfFMeasure.at(query);
+            lQuery["perf_avp"] = lPerfAvgPrecision.at(query);
+            lQuery["perf_dcg"] = lPerfDCG.at(query);
             lQueryResults.push_back(lQuery);
         }
         lMode["queries"] = lQueryResults;
+        lMode["map"] = results.getPerfMAP();
         lModes.push_back(lMode);
     }
     std::time_t lCurrTime = std::time(nullptr);

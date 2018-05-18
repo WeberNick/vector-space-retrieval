@@ -27,6 +27,7 @@ using uint_vt = std::vector<uint>;
 using float_vt = std::vector<float>;
 using sizet_vt = std::vector<size_t>;
 using string_vt = std::vector<std::string>;
+using str_set = std::set<std::string>;
 using str_int_mt = std::map<std::string, uint>;
 using str_float_mt = std::map<std::string, float>;
 using str_sizet_mt = std::unordered_map<std::string, size_t>;
@@ -38,15 +39,14 @@ using sizet_set = std::set<size_t>;
 struct control_block_t {
     const bool _trace;   // indicate if tracing is activated
     const bool _measure; // indicate if measurement is activated
-    const bool _plot;    // indicate if tracing/(error) messages shall be printed (cout)
 
     const std::string _collectionPath;     // the path to the document collection
-    const std::string _queryPath;
-    const std::string _relScoresPath;
+    const std::string _queryPath;          // the path where the query files are stored
+    const std::string _relScoresPath;      // the path to the relevance score file
+    const std::string _stopwordPath;       // the path to the stopword file
+    const std::string _wordEmbeddingsPath; // the path to the word embeddings file
     const std::string _tracePath;          // the path to the trace logs
     const std::string _evalPath;           // the path to the evaluation
-    const std::string _stopwordFile;       // the path to the stopword file
-    const std::string _wordEmbeddingsFile; // the path to the word embeddings file
 
     const uint _noResults;    // the number of results to return for each query
     const uint _noTiers;      // number of tiers for the tiered index
@@ -54,14 +54,13 @@ struct control_block_t {
 
     bool trace() const { return _trace; }
     bool measure() const { return _measure; }
-    bool plot() const { return _plot; }
     const std::string& collectionPath() const { return _collectionPath; }
     const std::string& queryPath() const { return _queryPath; }
     const std::string& relevanceScoresPath() const { return _relScoresPath; }
     const std::string& tracePath() const { return _tracePath; }
     const std::string& evalPath() const { return _evalPath; }
-    const std::string& stopwordFile() const { return _stopwordFile; }
-    const std::string& wordEmbeddingsFile() const { return _wordEmbeddingsFile; }
+    const std::string& stopwordPath() const { return _stopwordPath; }
+    const std::string& wordEmbeddingsPath() const { return _wordEmbeddingsPath; }
     uint results() const { return _noResults; }
     uint tiers() const { return _noTiers; }
     uint dimensions() const { return _noDimensions; }
@@ -103,14 +102,15 @@ inline std::string modeToString(IR_MODE aMode) {
     }
 }
 
-inline IR_MODE stringToMode(std::string aMode) {
-    if (aMode.compare("kVANILLA") == 0) {
-        return kVANILLA;
-    } else if (aMode.compare("kTIERED") == 0) {
-        return kTIERED;
-    } else if (aMode.compare("kCLUSTER") == 0) {
-        return kCLUSTER;
-    } else {
-        return IR_MODE ::kNoMode;
-    }
+inline IR_MODE stringToMode(const std::string& aMode) 
+{
+    if(aMode == "kNoMode"){ return kNoMode; }
+    else if(aMode == "kVANILLA"){ return kVANILLA; } 
+    else if(aMode == "kTIERED"){ return kTIERED; } 
+    else if(aMode == "kTIEREDW2V"){ return kTIEREDW2V; } 
+    else if(aMode == "kCLUSTER"){ return kCLUSTER; } 
+    else if(aMode == "kCLUSTERW2V"){ return kCLUSTERW2V; } 
+    else if(aMode == "kRANDOM"){ return kRANDOM; } 
+    else if(aMode == "kRANDOMW2V"){ return kRANDOMW2V; } 
+    else{ return kNoMode; }
 }
