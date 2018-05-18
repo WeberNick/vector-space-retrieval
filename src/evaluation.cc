@@ -157,12 +157,17 @@ sizet_vt IRPM::getRelevantDocIDs(const std::string& aQueryID) {
     std::cout << "after getQueryScores" << std::endl;
     sizet_vt lRelevantDocIDs;
     lRelevantDocIDs.reserve(lQueryScores.size());
-    std::cout << "after reserve" << std::endl;
-    for (const auto& score : lQueryScores) {
-        std::cout << "qid: " << score.getQueryID() << "doc id: " << score.getDocumentID() << std::endl;
-        lRelevantDocIDs.push_back(DocumentManager::getInstance().getDocument(score.getDocumentID()).getID());
-    }
-    std::cout << "end getRelevantDocIDs" << std::endl;
+    for(const auto& score : lQueryScores)
+    {
+        try
+        {
+            lRelevantDocIDs.push_back(DocumentManager::getInstance().getDocument(score.getDocumentID()).getID());
+        }
+        catch(const InvalidArgumentException& ex) 
+        {
+            TRACE("Relevant document does not exist in the collection (can be ignored)");
+        }
+    } 
     return lRelevantDocIDs;
 }
 

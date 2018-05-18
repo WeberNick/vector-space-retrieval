@@ -34,7 +34,18 @@ void construct_arg_desc(argdesc_vt& x) {
         new uarg_t("--dimensions", 0, &Args::dimensions, "the number of dimensions used for the random projection. TODO: assign appropriate default value"));
 }
 
-Args::Args() :
-    _help(false), _trace(false), _measure(false), _collectionPath("./data/d-collection.docs"), _queryPath("./data/"), _relScoresPath("./data/s-3.qrel"),
-    _stopwordPath("./data/stopwords.large"), _wordEmbeddingsPath("./data/w2v/glove.6B.300d.txt"), _tracePath("./"), _evalPath("./"), _results(10), _tiers(0),
-    _dimensions(0) {}
+Args::Args() : 
+    _help(false),
+    _trace(false),
+    _measure(false),
+    _collectionPath("./data/d-collection.docs"),
+    _queryPath("./data/"),
+    _relScoresPath("./data/s-3.qrel"),
+    _stopwordPath("./data/stopwords.large"),
+    _wordEmbeddingsPath("./data/w2v/glove.6B.300d.txt"),
+    _tracePath("./"),
+    _evalPath("./"),
+    _results(10),
+    _tiers(0),
+    _dimensions(0)
+{}
