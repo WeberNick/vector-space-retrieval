@@ -30,11 +30,17 @@ void QueryProcessingEngine::read(const std::string& aFile) {
 
 const pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh) {
     Document queryDoc = DocumentManager::getInstance().createQuery(query);
-    this->search(queryDoc, topK, searchType, use_lsh);
+    return this->search(queryDoc, topK, searchType, use_lsh);
 }
 
 const pair_sizet_float_vt QueryProcessingEngine::search(Document& queryDoc, size_t topK, IR_MODE searchType, bool use_lsh) {
 
+    std::cout << "Searching in mode: " << modeToString(searchType) << std::endl;
+    std::cout << "Searching for: ";
+    for (auto& elem : queryDoc.getContent()) {
+        std::cout << elem << " ";
+    }
+    std::cout << std::endl;
     pair_sizet_float_vt found_indices; // result vector
 
     switch (searchType) {
@@ -87,6 +93,10 @@ const pair_sizet_float_vt QueryProcessingEngine::search(Document& queryDoc, size
     }
 
     // Return search result
+    std::cout << "Returning results" << std::endl;
+    for (auto& elem : found_indices) {
+        std::cout << "id: " << elem.first << " sim: " << elem.second << std::endl;
+    }
     return found_indices;
 }
 

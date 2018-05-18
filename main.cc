@@ -219,9 +219,13 @@ void testEval(const control_block_t& aControlBlock) {
                 std::cout << "Type: " << type << "Mode " << modeToString(mode) << "QueryId: " << query.getDocID() << std::endl;
                 queryNamesSet.insert(query.getDocID());
                 e.start(mode, query.getDocID());
+                std::cout << "after start" << std::endl;
                 std::vector<std::pair<size_t, float>> result = qpe.search(query, 30, mode, false);
+                std::cout << "after result" << std::endl;
                 e.stop();
+                std::cout << "after stop" << std::endl;
                 e.evalIR(mode, query.getDocID(), result);
+                std::cout << "after eval ir" << std::endl;
             }
         }
     }
