@@ -297,6 +297,7 @@ void Evaluation::constructJSON()
             json lQuery = json::object();
             lQuery["name"] = query;
             lQuery["time"] = time;
+            lQuery["fmeasure"] = lPerfFMeasure.at(query);
             lQueryResults.push_back(lQuery);
         }
         lMode["queries"] = lQueryResults;

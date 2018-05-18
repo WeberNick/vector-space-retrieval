@@ -90,7 +90,7 @@ class QueryProcessingEngine {
      * @param topK How many results are retrieved
      * @return pair_sizet_float_vt  A list of document - similarity pairs ordered descending
      */
-    const pair_sizet_float_vt searchTieredCos(const Document* query, const sizet_vt& collectionIds, size_t topK);
+    const pair_sizet_float_vt searchTieredCos(const Document* query, const sizet_vt& collectionIds, size_t topK, bool useW2V = false);
 
     /**
      * @brief Search function for searching when random projections are used

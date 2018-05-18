@@ -91,7 +91,8 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
 
 void IndexManager::buildWordEmbeddingsVector(Document& doc) {
     float_vt& wevec = doc.getWordEmbeddingsVector();
-    wevec.reserve(300);
+    wevec.resize(300);
+
     const string_vt& content = doc.getContent();
     //TODO
     // test make_unique

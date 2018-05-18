@@ -123,22 +123,9 @@ void testNico() {
     // search("do cholesterol statin drugs cause breast cancer ?");
 }
 
-void testAlex(Args& lArgs) {
+void testAlex(const control_block_t& aControlBlock) {
 
-    const control_block_t& aControlBlock = {false,
-                                            false,
-                                            false,
-                                            lArgs.collectionPath(),
-                                            lArgs.queryPath(),
-                                            "./tests/_trace_test/",
-                                            "",
-                                            lArgs.stopwordPath(),
-                                            lArgs.wordEmeddingsPath(),
-                                            0,
-                                            lArgs.tiers(),
-                                            lArgs.dimensions()};
-
-    Measure lMeasureIndexing;
+    /*Measure lMeasureIndexing;
     lMeasureIndexing.start();
 
     DocumentManager& docManager = DocumentManager::getInstance();
@@ -149,22 +136,16 @@ void testAlex(Args& lArgs) {
     IndexManager& imInstance = IndexManager::getInstance();
     imInstance.init(aControlBlock, docMap);
 
+    std::cout << "after index manager init" << std::endl;
+
     lMeasureIndexing.stop();
     double lSeconds = lMeasureIndexing.mTotalTime();
     std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
 
     std::cout << "number of embeddings: " << imInstance.getWordEmbeddingsIndex().getNoWordEmbeddings() << std::endl;
 
-    float_vt result;
-    result.resize(300);
-    string_vt content = {"the", "to", "of"};
-
-    imInstance.getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, result);
-
-    std::cout << result.size() << std::endl;
-
-    for (auto& elem : result) {
-        std::cout << elem << ",";
+    for(auto& elem: docManager.getDocument("MED-241").getWordEmbeddingsVector()) {
+        std::cout << elem  << ",";
     }
     std::cout << std::endl;
 
@@ -191,6 +172,21 @@ void testAlex(Args& lArgs) {
         search(j["query"].get<std::string>(), j["topK"].get<size_t>(), stringToMode(j["mode"].get<std::string>()), j["lsh"].get<bool>());
     }*/
 }
+
+void testEval(const control_block_t& aControlBlock){
+    DocumentManager& docManager = DocumentManager::getInstance();
+    docManager.init(aControlBlock);
+
+    IndexManager& imInstance = IndexManager::getInstance();
+    imInstance.init(aControlBlock, docManager.getDocumentMap());
+
+    QueryProcessingEngine::getInstance().init(aControlBlock);
+
+
+
+}
+
+
 
 /**
  * @brief Starts the program
@@ -230,12 +226,13 @@ int main(const int argc, const char* argv[]) {
                                   lArgs.relevanceScoresPath(), lArgs.tracePath(), lArgs.evalPath(), lArgs.stopwordPath(),
                                   lArgs.wordEmeddingsPath(),   lArgs.results(),   lArgs.tiers(),    lArgs.dimensions()};
 
-    // Trace::getInstance().init(lCB);
+
+    Trace::getInstance().init(lCB);
     // Evaluation::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
     // test(lCB);
     // testNico();
-    testAlex(lArgs);
+    testAlex(lCB);
 
     /*std::vector<sizet_vt> vecs;
     sizet_vt out;

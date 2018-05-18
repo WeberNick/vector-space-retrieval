@@ -69,13 +69,14 @@ const pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size
     } break;
     case IR_MODE ::kTIERED: {
         if (use_lsh) {
-            found_indices = QueryProcessingEngine::searchRandomProjCos(
-                &queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
+            found_indices = QueryProcessingEngine::searchRandomProjCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
         } else {
-            found_indices =
-                QueryProcessingEngine::searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
+            found_indices = QueryProcessingEngine::searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
         }
     } break;
+        case IR_MODE::kTIEREDW2V:{
+            found_indices = QueryProcessingEngine::searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
+        }
     case IR_MODE ::kRANDOM: {
         found_indices = QueryProcessingEngine::searchRandomProjCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
     } break;
@@ -143,12 +144,17 @@ const size_t QueryProcessingEngine::searchClusterCosFirstIndex(const Document* q
     return QueryProcessingEngine::getInstance().searchClusterCos(query, collectionIds, 1)[0].first; // get most similar leader
 }
 
-const pair_sizet_float_vt QueryProcessingEngine::searchTieredCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
+const pair_sizet_float_vt QueryProcessingEngine::searchTieredCos(const Document* query, const sizet_vt& collectionIds, size_t topK, bool useW2V) {
 
     std::map<size_t, float> docId2Scores;
 
     for (auto& elem : collectionIds) {
-        float sim = Utility::SimilarityMeasures::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
+        float sim;
+        if (useW2V) {
+            sim = Utility::SimilarityMeasures::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
+        } else {
+            sim = Utility::SimilarityMeasures::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
+        }
         docId2Scores[elem] = sim;
     }
 

@@ -50,11 +50,14 @@ float_vt& WordEmbeddings::getWordEmbeddings(const std::string& word) {
 void WordEmbeddings::calcWordEmbeddingsVector(const string_vt& doc_content, float_vt& out) {
     int count = 0;
     for (auto& word : doc_content) {
+        std::cout << word << std::endl;
         try {
             float_vt& wordEmbeddings = WordEmbeddings::getInstance().getWordEmbeddings(word);
             std::transform(out.begin(), out.end(), wordEmbeddings.begin(), out.begin(), std::plus<float>());
             count++;
         } catch (InvalidArgumentException e) { std::cout << e.what() << std::endl; }
     }
+
+    std::cout << count << std::endl;
     std::transform(out.begin(), out.end(), out.begin(), [count](float i){return i/count;});
 }
