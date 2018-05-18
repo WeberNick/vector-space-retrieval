@@ -31,7 +31,7 @@ void QueryProcessingEngine::read(const std::string& aFile) {
 }
 
 const pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh) {
-    Document queryDoc = DocumentManager::getInstance().createQueryDoc(query);
+    Document queryDoc = DocumentManager::getInstance().createQuery(query);
 
     pair_sizet_float_vt found_indices; // result vector
 
