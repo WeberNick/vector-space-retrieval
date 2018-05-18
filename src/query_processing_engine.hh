@@ -11,7 +11,6 @@
 #include <string>
 #include <vector>
 
-
 class QueryProcessingEngine {
   private:
     QueryProcessingEngine();                                                 // Constructor hidden
@@ -52,6 +51,7 @@ class QueryProcessingEngine {
      * @return pair_sizet_float_vt A list of document - similarity pairs ordered descending
      */
     const pair_sizet_float_vt search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh);
+    const pair_sizet_float_vt search(Document& query, size_t topK, IR_MODE searchType, bool use_lsh);
 
     /**
      * @brief Search function for searching the whole document collection

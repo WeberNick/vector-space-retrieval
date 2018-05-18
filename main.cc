@@ -42,9 +42,8 @@ void test(const control_block_t& aControlBlock) {
 
     e.stop();
 
-
-     str_set set = {"Med-1", "Med-2", "Med-3"};
-     e.constructJSON(set);
+    str_set set = {"Med-1", "Med-2", "Med-3"};
+    e.constructJSON(set);
 }
 
 void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
@@ -75,9 +74,9 @@ void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
 }
 
 void testNico() {
-    
-    const control_block_t& aControlBlock = {false, false, "./data/collection_test.docs", "", "", "./data/stopwords.large", "", "./tests/_trace_test/", "",
-                                            0,     3,     1000};
+
+    const control_block_t& aControlBlock = {false, false, "./data/collection_test.docs", "", "", "./data/stopwords.large", "", "./tests/_trace_test/", "", 0,
+                                            3,     1000};
     // assert(aNumTiers > 1);
     Measure lMeasure;
     lMeasure.start();
@@ -187,20 +186,47 @@ void testAlex(const control_block_t& aControlBlock) {
     }*/
 }
 
-void testEval(const control_block_t& aControlBlock){
+void testEval(const control_block_t& aControlBlock) {
     DocumentManager& docManager = DocumentManager::getInstance();
     docManager.init(aControlBlock);
 
     IndexManager& imInstance = IndexManager::getInstance();
     imInstance.init(aControlBlock, docManager.getDocumentMap());
-
+    std::cout << "Indexing done" << std::endl;
     QueryProcessingEngine::getInstance().init(aControlBlock);
+    QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
 
+    Evaluation& e = Evaluation::getInstance();
+    str_set queryNamesSet;
 
+    std::cout << "Start eval " << std::endl;
+    auto& types = DocumentManager::getInstance().getQueryTypes();
 
+    std::cout << "Types size: " << types.size() << std::endl;
+
+    for (auto& type : types) {
+        std::cout << "Loop types: " << type << std::endl;
+        for (int j = 0; j < kNumberOfModes; ++j) {
+            IR_MODE mode = static_cast<IR_MODE>(j);
+
+            std::cout << "Mode " << modeToString(mode) << ":" << j << std::endl;
+
+            auto& queryForType = DocumentManager::getInstance().getQueriesForType(type);
+
+            std::cout << "queries for types geholt: " << queryForType.size() << std::endl;
+
+            for (auto& [query_id, query] : queryForType) {
+                std::cout << "Type: " << type << "Mode " << modeToString(mode) << "QueryId: " << query.getDocID() << std::endl;
+                queryNamesSet.insert(query.getDocID());
+                e.start(mode, query.getDocID());
+                std::vector<std::pair<size_t, float>> result = qpe.search(query, 30, mode, false);
+                e.stop();
+                e.evalIR(mode, query.getDocID(), result);
+            }
+        }
+    }
+    e.constructJSON(queryNamesSet);
 }
-
-
 
 /**
  * @brief Starts the program
@@ -219,23 +245,22 @@ int main(const int argc, const char* argv[]) {
         return -1;
     }*/
 
- /*   if(!(fs::exists(lArgs.collectionPath())))
-    {
-        std::cerr << "Given path to the master partition is invalid." << std::endl;
-        //return -1; //wait until boot and so on works and uncomment this
-    }
-    if(lArgs.trace() && !fs::exists(lArgs.tracePath()))
-    {
-        std::cerr << "The path where to store the trace file is invalid." << std::endl;
-        return -1;
-    }
-*/
+    /*   if(!(fs::exists(lArgs.collectionPath())))
+       {
+           std::cerr << "Given path to the master partition is invalid." << std::endl;
+           //return -1; //wait until boot and so on works and uncomment this
+       }
+       if(lArgs.trace() && !fs::exists(lArgs.tracePath()))
+       {
+           std::cerr << "The path where to store the trace file is invalid." << std::endl;
+           return -1;
+       }
+   */
 
     /* How to use class Args is described in args.hh */
     Args lArgs;
     argdesc_vt lArgDesc;
     construct_arg_desc(lArgDesc);
-
 
     if (!parse_args<Args>(1, argc, argv, lArgDesc, lArgs)) {
         std::cerr << "error while parsing arguments." << std::endl;
@@ -249,27 +274,27 @@ int main(const int argc, const char* argv[]) {
 
     // THROW EXCEPTION if numtiers < 2
     const control_block_t lCB = {
-                                lArgs.trace(), //trace activated?
-                                lArgs.measure(), //measure runtime/IR performance?
-                                lArgs.collectionPath(), //path to doc collection file
-                                lArgs.queryPath(), //path to directory with query files
-                                lArgs.relevanceScoresPath(), //path to relevance score path
-                                lArgs.stopwordPath(), //path to stopword file
-                                lArgs.wordEmbeddingsPath(), //path to word embeddings file
-                                lArgs.tracePath(), //path to trace log file
-                                lArgs.evalPath(), //path to evaluation results (JSON object is stored here)
-                                lArgs.results(), //topK argument
-                                lArgs.tiers(), //number of tiers
-                                lArgs.dimensions() //number of dimensions
-                            };
-
+        lArgs.trace(),               // trace activated?
+        lArgs.measure(),             // measure runtime/IR performance?
+        lArgs.collectionPath(),      // path to doc collection file
+        lArgs.queryPath(),           // path to directory with query files
+        lArgs.relevanceScoresPath(), // path to relevance score path
+        lArgs.stopwordPath(),        // path to stopword file
+        lArgs.wordEmbeddingsPath(),  // path to word embeddings file
+        lArgs.tracePath(),           // path to trace log file
+        lArgs.evalPath(),            // path to evaluation results (JSON object is stored here)
+        lArgs.results(),             // topK argument
+        lArgs.tiers(),               // number of tiers
+        lArgs.dimensions()           // number of dimensions
+    };
 
     Trace::getInstance().init(lCB);
     // Evaluation::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
     // test(lCB);
     // testNico();
-    testAlex(lCB);
+    // testAlex(lCB);
+    testEval(lCB);
 
     /*std::vector<sizet_vt> vecs;
     sizet_vt out;

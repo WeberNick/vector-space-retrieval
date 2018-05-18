@@ -4,11 +4,7 @@
 /**
  * @brief Construct a new Query Processing Engine:: Query Processing Engine object
  */
-QueryProcessingEngine::QueryProcessingEngine() : 
-    _cb(nullptr),
-    _init(false),
-    _stopwordFile()
-{}
+QueryProcessingEngine::QueryProcessingEngine() : _cb(nullptr), _init(false), _stopwordFile() {}
 
 /**
  * @brief Initializes the singleton
@@ -32,8 +28,12 @@ void QueryProcessingEngine::read(const std::string& aFile) {
     }
 }
 
-const pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh, bool use_w2v) {
+const pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh) {
     Document queryDoc = DocumentManager::getInstance().createQuery(query);
+    this->search(queryDoc, topK, searchType, use_lsh);
+}
+
+const pair_sizet_float_vt QueryProcessingEngine::search(Document& queryDoc, size_t topK, IR_MODE searchType, bool use_lsh) {
 
     pair_sizet_float_vt found_indices; // result vector
 
@@ -71,19 +71,19 @@ const pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size
     } break;
     case IR_MODE ::kTIERED: {
         if (use_lsh) {
-            found_indices = QueryProcessingEngine::searchRandomProjCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
+            found_indices = QueryProcessingEngine::searchRandomProjCos(
+                &queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
         } else {
-            found_indices = QueryProcessingEngine::searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
+            found_indices =
+                QueryProcessingEngine::searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
         }
     } break;
-        case IR_MODE::kTIEREDW2V:{
-            found_indices = QueryProcessingEngine::searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK, use_w2v);
-        }
     case IR_MODE ::kRANDOM: {
         found_indices = QueryProcessingEngine::searchRandomProjCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
     } break;
     case IR_MODE ::kNoMode: break;
     case IR_MODE ::kNumberOfModes: break;
+    default: break;
     }
 
     // Return search result
@@ -178,8 +178,8 @@ const pair_sizet_float_vt QueryProcessingEngine::searchRandomProjCos(const Docum
     std::map<size_t, float> docId2Scores;
 
     for (auto& elem : collectionIds) {
-        docId2Scores[elem] =
-            Utility::SimilarityMeasures::calcHammingDist(query->getRandProjTiVec(), DocumentManager::getInstance().getDocumentMap().at(elem).getRandProjTiVec());
+        docId2Scores[elem] = Utility::SimilarityMeasures::calcHammingDist(query->getRandProjTiVec(),
+                                                                          DocumentManager::getInstance().getDocumentMap().at(elem).getRandProjTiVec());
     }
 
     // Convert map into vector of pairs
