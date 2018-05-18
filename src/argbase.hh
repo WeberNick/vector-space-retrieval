@@ -558,11 +558,11 @@ bool parse_args(const int aStart, // starting index
     typedef unsigned int uint;
     int lCurrArg = aStart;
     while (lCurrArg < aNoArgs) {
-        // std::cout << "no argdesc: " << aArgDesc.size() << std::endl;
-        // std::cout << "arg: " << lCurrArg << " " << argv[lCurrArg] << std::endl;
+         std::cout << "no argdesc: " << aArgDesc.size() << std::endl;
+         std::cout << "arg: " << lCurrArg << " " << argv[lCurrArg] << std::endl;
         bool lArgCouldBeSuccessfullyHandled = false;
         for (uint i = 0; i < aArgDesc.size(); ++i) {
-            // std::cout << "  test: " << aArgDesc[i]->name() << std::endl;
+             std::cout << "  test: " << aArgDesc[i]->name() << std::endl;
 
             int lReturnCode = aArgDesc[i]->parse_args(lCurrArg, aNoArgs, argv, aArgStruct);
             if (0 > lReturnCode) {
@@ -588,8 +588,8 @@ bool parse_args_collect(const int aStart, // starting index
     int lCurrArg = aStart;
 
     while (lCurrArg < aNoArgs) {
-        // std::cout << "no argdesc: " << aArgDesc.size() << std::endl;
-        // std::cout << "arg: " << lCurrArg << " " << argv[lCurrArg] << std::endl;
+        //std::cout << "no argdesc: " << aArgDesc.size() << std::endl;
+        //std::cout << "arg: " << lCurrArg << " " << argv[lCurrArg] << std::endl;
         bool lArgCouldBeSuccessfullyHandled = false;
         for (uint i = 0; i < aArgDesc.size(); ++i) {
             // std::cout << "  test: " << aArgDesc[i]->name() << std::endl;

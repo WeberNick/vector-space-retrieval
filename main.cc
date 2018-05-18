@@ -21,7 +21,7 @@ namespace fs = std::experimental::filesystem;
 // insert everything here what is not actually meant to be in main
 void test(const control_block_t& aControlBlock) {
     /* Example how to use Measurement class (also described in measure.hh) */
-    
+
     Evaluation& e = Evaluation::getInstance();
 
     e.start(kVANILLA, "Med1");
@@ -43,7 +43,6 @@ void test(const control_block_t& aControlBlock) {
     e.stop();
 
     e.constructJSON();
-
 }
 
 void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
@@ -157,10 +156,9 @@ void testAlex(Args& lArgs) {
 
     float_vt result;
     result.resize(300);
-    string_vt content = {"the", "to"};
+    string_vt content = {"the", "to", "of"};
 
     imInstance.getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, result);
-
 
     std::cout << result.size() << std::endl;
 
@@ -215,6 +213,7 @@ int main(const int argc, const char* argv[]) {
     argdesc_vt lArgDesc;
     construct_arg_desc(lArgDesc);
 
+
     if (!parse_args<Args>(1, argc, argv, lArgDesc, lArgs)) {
         std::cerr << "error while parsing arguments." << std::endl;
         return -1;
@@ -226,15 +225,16 @@ int main(const int argc, const char* argv[]) {
     }
 
     // THROW EXCEPTION if numtiers < 2
-    const control_block_t lCB = {lArgs.trace(),        lArgs.measure(),           lArgs.plot(),    lArgs.collectionPath(), lArgs.relevanceScoresPath(), lArgs.tracePath(), lArgs.evalPath(),
-                                 lArgs.stopwordPath(), lArgs.wordEmeddingsPath(), lArgs.results(), lArgs.tiers(),          lArgs.dimensions()};
+    const control_block_t lCB = {lArgs.trace(),     lArgs.measure(),   lArgs.plot(),         lArgs.collectionPath(),    lArgs.relevanceScoresPath(),
+                                 lArgs.tracePath(), lArgs.evalPath(),  lArgs.stopwordPath(), lArgs.wordEmeddingsPath(), lArgs.results(),
+                                 lArgs.tiers(),     lArgs.dimensions()};
 
-    Trace::getInstance().init(lCB);
-    Evaluation::getInstance().init(lCB);
+    // Trace::getInstance().init(lCB);
+    // Evaluation::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
-     //test(lCB);
+    // test(lCB);
     // testNico();
-    //testAlex(lArgs);
+    testAlex(lArgs);
 
     /*std::vector<sizet_vt> vecs;
     sizet_vt out;
