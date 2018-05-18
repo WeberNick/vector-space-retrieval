@@ -2,7 +2,6 @@
 
 namespace Util
 {
-
         std::string string_vt_2_str(const string_vt& stringVector) {
             std::string str;
 
