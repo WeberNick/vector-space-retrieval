@@ -3,6 +3,8 @@
 #include "document.hh"
 #include "posting_list.hh"
 #include "types.hh"
+#include "trace.hh"
+#include "exception.hh"
 #include "utility.hh"
 
 #include <iostream>
@@ -16,7 +18,7 @@ class QueryProcessingEngine {
     QueryProcessingEngine();                                                 // Constructor hidden
     QueryProcessingEngine(QueryProcessingEngine const&) = delete;            // Nick: modified to delete
     QueryProcessingEngine& operator=(QueryProcessingEngine const&) = delete; // Nick: modified to delete
-    ~QueryProcessingEngine() {}                                              // Destructor hidden
+    ~QueryProcessingEngine() = default;                                      // Destructor hidden
 
   public:
     /**
@@ -104,8 +106,6 @@ class QueryProcessingEngine {
 
   private:
     const CB* _cb;
-
-    bool _init;
     std::string _stopwordFile;
     string_vt _stopword_list;
 };

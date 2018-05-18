@@ -96,8 +96,6 @@ class Cluster
 
   private:
     const CB* _cb;
-
-    bool _init;          // was the cluster initialized?
-    sizet_vt _leaders;   // stores IDs of leaders as a list
+    sizet_vt _leaders;
     cluster_mt _cluster; // stores <DocID, Vector<DocID>> pairs, the first id represents a leader document
 };

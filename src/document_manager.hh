@@ -30,7 +30,7 @@ class DocumentManager {
     DocumentManager(DocumentManager&&) = delete;
     DocumentManager& operator=(const DocumentManager&) = delete;
     DocumentManager& operator=(DocumentManager&&) = delete;
-    ~DocumentManager();
+    ~DocumentManager() = default;
 
   private:
     /**
@@ -175,7 +175,6 @@ class DocumentManager {
 
   private:
     const control_block_t*                    _cb;
-    bool                                      _init;
     const char                                _delimiter; // defined manually
 
     std::string                               _collectionFile;

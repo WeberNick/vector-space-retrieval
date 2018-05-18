@@ -4,7 +4,7 @@
 /**
  * @brief Construct a new Query Processing Engine:: Query Processing Engine object
  */
-QueryProcessingEngine::QueryProcessingEngine() : _cb(nullptr), _init(false), _stopwordFile() {}
+QueryProcessingEngine::QueryProcessingEngine() : _cb(nullptr), _stopwordFile() {}
 
 /**
  * @brief Initializes the singleton
@@ -12,11 +12,11 @@ QueryProcessingEngine::QueryProcessingEngine() : _cb(nullptr), _init(false), _st
  * @param aControlBlock
  */
 void QueryProcessingEngine::init(const control_block_t& aControlBlock) {
-    if (!_init) {
+    if (!_cb) {
         _cb = &aControlBlock;
         _stopwordFile = _cb->stopwordPath(); // relative path from /path/to/repo/vector-space-retrieval
         read(_stopwordFile);
-        _init = true;
+        TRACE("QueryExecutionEngine: Initialized");
     }
 }
 

@@ -13,6 +13,8 @@
 #include "document.hh"
 #include "posting_list.hh"
 #include "types.hh"
+#include "trace.hh"
+#include "exception.hh"
 #include "utility.hh"
 
 class TieredIndex {
@@ -24,7 +26,7 @@ class TieredIndex {
     TieredIndex(TieredIndex&&) = delete;
     TieredIndex& operator=(const TieredIndex&) = delete;
     TieredIndex& operator=(TieredIndex&&) = delete;
-    ~TieredIndex();
+    ~TieredIndex() = default;
 
   private:
     // TODO docs
@@ -142,8 +144,6 @@ class TieredIndex {
 
   private:
     const control_block_t* _cb;
-
-    bool _init;
     size_t _num_tiers;
     str_tierplmap_mt _term_tier_map;
 };
