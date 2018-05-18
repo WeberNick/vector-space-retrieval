@@ -46,43 +46,7 @@ class DocumentManager {
      * @param aFile 
      */
     void readQueries(const string_vt& aQueryTypes);
-    /**
-     * @brief Insert element into manager (by std::pair element)
-     *
-     * @param aElement element to be inserted
-     * @return true if insertion was successful
-     * @return false if insertion failed
-     */
-    bool insert(const doc_map_elem_t& aElement);
-    /**
-     * @brief Insert element into manager (by values)
-     *
-     * @param aKey the key of the map entry
-     * @param aDocument the value of the map entry
-     * @return true if insertion was successful
-     * @return false if insertion failed
-     */
-    bool insert(const size_t aKey, const Document& aDocument);
-    /**
-     * @brief Find a document and return an iterator
-     *
-     * @param aKey the key to find
-     * @return doc_map_iter_t the iterator of the found document with key aKey
-     */
-    doc_map_iter_t find(const size_t aKey);
-    /**
-     * @brief Erase document by key
-     *
-     * @param aKey the key to erase
-     */
-    void erase(const size_t aKey);
-    /**
-     * @brief Erase document by iterator
-     *
-     * @param aIterator the iterator for erasing the document
-     */
-    void erase(const doc_map_iter_t aIterator);
-
+    
   public:
     /**
      * @brief Get the document map

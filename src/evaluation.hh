@@ -359,6 +359,21 @@ class Evaluation
         void constructJSON(const str_set& aQueryNames);
 
     private:
+        inline EvalResults& getEvalResult(const std::string& aMode)
+        {
+            try 
+            {
+                return _evalResults.at(aMode);
+            } 
+            catch (const std::out_of_range& ex) 
+            {
+                const std::string lErrMsg = std::string("IR mode '") + aMode + std::string("' not found in evaluation data");
+                TRACE(lErrMsg);
+                throw InvalidArgumentException(FLF, lErrMsg);
+            }
+        }
+
+    private:
         IR_PerformanceManager& _irpm;
         results_mt      _evalResults;
         std::string     _mode;

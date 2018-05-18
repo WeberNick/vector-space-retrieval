@@ -58,7 +58,7 @@ void DocumentManager::readQueries(const string_vt& aQueryTypes) {
             Document query = createQuery(parts[1], queryID);
             queries.insert(std::make_pair(query.getID(), query));
             queryids.push_back(query.getID());
-            std::cout << "Query " << queryID << ": " << parts[1];
+            //std::cout << "Query " << queryID << ": " << parts[1];
         }
         _queries[aType] = queries;
         _queryids[aType] = queryids;
@@ -73,8 +73,8 @@ Document DocumentManager::createQuery(std::string& content, const std::string& q
                         std::ptr_fun<int, int>(&std::ispunct));
     Utility::StringOp::trim(content); // Trim whitespaces at front and end
     string_vt proc_query;
-    Utility::StringOp::splitStringBoost(content, ' ', proc_query); // Split string by whitespaces
-    Utility::StringOp::removeEmptyStringsFromVec(proc_query);      // Remove eventually empty strings from the query term vector
+    Utility::StringOp::splitStringBoost(content, ' ', proc_query);                                // Split string by whitespaces
+    Utility::StringOp::removeEmptyStringsFromVec(proc_query);                                     // Remove eventually empty strings from the query term vector
 
     std::vector<std::string> preprocessed_content;
     for (auto& elem : proc_query) { // Preprocess query
