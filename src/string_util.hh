@@ -70,6 +70,7 @@ namespace Util
          * @return lowercased string
          */
         std::string toLower(const std::string& string);
+        void toLower(std::string& string);
 
         /**
          * @brief Lower case a given vector of strings
@@ -78,6 +79,7 @@ namespace Util
          * @return lowercased string
          */
         string_vt toLower(const string_vt& string);
+        void toLower(string_vt& string);
 
         /**
          * @brief Converts std:string into std:wstring

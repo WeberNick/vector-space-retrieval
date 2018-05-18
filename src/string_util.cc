@@ -28,22 +28,36 @@ namespace Util
 
         bool endsWith(const std::string& aString, const std::string& aSuffix) { return boost::algorithm::ends_with(aString, aSuffix); }
 
-        std::string toLower(const std::string& string) {
-            std::string data = string;
+        std::string toLower(const std::string& aString) {
+            std::string data = aString;
             std::transform(data.begin(), data.end(), data.begin(), ::tolower);
             return data;
         }
 
-        string_vt toLower(const string_vt& string) {
+        void toLower(std::string& aString)
+        {
+            std::transform(aString.begin(), aString.end(), aString.begin(), ::tolower);
+        }
+
+
+        string_vt toLower(const string_vt& aString) {
             string_vt data;
-            data.reserve(string.size());
-            std::transform(string.begin(), string.end(), std::back_inserter(data), [](const std::string& in) {
+            data.reserve(aString.size());
+            std::transform(aString.begin(), aString.end(), std::back_inserter(data), [](const std::string& in) {
                 std::string out;
                 out.reserve(in.size());
                 std::transform(in.begin(), in.end(), std::back_inserter(out), ::tolower);
                 return out;
             });
             return data;
+        }
+
+
+        void toLower(string_vt& aString) {
+            for(auto& str : aString)
+            {
+                toLower(str);
+            }
         }
 
         std::wstring string2wstring(const std::string& s) {

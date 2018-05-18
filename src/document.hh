@@ -167,7 +167,6 @@ class Document {
     float _norm_length;                        // normalization factor of _tf_idf_vec
 };
 
-using doc_ptr_vt = std::vector<const Document*>;
 using doc_mt = std::map<size_t, Document>;
 using doc_map_elem_t = std::pair<size_t, Document>;
 using doc_map_iter_t = doc_mt::iterator;
