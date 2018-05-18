@@ -13,31 +13,28 @@ void construct_arg_desc(argdesc_vt& x) {
     x.push_back(new barg_t("--trace", false, &Args::trace, "sets the flag to activate tracing"));
     x.push_back(new barg_t("--measure", false, &Args::measure, "sets the flag to measure performance"));
 
-    x.push_back(new sarg_t("--collection-path",      "./data/d-collection.docs", &Args::collectionPath, "path to the data directory. relative path from repo root directory or absolute path possible"));
-    x.push_back(new sarg_t("--query-path",           "./data/", &Args::collectionPath, "path to the query directory. relative path from repo root directory or absolute path possible"));
-    x.push_back(new sarg_t("--scores-path",          "./data/s-3.qrel", &Args::relevanceScoresPath, "path to the relevance scores directory. relative path from repo root directory or absolute path possible"));
-    x.push_back(new sarg_t("--stopword-path",        "./data/stopwords.large", &Args::stopwordPath, "path to the data directory. relative path from repo root directory or absolute path possible"));
-    x.push_back(new sarg_t("--word-embeddings-path", "./data/w2v/glove.6B.300d.txt", &Args::wordEmbeddingsPath, "path to the data directory. relative path from repo root directory or absolute path possible"));
-    x.push_back(new sarg_t("--trace-path",           "./", &Args::tracePath, "path to the log directory. relative path from repo root directory or absolute path possible"));
-    x.push_back(new sarg_t("--eval-path",            "./", &Args::evalPath, "path to the evaluation directory. relative path from repo root directory or absolute path possible"));
+    x.push_back(new sarg_t("--collection-path", "./data/d-collection.docs", &Args::collectionPath,
+                           "path to the data directory. relative path from repo root directory or absolute path possible"));
+    x.push_back(new sarg_t("--query-path", "./data/", &Args::collectionPath,
+                           "path to the query directory. relative path from repo root directory or absolute path possible"));
+    x.push_back(new sarg_t("--scores-path", "./data/s-3.qrel", &Args::relevanceScoresPath,
+                           "path to the relevance scores directory. relative path from repo root directory or absolute path possible"));
+    x.push_back(new sarg_t("--stopword-path", "./data/stopwords.large", &Args::stopwordPath,
+                           "path to the data directory. relative path from repo root directory or absolute path possible"));
+    x.push_back(new sarg_t("--word-embeddings-path", "./data/w2v/glove.6B.300d.txt", &Args::wordEmbeddingsPath,
+                           "path to the data directory. relative path from repo root directory or absolute path possible"));
+    x.push_back(
+        new sarg_t("--trace-path", "./", &Args::tracePath, "path to the log directory. relative path from repo root directory or absolute path possible"));
+    x.push_back(
+        new sarg_t("--eval-path", "./", &Args::evalPath, "path to the evaluation directory. relative path from repo root directory or absolute path possible"));
 
     x.push_back(new uarg_t("--results", 10, &Args::results, "the maximum number of results a query shall return"));
     x.push_back(new uarg_t("--tiers", 0, &Args::tiers, "the number of tiers used for the tiered index. TODO: assign appropriate default value"));
-    x.push_back(new uarg_t("--dimensions", 0, &Args::dimensions, "the number of dimensions used for the random projection. TODO: assign appropriate default value"));
+    x.push_back(
+        new uarg_t("--dimensions", 0, &Args::dimensions, "the number of dimensions used for the random projection. TODO: assign appropriate default value"));
 }
 
-Args::Args() : 
-    _help(false),
-    _trace(false),
-    _measure(false),
-    _collectionPath("./data/d-collection.docs"),
-    _queryPath("./data/"),
-    _relScoresPath("./data/"),
-    _stopwordPath("./data/stopwords.large"),
-    _wordEmbeddingsPath("./data/w2v/glove.6B.300d.txt"),
-    _tracePath("./"),
-    _evalPath("./"),
-    _results(10),
-    _tiers(0),
-    _dimensions(0)
-{}
+Args::Args() :
+    _help(false), _trace(false), _measure(false), _collectionPath("./data/d-collection.docs"), _queryPath("./data/"), _relScoresPath("./data/s-3.qrel"),
+    _stopwordPath("./data/stopwords.large"), _wordEmbeddingsPath("./data/w2v/glove.6B.300d.txt"), _tracePath("./"), _evalPath("./"), _results(10), _tiers(0),
+    _dimensions(0) {}

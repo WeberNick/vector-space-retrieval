@@ -7,14 +7,8 @@
  *
  */
 IndexManager::IndexManager() :
-    _cb(nullptr),
-    _docs(nullptr),
-    _idf_map(),
-    _collection_terms(),
-    _invertedIndex(InvertedIndex::getInstance()),
-    _tieredIndex(TieredIndex::getInstance()),
-    _clusteredIndex(Cluster::getInstance()),
-    _wordEmbeddingsIndex(WordEmbeddings::getInstance()) {}
+    _cb(nullptr), _docs(nullptr), _idf_map(), _collection_terms(), _invertedIndex(InvertedIndex::getInstance()), _tieredIndex(TieredIndex::getInstance()),
+    _clusteredIndex(Cluster::getInstance()), _wordEmbeddingsIndex(WordEmbeddings::getInstance()) {}
 
 /**
  * @brief Destroy the Index Manager:: Index Manager object
@@ -80,14 +74,9 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
     }
 
     RandomProjection::getInstance().init(*_cb, _collection_terms.size());
-    std::cout << "vor vector bau" << std::endl;
-    std::cout << (*(_docs)).size() << std::endl;
     for (auto& elem : *(_docs)) {
-        std::cout << "buildRandProjVector" << std::endl;
         this->buildTfIdfVector(elem.second);
-        std::cout << "buildRandProjVector" << std::endl;
         this->buildWordEmbeddingsVector(elem.second);
-        std::cout << "buildRandProjVector" << std::endl;
         this->buildRandProjVector(elem.second);
     }
 

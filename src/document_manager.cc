@@ -8,8 +8,8 @@
  *
  */
 DocumentManager::DocumentManager() :
-    _cb(nullptr), _init(false), _delimiter('~'), _collectionFile(), _queryTypes({"nontopictitles", "titles", "viddesc", "vidtitles"}), _docids(), _docs(),
-    _str_docid(), _queryids(), _queries() {}
+    _cb(nullptr), _delimiter('~'), _collectionFile(), _queryTypes({"nontopictitles", "titles", "viddesc", "vidtitles"}), _docids(), _docs(), _str_docid(),
+    _queryids(), _queries() {}
 
 void DocumentManager::init(const control_block_t& aControlBlock) {
     if (!_cb) {
