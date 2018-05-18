@@ -58,7 +58,7 @@ void DocumentManager::readQueries(const string_vt& aQueryTypes) {
             Document query = createQuery(parts[1], queryID);
             queries.insert(std::make_pair(query.getID(), query));
             queryids.push_back(query.getID());
-            std::cout << "Query " << queryID << ": " << parts[1];
+            //std::cout << "Query " << queryID << ": " << parts[1];
         }
         _queries[aType] = queries;
         _queryids[aType] = queryids;
