@@ -39,7 +39,6 @@ using sizet_set = std::set<size_t>;
 struct control_block_t {
     const bool _trace;   // indicate if tracing is activated
     const bool _measure; // indicate if measurement is activated
-    const bool _plot;    // indicate if tracing/(error) messages shall be printed (cout)
 
     const std::string _collectionPath;     // the path to the document collection
     const std::string _queryPath;          // the path where the query files are stored
@@ -55,7 +54,6 @@ struct control_block_t {
 
     bool trace() const { return _trace; }
     bool measure() const { return _measure; }
-    bool plot() const { return _plot; }
     const std::string& collectionPath() const { return _collectionPath; }
     const std::string& queryPath() const { return _queryPath; }
     const std::string& relevanceScoresPath() const { return _relScoresPath; }
@@ -104,14 +102,15 @@ inline std::string modeToString(IR_MODE aMode) {
     }
 }
 
-inline IR_MODE stringToMode(std::string aMode) {
-    if (aMode.compare("kVANILLA") == 0) {
-        return kVANILLA;
-    } else if (aMode.compare("kTIERED") == 0) {
-        return kTIERED;
-    } else if (aMode.compare("kCLUSTER") == 0) {
-        return kCLUSTER;
-    } else {
-        return IR_MODE ::kNoMode;
-    }
+inline IR_MODE stringToMode(const std::string& aMode) 
+{
+    if(aMode == "kNoMode"){ return kNoMode; }
+    else if(aMode == "kVANILLA"){ return kVANILLA; } 
+    else if(aMode == "kTIERED"){ return kTIERED; } 
+    else if(aMode == "kTIEREDW2V"){ return kTIEREDW2V; } 
+    else if(aMode == "kCLUSTER"){ return kCLUSTER; } 
+    else if(aMode == "kCLUSTERW2V"){ return kCLUSTERW2V; } 
+    else if(aMode == "kRANDOM"){ return kRANDOM; } 
+    else if(aMode == "kRANDOMW2V"){ return kRANDOMW2V; } 
+    else{ return kNoMode; }
 }

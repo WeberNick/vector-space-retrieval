@@ -42,7 +42,8 @@ void test(const control_block_t& aControlBlock) {
 
     e.stop();
 
-    e.constructJSON();
+    const std::set<std::string> q = {"Med1", "Med2", "Med3"};
+    e.constructJSON(q);
 
 }
 
@@ -74,7 +75,8 @@ void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
 }
 
 void testNico() {
-    const control_block_t& aControlBlock = {false, false, false, "./data/collection_test.docs", "", "./tests/_trace_test/", "", "./data/stopwords.large", "",
+    
+    const control_block_t& aControlBlock = {false, false, "./data/collection_test.docs", "", "", "./data/stopwords.large", "", "./tests/_trace_test/", "",
                                             0,     3,     1000};
     // assert(aNumTiers > 1);
     Measure lMeasure;
@@ -128,13 +130,13 @@ void testAlex(Args& lArgs) {
 
     const control_block_t& aControlBlock = {false,
                                             false,
-                                            false,
                                             lArgs.collectionPath(),
-                                            lArgs.queryPath(),
-                                            "./tests/_trace_test/",
+                                            "",
                                             "",
                                             lArgs.stopwordPath(),
                                             lArgs.wordEmbeddingsPath(),
+                                            "./tests/_trace_test/",
+                                            "",
                                             0,
                                             lArgs.tiers(),
                                             lArgs.dimensions()};
@@ -161,6 +163,7 @@ void testAlex(Args& lArgs) {
     string_vt content = {"the", "to"};
 
     imInstance.getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, result);
+
 
     std::cout << result.size() << std::endl;
 
@@ -238,16 +241,27 @@ int main(const int argc, const char* argv[]) {
     }
 
     // THROW EXCEPTION if numtiers < 2
-    const control_block_t lCB = { lArgs.trace(),               lArgs.measure(),   lArgs.plot(),     lArgs.collectionPath(), lArgs.queryPath(),
-                                  lArgs.relevanceScoresPath(), lArgs.tracePath(), lArgs.evalPath(), lArgs.stopwordPath(),
-                                  lArgs.wordEmbeddingsPath(),   lArgs.results(),   lArgs.tiers(),    lArgs.dimensions()};
+    const control_block_t lCB = {
+                                lArgs.trace(), //trace activated?
+                                lArgs.measure(), //measure runtime/IR performance?
+                                lArgs.collectionPath(), //path to doc collection file
+                                lArgs.queryPath(), //path to directory with query files
+                                lArgs.relevanceScoresPath(), //path to relevance score path
+                                lArgs.stopwordPath(), //path to stopword file
+                                lArgs.wordEmbeddingsPath(), //path to word embeddings file
+                                lArgs.tracePath(), //path to trace log file
+                                lArgs.evalPath(), //path to evaluation results (JSON object is stored here)
+                                lArgs.results(), //topK argument
+                                lArgs.tiers(), //number of tiers
+                                lArgs.dimensions() //number of dimensions
+                            };
 
     Trace::getInstance().init(lCB);
     Evaluation::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
      //test(lCB);
     // testNico();
-    testAlex(lArgs);
+    //testAlex(lArgs);
 
     /*std::vector<sizet_vt> vecs;
     sizet_vt out;
