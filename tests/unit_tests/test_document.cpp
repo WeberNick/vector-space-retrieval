@@ -12,7 +12,7 @@
 class DocumentTest : public testing::Test {
   protected:
     virtual void SetUp() {
-        const control_block_t lControlBlock = { false, false, false, "./data/collection_test.docs", "./data/" , "./data/s-3.qrel", "./data/stopwords.large", "./data/w2v/glove.6B.300d.txt", "./", "./", 10, 10, 100 };
+        const control_block_t lControlBlock = { false, false, "./data/collection_test.docs", "./data/" , "./data/s-3.qrel", "./data/stopwords.large", "./data/w2v/glove.6B.300d.txt", "./", "./", 10, 10, 100 };
         Trace::getInstance().init(lControlBlock);
         
         std::cout << "Hi" << std::endl;
