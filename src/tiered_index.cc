@@ -4,19 +4,13 @@
  * @brief Construct a new Tiered Index:: Tiered Index object
  *
  */
-TieredIndex::TieredIndex() : _cb(nullptr), _init(false), _num_tiers(), _term_tier_map() {}
-
-/**
- * @brief Destroy the Tiered Index:: Tiered Index object
- *
- */
-TieredIndex::~TieredIndex() {}
+TieredIndex::TieredIndex() : _cb(nullptr), _num_tiers(), _term_tier_map() {}
 
 void TieredIndex::init(const control_block_t& aControlBlock) {
-    if (!_init) {
+    if (!_cb) {
         _cb = &aControlBlock;
         _num_tiers = _cb->tiers();
-        _init = true;
+        TRACE("TieredIndex: Initialized");
     }
 }
 

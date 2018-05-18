@@ -10,8 +10,10 @@ void IRPM::init(const CB& aControlBlock)
     if(!_cb)
     {
         _cb = &aControlBlock;
-        std::ifstream file(_cb->relevanceScoresPath());
+        const std::string& lRelScorePath = _cb->relevanceScoresPath();
+        std::ifstream file(lRelScorePath);
         std::string line;
+        TRACE(std::string("Evaluation::IR_PerformanceManager: Start reading query relevance scores from '") + lRelScorePath + std::string("'"));
         while (std::getline(file, line)) {
             string_vt parts;
             Utility::StringOp::splitStringBoost(line, '~', parts);
@@ -20,6 +22,8 @@ void IRPM::init(const CB& aControlBlock)
             const uint score = std::stoul(parts[2]);
             _queryScores[qID].emplace_back(qID, dID, score);
         }
+        TRACE(std::string("Evaluation::IR_PerformanceManager: Finished reading query relevance scores"));
+        TRACE("Evaluation::IR_PerformanceManager: Initialized");
     }
 }
 
@@ -205,6 +209,7 @@ void Evaluation::init(const CB& aControlBlock)
         _cb = &aControlBlock;
         _evalPath = std::string(_cb->evalPath()).append("eval/");
         fs::create_directory(_evalPath);
+        TRACE(std::string("Evaluation: Initialized. Path set to '") + _evalPath + std::string("'"));
     }
 }
 
@@ -289,6 +294,7 @@ void Evaluation::evalIR(const IR_MODE aMode, const std::string& aQueryName, cons
 
 void Evaluation::constructJSON(const str_set& aQueryNames)
 {
+    TRACE("Construct JSON object containing all evaluation results");
     json lModes = json::array();    
     for(const auto& [mode, results] : _evalResults)
     {

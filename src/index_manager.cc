@@ -8,7 +8,6 @@
 IndexManager::IndexManager() :
     _cb(nullptr),
     _docs(nullptr),
-    _init(false),
     _idf_map(),
     _collection_terms(),
     _invertedIndex(InvertedIndex::getInstance()),
@@ -22,8 +21,8 @@ IndexManager::IndexManager() :
  */
 IndexManager::~IndexManager() {}
 
-void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
-    if (!_init) {
+void IndexManager::init(const CB& aControlBlock, doc_mt& aDocMap) {
+    if (!_cb) {
         _cb = &aControlBlock;
         _docs = &aDocMap;
         _collection_terms.reserve(_docs->size());
@@ -39,7 +38,7 @@ void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
         _clusteredIndex.init(aControlBlock);
         _wordEmbeddingsIndex.init(aControlBlock);
         this->buildIndices(postinglist_out, tieredpostinglist_out, cluster_out, leaders);
-        _init = true;
+        TRACE("IndexManager: Initialized");
     }
 }
 
@@ -47,6 +46,7 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
                                 str_tierplmap_mt* tieredpostinglist_out,
                                 cluster_mt* cluster_out,
                                 const sizet_vt& leaders) {
+    TRACE("IndexManager: Start building Indices");
     str_int_mt idf_occs;
     for (const auto& [id, doc] : *(_docs)) {
         str_int_mt tf_counts;
@@ -87,6 +87,7 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
         const size_t index = QueryProcessingEngine::getInstance().searchClusterCosFirstIndex(&doc, leaders);
         cluster_out->at(index).push_back(doc.getID());
     }
+    TRACE("IndexManager: Finished building indices");
 }
 
 void IndexManager::buildWordEmbeddingsVector(Document& doc) {

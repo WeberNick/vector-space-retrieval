@@ -8,27 +8,21 @@
  *
  */
 DocumentManager::DocumentManager() :
-    _cb(nullptr), _init(false), _delimiter('~'), _collectionFile(), _queryTypes({"all", "nontopictitles", "titles", "viddesc", "vidtitles"}), _docids(),
+    _cb(nullptr), _delimiter('~'), _collectionFile(), _queryTypes({"all", "nontopictitles", "titles", "viddesc", "vidtitles"}), _docids(),
     _docs(), _str_docid(), _queryids(), _queries() {}
 
-/**
- * @brief Destroy the Document Manager:: Document Manager object
- *
- */
-DocumentManager::~DocumentManager() {}
-
 void DocumentManager::init(const control_block_t& aControlBlock) {
-    if (!_init) {
+    if (!_cb) {
         _cb = &aControlBlock;
         _collectionFile = _cb->collectionPath();
         readDocs(_collectionFile);
         readQueries(_queryTypes);
-        _init = true;
-        TRACE("Document manager initialized");
+        TRACE("DocumentManager: Initialized");
     }
 }
 
 void DocumentManager::readDocs(const std::string& aFile) {
+    TRACE(std::string("DocumentManager: Start reading the document collection and creating Document objects from '") + aFile + std::string("'"));
     std::ifstream file(aFile);
     std::string line;
     while (std::getline(file, line)) {
@@ -42,11 +36,14 @@ void DocumentManager::readDocs(const std::string& aFile) {
         _docids.push_back(doc.getID());
         _str_docid[doc.getDocID()] = doc.getID();
     }
+    TRACE("DocumentManager: Finished reading the document collection");
 }
 
 void DocumentManager::readQueries(const string_vt& aQueryTypes) {
+    TRACE("DocumentManager: Start reading the query collection and creating Document objects");
     for (const auto& aType : aQueryTypes) {
         const std::string& aFile = _cb->queryPath() + "q-" + aType + ".queries";
+        TRACE(std::string("DocumentManager: Read in '") + aFile + std::string("'"));
         std::ifstream file(aFile);
         std::string line;
         doc_mt queries;
@@ -63,6 +60,7 @@ void DocumentManager::readQueries(const string_vt& aQueryTypes) {
         _queries[aType] = queries;
         _queryids[aType] = queryids;
     }
+    TRACE("DocumentManager: Finished reading the query collection");
 }
 
 Document DocumentManager::createQuery(std::string& content, const std::string& queryID) {

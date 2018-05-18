@@ -16,6 +16,7 @@
 
 #include "types.hh"
 #include "trace.hh"
+#include "exception.hh"
 #include "measure.hh"
 #include "document_manager.hh"
 #include "document.hh"
@@ -279,7 +280,14 @@ class Evaluation
                 inline double getPerfMAP() const { return _perfMAP; }
                 inline double getPerfMAP() { return static_cast<const EvalResults&>(*this).getPerfMAP();}
                 //setter
-                inline void init(const std::string& aMode){if(_mode==""){_mode=aMode;}}
+                inline void init(const std::string& aMode)
+                {
+                    if(_mode=="")
+                    {
+                        _mode=aMode;
+                        TRACE(std::string("Evaluation::EvalResults: Initialized for mode '") + aMode + std::string("'"));
+                    }
+                }
                 inline void setTime(const std::string& aQueryName, const double aTime)
                 { _perfRuntime[aQueryName] = aTime; }
                 inline void setAccuracy(const std::string& aQueryName, const double aAccuracy)
