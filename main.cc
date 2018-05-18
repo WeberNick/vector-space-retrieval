@@ -189,8 +189,10 @@ void testAlex(const control_block_t& aControlBlock) {
 void testEval(const control_block_t& aControlBlock) {
     DocumentManager& docManager = DocumentManager::getInstance();
     docManager.init(aControlBlock);
+    std::cout << "DOCUMENT MANAGER INITIALIZED" << std::endl;
 
     IndexManager& imInstance = IndexManager::getInstance();
+    std::cout << "indexmanager vor init" << std::endl;
     imInstance.init(aControlBlock, docManager.getDocumentMap());
     std::cout << "Indexing done" << std::endl;
     QueryProcessingEngine::getInstance().init(aControlBlock);

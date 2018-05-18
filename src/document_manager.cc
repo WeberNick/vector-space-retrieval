@@ -8,8 +8,8 @@
  *
  */
 DocumentManager::DocumentManager() :
-    _cb(nullptr), _init(false), _delimiter('~'), _collectionFile(), _queryTypes({"all", "nontopictitles", "titles", "viddesc", "vidtitles"}), _docids(),
-    _docs(), _str_docid(), _queryids(), _queries() {}
+    _cb(nullptr), _init(false), _delimiter('~'), _collectionFile(), _queryTypes({"nontopictitles", "titles", "viddesc", "vidtitles"}), _docids(), _docs(),
+    _str_docid(), _queryids(), _queries() {}
 
 /**
  * @brief Destroy the Document Manager:: Document Manager object
@@ -41,6 +41,7 @@ void DocumentManager::readDocs(const std::string& aFile) {
         _docs.insert(std::make_pair(doc.getID(), doc));
         _docids.push_back(doc.getID());
         _str_docid[doc.getDocID()] = doc.getID();
+        std::cout << _docs.size() << std::endl;
     }
 }
 
@@ -58,7 +59,7 @@ void DocumentManager::readQueries(const string_vt& aQueryTypes) {
             Document query = createQuery(parts[1], queryID);
             queries.insert(std::make_pair(query.getID(), query));
             queryids.push_back(query.getID());
-            //std::cout << "Query " << queryID << ": " << parts[1];
+            // std::cout << "Query " << queryID << ": " << parts[1];
         }
         _queries[aType] = queries;
         _queryids[aType] = queryids;
@@ -66,15 +67,17 @@ void DocumentManager::readQueries(const string_vt& aQueryTypes) {
 }
 
 Document DocumentManager::createQuery(std::string& content, const std::string& queryID) {
+    std::string temp;
     content = Utility::StringOp::toLower(content);
     Utility::IR::removeStopword(content, QueryProcessingEngine::getInstance().getStopwordlist()); // Remove stopwords
     std::remove_copy_if(content.begin(), content.end(),
-                        std::back_inserter(content), // Store output
+                        std::back_inserter(temp), // Store output
                         std::ptr_fun<int, int>(&std::ispunct));
+    content = temp;
     Utility::StringOp::trim(content); // Trim whitespaces at front and end
     string_vt proc_query;
-    Utility::StringOp::splitStringBoost(content, ' ', proc_query);                                // Split string by whitespaces
-    Utility::StringOp::removeEmptyStringsFromVec(proc_query);                                     // Remove eventually empty strings from the query term vector
+    Utility::StringOp::splitStringBoost(content, ' ', proc_query); // Split string by whitespaces
+    Utility::StringOp::removeEmptyStringsFromVec(proc_query);      // Remove eventually empty strings from the query term vector
 
     std::vector<std::string> preprocessed_content;
     for (auto& elem : proc_query) { // Preprocess query

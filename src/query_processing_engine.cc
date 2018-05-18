@@ -101,6 +101,8 @@ const pair_sizet_float_vt QueryProcessingEngine::search(Document& queryDoc, size
 }
 
 const pair_sizet_float_vt QueryProcessingEngine::searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
+    std::cout << "in search collection cos" << std::endl;
+
     std::map<size_t, float> docId2Length;
     for (auto& elem : collectionIds) { // Map of doc id to length og that doc
         docId2Length[elem] = DocumentManager::getInstance().getDocumentMap().at(elem).getNormLength();
@@ -119,6 +121,8 @@ const pair_sizet_float_vt QueryProcessingEngine::searchCollectionCos(const Docum
         } catch (const InvalidArgumentException& e) { continue; /* One of the query terms does not appear in the document collection. */ }
     }
 
+    std::cout << "after long loop search collection cos" << std::endl;
+
     for (const auto& elem : docId2Length) { // Divide every score of a doc by the length of the document
         docId2Scores[elem.first] = docId2Scores[elem.first] / docId2Length[elem.first];
     }
@@ -127,9 +131,11 @@ const pair_sizet_float_vt QueryProcessingEngine::searchCollectionCos(const Docum
     for (const auto& elem : docId2Scores) { // Convert map into vector of pairs
         results.push_back(elem);
     }
+    std::cout << "after result push collection cos" << std::endl;
 
     // Sort vector desc
     std::sort(results.begin(), results.end(), [](std::pair<size_t, float> elem1, std::pair<size_t, float> elem2) { return elem1.second > elem2.second; });
+    std::cout << "after result search collection cos" << std::endl;
     return (!topK || topK > results.size()) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
 }
 

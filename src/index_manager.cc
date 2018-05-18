@@ -1,20 +1,14 @@
 #include "index_manager.hh"
 #include "measure.hh"
+#include "trace.hh"
 
 /**
  * @brief Construct a new Index Manager:: Index Manager object
  *
  */
 IndexManager::IndexManager() :
-    _cb(nullptr),
-    _docs(nullptr),
-    _init(false),
-    _idf_map(),
-    _collection_terms(),
-    _invertedIndex(InvertedIndex::getInstance()),
-    _tieredIndex(TieredIndex::getInstance()),
-    _clusteredIndex(Cluster::getInstance()),
-    _wordEmbeddingsIndex(WordEmbeddings::getInstance()) {}
+    _cb(nullptr), _docs(nullptr), _init(false), _idf_map(), _collection_terms(), _invertedIndex(InvertedIndex::getInstance()),
+    _tieredIndex(TieredIndex::getInstance()), _clusteredIndex(Cluster::getInstance()), _wordEmbeddingsIndex(WordEmbeddings::getInstance()) {}
 
 /**
  * @brief Destroy the Index Manager:: Index Manager object
@@ -27,7 +21,6 @@ void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
         _cb = &aControlBlock;
         _docs = &aDocMap;
         _collection_terms.reserve(_docs->size());
-
         _clusteredIndex.chooseLeaders();
         const sizet_vt& leaders = _clusteredIndex.getLeaders();
         cluster_mt* cluster_out = _clusteredIndex.getClusterMap();
@@ -37,15 +30,17 @@ void IndexManager::init(const control_block_t& aControlBlock, doc_mt& aDocMap) {
         _invertedIndex.init(aControlBlock);
         _tieredIndex.init(aControlBlock);
         _clusteredIndex.init(aControlBlock);
-        _wordEmbeddingsIndex.init(aControlBlock);
+
+        // TODO: hier gucken, iwas falsch
+        std::cout << "wordembeddings index init start" << std::endl;
+        //_wordEmbeddingsIndex.init(aControlBlock);
+        std::cout << "wordembeddings index init finished" << std::endl;
         this->buildIndices(postinglist_out, tieredpostinglist_out, cluster_out, leaders);
         _init = true;
     }
 }
 
-void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
-                                str_tierplmap_mt* tieredpostinglist_out,
-                                cluster_mt* cluster_out,
+void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplmap_mt* tieredpostinglist_out, cluster_mt* cluster_out,
                                 const sizet_vt& leaders) {
     str_int_mt idf_occs;
     for (const auto& [id, doc] : *(_docs)) {
@@ -76,12 +71,19 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out,
         (*tieredpostinglist_out)[term] = Utility::IR::calculateTiers(_cb->tiers(), (*postinglist_out)[term]);
         _collection_terms.push_back(term);
     }
+
     RandomProjection::getInstance().init(*_cb, _collection_terms.size());
+    std::cout << "vor vector bau" << std::endl;
+    std::cout << (*(_docs)).size() << std::endl;
     for (auto& elem : *(_docs)) {
+        std::cout << "buildRandProjVector" << std::endl;
         this->buildTfIdfVector(elem.second);
+        std::cout << "buildRandProjVector" << std::endl;
         this->buildWordEmbeddingsVector(elem.second);
+        std::cout << "buildRandProjVector" << std::endl;
         this->buildRandProjVector(elem.second);
     }
+
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
         const size_t index = QueryProcessingEngine::getInstance().searchClusterCosFirstIndex(&doc, leaders);
@@ -94,7 +96,7 @@ void IndexManager::buildWordEmbeddingsVector(Document& doc) {
     wevec.resize(300);
 
     const string_vt& content = doc.getContent();
-    //TODO
+    // TODO:
     // test make_unique
     this->getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, wevec);
     doc.setWordEmbeddingsVector(wevec);
@@ -115,9 +117,10 @@ void IndexManager::buildTfIdfVector(Document& doc) {
 }
 
 void IndexManager::buildRandProjVector(Document& doc) {
-    const boost::dynamic_bitset<>& rand_proj_ti = RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(), Utility::randomProjectionHash);
+    const boost::dynamic_bitset<>& rand_proj_ti =
+        RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(), Utility::randomProjectionHash);
     doc.setRandProjTiVec(rand_proj_ti);
-    //TODO das geht nicht so einfach, weil wir vorher ja die dimension setzen
-    //const boost::dynamic_bitset<>& rand_proj_we = RandomProjection::getInstance().localitySensitiveHashProjection(doc.getWordEmbeddingsVector(), Utility::randomProjectionHash);
-    //doc.setRandProjWeVec(rand_proj_we);
+    // TODO das geht nicht so einfach, weil wir vorher ja die dimension setzen
+    // const boost::dynamic_bitset<>& rand_proj_we = RandomProjection::getInstance().localitySensitiveHashProjection(doc.getWordEmbeddingsVector(),
+    // Utility::randomProjectionHash); doc.setRandProjWeVec(rand_proj_we);
 }
