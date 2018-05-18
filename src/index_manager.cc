@@ -32,7 +32,7 @@ void IndexManager::init(const CB& aControlBlock, doc_mt& aDocMap) {
 
         // TODO: hier gucken, iwas falsch
         std::cout << "wordembeddings index init start" << std::endl;
-        //_wordEmbeddingsIndex.init(aControlBlock);
+        _wordEmbeddingsIndex.init(aControlBlock);
         std::cout << "wordembeddings index init finished" << std::endl;
         this->buildIndices(postinglist_out, tieredpostinglist_out, cluster_out, leaders);
         TRACE("IndexManager: Initialized");
@@ -56,8 +56,7 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
             }
         }
         int maxFreq = Util::getMaxWordFrequency(con);
-        for (const auto& [term, count] : tf_counts) { // this loops through the distinct terms of this
-                                                      // document
+        for (const auto& [term, count] : tf_counts) { // this loops through the distinct terms of this document
             tf_out[term] = Util::calcTf(count, maxFreq);
             (*postinglist_out)[term].setTf(id, tf_out.at(term));
             ++idf_occs[term];
@@ -71,14 +70,12 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
         (*tieredpostinglist_out)[term] = Util::calculateTiers(_cb->tiers(), (*postinglist_out)[term]);
         _collection_terms.push_back(term);
     }
-
     RandomProjection::getInstance().init(*_cb, _collection_terms.size());
     for (auto& elem : *(_docs)) {
         this->buildTfIdfVector(elem.second);
         this->buildWordEmbeddingsVector(elem.second);
         this->buildRandProjVector(elem.second);
     }
-
     for (auto& type: DocumentManager::getInstance().getQueryTypes()) {
         for(auto& query: DocumentManager::getInstance().getQueriesForType(type)) {
             this->buildTfIdfVector(query.second);
@@ -86,7 +83,6 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
             this->buildRandProjVector(query.second);
         }
     }
-
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
         const size_t index = QueryExecutionEngine::getInstance().searchClusterCosFirstIndex(&doc, leaders);

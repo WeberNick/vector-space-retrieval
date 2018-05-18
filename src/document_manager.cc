@@ -7,7 +7,6 @@
  */
 DocumentManager::DocumentManager() :
     _cb(nullptr),
-    _init(false),
     _delimiter('~'),
     _collectionFile(),
     _queryTypes({"nontopictitles", "titles", "viddesc", "vidtitles"}),
@@ -17,12 +16,6 @@ DocumentManager::DocumentManager() :
     _queryids(),
     _queries()
 {}
-
-/**
- * @brief Destroy the Document Manager:: Document Manager object
- *
- */
-DocumentManager::~DocumentManager() {}
 
 void DocumentManager::init(const control_block_t& aControlBlock) {
     if (!_cb) {

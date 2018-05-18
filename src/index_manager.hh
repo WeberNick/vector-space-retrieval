@@ -131,5 +131,4 @@ class IndexManager {
     TieredIndex& _tieredIndex;
     Cluster& _clusteredIndex;
     WordEmbeddings& _wordEmbeddingsIndex;
-
 };
