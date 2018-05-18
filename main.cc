@@ -210,6 +210,18 @@ int main(const int argc, const char* argv[]) {
         return -1;
     }*/
 
+ /*   if(!(fs::exists(lArgs.collectionPath())))
+    {
+        std::cerr << "Given path to the master partition is invalid." << std::endl;
+        //return -1; //wait until boot and so on works and uncomment this
+    }
+    if(lArgs.trace() && !fs::exists(lArgs.tracePath()))
+    {
+        std::cerr << "The path where to store the trace file is invalid." << std::endl;
+        return -1;
+    }
+*/
+
     /* How to use class Args is described in args.hh */
     Args lArgs;
     argdesc_vt lArgDesc;

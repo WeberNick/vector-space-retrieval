@@ -27,6 +27,7 @@ using uint_vt = std::vector<uint>;
 using float_vt = std::vector<float>;
 using sizet_vt = std::vector<size_t>;
 using string_vt = std::vector<std::string>;
+using str_set = std::set<std::string>;
 using str_int_mt = std::map<std::string, uint>;
 using str_float_mt = std::map<std::string, float>;
 using str_sizet_mt = std::unordered_map<std::string, size_t>;

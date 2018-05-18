@@ -3,8 +3,7 @@
 Trace::Trace() :
     _logPath(),
     _logStream(),
-    _cb(nullptr),
-    _init(false)
+    _cb(nullptr)
 {}
 
 Trace::~Trace()
@@ -18,7 +17,7 @@ Trace::~Trace()
 
 void Trace::init(const CB& aCB)
 {
-    if(!_init)
+    if(!_cb)
     {
         _cb = &aCB;
         _logPath = _cb->tracePath();
@@ -32,7 +31,6 @@ void Trace::init(const CB& aCB)
             _logStream.open(_logPath.c_str(), std::ofstream::out | std::ofstream::app);
             TRACE("Log file created and open");
         }
-        _init = true;
     }
 }
 

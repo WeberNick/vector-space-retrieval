@@ -51,6 +51,5 @@ class Trace
         std::string     _logPath;
         std::ofstream   _logStream;
         const CB*       _cb;
-        bool            _init;
 };
 
