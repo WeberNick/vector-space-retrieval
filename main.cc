@@ -134,7 +134,7 @@ void testAlex(Args& lArgs) {
                                             "./tests/_trace_test/",
                                             "",
                                             lArgs.stopwordPath(),
-                                            lArgs.wordEmeddingsPath(),
+                                            lArgs.wordEmbeddingsPath(),
                                             0,
                                             lArgs.tiers(),
                                             lArgs.dimensions()};
@@ -228,14 +228,14 @@ int main(const int argc, const char* argv[]) {
     // THROW EXCEPTION if numtiers < 2
     const control_block_t lCB = { lArgs.trace(),               lArgs.measure(),   lArgs.plot(),     lArgs.collectionPath(), lArgs.queryPath(),
                                   lArgs.relevanceScoresPath(), lArgs.tracePath(), lArgs.evalPath(), lArgs.stopwordPath(),
-                                  lArgs.wordEmeddingsPath(),   lArgs.results(),   lArgs.tiers(),    lArgs.dimensions()};
+                                  lArgs.wordEmbeddingsPath(),   lArgs.results(),   lArgs.tiers(),    lArgs.dimensions()};
 
     Trace::getInstance().init(lCB);
     Evaluation::getInstance().init(lCB);
     // insert everything here what is not actually meant to be in main
      //test(lCB);
     // testNico();
-    //testAlex(lArgs);
+    testAlex(lArgs);
 
     /*std::vector<sizet_vt> vecs;
     sizet_vt out;

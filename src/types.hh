@@ -41,12 +41,12 @@ struct control_block_t {
     const bool _plot;    // indicate if tracing/(error) messages shall be printed (cout)
 
     const std::string _collectionPath;     // the path to the document collection
-    const std::string _queryPath;
-    const std::string _relScoresPath;
+    const std::string _queryPath;          // the path where the query files are stored
+    const std::string _relScoresPath;      // the path to the relevance score file
+    const std::string _stopwordFile;       // the path to the stopword file
+    const std::string _wordEmbeddingsPath; // the path to the word embeddings file
     const std::string _tracePath;          // the path to the trace logs
     const std::string _evalPath;           // the path to the evaluation
-    const std::string _stopwordFile;       // the path to the stopword file
-    const std::string _wordEmbeddingsFile; // the path to the word embeddings file
 
     const uint _noResults;    // the number of results to return for each query
     const uint _noTiers;      // number of tiers for the tiered index
@@ -60,8 +60,8 @@ struct control_block_t {
     const std::string& relevanceScoresPath() const { return _relScoresPath; }
     const std::string& tracePath() const { return _tracePath; }
     const std::string& evalPath() const { return _evalPath; }
-    const std::string& stopwordFile() const { return _stopwordFile; }
-    const std::string& wordEmbeddingsFile() const { return _wordEmbeddingsFile; }
+    const std::string& stopwordPath() const { return _stopwordFile; }
+    const std::string& wordEmbeddingsPath() const { return _wordEmbeddingsPath; }
     uint results() const { return _noResults; }
     uint tiers() const { return _noTiers; }
     uint dimensions() const { return _noDimensions; }
