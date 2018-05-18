@@ -294,13 +294,6 @@ void Evaluation::constructJSON(const str_set& aQueryNames)
         json lMode = json::object();
         lMode["name"] = mode;
         json lQueryResults = json::array();
-        const auto& lPerfRuntime = results.getPerfRuntime(); 
-        const auto& lPerfAccuracy = results.getPerfAccuracy(); 
-        const auto& lPerfPrecision = results.getPerfPrecision(); 
-        const auto& lPerfRecall = results.getPerfRecall(); 
-        const auto& lPerfFMeasure = results.getPerfFMeasure(); 
-        const auto& lPerfAvgPrecision = results.getPerfAvgPrecision(); 
-        const auto& lPerfDCG = results.getPerfDCG(); 
         for(const auto& query : aQueryNames)
         {
             try
