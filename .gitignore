@@ -180,8 +180,6 @@ evsr-web/client/build
 .env.test.local
 .env.production.local
 
-
-
 evsr-web/server/server.log*
 evsr-web/npm-debug.log*
 evsr-web/yarn-debug.log*
