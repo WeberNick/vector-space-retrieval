@@ -42,7 +42,9 @@ void test(const control_block_t& aControlBlock) {
 
     e.stop();
 
-    e.constructJSON();
+
+     str_set set = {"Med-1", "Med-2", "Med-3"};
+     e.constructJSON(set);
 }
 
 void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {

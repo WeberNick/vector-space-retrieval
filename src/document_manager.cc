@@ -12,7 +12,6 @@ DocumentManager::DocumentManager() :
     _init(false),
     _delimiter('~'),
     _collectionFile(),
-    _queryFiles(),
     _queryTypes({ "all", "nontopictitles", "titles", "viddesc", "vidtitles" }),
     _docids(),
     _docs(),
@@ -32,11 +31,8 @@ void DocumentManager::init(const control_block_t& aControlBlock) {
         _cb = &aControlBlock;
         _collectionFile = _cb->collectionPath();
         const std::string& queryPath = _cb->queryPath();
-        for(const std::string& q : _queryTypes) {
-            _queryFiles.push_back(queryPath + "q-" + q + ".queries");
-        }
         readDocs(_collectionFile);
-        readQueries(_queryFiles);
+        readQueries(_queryTypes);
         _init = true;
     }
 }
@@ -57,8 +53,9 @@ void DocumentManager::readDocs(const std::string& aFile) {
     }
 }
 
-void DocumentManager::readQueries(const string_vt& aFiles) {
-    for (const auto& aFile : aFiles) {
+void DocumentManager::readQueries(const string_vt& aQueryTypes) {
+    for (const auto& aType : aQueryTypes) {
+        const std::string& aFile = "q-" + aType + ".queries";
         std::ifstream file(aFile);
         std::string line;
         doc_mt queries; 
@@ -66,32 +63,31 @@ void DocumentManager::readQueries(const string_vt& aFiles) {
         while (std::getline(file, line)) {
             string_vt parts;
             Utility::StringOp::splitStringBoost(line, _delimiter, parts);
-            string_vt content;
-            Utility::StringOp::splitStringBoost(parts[1], ' ', content);
-            std::string queryID = parts[0];
-            Document query(queryID, content);
+            std::string& queryID = parts[0];
+            Document query = createQuery(parts[1], queryID);
             queries.insert(std::make_pair(query.getID(), query));
             queryids.push_back(query.getID());
+            std::cout << "Query " << queryID << ": " << parts[1];
         }
-        _queries[aFile] = queries;
-        _queryids[aFile] = queryids;
+        _queries[aType] = queries;
+        _queryids[aType] = queryids;
     }
 }
 
-Document DocumentManager::createQuery(std::string& query) {
-    query = Utility::StringOp::toLower(query);
-    Utility::IR::removeStopword(query, QueryProcessingEngine::getInstance().getStopwordlist()); // Remove stopwords
-    Utility::StringOp::trim(query);                                                             // Trim whitespaces at front and end
+Document DocumentManager::createQuery(std::string& content, const std::string& queryID) {
+    content = Utility::StringOp::toLower(content);
+    Utility::IR::removeStopword(content, QueryProcessingEngine::getInstance().getStopwordlist()); // Remove stopwords
+    Utility::StringOp::trim(content);                                                             // Trim whitespaces at front and end
     string_vt proc_query;
-    Utility::StringOp::splitStringBoost(query, ' ', proc_query);                                     // Split string by whitespaces
-    Utility::StringOp::removeEmptyStringsFromVec(proc_query);                                   // Remove eventually empty strings from the query term vector
+    Utility::StringOp::splitStringBoost(content, ' ', proc_query);                                     // Split string by whitespaces
+    Utility::StringOp::removeEmptyStringsFromVec(proc_query);                                     // Remove eventually empty strings from the query term vector
     
     std::vector<std::string> preprocessed_content;
     for (auto& elem : proc_query) { // Preprocess query
         std::string preprocess = Utility::IR::stemPorter(elem);
         preprocessed_content.push_back(preprocess);
     }
-    Document quer("query-0", preprocessed_content);
+    Document quer(queryID, preprocessed_content);
 
     const string_vt& con = quer.getContent();     // start build docTermTFMap
     str_int_mt tf_counts;

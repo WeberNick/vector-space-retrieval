@@ -32,7 +32,7 @@ void QueryProcessingEngine::read(const std::string& aFile) {
     }
 }
 
-const pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh) {
+const pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh, bool use_w2v) {
     Document queryDoc = DocumentManager::getInstance().createQuery(query);
 
     pair_sizet_float_vt found_indices; // result vector
@@ -77,7 +77,7 @@ const pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size
         }
     } break;
         case IR_MODE::kTIEREDW2V:{
-            found_indices = QueryProcessingEngine::searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
+            found_indices = QueryProcessingEngine::searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK, use_w2v);
         }
     case IR_MODE ::kRANDOM: {
         found_indices = QueryProcessingEngine::searchRandomProjCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
@@ -153,6 +153,7 @@ const pair_sizet_float_vt QueryProcessingEngine::searchTieredCos(const Document*
     for (auto& elem : collectionIds) {
         float sim;
         if (useW2V) {
+            std::cout << " we are using word2vec" << std::endl;
             sim = Utility::SimilarityMeasures::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
         } else {
             sim = Utility::SimilarityMeasures::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
