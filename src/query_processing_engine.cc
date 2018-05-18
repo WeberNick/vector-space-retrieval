@@ -1,12 +1,14 @@
 #include "query_processing_engine.hh"
 #include "index_manager.hh"
 
-
-
 /**
  * @brief Construct a new Query Processing Engine:: Query Processing Engine object
  */
-QueryProcessingEngine::QueryProcessingEngine() : _cb(nullptr), _init(false), _stopwordFile() {}
+QueryProcessingEngine::QueryProcessingEngine() : 
+    _cb(nullptr),
+    _init(false),
+    _stopwordFile()
+{}
 
 /**
  * @brief Initializes the singleton
@@ -16,7 +18,7 @@ QueryProcessingEngine::QueryProcessingEngine() : _cb(nullptr), _init(false), _st
 void QueryProcessingEngine::init(const control_block_t& aControlBlock) {
     if (!_init) {
         _cb = &aControlBlock;
-        _stopwordFile = _cb->stopwordFile(); // relative path from /path/to/repo/vector-space-retrieval
+        _stopwordFile = _cb->stopwordPath(); // relative path from /path/to/repo/vector-space-retrieval
         read(_stopwordFile);
         _init = true;
     }
@@ -31,7 +33,7 @@ void QueryProcessingEngine::read(const std::string& aFile) {
 }
 
 const pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh) {
-    Document queryDoc = DocumentManager::getInstance().createQueryDoc(query);
+    Document queryDoc = DocumentManager::getInstance().createQuery(query);
 
     pair_sizet_float_vt found_indices; // result vector
 

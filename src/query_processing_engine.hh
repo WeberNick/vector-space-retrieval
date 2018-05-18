@@ -34,7 +34,7 @@ class QueryProcessingEngine {
 
   private:
     /**
-     * @brief Reads a stopwords file for the function @see QueryProcessingEngine#createQueryDoc
+     * @brief Reads a stopwords file for the function @see QueryProcessingEngine#createQuery
      *
      * @param aFile The file containing stopwords separated by ","
      */

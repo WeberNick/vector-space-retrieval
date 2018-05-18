@@ -8,8 +8,18 @@
  *
  */
 DocumentManager::DocumentManager() :
-    _cb(nullptr), _init(false), _collectionFile(), // relative path from /path/to/repo/vector-space-retrieval
-    _delimiter('~'), _docs() {}
+    _cb(nullptr),
+    _init(false),
+    _delimiter('~'),
+    _collectionFile(),
+    _queryFiles(),
+    _queryTypes({ "all", "nontopictitles", "titles", "viddesc", "vidtitles" }),
+    _docids(),
+    _docs(),
+    _str_docid(),
+    _queryids(),
+    _queries()
+{}
 
 /**
  * @brief Destroy the Document Manager:: Document Manager object
@@ -21,12 +31,17 @@ void DocumentManager::init(const control_block_t& aControlBlock) {
     if (!_init) {
         _cb = &aControlBlock;
         _collectionFile = _cb->collectionPath();
-        read(_collectionFile);
+        const std::string& queryPath = _cb->queryPath();
+        for(const std::string& q : _queryTypes) {
+            _queryFiles.push_back(queryPath + "q-" + q + ".queries");
+        }
+        readDocs(_collectionFile);
+        readQueries(_queryFiles);
         _init = true;
     }
 }
 
-void DocumentManager::read(const std::string& aFile) {
+void DocumentManager::readDocs(const std::string& aFile) {
     std::ifstream file(aFile);
     std::string line;
     while (std::getline(file, line)) {
@@ -36,40 +51,49 @@ void DocumentManager::read(const std::string& aFile) {
         Utility::StringOp::splitStringBoost(parts[1], ' ', content);
         std::string docID = parts[0];
         Document doc(docID, content);
-        this->insert(std::make_pair(doc.getID(), doc));
+        _docs.insert(std::make_pair(doc.getID(), doc));
         _docids.push_back(doc.getID());
+        _str_docid[doc.getDocID()] = doc.getID();
     }
 }
 
-bool DocumentManager::insert(const doc_map_elem_t& aElement) { return _docs.insert(aElement).second; }
+void DocumentManager::readQueries(const string_vt& aFiles) {
+    for (const auto& aFile : aFiles) {
+        std::ifstream file(aFile);
+        std::string line;
+        doc_mt queries; 
+        sizet_vt queryids;
+        while (std::getline(file, line)) {
+            string_vt parts;
+            Utility::StringOp::splitStringBoost(line, _delimiter, parts);
+            string_vt content;
+            Utility::StringOp::splitStringBoost(parts[1], ' ', content);
+            std::string queryID = parts[0];
+            Document query(queryID, content);
+            queries.insert(std::make_pair(query.getID(), query));
+            queryids.push_back(query.getID());
+        }
+        _queries[aFile] = queries;
+        _queryids[aFile] = queryids;
+    }
+}
 
-bool DocumentManager::insert(const size_t aKey, const Document& aDocument) { return _docs.insert(std::pair<size_t, Document>(aKey, aDocument)).second; }
-
-doc_map_iter_t DocumentManager::find(const size_t aKey) { return _docs.find(aKey); }
-
-void DocumentManager::erase(const size_t aKey) { _docs.erase(aKey); }
-
-void DocumentManager::erase(const doc_map_iter_t aIterator) { _docs.erase(aIterator); }
-
-
-Document DocumentManager::createQueryDoc(std::string& query) {
-   query = Utility::StringOp::toLower(query);
+Document DocumentManager::createQuery(std::string& query) {
+    query = Utility::StringOp::toLower(query);
     Utility::IR::removeStopword(query, QueryProcessingEngine::getInstance().getStopwordlist()); // Remove stopwords
-    Utility::StringOp::trim(query); // Trim whitespaces at front and end
+    Utility::StringOp::trim(query);                                                             // Trim whitespaces at front and end
     string_vt proc_query;
-    Utility::StringOp::splitString(query, ' ', proc_query); // Split string by whitespaces
-    Utility::StringOp::removeEmptyStringsFromVec(proc_query); // Remove eventually empty strings from the query term vector
+    Utility::StringOp::splitString(query, ' ', proc_query);                                     // Split string by whitespaces
+    Utility::StringOp::removeEmptyStringsFromVec(proc_query);                                   // Remove eventually empty strings from the query term vector
+    
     std::vector<std::string> preprocessed_content;
     for (auto& elem : proc_query) { // Preprocess query
         std::string preprocess = Utility::IR::stemPorter(elem);
-        //std::cout << "Preprocessed: " << preprocess << std::endl;
         preprocessed_content.push_back(preprocess);
     }
+    Document quer("query-0", preprocessed_content);
 
-    Document d("query-0", preprocessed_content);
-
-    // build docTermTFMap
-    const string_vt& con = d.getContent();
+    const string_vt& con = quer.getContent();     // start build docTermTFMap
     str_int_mt tf_counts;
     str_float_mt tf_out;
 
@@ -81,25 +105,11 @@ Document DocumentManager::createQueryDoc(std::string& query) {
     for (const auto& [term, count] : tf_counts) { // this loops through the distinct terms of this document
         tf_out[term] = Utility::IR::calcTf(count, maxFreq);
     }
-    d.setTermTfMap(tf_out);
-    // End build docTermTFMap
+    quer.setTermTfMap(tf_out);                    // end build docTermTFMap
 
-    IndexManager::getInstance().buildTfIdfVector(d);
-    IndexManager::getInstance().buildRandProjVector(d);
+    IndexManager::getInstance().buildTfIdfVector(quer);
+    IndexManager::getInstance().buildWordEmbeddingsVector(quer);
+    IndexManager::getInstance().buildRandProjVector(quer);
 
-    /*std::cout << "For query: " << query << std::endl;
-    std::cout << "TFID:";
-
-    for (size_t j = 0; j < d.getTfIdfVector().size(); ++j) {
-        std::cout << d.getTfIdfVector()[j];
-    }
-    std::cout << std::endl;
-
-    std::cout << "RANDVEC:";
-    for (size_t j = 0; j < d.getRandProjVec().size(); ++j) {
-        std::cout << d.getRandProjVec()[j];
-    }
-    std::cout << std::endl;*/
-
-    return d;
+    return quer;
 }

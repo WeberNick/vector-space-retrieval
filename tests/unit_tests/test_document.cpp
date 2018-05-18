@@ -5,7 +5,6 @@
 #include "utility.hh"
 #include "gtest/gtest.h"
 
-
 /**
  * @brief DocumentTest Mock class for testing functionalities of the Document Manager
  *
@@ -13,16 +12,16 @@
 class DocumentTest : public testing::Test {
   protected:
     virtual void SetUp() {
-        docMan = &(DocumentManager::getInstance());
-        const control_block_t lControlBlock = { false, false, false, "./data/collection_test_mwe.docs", "" , "", "./data/stopwords.large", 0, 0, 0 };
-        
+        const control_block_t lControlBlock = { false, false, false, "./data/collection_test_mwe.docs", "./data/" , "./data/s-3.qrel", "./data/stopwords.large", "./data/w2v/glove.6B.300d.txt", "./", "./", 10, 10, 100 };
         Trace::getInstance().init(lControlBlock);
         
+        docMan = &(DocumentManager::getInstance());
         docMan->init(lControlBlock);
         docMap = &(docMan->getDocumentMap());
         
         indexManager = &(IndexManager::getInstance());
         indexManager->init(lControlBlock, *docMap);
+        RandomProjection::getInstance().init(lControlBlock, indexManager->getCollectionTerms().size());
     }
 
     DocumentManager* docMan;
