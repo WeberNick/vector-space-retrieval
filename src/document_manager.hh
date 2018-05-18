@@ -45,7 +45,7 @@ class DocumentManager {
      * 
      * @param aFile 
      */
-    void readQueries(const string_vt& aFile);
+    void readQueries(const string_vt& aQueryTypes);
     /**
      * @brief Insert element into manager (by std::pair element)
      *
@@ -130,7 +130,7 @@ class DocumentManager {
      * @param query The raw query string
      * @return Document
      */
-    Document createQuery(std::string& query);
+    Document createQuery(std::string& query, const std::string& queryID = "query-0");
 
     /**
      * @brief Get the document object with id aDocID
@@ -215,7 +215,6 @@ class DocumentManager {
     const char                                _delimiter; // defined manually
 
     std::string                               _collectionFile;
-    string_vt                                 _queryFiles;
     string_vt                                 _queryTypes;
     
     sizet_vt                                  _docids;
