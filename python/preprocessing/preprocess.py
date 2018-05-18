@@ -8,17 +8,20 @@ from nltk.stem.snowball import SnowballStemmer
 DATA_PATH = '../../data'
 RAW_FOLDER = 'raw'
 
-def qrel(folders, files, end):
+def qrel(folders, file, end):
     ''' Preprocess query relevance '''
-    for filename in files:
-        result = set()
-        for folder in folders:
-            with open('{}/{}/{}/{}.{}'.format(DATA_PATH, folder, RAW_FOLDER, filename, end), 'r') as file_from:
-                for line in file_from.readlines():
-                    content = re.split(r'\t+', line.rstrip('\t\n'))
-                    del content[1]
-                    result.add('~'.join(content))
-        _write(result, '{}/{}.{}'.format(DATA_PATH, filename, end))
+    ids = set()
+    #for filename in files:
+    result = set()
+    for folder in folders:
+        with open('{}/{}/{}/{}.{}'.format(DATA_PATH, folder, RAW_FOLDER, file, end), 'r') as file_from:
+            for line in file_from.readlines():
+                content = re.split(r'\t+', line.rstrip('\t\n'))
+                ids.add(content[0])
+                del content[1]
+                result.add('~'.join(content))
+    _write(result, '{}/{}.{}'.format(DATA_PATH, file, end))
+    return ids
 
 def docs(folders, filename, end):
     ''' Preprocess document collection '''
@@ -38,7 +41,7 @@ def docs(folders, filename, end):
                 result.add('~'.join(doc))
     _write(result, '{}/{}.{}'.format(DATA_PATH, filename, end))
 
-def quer(folders, files, end):
+def quer(folders, files, end, qrelids):
     ''' Preprocess queries '''
     for filename in files:
         result = set()
@@ -46,6 +49,9 @@ def quer(folders, files, end):
             with open('{}/{}/{}/{}.{}'.format(DATA_PATH, folder, RAW_FOLDER, filename, end), 'r') as file_from:
                 for line in file_from.readlines():
                     content = re.split(r'\t+', line.rstrip('\t\n'))
+                    if not content[0] in qrelids:
+                        print("Skipped: " + content[0])
+                        continue
                     result.add('~'.join(content))
         _write(result, '{}/{}.{}'.format(DATA_PATH, filename, end))
 
@@ -57,6 +63,7 @@ def _write(result_set, filename):
 
 if __name__ == '__main__':
     folders = ['test', 'dev', 'train']
-    qrel(folders, ['s-3', 's-4'], 'qrel')
+    qrelids = qrel(folders, 's-3', 'qrel')
+    print(list(qrelids))
     docs(folders, 'd-collection', 'docs')
-    quer(folders, ['q-all', 'q-titles', 'q-nontopictitles', 'q-vidtitles', 'q-viddesc'], 'queries')
+    quer(folders, ['q-all', 'q-titles', 'q-nontopictitles', 'q-vidtitles', 'q-viddesc'], 'queries', list(qrelids))

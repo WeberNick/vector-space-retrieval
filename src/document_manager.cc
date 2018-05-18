@@ -8,8 +8,17 @@
  *
  */
 DocumentManager::DocumentManager() :
-    _cb(nullptr), _init(false), _delimiter('~'), _collectionFile(), _queryTypes({"all", "nontopictitles", "titles", "viddesc", "vidtitles"}), _docids(),
-    _docs(), _str_docid(), _queryids(), _queries() {}
+    _cb(nullptr),
+    _init(false),
+    _delimiter('~'),
+    _collectionFile(),
+    _queryTypes({"nontopictitles", "titles", "viddesc", "vidtitles"}),
+    _docids(),
+    _docs(),
+    _str_docid(),
+    _queryids(),
+    _queries()
+{}
 
 /**
  * @brief Destroy the Document Manager:: Document Manager object
@@ -58,7 +67,7 @@ void DocumentManager::readQueries(const string_vt& aQueryTypes) {
             Document query = createQuery(parts[1], queryID);
             queries.insert(std::make_pair(query.getID(), query));
             queryids.push_back(query.getID());
-            std::cout << "Query " << queryID << ": " << parts[1];
+            std::cout << "Query " << queryID << ": " << parts[1] << std::endl;
         }
         _queries[aType] = queries;
         _queryids[aType] = queryids;
