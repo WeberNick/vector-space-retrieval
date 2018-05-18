@@ -61,6 +61,21 @@ class DocumentManager {
      * @return doc_mt& 
      */
     inline doc_mt& getDocumentMap() { return const_cast<doc_mt&>(static_cast<const DocumentManager&>(*this).getDocumentMap()); }
+
+    /**
+     * @brief Get the document map
+     *
+     * @return doc_mt& the document map
+     */
+    inline const std::unordered_map<std::string, doc_mt>& getQueryMap() const { return _queries; }
+    //TODO docs
+    /**
+     * @brief Get the Document Map object
+     * 
+     * @return doc_mt& 
+     */
+    inline std::unordered_map<std::string, doc_mt>& getQueryMap() { return const_cast<std::unordered_map<std::string, doc_mt>&>(static_cast<const DocumentManager&>(*this).getQueryMap()); }
+
     /**
      * @brief Get the number of documents in the collection
      *
@@ -168,6 +183,8 @@ class DocumentManager {
      * @return string_vt& 
      */
     inline string_vt& getQueryTypes() { return _queryTypes; }
+
+    
 
     /**
      * @brief Get the Instance object

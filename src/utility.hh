@@ -5,7 +5,7 @@
  *          Namespace Nesting:
  *
  *          namespace Utility {
- *              
+ *
  *              namespace StringOp { ... }
  *              namespace IR { ... }
  *              namespace SimilarityMeasures { ... }
@@ -20,10 +20,10 @@
  */
 #pragma once
 
-#include "types.hh"
 #include "document_manager.hh"
 #include "exception.hh"
 #include "posting_list.hh"
+#include "types.hh"
 #include "word_embeddings.hh"
 
 #include <boost/algorithm/string.hpp>
@@ -612,7 +612,7 @@ namespace Utility {
             } else {
                 out = vecs.at(0);
             }
-            std::sort(out.begin(), out.end(), [](const size_t a, const size_t b){ return a < b; }); // asc
+            std::sort(out.begin(), out.end(), [](const size_t a, const size_t b) { return a < b; }); // asc
             out.erase(std::unique(out.begin(), out.end()), out.end());
         }
     } // namespace IR
@@ -644,7 +644,12 @@ namespace Utility {
          * @return the cosine similarity
          */
         inline float calcCosSim(const std::vector<float>& aTfIdf_a, const std::vector<float>& aTfIdf_b) {
-            if (aTfIdf_a.size() != aTfIdf_b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors do not have the same size");
+
+            if (aTfIdf_a.size() != aTfIdf_b.size()) {
+                const std::string traceMsg = "Vectors do not have the same size";
+                TRACE(traceMsg);
+                throw VectorException(FLF, traceMsg);
+            }
 
             double dotProduct = 0;
             for (size_t i = 0; i < aTfIdf_a.size(); ++i) {
@@ -803,24 +808,21 @@ namespace Utility {
         }
 
     } // namespace SimilarityMeasures
-    namespace VecUtil{
-        inline sizet_vt difference(sizet_vt& v1, sizet_vt& v2)
-        {
+    namespace VecUtil {
+        inline sizet_vt difference(sizet_vt& v1, sizet_vt& v2) {
             sizet_vt lDifference;
             std::sort(v1.begin(), v1.end());
             std::sort(v2.begin(), v2.end());
-            std::set_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), std::inserter(lDifference, lDifference.begin())); 
+            std::set_difference(v1.begin(), v1.end(), v2.begin(), v2.end(), std::inserter(lDifference, lDifference.begin()));
             return lDifference;
         }
 
-
-        inline size_t intersectionCount(sizet_vt& v1, sizet_vt& v2)
-        {
+        inline size_t intersectionCount(sizet_vt& v1, sizet_vt& v2) {
             sizet_vt lIntersection;
             std::sort(v1.begin(), v1.end());
             std::sort(v2.begin(), v2.end());
             std::set_intersection(v1.begin(), v1.end(), v2.begin(), v2.end(), std::inserter(lIntersection, lIntersection.begin()));
             return lIntersection.size();
         }
-    } //namespace VecUtil
+    } // namespace VecUtil
 } // namespace Utility

@@ -20,6 +20,7 @@ void IndexManager::init(const CB& aControlBlock, doc_mt& aDocMap) {
     if (!_cb) {
         _cb = &aControlBlock;
         _docs = &aDocMap;
+
         _collection_terms.reserve(_docs->size());
         _clusteredIndex.chooseLeaders();
         const sizet_vt& leaders = _clusteredIndex.getLeaders();
@@ -78,6 +79,14 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
         this->buildTfIdfVector(elem.second);
         this->buildWordEmbeddingsVector(elem.second);
         this->buildRandProjVector(elem.second);
+    }
+
+    for (auto& type: DocumentManager::getInstance().getQueryTypes()) {
+        for(auto& query: DocumentManager::getInstance().getQueriesForType(type)) {
+            this->buildTfIdfVector(query.second);
+            this->buildWordEmbeddingsVector(query.second);
+            this->buildRandProjVector(query.second);
+        }
     }
 
     for (auto& elem : *(_docs)) {
