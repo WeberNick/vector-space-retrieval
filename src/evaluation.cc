@@ -164,6 +164,7 @@ sizet_vt IRPM::getRelevantDocIDs(const std::string& aQueryID)
     {
         lRelevantDocIDs.push_back(DocumentManager::getInstance().getDocument(score.getDocumentID()).getID());
     } 
+    return lRelevantDocIDs;
 }
 
 uint IRPM::getScore(const std::string& aQueryID, const std::string& aDocID)
