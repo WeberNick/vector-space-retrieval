@@ -26,7 +26,7 @@ class PostingList {
     PostingList(PostingList&&) = delete;
     PostingList& operator=(const PostingList&) = delete;
     PostingList& operator=(PostingList&&) = default;
-    ~PostingList();
+    ~PostingList() = default;
 
   public:
     /**

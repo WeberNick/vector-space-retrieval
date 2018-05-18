@@ -10,12 +10,12 @@
  */
 #pragma once
 
-#include "document.hh"
-#include "posting_list.hh"
 #include "types.hh"
 #include "trace.hh"
 #include "exception.hh"
-#include "utility.hh"
+#include "ir_util.hh"
+#include "document.hh"
+#include "posting_list.hh"
 
 class TieredIndex {
     friend class IndexManager;

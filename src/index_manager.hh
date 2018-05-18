@@ -11,16 +11,20 @@
  */
 #pragma once
 
+#include "types.hh"
+#include "trace.hh"
+#include "exception.hh"
+#include "string_util.hh"
+#include "ir_util.hh"
+#include "vec_util.hh"
+#include "similarity_util.hh"
 #include "cluster.hh"
 #include "document.hh"
 #include "inverted_index.hh"
 #include "tiered_index.hh"
-#include "utility.hh"
 #include "random_projection.hh"
-#include "types.hh"
-#include "trace.hh"
-#include "exception.hh"
 #include "word_embeddings.hh"
+#include "query_execution_engine.hh"
 
 class IndexManager {
   private:

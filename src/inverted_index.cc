@@ -6,21 +6,13 @@
  */
 InvertedIndex::InvertedIndex() : 
     _cb(nullptr),
-    _init(false),
     _term_posting_map()
 {}
 
-/**
- * @brief Destroy the Inverted Index:: Inverted Index object
- * 
- */
-InvertedIndex::~InvertedIndex()
-{}
-
 void InvertedIndex::init(const control_block_t& aControlBlock) {
-    if (!_init) {
+    if (!_cb) {
         _cb = &aControlBlock;
-        _init = true;
+        TRACE("InvertedIndex: Initialized");
     }
 }
 

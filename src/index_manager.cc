@@ -1,6 +1,4 @@
 #include "index_manager.hh"
-#include "measure.hh"
-#include "trace.hh"
 
 /**
  * @brief Construct a new Index Manager:: Index Manager object
@@ -57,10 +55,10 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
                 (*postinglist_out)[term] = PostingList(0, posting);      // idf has to be set below
             }
         }
-        int maxFreq = Utility::StringOp::getMaxWordFrequency(con);
+        int maxFreq = Util::getMaxWordFrequency(con);
         for (const auto& [term, count] : tf_counts) { // this loops through the distinct terms of this
                                                       // document
-            tf_out[term] = Utility::IR::calcTf(count, maxFreq);
+            tf_out[term] = Util::calcTf(count, maxFreq);
             (*postinglist_out)[term].setTf(id, tf_out.at(term));
             ++idf_occs[term];
         }
@@ -68,9 +66,9 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
     }
     const int N = _docs->size();
     for (const auto& [term, occ] : idf_occs) { // sizeof idf_occs == distinct_terms
-        _idf_map[term] = Utility::IR::calcIdf(N, occ);
+        _idf_map[term] = Util::calcIdf(N, occ);
         (*postinglist_out)[term].setIdf(_idf_map[term]);
-        (*tieredpostinglist_out)[term] = Utility::IR::calculateTiers(_cb->tiers(), (*postinglist_out)[term]);
+        (*tieredpostinglist_out)[term] = Util::calculateTiers(_cb->tiers(), (*postinglist_out)[term]);
         _collection_terms.push_back(term);
     }
 
@@ -91,7 +89,7 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
 
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
-        const size_t index = QueryProcessingEngine::getInstance().searchClusterCosFirstIndex(&doc, leaders);
+        const size_t index = QueryExecutionEngine::getInstance().searchClusterCosFirstIndex(&doc, leaders);
         cluster_out->at(index).push_back(doc.getID());
     }
     TRACE("IndexManager: Finished building indices");
@@ -114,17 +112,17 @@ void IndexManager::buildTfIdfVector(Document& doc) {
     for (std::string& term : _collection_terms) {
         str_float_mt& termTfMap = doc.getTermTfMap();
         if (termTfMap.find(term) != termTfMap.end())
-            tivec.push_back(Utility::IR::calcTfIdf(termTfMap.at(term), _idf_map.at(term)));
+            tivec.push_back(Util::calcTfIdf(termTfMap.at(term), _idf_map.at(term)));
         else
             tivec.push_back(0);
     }
-    doc.setNormLength(Utility::SimilarityMeasures::vectorLength(tivec));
+    doc.setNormLength(Util::vectorLength(tivec));
     doc.setTfIdfVector(tivec);
 }
 
 void IndexManager::buildRandProjVector(Document& doc) {
     const boost::dynamic_bitset<>& rand_proj_ti =
-        RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(), Utility::randomProjectionHash);
+        RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(), Util::randomProjectionHash);
     doc.setRandProjTiVec(rand_proj_ti);
     // TODO das geht nicht so einfach, weil wir vorher ja die dimension setzen
     // const boost::dynamic_bitset<>& rand_proj_we = RandomProjection::getInstance().localitySensitiveHashProjection(doc.getWordEmbeddingsVector(),

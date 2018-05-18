@@ -15,6 +15,9 @@
 #include "exception.hh"
 #include "trace.hh"
 #include "types.hh"
+#include "string_util.hh"
+#include "ir_util.hh"
+#include "query_execution_engine.hh"
 
 #include <fstream>
 #include <sstream>
@@ -121,7 +124,7 @@ class DocumentManager {
         try {
             return _docs.at(aDocID);
         } catch (const std::out_of_range& ex) {
-            const std::string lErrMsg = std::string("The doc ID ')" + std::to_string(aDocID) + std::string("' does not appear in the document collection."));
+            const std::string lErrMsg = std::string("The doc ID ')" + std::to_string(aDocID) + std::string("' does not appear in the document collection"));
             TRACE(lErrMsg);
             throw InvalidArgumentException(FLF, lErrMsg);
         }
@@ -146,7 +149,7 @@ class DocumentManager {
             return getDocument(_str_docid.at(aDocID)); 
         }
         catch (const std::out_of_range& ex) {
-            const std::string lErrMsg = std::string("The doc ID ')" + aDocID + std::string("' does not appear in the document collection."));
+            const std::string lErrMsg = std::string("The doc ID ')" + aDocID + std::string("' does not appear in the document collection"));
             TRACE(lErrMsg);
             throw InvalidArgumentException(FLF, lErrMsg);
         }
@@ -171,7 +174,7 @@ class DocumentManager {
         try {
             return _queries.at(aQueryType);
         } catch (const std::out_of_range& ex) {
-            const std::string lErrMsg("This query type does not exist.");
+            const std::string lErrMsg = std::string("The query type ')" + aQueryType + std::string("' does not exist"));
             TRACE(lErrMsg);
             throw InvalidArgumentException(FLF, lErrMsg);
         }

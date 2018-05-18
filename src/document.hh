@@ -27,7 +27,7 @@ class Document {
     Document(Document&&) = default;
     Document& operator=(const Document& doc) = delete;
     Document& operator=(Document&&) = delete;
-    ~Document();
+    ~Document() = default;
 
   public:
     /**

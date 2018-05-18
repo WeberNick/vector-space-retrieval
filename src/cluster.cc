@@ -10,13 +10,6 @@ Cluster::Cluster() :
     _cluster()
 {}
 
-/**
- * @brief Destroy the Cluster:: Cluster object
- *
- */
-Cluster::~Cluster()
-{}
-
 void Cluster::init(const CB& aControlBlock)
 {
     if (!_cb)

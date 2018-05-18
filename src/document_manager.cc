@@ -1,7 +1,5 @@
 #include "document_manager.hh"
 #include "index_manager.hh"
-#include "types.hh"
-#include "utility.hh"
 
 /**
  * @brief Construct a new Document Manager:: Document Manager object
@@ -27,9 +25,9 @@ void DocumentManager::readDocs(const std::string& aFile) {
     std::string line;
     while (std::getline(file, line)) {
         string_vt parts;
-        Utility::StringOp::splitStringBoost(line, _delimiter, parts);
+        Util::splitStringBoost(line, _delimiter, parts);
         string_vt content;
-        Utility::StringOp::splitStringBoost(parts[1], ' ', content);
+        Util::splitStringBoost(parts[1], ' ', content);
         std::string docID = parts[0];
         Document doc(docID, content);
         _docs.insert(std::make_pair(doc.getID(), doc));
@@ -51,7 +49,7 @@ void DocumentManager::readQueries(const string_vt& aQueryTypes) {
         sizet_vt queryids;
         while (std::getline(file, line)) {
             string_vt parts;
-            Utility::StringOp::splitStringBoost(line, _delimiter, parts);
+            Util::splitStringBoost(line, _delimiter, parts);
             std::string& queryID = parts[0];
             Document query = createQuery(parts[1], queryID);
             queries.insert(std::make_pair(query.getID(), query));
@@ -66,20 +64,20 @@ void DocumentManager::readQueries(const string_vt& aQueryTypes) {
 
 Document DocumentManager::createQuery(std::string& content, const std::string& queryID) {
     std::string temp;
-    content = Utility::StringOp::toLower(content);
-    Utility::IR::removeStopword(content, QueryProcessingEngine::getInstance().getStopwordlist()); // Remove stopwords
+    content = Util::toLower(content);
+    Util::removeStopword(content, QueryExecutionEngine::getInstance().getStopwordlist()); // Remove stopwords
     std::remove_copy_if(content.begin(), content.end(),
                         std::back_inserter(temp), // Store output
                         std::ptr_fun<int, int>(&std::ispunct));
     content = temp;
-    Utility::StringOp::trim(content); // Trim whitespaces at front and end
+    Util::trim(content); // Trim whitespaces at front and end
     string_vt proc_query;
-    Utility::StringOp::splitStringBoost(content, ' ', proc_query); // Split string by whitespaces
-    Utility::StringOp::removeEmptyStringsFromVec(proc_query);      // Remove eventually empty strings from the query term vector
+    Util::splitStringBoost(content, ' ', proc_query); // Split string by whitespaces
+    Util::removeEmptyStringsFromVec(proc_query);      // Remove eventually empty strings from the query term vector
 
     std::vector<std::string> preprocessed_content;
     for (auto& elem : proc_query) { // Preprocess query
-        std::string preprocess = Utility::IR::stemPorter(elem);
+        std::string preprocess = Util::stemPorter(elem);
         preprocessed_content.push_back(preprocess);
     }
     Document quer(queryID, preprocessed_content);
@@ -92,9 +90,9 @@ Document DocumentManager::createQuery(std::string& content, const std::string& q
         ++tf_counts[term];
     }
 
-    int maxFreq = Utility::StringOp::getMaxWordFrequency(con);
+    int maxFreq = Util::getMaxWordFrequency(con);
     for (const auto& [term, count] : tf_counts) { // this loops through the distinct terms of this document
-        tf_out[term] = Utility::IR::calcTf(count, maxFreq);
+        tf_out[term] = Util::calcTf(count, maxFreq);
     }
     quer.setTermTfMap(tf_out); // end build docTermTFMap
 

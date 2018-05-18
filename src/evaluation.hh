@@ -14,13 +14,15 @@
  ********************************************************************/
 #pragma once
 
-#include "document.hh"
-#include "document_manager.hh"
-#include "exception.hh"
-#include "lib/nlohmann/single_include/nlohmann/json.hpp"
 #include "measure.hh"
 #include "trace.hh"
 #include "types.hh"
+#include "exception.hh"
+#include "vec_util.hh"
+#include "string_util.hh"
+#include "document.hh"
+#include "document_manager.hh"
+#include "lib/nlohmann/single_include/nlohmann/json.hpp"
 using json = nlohmann::json;
 
 #include <algorithm>

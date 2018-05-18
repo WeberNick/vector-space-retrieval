@@ -1,21 +1,20 @@
-#include "args.hh"
-#include "document_manager.hh"
-#include "index_manager.hh"
-#include "inverted_index.hh"
-#include "measure.hh"
-#include "query_processing_engine.hh"
-#include "random_projection.hh"
+#include "src/args.hh"
+#include "src/document_manager.hh"
+#include "src/index_manager.hh"
+#include "src/inverted_index.hh"
+#include "src/measure.hh"
+#include "src/query_execution_engine.hh"
+#include "src/random_projection.hh"
 #include "src/evaluation.hh"
 #include "src/types.hh"
-#include "utility.hh"
+#include "src/word_embeddings.hh"
+#include "src/string_util.hh"
 
-#include <evaluation.hh>
 #include <experimental/filesystem>
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <thread>
 #include <vector>
-#include <word_embeddings.hh>
 namespace fs = std::experimental::filesystem;
 
 // insert everything here what is not actually meant to be in main
@@ -47,7 +46,7 @@ void test(const control_block_t& aControlBlock) {
 }
 
 void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
-    QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
+    QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
 
     Measure lMeasureQuery;
     lMeasureQuery.start();
@@ -66,7 +65,7 @@ void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
         json json_doc = json::object();
         json_doc["id"] = d.getDocID();
         json_doc["similarity"] = result[j].second;
-        json_doc["content"] = Utility::StringOp::string_vt_2_str(d.getContent());
+        json_doc["content"] = Util::string_vt_2_str(d.getContent());
         json_result.push_back(json_doc);
     }
 
@@ -101,28 +100,11 @@ void testNico() {
     const Document& d2 = docManager.getDocument(1);
     const Document& d3 = docManager.getDocument(2);
 
-    /*std::cout << Utility::SimilarityMeasures::calcCosDist(d, d2) << std::endl;
-    std::cout << Utility::SimilarityMeasures::calcCosDist(d, d3) << std::endl;
-
-    std::cout << Utility::SimilarityMeasures::calcHammingDist(d.getRandProjVec(), d2.getRandProjVec()) << std::endl;
-    std::cout << Utility::SimilarityMeasures::calcHammingDist(d.getRandProjVec(), d3.getRandProjVec()) << std::endl;*/
-
-    QueryProcessingEngine::getInstance().init(aControlBlock);
+    QueryExecutionEngine::getInstance().init(aControlBlock);
 
     std::string qs = "Util";
     search(qs, 10, IR_MODE::kTIERED, false);
 
-    // int count = 0;
-    // std::cout << docManager.getDocument(2) << std::endl;
-    // std::cout << "\"" << term << "\"" << imInstance.getInvertedIndex().getPostingList(term) << std::endl;
-    /*for (const auto& [term, idf] : imInstance.getIdfMap()) {
-        ++count;
-        if (count > 100) return;
-        std::cout << term << ": ";
-        std::cout << idf << std::endl;
-    }*/
-    // search("why deep fried foods may cause cancer");
-    // search("do cholesterol statin drugs cause breast cancer ?");
 }
 
 void testAlex(const control_block_t& aControlBlock) {
@@ -173,7 +155,7 @@ void testAlex(const control_block_t& aControlBlock) {
 
     //
 
-    /*QueryProcessingEngine::getInstance().init(aControlBlock);
+    /*QueryExecutionEngine::getInstance().init(aControlBlock);
 
     std::cout << "[Ready]" << std::endl;
 
@@ -195,8 +177,8 @@ void testEval(const control_block_t& aControlBlock) {
     std::cout << "indexmanager vor init" << std::endl;
     imInstance.init(aControlBlock, docManager.getDocumentMap());
     std::cout << "Indexing done" << std::endl;
-    QueryProcessingEngine::getInstance().init(aControlBlock);
-    QueryProcessingEngine& qpe = QueryProcessingEngine::getInstance();
+    QueryExecutionEngine::getInstance().init(aControlBlock);
+    QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
 
     Evaluation& e = Evaluation::getInstance();
     e.init(aControlBlock);
@@ -295,30 +277,13 @@ int main(const int argc, const char* argv[]) {
     };
 
     Trace::getInstance().init(lCB);
-    // Evaluation::getInstance().init(lCB);
+    Evaluation::getInstance().init(lCB);
+
     // insert everything here what is not actually meant to be in main
     // test(lCB);
     // testNico();
     // testAlex(lCB);
     testEval(lCB);
-
-    /*std::vector<sizet_vt> vecs;
-    sizet_vt out;
-
-    sizet_vt stvt1 = {9};
-    sizet_vt stvt2 = {9};
-    sizet_vt stvt3 = {9};
-
-    vecs.push_back(stvt1);
-    vecs.push_back(stvt2);
-    vecs.push_back(stvt3);
-
-    Utility::IR::mergePostingLists(vecs, out);
-
-    std::cout << "result" << std::endl;
-    for(auto& elem: out) {
-      std::cout << elem << std::endl;
-    }*/
 
     return 0;
 }

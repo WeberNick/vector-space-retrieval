@@ -1,5 +1,4 @@
 #include "document.hh"
-#include "utility.hh"
 
 size_t Document::_documentCount = 0;
 
@@ -18,12 +17,6 @@ Document::Document(const std::string& aDocID, const string_vt& aContent) :
     _rand_proj_ti_vec(),
     _norm_length(0)
 {}
-
-/**
- * @brief Destroy the Document:: Document object
- * 
- */
-Document::~Document(){}
 
 /**
  * @brief Construct a new Document:: Document object

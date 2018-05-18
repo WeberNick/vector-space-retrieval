@@ -1,5 +1,4 @@
 #include "evaluation.hh"
-#include "utility.hh"
 
 IRPM::IR_PerformanceManager() : 
     _queryScores(), _cb(nullptr)
@@ -16,7 +15,7 @@ void IRPM::init(const CB& aControlBlock)
         TRACE(std::string("Evaluation::IR_PerformanceManager: Start reading query relevance scores from '") + lRelScorePath + std::string("'"));
         while (std::getline(file, line)) {
             string_vt parts;
-            Utility::StringOp::splitStringBoost(line, '~', parts);
+            Util::splitStringBoost(line, '~', parts);
             const std::string qID = parts[0];
             const std::string dID = parts[1];
             const uint score = std::stoul(parts[2]);
@@ -32,13 +31,13 @@ void IRPM::tp_tn_fp_fn(const std::string& aQueryID, const sizet_vt& aRanking, si
     const DocumentManager& lDocMngr = DocumentManager::getInstance();
     sizet_vt lDocIDs = lDocMngr.getIDs(); //ids of the doc collection
     sizet_vt lRetrieved = aRanking; //ids of the retrieved docs
-    sizet_vt lNotRetrieved = Utility::VecUtil::difference(lDocIDs, lRetrieved); //ids of the not retrieved docs
+    sizet_vt lNotRetrieved = Util::difference(lDocIDs, lRetrieved); //ids of the not retrieved docs
     sizet_vt lRelevant = getRelevantDocIDs(aQueryID); //ids of the relevant docs
-    sizet_vt lNotRelevant = Utility::VecUtil::difference(lDocIDs, lRelevant); //ids of the not relevant docs
-    aTP = Utility::VecUtil::intersectionCount(lRelevant, lRetrieved);
-    aTN = Utility::VecUtil::intersectionCount(lNotRelevant, lNotRetrieved);
-    aFP = Utility::VecUtil::intersectionCount(lNotRelevant, lRetrieved);
-    aFN = Utility::VecUtil::intersectionCount(lRelevant, lNotRetrieved);
+    sizet_vt lNotRelevant = Util::difference(lDocIDs, lRelevant); //ids of the not relevant docs
+    aTP = Util::numberOfIntersections(lRelevant, lRetrieved);
+    aTN = Util::numberOfIntersections(lNotRelevant, lNotRetrieved);
+    aFP = Util::numberOfIntersections(lNotRelevant, lRetrieved);
+    aFN = Util::numberOfIntersections(lRelevant, lNotRetrieved);
 }
     
 double IRPM::accuracy(const std::string& aQueryID, const sizet_vt& aRanking)
