@@ -6,24 +6,15 @@
  */
 Cluster::Cluster() : 
     _cb(nullptr),
-    _init(false),
     _leaders(),
     _cluster()
 {}
 
-/**
- * @brief Destroy the Cluster:: Cluster object
- *
- */
-Cluster::~Cluster()
-{}
-
 void Cluster::init(const CB& aControlBlock)
 {
-    if (!_init)
+    if (!_cb)
     {
         _cb = &aControlBlock;
-        _init = true;
         TRACE("Cluster: Initialized.");
     }
 }

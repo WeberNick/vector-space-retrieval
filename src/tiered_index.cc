@@ -4,19 +4,13 @@
  * @brief Construct a new Tiered Index:: Tiered Index object
  *
  */
-TieredIndex::TieredIndex() : _cb(nullptr), _init(false), _num_tiers(), _term_tier_map() {}
-
-/**
- * @brief Destroy the Tiered Index:: Tiered Index object
- *
- */
-TieredIndex::~TieredIndex() {}
+TieredIndex::TieredIndex() : _cb(nullptr), _num_tiers(), _term_tier_map() {}
 
 void TieredIndex::init(const control_block_t& aControlBlock) {
-    if (!_init) {
+    if (!_cb) {
         _cb = &aControlBlock;
         _num_tiers = _cb->tiers();
-        _init = true;
+        TRACE("TieredIndex: Initialized");
     }
 }
 
@@ -45,7 +39,7 @@ sizet_vt TieredIndex::getDocIDList(const size_t top, const string_vt& terms) con
                 vecs.at(i) = termIDs;
             } catch (const InvalidArgumentException& e) { continue; /* One of the (query) terms does not appear in the document collection. */ }
         }
-        Utility::IR::orPostingLists(vecs, qids);
+        Util::orPostingLists(vecs, qids);
     } while (qids.size() < top && ++tier < _num_tiers);
     return qids; // may return < top if all tiers are processed and we did not find enough qualifying ids
 }

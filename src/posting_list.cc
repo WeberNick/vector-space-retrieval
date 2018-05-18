@@ -12,12 +12,6 @@ PostingList::PostingList(const float aIdf, const sizet_float_mt& aPosting) :
 {}
 
 /**
- * @brief Destroy the Posting List:: Posting List object
- * 
- */
-PostingList::~PostingList() {}
-
-/**
  * @brief Construct a new Posting List:: Posting List object
  * 
  * @param pl the postingList to copy

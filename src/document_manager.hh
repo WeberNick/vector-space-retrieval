@@ -15,6 +15,9 @@
 #include "exception.hh"
 #include "trace.hh"
 #include "types.hh"
+#include "string_util.hh"
+#include "ir_util.hh"
+#include "query_execution_engine.hh"
 
 #include <fstream>
 #include <sstream>
@@ -30,7 +33,7 @@ class DocumentManager {
     DocumentManager(DocumentManager&&) = delete;
     DocumentManager& operator=(const DocumentManager&) = delete;
     DocumentManager& operator=(DocumentManager&&) = delete;
-    ~DocumentManager();
+    ~DocumentManager() = default;
 
   private:
     /**
@@ -61,6 +64,21 @@ class DocumentManager {
      * @return doc_mt& 
      */
     inline doc_mt& getDocumentMap() { return const_cast<doc_mt&>(static_cast<const DocumentManager&>(*this).getDocumentMap()); }
+
+    /**
+     * @brief Get the document map
+     *
+     * @return doc_mt& the document map
+     */
+    inline const std::unordered_map<std::string, doc_mt>& getQueryMap() const { return _queries; }
+    //TODO docs
+    /**
+     * @brief Get the Document Map object
+     * 
+     * @return doc_mt& 
+     */
+    inline std::unordered_map<std::string, doc_mt>& getQueryMap() { return const_cast<std::unordered_map<std::string, doc_mt>&>(static_cast<const DocumentManager&>(*this).getQueryMap()); }
+
     /**
      * @brief Get the number of documents in the collection
      *
@@ -106,7 +124,7 @@ class DocumentManager {
         try {
             return _docs.at(aDocID);
         } catch (const std::out_of_range& ex) {
-            const std::string lErrMsg("This docID does not appear in the document collection.");
+            const std::string lErrMsg = std::string("The doc ID ')" + std::to_string(aDocID) + std::string("' does not appear in the document collection"));
             TRACE(lErrMsg);
             throw InvalidArgumentException(FLF, lErrMsg);
         }
@@ -124,7 +142,19 @@ class DocumentManager {
      * @param aDocID 
      * @return const Document& 
      */
-    inline const Document& getDocument(const std::string& aDocID) const { return getDocument(_str_docid.at(aDocID)); } 
+    inline const Document& getDocument(const std::string& aDocID) const 
+    {
+        try
+        {
+            return getDocument(_str_docid.at(aDocID)); 
+        }
+        catch (const std::out_of_range& ex) {
+            const std::string lErrMsg = std::string("The doc ID ')" + aDocID + std::string("' does not appear in the document collection"));
+            TRACE(lErrMsg);
+            throw InvalidArgumentException(FLF, lErrMsg);
+        }
+
+    } 
     /**
      * @brief Get the Document object
      * 
@@ -144,7 +174,7 @@ class DocumentManager {
         try {
             return _queries.at(aQueryType);
         } catch (const std::out_of_range& ex) {
-            const std::string lErrMsg("This query type does not exist.");
+            const std::string lErrMsg = std::string("The query type ')" + aQueryType + std::string("' does not exist"));
             TRACE(lErrMsg);
             throw InvalidArgumentException(FLF, lErrMsg);
         }
@@ -156,6 +186,8 @@ class DocumentManager {
      * @return string_vt& 
      */
     inline string_vt& getQueryTypes() { return _queryTypes; }
+
+    
 
     /**
      * @brief Get the Instance object
@@ -175,7 +207,6 @@ class DocumentManager {
 
   private:
     const control_block_t*                    _cb;
-    bool                                      _init;
     const char                                _delimiter; // defined manually
 
     std::string                               _collectionFile;

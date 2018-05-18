@@ -4,21 +4,27 @@
  *	@brief  Implements the index manager which handles the initialization of the vector space model components and
  *          the different indices (Inverted, Tiered, Cluster)
  *	@bugs 	Currently no bugs known
- *	@todos	Write DESCRIPTION
+ *	@todos	to exception handling for all calls to .at() -> possible out of range exception. Write DESCRIPTION
  *
  *	@section DESCRIPTION
  *	TODO
  */
 #pragma once
 
+#include "types.hh"
+#include "trace.hh"
+#include "exception.hh"
+#include "string_util.hh"
+#include "ir_util.hh"
+#include "vec_util.hh"
+#include "similarity_util.hh"
 #include "cluster.hh"
 #include "document.hh"
 #include "inverted_index.hh"
 #include "tiered_index.hh"
-#include "utility.hh"
 #include "random_projection.hh"
-#include "types.hh"
 #include "word_embeddings.hh"
+#include "query_execution_engine.hh"
 
 class IndexManager {
   private:
@@ -112,13 +118,12 @@ class IndexManager {
      *
      * @param aControlBlock the control block
      */
-    void init(const control_block_t& aControlBlock, doc_mt& aDocMap);
+    void init(const CB& aControlBlock, doc_mt& aDocMap);
 
   private:
-    const control_block_t* _cb;
+    const CB* _cb;
     doc_mt* _docs;
 
-    bool _init;
     str_float_mt _idf_map;
     string_vt _collection_terms; // does not have to be sorted
 

@@ -5,7 +5,9 @@
 #pragma once
 
 #include "types.hh"
-#include "utility.hh"
+#include "exception.hh"
+#include "trace.hh"
+#include "string_util.hh"
 
 #include <fstream>
 #include <sstream>
@@ -13,6 +15,8 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include <memory>
+#include <map>
 
 using str_float_vt_mt = std::map<std::string, float_vt>;
 using word_embedding_map_elem_t = std::pair<std::string, float_vt>;
@@ -24,7 +28,7 @@ class WordEmbeddings {
     WordEmbeddings(WordEmbeddings&&) = delete;
     WordEmbeddings& operator=(const WordEmbeddings&) = delete;
     WordEmbeddings& operator=(WordEmbeddings&&) = delete;
-    ~WordEmbeddings();
+    ~WordEmbeddings() = default;
 
   private:
     /**
@@ -90,8 +94,7 @@ class WordEmbeddings {
 
   private:
     const control_block_t* _cb;
-    bool _init;
 
     std::string _modelFile;
-    str_float_vt_mt* _wordEmbeddings = new str_float_vt_mt();
+    std::shared_ptr<str_float_vt_mt> _wordEmbeddings;
 };

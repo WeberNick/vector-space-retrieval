@@ -1,9 +1,13 @@
 #pragma once
 
+#include "types.hh"
+#include "trace.hh"
+#include "exception.hh"
+#include "ir_util.hh"
+#include "string_util.hh"
+#include "similarity_util.hh"
 #include "document.hh"
 #include "posting_list.hh"
-#include "types.hh"
-#include "utility.hh"
 
 #include <iostream>
 #include <nlohmann/json.hpp>
@@ -11,21 +15,21 @@
 #include <string>
 #include <vector>
 
-class QueryProcessingEngine {
+class QueryExecutionEngine {
   private:
-    QueryProcessingEngine();                                                 // Constructor hidden
-    QueryProcessingEngine(QueryProcessingEngine const&) = delete;            // Nick: modified to delete
-    QueryProcessingEngine& operator=(QueryProcessingEngine const&) = delete; // Nick: modified to delete
-    ~QueryProcessingEngine() {}                                              // Destructor hidden
+    QueryExecutionEngine();                                                 // Constructor hidden
+    QueryExecutionEngine(QueryExecutionEngine const&) = delete;            // Nick: modified to delete
+    QueryExecutionEngine& operator=(QueryExecutionEngine const&) = delete; // Nick: modified to delete
+    ~QueryExecutionEngine() = default;                                      // Destructor hidden
 
   public:
     /**
      * @brief Get the Instance object
      *
-     * @return QueryProcessingEngine&
+     * @return QueryExecutionEngine&
      */
-    inline static QueryProcessingEngine& getInstance() {
-        static QueryProcessingEngine lInstance;
+    inline static QueryExecutionEngine& getInstance() {
+        static QueryExecutionEngine lInstance;
         return lInstance;
     }
 
@@ -33,7 +37,7 @@ class QueryProcessingEngine {
 
   private:
     /**
-     * @brief Reads a stopwords file for the function @see QueryProcessingEngine#createQuery
+     * @brief Reads a stopwords file for the function @see QueryExecutionEngine#createQuery
      *
      * @param aFile The file containing stopwords separated by ","
      */
@@ -74,13 +78,13 @@ class QueryProcessingEngine {
     const pair_sizet_float_vt searchClusterCos(const Document* query, const sizet_vt& collectionIds, size_t topK);
 
     /**
-     * @brief Just a wrapper function for @see QueryProcessingEngine::searchClusterCos to retrieve the docId of the most similar doc
+     * @brief Just a wrapper function for @see QueryExecutionEngine::searchClusterCos to retrieve the docId of the most similar doc
      *
      * @param query A preprocessed query document
      * @param collectionIds IDs of docs to search in
      * @return const size_t docId of the most similar doc
      */
-    const size_t searchClusterCosFirstIndex(const Document* query, const sizet_vt& collectionIds);
+    size_t searchClusterCosFirstIndex(const Document* query, const sizet_vt& collectionIds);
 
     /**
      * @brief Search function for Search function for searching the tiered index representation
@@ -104,8 +108,6 @@ class QueryProcessingEngine {
 
   private:
     const CB* _cb;
-
-    bool _init;
     std::string _stopwordFile;
     string_vt _stopword_list;
 };

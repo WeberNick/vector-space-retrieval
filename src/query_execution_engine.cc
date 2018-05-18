@@ -1,40 +1,46 @@
-#include "query_processing_engine.hh"
+#include "query_execution_engine.hh"
 #include "index_manager.hh"
 
 /**
  * @brief Construct a new Query Processing Engine:: Query Processing Engine object
  */
-QueryProcessingEngine::QueryProcessingEngine() : _cb(nullptr), _init(false), _stopwordFile() {}
+QueryExecutionEngine::QueryExecutionEngine() : _cb(nullptr), _stopwordFile() {}
 
 /**
  * @brief Initializes the singleton
  *
  * @param aControlBlock
  */
-void QueryProcessingEngine::init(const control_block_t& aControlBlock) {
-    if (!_init) {
+void QueryExecutionEngine::init(const control_block_t& aControlBlock) {
+    if (!_cb) {
         _cb = &aControlBlock;
         _stopwordFile = _cb->stopwordPath(); // relative path from /path/to/repo/vector-space-retrieval
         read(_stopwordFile);
-        _init = true;
+        TRACE("QueryExecutionEngine: Initialized");
     }
 }
 
-void QueryProcessingEngine::read(const std::string& aFile) {
+void QueryExecutionEngine::read(const std::string& aFile) {
     std::ifstream file(aFile);
     std::string line;
     while (std::getline(file, line)) {
-        Utility::StringOp::splitStringBoost(line, ',', this->_stopword_list);
+        Util::splitStringBoost(line, ',', this->_stopword_list);
     }
 }
 
-const pair_sizet_float_vt QueryProcessingEngine::search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh) {
+const pair_sizet_float_vt QueryExecutionEngine::search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh) {
     Document queryDoc = DocumentManager::getInstance().createQuery(query);
-    this->search(queryDoc, topK, searchType, use_lsh);
+    return this->search(queryDoc, topK, searchType, use_lsh);
 }
 
-const pair_sizet_float_vt QueryProcessingEngine::search(Document& queryDoc, size_t topK, IR_MODE searchType, bool use_lsh) {
+const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_t topK, IR_MODE searchType, bool use_lsh) {
 
+    std::cout << "Searching in mode: " << modeToString(searchType) << std::endl;
+    std::cout << "Searching for: ";
+    for (auto& elem : queryDoc.getContent()) {
+        std::cout << elem << " ";
+    }
+    std::cout << std::endl;
     pair_sizet_float_vt found_indices; // result vector
 
     switch (searchType) {
@@ -71,15 +77,15 @@ const pair_sizet_float_vt QueryProcessingEngine::search(Document& queryDoc, size
     } break;
     case IR_MODE ::kTIERED: {
         if (use_lsh) {
-            found_indices = QueryProcessingEngine::searchRandomProjCos(
+            found_indices = QueryExecutionEngine::searchRandomProjCos(
                 &queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
         } else {
             found_indices =
-                QueryProcessingEngine::searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
+                QueryExecutionEngine::searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
         }
     } break;
     case IR_MODE ::kRANDOM: {
-        found_indices = QueryProcessingEngine::searchRandomProjCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
+        found_indices = QueryExecutionEngine::searchRandomProjCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
     } break;
     case IR_MODE ::kNoMode: break;
     case IR_MODE ::kNumberOfModes: break;
@@ -87,10 +93,15 @@ const pair_sizet_float_vt QueryProcessingEngine::search(Document& queryDoc, size
     }
 
     // Return search result
+    std::cout << "Returning results" << std::endl;
+    for (auto& elem : found_indices) {
+        std::cout << "id: " << elem.first << " sim: " << elem.second << std::endl;
+    }
     return found_indices;
 }
 
-const pair_sizet_float_vt QueryProcessingEngine::searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
+const pair_sizet_float_vt QueryExecutionEngine::searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
+
     std::map<size_t, float> docId2Length;
     for (auto& elem : collectionIds) { // Map of doc id to length og that doc
         docId2Length[elem] = DocumentManager::getInstance().getDocumentMap().at(elem).getNormLength();
@@ -104,7 +115,7 @@ const pair_sizet_float_vt QueryProcessingEngine::searchCollectionCos(const Docum
             const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList(term);
             for (auto& [id, tf] : postingList.getPosting()) {
                 float idf = IndexManager::getInstance().getIdf(term);
-                docId2Scores[id] += (tf * idf * (Utility::IR::calcTf(term, qcontent) * idf));
+                docId2Scores[id] += (tf * idf * (Util::calcTf(term, qcontent) * idf));
             }
         } catch (const InvalidArgumentException& e) { continue; /* One of the query terms does not appear in the document collection. */ }
     }
@@ -123,11 +134,11 @@ const pair_sizet_float_vt QueryProcessingEngine::searchCollectionCos(const Docum
     return (!topK || topK > results.size()) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
 }
 
-const pair_sizet_float_vt QueryProcessingEngine::searchClusterCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
+const pair_sizet_float_vt QueryExecutionEngine::searchClusterCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
     std::map<size_t, float> docId2Scores;
 
     for (auto& elem : collectionIds) {
-        float sim = Utility::SimilarityMeasures::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
+        float sim = Util::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
         docId2Scores[elem] = sim;
     }
 
@@ -142,11 +153,11 @@ const pair_sizet_float_vt QueryProcessingEngine::searchClusterCos(const Document
     return (!topK || topK > results.size()) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
 }
 
-const size_t QueryProcessingEngine::searchClusterCosFirstIndex(const Document* query, const sizet_vt& collectionIds) {
-    return QueryProcessingEngine::getInstance().searchClusterCos(query, collectionIds, 1)[0].first; // get most similar leader
+size_t QueryExecutionEngine::searchClusterCosFirstIndex(const Document* query, const sizet_vt& collectionIds) {
+    return QueryExecutionEngine::getInstance().searchClusterCos(query, collectionIds, 1)[0].first; // get most similar leader
 }
 
-const pair_sizet_float_vt QueryProcessingEngine::searchTieredCos(const Document* query, const sizet_vt& collectionIds, size_t topK, bool useW2V) {
+const pair_sizet_float_vt QueryExecutionEngine::searchTieredCos(const Document* query, const sizet_vt& collectionIds, size_t topK, bool useW2V) {
 
     std::map<size_t, float> docId2Scores;
 
@@ -154,9 +165,9 @@ const pair_sizet_float_vt QueryProcessingEngine::searchTieredCos(const Document*
         float sim;
         if (useW2V) {
             std::cout << " we are using word2vec" << std::endl;
-            sim = Utility::SimilarityMeasures::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
+            sim = Util::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
         } else {
-            sim = Utility::SimilarityMeasures::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
+            sim = Util::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
         }
         docId2Scores[elem] = sim;
     }
@@ -172,13 +183,13 @@ const pair_sizet_float_vt QueryProcessingEngine::searchTieredCos(const Document*
     return (!topK || topK > results.size()) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
 }
 
-const pair_sizet_float_vt QueryProcessingEngine::searchRandomProjCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
+const pair_sizet_float_vt QueryExecutionEngine::searchRandomProjCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
 
     std::cout << "using rand projections vectors " << std::endl;
     std::map<size_t, float> docId2Scores;
 
     for (auto& elem : collectionIds) {
-        docId2Scores[elem] = Utility::SimilarityMeasures::calcHammingDist(query->getRandProjTiVec(),
+        docId2Scores[elem] = Util::calcHammingDist(query->getRandProjTiVec(),
                                                                           DocumentManager::getInstance().getDocumentMap().at(elem).getRandProjTiVec());
     }
 

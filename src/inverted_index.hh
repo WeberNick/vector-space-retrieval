@@ -11,11 +11,11 @@
  */
 #pragma once
 
-#include "document.hh"
-#include "exception.hh"
-#include "posting_list.hh"
 #include "types.hh"
-#include "utility.hh"
+#include "exception.hh"
+#include "trace.hh"
+#include "document.hh"
+#include "posting_list.hh"
 
 #include <map>
 #include <string>
@@ -24,12 +24,12 @@ class InvertedIndex {
     friend class IndexManager;
 
   private:
-    explicit InvertedIndex();
+    InvertedIndex();
     InvertedIndex(const InvertedIndex&) = default;
     InvertedIndex(InvertedIndex&&) = delete;
     InvertedIndex& operator=(const InvertedIndex&) = delete;
     InvertedIndex& operator=(InvertedIndex&&) = delete;
-    ~InvertedIndex();
+    ~InvertedIndex() = default;
 
   private:
     /**
@@ -126,8 +126,7 @@ class InvertedIndex {
     friend std::ostream& operator<<(std::ostream& strm, const InvertedIndex& ii);
 
   private:
-    const control_block_t* _cb;
+    const CB* _cb;
 
-    bool _init;
     str_postinglist_mt _term_posting_map; // term, PostingList: [("Frodo", <PostingListObj>), ...]
 };

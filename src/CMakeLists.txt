@@ -46,7 +46,10 @@ endif()
 set(HEADER_FILES
         argbase.hh
         types.hh
-        utility.hh
+        string_util.hh
+        vec_util.hh
+        ir_util.hh
+        similarity_util.hh
         args.hh
         exception.hh
         trace.hh
@@ -60,13 +63,17 @@ set(HEADER_FILES
         random_projection.hh
         index_manager.hh
         posting_list.hh
-        query_processing_engine.hh
+        query_execution_engine.hh
         word_embeddings.hh)
 
 set(SOURCE_FILES
         args.cc
         exception.cc
         trace.cc
+        string_util.cc
+        vec_util.cc
+        ir_util.cc
+        similarity_util.cc
         evaluation.cc
         document.cc
         document_manager.cc
@@ -76,7 +83,7 @@ set(SOURCE_FILES
         random_projection.cc
         index_manager.cc
         posting_list.cc
-        query_processing_engine.cc
+        query_execution_engine.cc
         word_embeddings.cc)
 
 #Create library which is later linked to the main executable

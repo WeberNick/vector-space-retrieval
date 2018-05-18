@@ -11,7 +11,9 @@
 #pragma once
 
 #include "types.hh"
-#include "utility.hh"
+#include "exception.hh"
+#include "trace.hh"
+#include "vec_util.hh"
 
 #include <bitset>
 #include <boost/dynamic_bitset.hpp>
@@ -22,14 +24,12 @@
 
 class RandomProjection {
   private:
-    explicit RandomProjection();
-    ~RandomProjection();
-
-  public:
+    RandomProjection();
     RandomProjection(const RandomProjection&) = delete;
     RandomProjection(RandomProjection&&) = delete;
     RandomProjection& operator=(const RandomProjection&) = delete;
     RandomProjection& operator=(RandomProjection&&) = delete;
+    ~RandomProjection() = default;
 
   public:
     static RandomProjection& getInstance();
@@ -39,12 +39,12 @@ class RandomProjection {
      * @param vector
      * @return boost::dynamic_bitset<>
      */
-    boost::dynamic_bitset<> localitySensitiveHashProjection(std::vector<float>& vector, std::function<unsigned int(std::vector<float>&, std::vector<float>&)>);
+    boost::dynamic_bitset<> localitySensitiveHashProjection(float_vt& vector, std::function<unsigned int(float_vt&, float_vt&)>);
 
   public:
     inline const float_vector_vt& getRandomVectors() { return _randomVectors; }
-    inline const size_t getDimensions() { return _dimension; };
-    inline const size_t getOrigvectorSize() { return _origVectorSize; };
+    inline size_t getDimensions() { return _dimension; };
+    inline size_t getOrigvectorSize() { return _origVectorSize; };
 
     /**
      * @brief Set the Dimensions object
@@ -91,18 +91,7 @@ class RandomProjection {
      * @param origVectorSize
      * @return
      */
-    inline void init(const control_block_t& aCB, const size_t origVectorSize) {
-        if (!_init) {
-            _cb = &aCB;
-            _dimension = _cb->_noDimensions;
-
-            if (_dimension == 0) throw "Random projection dimension equals 0, must be > 0 ";
-
-            setOrigVectorSize(origVectorSize);
-            initRandomVectors();
-            _init = true;
-        }
-    }
+    void init(const CB& aCB, const size_t origVectorSize); 
 
     /**
      * @brief Initilaizes the random vectors
@@ -113,7 +102,7 @@ class RandomProjection {
     inline bool initRandomVectors() {
         if (_dimension) {
             for (size_t i = 0; i < _dimension; ++i) {
-                _randomVectors.push_back(Utility::generateRandomVectorN(_origVectorSize));
+                _randomVectors.push_back(Util::generateRandomVectorN(_origVectorSize));
             }
             return true;
         } else {
@@ -122,9 +111,8 @@ class RandomProjection {
     }
 
   private:
-    const control_block_t* _cb;
+    const CB* _cb;
 
-    bool _init;
     float_vector_vt _randomVectors;
     size_t _dimension;
     size_t _origVectorSize;

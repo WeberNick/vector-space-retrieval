@@ -14,11 +14,8 @@
 #include "types.hh"
 #include "exception.hh"
 #include "trace.hh"
-#include "utility.hh"
 
-#include "document.hh"
 #include "document_manager.hh"
-#include "query_processing_engine.hh"
 
 #include <algorithm>
 #include <cmath>
@@ -39,7 +36,7 @@ class Cluster
     Cluster(Cluster&&) = delete;
     Cluster& operator=(const Cluster&) = delete;
     Cluster& operator=(Cluster&&) = delete;
-    ~Cluster();
+    ~Cluster() = default;
 
   private:
     /**
@@ -96,8 +93,6 @@ class Cluster
 
   private:
     const CB* _cb;
-
-    bool _init;          // was the cluster initialized?
-    sizet_vt _leaders;   // stores IDs of leaders as a list
+    sizet_vt _leaders;
     cluster_mt _cluster; // stores <DocID, Vector<DocID>> pairs, the first id represents a leader document
 };
