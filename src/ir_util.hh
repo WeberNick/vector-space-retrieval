@@ -62,7 +62,7 @@ namespace Util
          * @param content the content string in which the term appears
          * @return the term frequency
          */
-        float calcTf(const std::string& term, const std::string& content);
+        //float calcTf(const std::string& term, const std::string& content);
         /**
          * @brief Calculates the term frequency of a given term inside a given string vector
          *

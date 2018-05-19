@@ -19,9 +19,9 @@ void QueryExecutionEngine::init(const control_block_t& aControlBlock) {
     }
 }
 
-const pair_sizet_float_vt QueryExecutionEngine::search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh) {
+const pair_sizet_float_vt QueryExecutionEngine::search(std::string& query, size_t topK, IR_MODE searchType) {
     Document queryDoc = QueryManager::getInstance().createQueryDoc(query);
-    return this->search(queryDoc, topK, searchType, use_lsh);
+    return this->search(queryDoc, topK, searchType);
 }
 
 const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_t topK, IR_MODE searchType) {

@@ -199,13 +199,14 @@ Evaluation::Evaluation() :
     _cb(nullptr)
 {
         _evalResults[modeToString(kVANILLA)].init(modeToString(kVANILLA));
-        //_evalResults[modeToString(kVANILLAW2V)].init(modeToString(kVANILLAW2V));
-        _evalResults[modeToString(kTIERED)].init(modeToString(kTIERED)); 
-        _evalResults[modeToString(kTIEREDW2V)].init(modeToString(kTIEREDW2V)); 
-        _evalResults[modeToString(kCLUSTER)].init(modeToString(kCLUSTER)); 
-        _evalResults[modeToString(kCLUSTERW2V)].init(modeToString(kCLUSTERW2V)); 
-        _evalResults[modeToString(kRANDOM)].init(modeToString(kRANDOM)); 
-        _evalResults[modeToString(kRANDOMW2V)].init(modeToString(kRANDOMW2V)); 
+        _evalResults[modeToString(kVANILLA_RAND)].init(modeToString(kVANILLA_RAND));
+        _evalResults[modeToString(kVANILLA_W2V)].init(modeToString(kVANILLA_W2V));
+        _evalResults[modeToString(kTIERED)].init(modeToString(kTIERED));
+        _evalResults[modeToString(kTIERED_RAND)].init(modeToString(kTIERED_RAND));
+        _evalResults[modeToString(kTIERED_W2V)].init(modeToString(kTIERED_W2V));
+        _evalResults[modeToString(kCLUSTER)].init(modeToString(kCLUSTER));
+        _evalResults[modeToString(kCLUSTER_RAND)].init(modeToString(kCLUSTER_RAND));
+        _evalResults[modeToString(kCLUSTER_W2V)].init(modeToString(kCLUSTER_W2V));
 }
 
 void Evaluation::init(const CB& aControlBlock)
