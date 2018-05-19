@@ -27,7 +27,7 @@ void Trace::init(const CB& aCB)
             fs::create_directory(_logPath);
             std::time_t lCurrTime = std::time(nullptr);
             std::string lTime = std::string(std::ctime(&lCurrTime));
-            _logPath.append(lTime.substr(0, lTime.size() - 1).append(".txt"));
+            _logPath.append(lTime.substr(0, lTime.size() - 1).append(".log"));
             _logStream.open(_logPath.c_str(), std::ofstream::out | std::ofstream::app);
             TRACE("Log file created and open");
         }
