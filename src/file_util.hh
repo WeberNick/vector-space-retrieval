@@ -32,6 +32,6 @@ namespace Util
      */
     void readIn(const std::string& aPath, const char aDelimiter, string_vvt& aOutput);
 
-    void readInFileInsertDocs(const std::string& aPath, const char aDelimiter, doc_mt& aDocMap);
+    void readInAndCreateDocs(const std::string& aPath, const char aDelimiter, doc_mt& aDocMap);
 
 }

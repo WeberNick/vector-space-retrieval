@@ -69,8 +69,8 @@ namespace Util
          * @param string string to lower case
          * @return lowercased string
          */
-        std::string toLower(const std::string& string);
-        void toLower(std::string& string);
+        std::string toLower(const std::string& aString);
+        std::string& toLower(std::string& aString);
 
         /**
          * @brief Lower case a given vector of strings
@@ -78,8 +78,8 @@ namespace Util
          * @param string string to lower case
          * @return lowercased string
          */
-        string_vt toLower(const string_vt& string);
-        void toLower(string_vt& string);
+        string_vt toLower(const string_vt& aStrings);
+        string_vt& toLower(string_vt& aStrings);
 
         /**
          * @brief Converts std:string into std:wstring
@@ -109,7 +109,7 @@ namespace Util
          * @param case_insensitive delare if the search should be case insensitive or not
          * @return the number of occurences
          */
-        long countWordInString(std::string str, std::string word, bool case_insensitive);
+        size_t countWordInString(const std::string& str, const std::string& word, bool case_insensitive);
 
         /**
          * @brief Calculates the appearance of a single word inside a string vector
@@ -119,7 +119,7 @@ namespace Util
          * @param case_insensitive delare if the search should be case insensitive or not
          * @return the number of occurences
          */
-        long countWordInString(string_vt str, std::string word, bool case_insensitive);
+        size_t countWordInString(const string_vt& str, const std::string& word, bool case_insensitive);
 
         /**
          * @brief Returns the frequency of the most frequent term a string

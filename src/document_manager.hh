@@ -17,6 +17,7 @@
 #include "types.hh"
 #include "string_util.hh"
 #include "ir_util.hh"
+#include "file_util.hh"
 #include "query_execution_engine.hh"
 
 #include <fstream>

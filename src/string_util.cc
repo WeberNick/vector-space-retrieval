@@ -12,16 +12,6 @@ namespace Util
             return str;
         }
 
-        void splitString(const std::string& str, const char splitChar, string_vt& out) {
-            size_t found;
-            size_t pos = 0;
-            while ((found = str.find_first_of(splitChar, pos)) != std::string::npos) {
-                out.emplace_back(str.substr(pos, found - pos));
-                pos = found + 1;
-            }
-            out.emplace_back(str.substr(pos));
-        }
-
         void splitStringBoost(const std::string& aString, const char aDelimiter, string_vt& aOutputVector) {
             boost::split(aOutputVector, aString, boost::is_any_of(std::string(1, aDelimiter)));
         }
@@ -34,9 +24,10 @@ namespace Util
             return data;
         }
 
-        void toLower(std::string& aString)
+        std::string& toLower(std::string& aString)
         {
             std::transform(aString.begin(), aString.end(), aString.begin(), ::tolower);
+            return aString;
         }
 
 
@@ -52,12 +43,12 @@ namespace Util
             return data;
         }
 
-
-        void toLower(string_vt& aString) {
-            for(auto& str : aString)
+        string_vt& toLower(string_vt& aStrings) {
+            for(auto& str : aStrings)
             {
                 toLower(str);
             }
+            return aStrings;
         }
 
         std::wstring string2wstring(const std::string& s) {
@@ -72,7 +63,7 @@ namespace Util
             return s;
         }
 
-        long countWordInString(std::string str, std::string word, bool case_insensitive) {
+        size_t countWordInString(const std::string& str, const std::string word, bool case_insensitive) {
             std::string wordCased = case_insensitive ? toLower(word) : word;
             std::string strCased = case_insensitive ? toLower(str) : str;
 
@@ -86,7 +77,7 @@ namespace Util
             return count;
         }
 
-        long countWordInString(string_vt str, std::string word, bool case_insensitive) {
+        size_t countWordInString(const string_vt& str, const std::string& word, bool case_insensitive) {
 
             std::string word_2 = case_insensitive ? toLower(word) : word;
             string_vt str_2 = case_insensitive ? toLower(str) : str;

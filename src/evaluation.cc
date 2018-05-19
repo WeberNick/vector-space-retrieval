@@ -199,6 +199,7 @@ Evaluation::Evaluation() :
     _cb(nullptr)
 {
         _evalResults[modeToString(kVANILLA)].init(modeToString(kVANILLA));
+        //_evalResults[modeToString(kVANILLAW2V)].init(modeToString(kVANILLAW2V));
         _evalResults[modeToString(kTIERED)].init(modeToString(kTIERED)); 
         _evalResults[modeToString(kTIEREDW2V)].init(modeToString(kTIEREDW2V)); 
         _evalResults[modeToString(kCLUSTER)].init(modeToString(kCLUSTER)); 
