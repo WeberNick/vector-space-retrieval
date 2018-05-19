@@ -11,11 +11,11 @@
  */
 #pragma once
 
-#include "document.hh"
-#include "exception.hh"
-#include "posting_list.hh"
 #include "types.hh"
-#include "utility.hh"
+#include "exception.hh"
+#include "trace.hh"
+#include "document.hh"
+#include "posting_list.hh"
 
 #include <map>
 #include <string>
@@ -24,12 +24,12 @@ class InvertedIndex {
     friend class IndexManager;
 
   private:
-    explicit InvertedIndex();
+    InvertedIndex();
     InvertedIndex(const InvertedIndex&) = default;
     InvertedIndex(InvertedIndex&&) = delete;
     InvertedIndex& operator=(const InvertedIndex&) = delete;
     InvertedIndex& operator=(InvertedIndex&&) = delete;
-    ~InvertedIndex();
+    ~InvertedIndex() = default;
 
   private:
     /**
@@ -43,20 +43,20 @@ class InvertedIndex {
     bool insert(const std::string& aTerm, const PostingList& aPostingList);
     /**
      * @brief Find a postingList with aKey and return an iterator
-     * 
+     *
      * @param aKey the term to find in the map
      * @return posting_map_iter_t the postingList for aKey (the term)
      */
     posting_map_iter_t find(const std::string& aKey);
     /**
      * @brief Erase the postingList of aKey
-     * 
+     *
      * @param aKey the term to erase
      */
     void erase(const std::string& aKey);
     /**
      * @brief Erase the postingList for aIterator
-     * 
+     *
      * @param aIterator the iterator to erase with
      */
     void erase(const posting_map_iter_t aIterator);
@@ -72,44 +72,61 @@ class InvertedIndex {
     }
     /**
      * @brief initialize control block and inverted index
-     * 
+     *
      * @param aControlBlock the control block
      * @param aPostingList the posting lists
      */
-    void init(const control_block_t& aControlBlock, postinglist_mt aPostingLists);
+    void init(const control_block_t& aControlBlock);
+
+    //TODO docs
+    /**
+     * @brief Get the Term Posting Map object
+     * 
+     * @return str_postinglist_mt* 
+     */
+    inline str_postinglist_mt* getTermPostingMap() { return &_term_posting_map; }
 
   public:
     /**
      * @brief Get the posting lists
-     * 
-     * @return const postinglist_mt& the posting lists 
+     *
+     * @return const str_postinglist_mt& the posting lists
      */
-    inline const postinglist_mt& getPostingLists() { return _term_posting_map; }
+    inline const str_postinglist_mt& getPostingLists() const { return _term_posting_map; }
     /**
      * @brief Get the size of the dictionary
-     * 
+     *
      * @return size_t the distinct number of vocab terms
      */
     inline size_t getDictionarySize() { return _term_posting_map.size(); }
-    
+
     /**
      * @brief Get the posting list for the given term
-     * 
+     *
      * @param term the term for getting the posting list
      * @return const PostingList& the posting list
      */
     const PostingList& getPostingList(const std::string& term) const;
     /**
      * @brief Get the number of documents in which aTerm appears
-     * 
-     * @param aTerm the term 
+     *
+     * @param aTerm the term
      * @return size_t the number of documents in which aTerm appears
      */
     size_t getNoDocs(const std::string& aTerm);
+    
+    // TODO docs
+    /**
+     * @brief 
+     * 
+     * @param strm 
+     * @param ii 
+     * @return std::ostream& 
+     */
+    friend std::ostream& operator<<(std::ostream& strm, const InvertedIndex& ii);
 
   private:
-    const control_block_t* _cb;
+    const CB* _cb;
 
-    bool _init;
-    postinglist_mt _term_posting_map; // term, PostingList: [("Frodo", <PostingListObj>), ...]
+    str_postinglist_mt _term_posting_map; // term, PostingList: [("Frodo", <PostingListObj>), ...]
 };

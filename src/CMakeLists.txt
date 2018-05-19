@@ -10,24 +10,23 @@ if(LINUX)
     set(BOOST_INCLUDE_DIR "/usr/include/boost")
     set(BOOST_LIBRARY_DIR "/usr/lib/x86_64-linux-gnu")
 else()
-    set(BOOST_ROOT "/usr/local/Cellar/boost/1.66.0/")
+    if(NOT EXISTS "$ENV{BOOST}")
+        message(WARNING "Could not find BOOST environment variable")
+        message("Try using the standard brew boost path")
+        set(BOOST_ROOT "/usr/local/Cellar/boost/1.66.0/")
+    else()
+        message("Using provided BOOST path: /usr/local/Cellar/boost/1.66.0")
+        set(BOOST_ROOT $ENV{BOOST})
+    endif()
+
     set(BOOST_INCLUDE_DIR "${BOOST_ROOT}/include")
     set(BOOST_LIBRARY_DIR "${BOOST_ROOT}/lib")
 endif()
-
 
 #Set src/lib as other external librs
 set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/src/lib/)
 
 # Clone non-boost external libs
-## Clone Eigen
-if(NOT EXISTS ${EXTERNAL_DIR}eigen)
-    find_package(Git REQUIRED)
-    execute_process(
-        COMMAND ${GIT_EXECUTABLE}  clone https://github.com/eigenteam/eigen-git-mirror --branch 3.3.4 --single-branch ${EXTERNAL_DIR}eigen
-    )
-endif()
-
 ## Clone /OleanderStemmingLibrary
 if(NOT EXISTS ${EXTERNAL_DIR}oleanderStemmingLibrary)
     find_package(Git REQUIRED)
@@ -36,37 +35,60 @@ if(NOT EXISTS ${EXTERNAL_DIR}oleanderStemmingLibrary)
     )
 endif()
 
+## Clone /nlohmann (JSON)
+if(NOT EXISTS ${EXTERNAL_DIR}nlohmann)
+    find_package(Git REQUIRED)
+    execute_process(
+            COMMAND ${GIT_EXECUTABLE} clone https://github.com/nlohmann/json.git ${EXTERNAL_DIR}nlohmann
+    )
+endif()
+
 set(HEADER_FILES
         argbase.hh
         types.hh
-        utility.hh
+        string_util.hh
+        vec_util.hh
+        ir_util.hh
+        similarity_util.hh
+        file_util.hh
         args.hh
         exception.hh
+        trace.hh
         measure.hh
+        evaluation.hh
         document.hh
         document_manager.hh
+        query_manager.hh
         inverted_index.hh
         tiered_index.hh
         cluster.hh
         random_projection.hh
         index_manager.hh
         posting_list.hh
-        query_processing_engine.hh
-        )
+        query_execution_engine.hh
+        word_embeddings.hh)
 
 set(SOURCE_FILES
         args.cc
         exception.cc
+        trace.cc
+        string_util.cc
+        vec_util.cc
+        ir_util.cc
+        similarity_util.cc
+        file_util.cc
+        evaluation.cc
         document.cc
         document_manager.cc
+        query_manager.cc
         inverted_index.cc
         tiered_index.cc
         cluster.cc
         random_projection.cc
         index_manager.cc
         posting_list.cc
-        query_processing_engine.cc
-        )
+        query_execution_engine.cc
+        word_embeddings.cc)
 
 #Create library which is later linked to the main executable
 add_library(${CMAKE_PROJECT_NAME}_lib STATIC ${SOURCE_FILES} ${HEADER_FILES})
@@ -81,5 +103,7 @@ else()
 endif ()
 
 #Inlcude non-boost libraries
-target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/eigen")
 target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/oleanderStemmingLibrary")
+target_include_directories(${CMAKE_PROJECT_NAME}_lib PUBLIC SYSTEM "${CMAKE_SOURCE_DIR}/src/lib/nlohmann/single_include/")
+
+

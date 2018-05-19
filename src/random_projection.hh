@@ -1,49 +1,61 @@
-/**
- *	@file 	random_projection.hh
- *	@author	Alexander Weiß
- *	@brief  TODO
- *	@bugs 	Currently no bugs known
- *	@todos	Write @brief and DESCRIPTION
- *
- *	@section DESCRIPTION
- *	TODO
- */
+/*********************************************************************
+ * @file    query_execution_engine.hh
+ * @author 	Alexander Weiß
+ * @date    April 4, 2018
+ * @brief 	Implementing the random projections to lower the dimensions
+ *          of the TF-IDF vectors of documents
+ * @bugs 	  Currently no bugs known 
+ * @todos 	Currently no todos
+ * 
+ * @section	DESCRIPTION
+ * TBD
+ * 
+ * @section USE
+ * TBD
+ ********************************************************************/
+
 #pragma once
 
 #include "types.hh"
-#include "utility.hh"
-#include <Eigen/Dense>
+#include "exception.hh"
+#include "trace.hh"
+#include "vec_util.hh"
+
 #include <bitset>
 #include <boost/dynamic_bitset.hpp>
+#include <cmath>
+#include <iostream>
 #include <string>
+#include <vector>
 
 class RandomProjection {
   private:
-    explicit RandomProjection();
-    ~RandomProjection();
-
-  public:
+    RandomProjection();
     RandomProjection(const RandomProjection&) = delete;
     RandomProjection(RandomProjection&&) = delete;
     RandomProjection& operator=(const RandomProjection&) = delete;
     RandomProjection& operator=(RandomProjection&&) = delete;
+    ~RandomProjection() = default;
 
   public:
     static RandomProjection& getInstance();
-    const Eigen::MatrixXf projectMatrix();
-    boost::dynamic_bitset<> localitySensitiveHashProjection(std::vector<float>& vector, std::function<unsigned int(std::vector<float>&, std::vector<float>&)>);
-
-  private:
-    const int dimension(int& sample, float eps = 0.1);
-    Eigen::MatrixXf createRandomMatrix(int rows, int cols, bool JLT, double eps = 0.1, std::string projection = "gaussian");
+    /**
+     * @brief Implements a hash function which determines the value of an random projection vector at a given position
+     * The implemented hash function is simple:
+     *      if scalar_product(vec_a, vec_b) > 0 ? return 1 : return 0;
+     *
+     * @param vector
+     * @return boost::dynamic_bitset<>
+     */
+    boost::dynamic_bitset<> localitySensitiveHashProjection(float_vt& vector, std::function<unsigned int(float_vt&, float_vt&)>);
 
   public:
     inline const float_vector_vt& getRandomVectors() { return _randomVectors; }
-    inline const size_t getDimensions() { return _dimension; };
-    inline const size_t getOrigvectorSize() { return _origVectorSize; };
+    inline size_t getDimensions() { return _dimension; };
+    inline size_t getOrigvectorSize() { return _origVectorSize; };
 
     /**
-     * @brief Set the Dimensions object
+     * @brief Set the Dimensions object, determines the dimension of the random projection vectors
      *
      * @param dimensions
      * @return true
@@ -69,8 +81,7 @@ class RandomProjection {
      * @brief Set the Orig Vector Size object
      *
      * @param origVectorSize
-     * @return true
-     * @return false
+     * @return bool indicating whether the orig size has been set
      */
     inline bool setOrigVectorSize(const size_t origVectorSize) {
         if (_origVectorSize) {
@@ -88,27 +99,18 @@ class RandomProjection {
      * @param origVectorSize
      * @return
      */
-    inline bool init(const control_block_t& aCB, const size_t origVectorSize) {
-        _cb = &aCB;
-        _dimension = _cb->_noDimensions;
-        std::cout << "Init with " << _dimension << " dimensions" << std::endl;
-
-        if (_dimension == 0) throw "Random projection dimension equals 0, must be > 0 ";
-
-        setOrigVectorSize(origVectorSize);
-        initRandomVectors();
-    }
+    void init(const CB& aCB, const size_t origVectorSize); 
 
     /**
-     * @brief Initilaizes the random vectors
+     * @brief Initializes the random vectors
      *
      * @return true
-     * @return false
+     * @return bool indicating whether the random vectors have been set
      */
     inline bool initRandomVectors() {
         if (_dimension) {
             for (size_t i = 0; i < _dimension; ++i) {
-                _randomVectors.push_back(Utility::generateRandomVectorN(_origVectorSize));
+                _randomVectors.push_back(Util::generateRandomVectorN(_origVectorSize));
             }
             return true;
         } else {
@@ -117,7 +119,8 @@ class RandomProjection {
     }
 
   private:
-    const control_block_t* _cb;
+    const CB* _cb;
+
     float_vector_vt _randomVectors;
     size_t _dimension;
     size_t _origVectorSize;

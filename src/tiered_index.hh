@@ -10,8 +10,12 @@
  */
 #pragma once
 
-#include "document.hh"
 #include "types.hh"
+#include "trace.hh"
+#include "exception.hh"
+#include "ir_util.hh"
+#include "document.hh"
+#include "posting_list.hh"
 
 class TieredIndex {
     friend class IndexManager;
@@ -22,9 +26,39 @@ class TieredIndex {
     TieredIndex(TieredIndex&&) = delete;
     TieredIndex& operator=(const TieredIndex&) = delete;
     TieredIndex& operator=(TieredIndex&&) = delete;
-    ~TieredIndex();
+    ~TieredIndex() = default;
 
   private:
+    // TODO docs
+    /**
+     * @brief Insert aTierMap for aTerm, if this term is not in the tiered index yet
+     *
+     * @param aTerm
+     * @param aTierMap
+     * @return true
+     * @return false
+     */
+    bool insert(const std::string& aTerm, const std::map<size_t, PostingList>& aTierMap);
+    /**
+     * @brief Find the map of tiers to postingLists for aKey and return an iterator
+     *
+     * @param aKey the term to find in the map
+     * @return tiered_posting_map_iter_t the map<tier, postingList>::iterator for aKey (the term)
+     */
+    tiered_posting_map_iter_t find(const std::string& aKey);
+    /**
+     * @brief Erase the TieredIndex entry of aKey
+     *
+     * @param aKey the term to erase
+     */
+    void erase(const std::string& aKey);
+    /**
+     * @brief Erase the postingList for aIterator
+     *
+     * @param aIterator the iterator to erase with
+     */
+    void erase(const tiered_posting_map_iter_t aIterator);
+
     /**
      * @brief Get the TieredIndex Singleton instance.
      *
@@ -40,9 +74,76 @@ class TieredIndex {
      * @param aControlBlock the control block
      */
     void init(const control_block_t& aControlBlock);
+    
+    /**
+     * @brief Get the Term Tier Posting Map object
+     * 
+     * @return str_tierplmap_mt* 
+     */
+    inline str_tierplmap_mt* getTermTierPostingMap() { return &_term_tier_map; }
+
+  public:
+    // TODO docs
+    /**
+     * @brief Get the Posting Lists object
+     *
+     * @return str_tierplmap_mt&
+     */
+    inline const str_tierplmap_mt& getPostingLists() const { return _term_tier_map; }
+    // TODO docs
+    /**
+     * @brief Get the Dictionary Size object
+     *
+     * @return size_t
+     */
+    inline size_t getDictionarySize() { return _term_tier_map.size(); }
+    // TODO docs
+    /**
+     * @brief Get the Num Tiers object
+     *
+     * @return size_t
+     */
+    inline size_t getNumTiers() { return _num_tiers; }
+
+    // TODO docs
+    /**
+     * @brief Get the Doc ID List object
+     *
+     * @param top at least top ids
+     * @param terms
+     * @return std::map<size_t, sizet_vt>
+     */
+    sizet_vt getDocIDList(const size_t top, const string_vt& terms) const;
+    /**
+     * @brief Get the Posting List object
+     *
+     * @param aTerm
+     * @param aTier
+     * @return PostingList&
+     */
+    const PostingList& getPostingList(const std::string& aTerm, const size_t aTier) const;
+    // TODO docs
+    /**
+     * @brief Get the No Docs object
+     *
+     * @param aTerm
+     * @param aTier
+     * @return size_t
+     */
+    size_t getNoDocs(const std::string& aTerm, const size_t aTier);
+    
+    // TODO docs
+    /**
+     * @brief Override operator<< for pretty printing a 
+     *
+     * @param strm the output stream
+     * @param ti
+     * @return std::ostream& the output stream to be returned
+     */
+    friend std::ostream& operator<<(std::ostream& strm, const TieredIndex& ti);
 
   private:
     const control_block_t* _cb;
-
-    bool _init;
+    size_t _num_tiers;
+    str_tierplmap_mt _term_tier_map;
 };

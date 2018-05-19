@@ -137,7 +137,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-### VisualStudioCode ###
+# VisualStudioCode
+.vscode/
 .vscode/**
 #!.vscode/settings.json
 #!.vscode/tasks.json
@@ -148,7 +149,7 @@ Temporary Items
 # Build Folder
 build/
 
-### Own Stuff ###
+# Own Stuff
 docs/html
 docs/latex
 data/nfcorpus
@@ -157,3 +158,32 @@ tests/lib/**
 bin/**
 src/lib/
 src/lib/**
+data/w2v/**
+logs/
+eval/
+
+# dependencies
+evsr-web/client/node_modules
+evsr-web/server/node_modules
+evsr-web/node_modules
+
+# testing
+evsr-web/client/coverage
+
+# production
+evsr-web/client/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+evsr-web/server/server.log*
+evsr-web/npm-debug.log*
+evsr-web/yarn-debug.log*
+evsr-web/yarn-error.log*
+
+# JSON
+*.json

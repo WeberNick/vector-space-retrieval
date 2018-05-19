@@ -3,7 +3,7 @@
  *	@author	Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de)
  *	@brief	Implementation of command line arguements
  *	@bugs 	Currently no bugs known
- *	@todos	Currently no todos
+ *	@todos  Assign correct default paths in .cc to collection/relScores etc,,	
  *
  *	@section DESCRIPTION
  *	        This class implements the command line arguements. A command line arguement has the form:
@@ -41,46 +41,64 @@ class Args {
     Args(Args&&) = delete;
     Args& operator=(const Args&) = delete;
     Args& operator=(Args&&) = delete;
-    ~Args();
+    ~Args() = default;
 
   public:
-    inline const bool help() { return _help; }
+    inline bool help() { return _help; }
     inline void help(const bool& x) { _help = x; }
 
-    inline const bool trace() { return _trace; }
+    inline bool trace() { return _trace; }
     inline void trace(const bool& x) { _trace = x; }
 
-    inline const bool measure() { return _measure; }
+    inline bool measure() { return _measure; }
     inline void measure(const bool& x) { _measure = x; }
 
-    inline const bool print() { return _print; }
-    inline void print(const bool& x) { _print = x; }
+    inline const std::string& collectionPath() { return _collectionPath; }
+    inline void collectionPath(const std::string& x) { _collectionPath = x; }
 
-    inline const std::string path() { return _path; }
-    inline void path(const std::string& x) { _path = x; }
+    inline const std::string& queryPath() { return _queryPath; }
+    inline void queryPath(const std::string& x) { _queryPath = x; }
 
-    inline const uint results() { return _results; }
+    inline const std::string& relevanceScoresPath() { return _relScoresPath; }
+    inline void relevanceScoresPath(const std::string& x) { _relScoresPath = x; }
+
+    inline const std::string& stopwordPath() { return _stopwordPath; }
+    inline void stopwordPath(const std::string& x) { _stopwordPath = x; }
+
+    inline const std::string& wordEmbeddingsPath() { return _wordEmbeddingsPath; }
+    inline void wordEmbeddingsPath(const std::string& x) { _wordEmbeddingsPath = x; }
+
+    inline const std::string& tracePath() { return _tracePath; }
+    inline void tracePath(const std::string& x) { _tracePath = x; }
+
+    inline const std::string& evalPath() { return _evalPath; }
+    inline void evalPath(const std::string& x) { _evalPath = x; }
+
+    inline uint results() { return _results; }
     inline void results(const uint& x) { _results = x; }
 
-    inline const uint tiers() { return _tiers; }
+    inline uint tiers() { return _tiers; }
     inline void tiers(const uint& x) { _tiers = x; }
 
-    inline const uint dimensions() { return _dimensions; }
+    inline uint dimensions() { return _dimensions; }
     inline void dimensions(const uint& x) { _dimensions = x; }
 
   private:
     bool _help;
     bool _trace;
     bool _measure;
-    bool _print;
 
-    std::string _path;
+    std::string _collectionPath;
+    std::string _queryPath;
+    std::string _relScoresPath;
+    std::string _stopwordPath;
+    std::string _wordEmbeddingsPath;
+    std::string _tracePath;
+    std::string _evalPath;
 
-    uint    _results;
-    uint    _tiers;
-    uint    _dimensions;
+    uint _results;
+    uint _tiers;
+    uint _dimensions;
 };
-
 using argdesc_vt = std::vector<argdescbase_t<Args>*>;
-
 void construct_arg_desc(argdesc_vt& aArgDesc);

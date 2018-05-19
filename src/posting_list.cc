@@ -12,12 +12,6 @@ PostingList::PostingList(const float aIdf, const sizet_float_mt& aPosting) :
 {}
 
 /**
- * @brief Destroy the Posting List:: Posting List object
- * 
- */
-PostingList::~PostingList() {}
-
-/**
  * @brief Construct a new Posting List:: Posting List object
  * 
  * @param pl the postingList to copy
@@ -27,12 +21,19 @@ PostingList::PostingList(const PostingList& pl) :
     _posting(pl.getPosting())
 {}
 
-std::ostream& operator<<(std::ostream& strm, const PostingList& pl) {
-    strm << " -> [";
-    std::string sep = ") ";
-    for (auto it = pl.getPosting().begin(); it != pl.getPosting().end(); ++it) {
-        if (it == std::prev(pl.getPosting().end(), 1)) { sep = ")"; }
-        strm << "(" << it->first << ", " << it->second << sep;
+const sizet_vt PostingList::getIDs() const {
+    sizet_vt ids;
+    ids.reserve(_posting.size());
+    for (auto& item : _posting) {
+        ids.push_back(item.first);
     }
-    return strm << "]" << std::endl;
+    return ids;
+}
+
+std::ostream& operator<<(std::ostream& strm, const PostingList& pl) {
+    strm << "[ ";
+    for (auto it = pl.getPosting().begin(); it != pl.getPosting().end(); ++it) {
+        strm << "(" << it->first << ", " << it->second << ") ";
+    }
+    return strm << "]";
 }

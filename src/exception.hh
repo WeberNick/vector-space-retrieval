@@ -12,10 +12,14 @@
  */
 #pragma once
 
+
 #include <exception>
 #include <string>
 #include <iostream>
-#include <errno.h>
+#include <cerrno>
+#include <cstring>
+
+#define FLF __FILE__, __LINE__, __PRETTY_FUNCTION__
 
 class BaseException : public std::runtime_error 
 {

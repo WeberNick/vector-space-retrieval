@@ -1,0 +1,19 @@
+{
+  "name": "evsr-web",
+  "version": "0.0.1",
+  "description": "Web implementation of evsr",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd ./client && npm run build && cd ../ && cd ./presentation && npm run build && cd ../",
+    "start": "cd ./server && npm run start",
+    "startWithBuild": "npm run build && npm run start",
+    "doc": "jsdoc ./server -r -c jsdocConf.json --readme ./server/README.md -d ./docs/server && jsdoc ./client/src -r -c jsdocConf.json --readme ./client/README.md -d ./docs/client",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexander Weiß",
+  "license": "MIT",
+  "devDependencies": {
+    "jsdoc": "^3.5.5",
+    "minami": "^1.2.3"
+  }
+}

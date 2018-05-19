@@ -2,8 +2,8 @@
 #include "gtest/gtest.h"
 
 unsigned int sampleHashing(std::vector<float>& origVec, std::vector<float>& randVec) {
-
-    if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
+    if (origVec.size() != randVec.size())
+        throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
 
     double dot = Utility::scalar_product(origVec, randVec);
     if (dot > 0.75) {
@@ -13,7 +13,7 @@ unsigned int sampleHashing(std::vector<float>& origVec, std::vector<float>& rand
     }
 }
 
-TEST(Locality_Sensitive_Hashing_Equal_Test, Equals) {
+TEST(RandomProjection, Dimension_Estimation_Equals_Test) {
 
     std::vector<std::vector<float>> randomVectors = { { 0.33, 0.33, 0.42, 0.12, 0.2, 0.34, 0.58, 0.19, 0.07, 0.24 },
                                                       { 0.29, 0.16, 0.38, 0.48, 0.43, 0.11, 0.12, 0.33, 0.03, 0.44 },

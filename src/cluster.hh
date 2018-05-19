@@ -1,7 +1,7 @@
 /**
  *	@file 	cluster.hh
  *	@author	Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de)
- *	@brief  Implements the pre-clustering functionality for documents	
+ *	@brief  Implements the pre-clustering functionality for documents
  *	@bugs 	Currently no bugs known
  *	@todos	A cluster can be created and it will automatically initiated itself.
  *	        But: need to add functionality.
@@ -11,79 +11,81 @@
  */
 #pragma once
 
-#include "document.hh"
-#include "document_manager.hh"
 #include "types.hh"
-#include "utility.hh"
+#include "exception.hh"
+#include "trace.hh"
+
+#include "document_manager.hh"
 
 #include <algorithm>
 #include <cmath>
 #include <random>
 #include <unordered_map>
 #include <vector>
+#include <utility>
+#include <set>
+
+using cluster_mt = std::unordered_map<size_t, sizet_vt>;
 
 class Cluster
 {
+  private:
     friend class IndexManager;
+    explicit Cluster();
+    Cluster(const Cluster&) = default;
+    Cluster(Cluster&&) = delete;
+    Cluster& operator=(const Cluster&) = delete;
+    Cluster& operator=(Cluster&&) = delete;
+    ~Cluster() = default;
 
-    public:
-        using cluster_mt = std::unordered_map<const Document*, doc_ptr_vt>;
+  private:
+    /**
+     * @brief Get the Cluster Singleton instance.
+     * @return Cluster& a reference to the Cluster Singleton instance.
+     */
+    inline static Cluster& getInstance() 
+    {
+        static Cluster lInstance;
+        return lInstance;
+    }
 
-    private:
-        explicit Cluster();
-        Cluster(const Cluster&) = default;
-        Cluster(Cluster&&) = delete;
-        Cluster& operator=(const Cluster&) = delete;
-        Cluster& operator=(Cluster&&) = delete;
-        ~Cluster();
+    /**
+     * @brief Initialize control block and cluster
+     * @param aControlBlock the control block containing runtime specific data
+     */
+    void init(const CB& aControlBlock);
 
-    private:
-        /**
-         * @brief Get the Cluster Singleton instance.
-         *
-         * @return Cluster& a reference to the Cluster Singleton instance.
-         */
-        inline static Cluster& getInstance() {
-          static Cluster lInstance;
-          return lInstance;
-        }
-        /**
-         * @brief Initialize control block and cluster
-         *
-         * @param aControlBlock the control block
-         */
-        void init(const control_block_t& aControlBlock);
-        /**
-         * @brief Choose Leaders
-         * 
-         */
-        void chooseLeaders();
-        /**
-         * @brief Fill Clusters
-         * 
-         */
-        void fillCluster();
+    /**
+     * @brief Choose sqrt(N) random leaders
+     */
+    void chooseLeaders();
 
-    public:
-        /**
-         * @brief Get the Leaders object
-         * 
-         * @return const doc_ptr_vt& 
-         */
-        inline const doc_ptr_vt& getLeaders() { return _leaders; }
-        /**
-         * @brief Get the Cluster object
-         * 
-         * @return const cluster_mt& 
-         */
-        inline const cluster_mt& getCluster() { return _cluster; }
+  public:
+    /**
+     * @brief Get the document IDs of the leader
+     * @return a vector containing all document IDs
+     */
+    inline const sizet_vt& getLeaders() const { return _leaders; }
+    inline const sizet_vt& getLeaders() { return _leaders; }
 
-    private:
-        const control_block_t* _cb;
+    /**
+     * @brief Getter for the cluster map
+     * @return the cluster map
+     */
+    inline cluster_mt& getCluster() { return _cluster; }
 
-        bool _init;          // was the cluster initialized?
-        doc_ptr_vt _leaders; // stores pointer to leader documents inside the doc mngr's map
-        cluster_mt _cluster; // stores <Doc*, Vector<Doc*>> pairs, the first pointer is a leader document
+  public:
+    /**
+     * @brief 
+     * @param aLeaders 
+     * @param aTopK 
+     * @return const sizet_vt 
+     */
+    void getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, const size_t aTopK, sizet_vt& aOutputVec);
+    friend std::ostream& operator<<(std::ostream& strm, const Cluster& clust);
+
+  private:
+    const CB* _cb;
+    sizet_vt _leaders;
+    cluster_mt _cluster; // stores <DocID, Vector<DocID>> pairs, the first id represents a leader document
 };
-
-
