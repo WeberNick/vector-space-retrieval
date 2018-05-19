@@ -2,7 +2,7 @@
  * @file    evaluation.hh
  * @author 	Nick Weber
  * @date    Apr 29, 2018
- * @brief 	this class handels the evaluation of query performance
+ * @brief 	Class handles the evaluation of query performance
  * @bugs 	TBD
  * @todos 	TBD
  *
@@ -75,6 +75,7 @@ class Evaluation {
          */
         class RelScore {
           public:
+            /* Constructors, assignment operators and destructor */
             RelScore() = delete;
             RelScore(const std::string& aQueryID, const std::string& aDocID, const uint aScore) : _qID(aQueryID), _dID(aDocID), _score(aScore) {}
             explicit RelScore(const RelScore&) = delete;
@@ -99,6 +100,7 @@ class Evaluation {
         using query_scores_mt = std::unordered_map<std::string, scores_vt>;
 
       private:
+        /* Constructors, assignment operators and destructor */
         explicit IR_PerformanceManager();
         explicit IR_PerformanceManager(const IR_PerformanceManager&) = delete;
         explicit IR_PerformanceManager(IR_PerformanceManager&&) = delete;
@@ -220,18 +222,20 @@ class Evaluation {
     /**
      * @brief Container of query results for one specific IR mode (vanilla, cluster, ...)
      */
-    class EvalResults {
-      public:
-        using query_rtp_mt = std::unordered_map<std::string, double>;
-        using query_acc_mt = std::unordered_map<std::string, double>;
-        using query_pre_mt = std::unordered_map<std::string, double>;
-        using query_rec_mt = std::unordered_map<std::string, double>;
-        using query_fms_mt = std::unordered_map<std::string, double>;
-        using query_apr_mt = std::unordered_map<std::string, double>;
-        using query_map_mt = std::unordered_map<std::string, double>;
-        using query_dcg_mt = std::unordered_map<std::string, double>;
+    class EvalResults 
+    {
+        public:
+            using query_rtp_mt = std::unordered_map<std::string, double>;
+            using query_acc_mt = std::unordered_map<std::string, double>;
+            using query_pre_mt = std::unordered_map<std::string, double>;
+            using query_rec_mt = std::unordered_map<std::string, double>;
+            using query_fms_mt = std::unordered_map<std::string, double>;
+            using query_apr_mt = std::unordered_map<std::string, double>;
+            using query_map_mt = std::unordered_map<std::string, double>;
+            using query_dcg_mt = std::unordered_map<std::string, double>;
 
       public:
+        /* Constructors, assignment operators and destructor */
         EvalResults() :
             _mode(""), _perfRuntime(), _perfAccuracy(), _perfPrecision(), _perfRecall(), _perfFmeasure(), _perfAvgPrecision(), _perfDCG(), _perfMAP(0) {}
         explicit EvalResults(const EvalResults&) = delete;
@@ -240,46 +244,180 @@ class Evaluation {
         EvalResults& operator=(EvalResults&&) = delete;
         ~EvalResults() = default;
 
-      public:
-        // getter
-        inline const query_rtp_mt& getPerfRuntime() const { return _perfRuntime; }
-        inline double getPerfRuntime(const std::string& aQueryID) const { return getPerfRuntime().at(aQueryID); }
-        inline double getPerfRuntime(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfRuntime(aQueryID); }
-        inline const query_acc_mt& getPerfAccuracy() const { return _perfAccuracy; }
-        inline double getPerfAccuracy(const std::string& aQueryID) const { return getPerfAccuracy().at(aQueryID); }
-        inline double getPerfAccuracy(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfAccuracy(aQueryID); }
-        inline const query_pre_mt& getPerfPrecision() const { return _perfPrecision; }
-        inline double getPerfPrecision(const std::string& aQueryID) const { return getPerfPrecision().at(aQueryID); }
-        inline double getPerfPrecision(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfPrecision(aQueryID); }
-        inline const query_rec_mt& getPerfRecall() const { return _perfRecall; }
-        inline double getPerfRecall(const std::string& aQueryID) const { return getPerfRecall().at(aQueryID); }
-        inline double getPerfRecall(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfRecall(aQueryID); }
-        inline const query_fms_mt& getPerfFMeasure() const { return _perfFmeasure; }
-        inline double getPerfFMeasure(const std::string& aQueryID) const { return getPerfFMeasure().at(aQueryID); }
-        inline double getPerfFMeasure(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfFMeasure(aQueryID); }
-        inline const query_apr_mt& getPerfAvgPrecision() const { return _perfAvgPrecision; }
-        inline double getPerfAvgPrecision(const std::string& aQueryID) const { return getPerfAvgPrecision().at(aQueryID); }
-        inline double getPerfAvgPrecision(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfAvgPrecision(aQueryID); }
-        inline const query_dcg_mt& getPerfDCG() const { return _perfDCG; }
-        inline double getPerfDCG(const std::string& aQueryID) const { return getPerfDCG().at(aQueryID); }
-        inline double getPerfDCG(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfDCG(aQueryID); }
-        inline double getPerfMAP() const { return _perfMAP; }
-        inline double getPerfMAP() { return static_cast<const EvalResults&>(*this).getPerfMAP(); }
-        // setter
-        inline void init(const std::string& aMode) {
-            if (_mode == "") {
+        /**
+         * @brief Initializes the EvalResults object with its corresponding mode 
+         * @param aMode the mode to initialize the EvalResult object with
+         */
+        inline void init(const std::string& aMode) 
+        {
+            if (_mode == "") 
+            {
                 _mode = aMode;
                 TRACE(std::string("Evaluation::EvalResults: Initialized for mode '") + aMode + std::string("'"));
             }
         }
+
+      public:
+        /**
+         * @brief Getter for the map containing runtime measurements for each query
+         * @return the map with runtime performance measurements
+         */
+        inline const query_rtp_mt& getPerfRuntime() const { return _perfRuntime; }
+
+        /**
+         * @brief Getter for a runtime measurement for a specific query
+         * @param aQueryID the query to retrieve the measurement for
+         * @return the performance measurement
+         */
+        inline double getPerfRuntime(const std::string& aQueryID) const { return getPerfRuntime().at(aQueryID); }
+        inline double getPerfRuntime(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfRuntime(aQueryID); }
+
+        /**
+         * @brief Getter for the map containing accuracy measurements for each query
+         * @return the map with accuracy measurements
+         */
+        inline const query_acc_mt& getPerfAccuracy() const { return _perfAccuracy; }
+
+        /**
+         * @brief Getter for a accuracy measurement for a specific query
+         * @param aQueryID the query to retrieve the measurement for
+         * @return the performance measurement
+         */
+        inline double getPerfAccuracy(const std::string& aQueryID) const { return getPerfAccuracy().at(aQueryID); }
+        inline double getPerfAccuracy(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfAccuracy(aQueryID); }
+
+        /**
+         * @brief Getter for the map containing precision measurements for each query
+         * @return the map with precision measurements
+         */
+        inline const query_pre_mt& getPerfPrecision() const { return _perfPrecision; }
+
+        /**
+         * @brief Getter for a precision measurement for a specific query
+         * @param aQueryID the query to retrieve the measurement for
+         * @return the performance measurement
+         */
+        inline double getPerfPrecision(const std::string& aQueryID) const { return getPerfPrecision().at(aQueryID); }
+        inline double getPerfPrecision(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfPrecision(aQueryID); }
+
+        /**
+         * @brief Getter for the map containing recall measurements for each query
+         * @return the map with recall measurements
+         */
+        inline const query_rec_mt& getPerfRecall() const { return _perfRecall; }
+
+        /**
+         * @brief Getter for a recall measurement for a specific query
+         * @param aQueryID the query to retrieve the measurement for
+         * @return the performance measurement
+         */
+        inline double getPerfRecall(const std::string& aQueryID) const { return getPerfRecall().at(aQueryID); }
+        inline double getPerfRecall(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfRecall(aQueryID); }
+
+        /**
+         * @brief Getter for the map containing F-measure  measurements for each query
+         * @return the map with F-measure measurements
+         */
+        inline const query_fms_mt& getPerfFMeasure() const { return _perfFmeasure; }
+
+        /**
+         * @brief Getter for a F-measure measurement for a specific query
+         * @param aQueryID the query to retrieve the measurement for
+         * @return the performance measurement
+         */
+        inline double getPerfFMeasure(const std::string& aQueryID) const { return getPerfFMeasure().at(aQueryID); }
+        inline double getPerfFMeasure(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfFMeasure(aQueryID); }
+
+        /**
+         * @brief Getter for the map containing averga precision  measurements for each query
+         * @return the map with average precision measurements
+         */
+        inline const query_apr_mt& getPerfAvgPrecision() const { return _perfAvgPrecision; }
+
+        /**
+         * @brief Getter for a average precision measurement for a specific query
+         * @param aQueryID the query to retrieve the measurement for
+         * @return the performance measurement
+         */
+        inline double getPerfAvgPrecision(const std::string& aQueryID) const { return getPerfAvgPrecision().at(aQueryID); }
+        inline double getPerfAvgPrecision(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfAvgPrecision(aQueryID); }
+
+        /**
+         * @brief Getter for the map containing DCG measurements for each query
+         * @return the map with DCG measurements
+         */
+        inline const query_dcg_mt& getPerfDCG() const { return _perfDCG; }
+
+        /**
+         * @brief Getter for a DCG measurement for a specific query
+         * @param aQueryID the query to retrieve the measurement for
+         * @return the performance measurement
+         */
+        inline double getPerfDCG(const std::string& aQueryID) const { return getPerfDCG().at(aQueryID); }
+        inline double getPerfDCG(const std::string& aQueryID) { return static_cast<const EvalResults&>(*this).getPerfDCG(aQueryID); }
+
+        /**
+         * @brief Getter for the mean average precision measurement 
+         * @return the mean average precision measurement
+         */
+        inline double getPerfMAP() const { return _perfMAP; }
+        inline double getPerfMAP() { return static_cast<const EvalResults&>(*this).getPerfMAP(); }
+
+        /**
+         * @brief Setter for a runtime measurement of a specific query
+         * @param aQueryName    the query to set the measurement for
+         * @param aTime         the runtime measurement to assign
+         */
         inline void setTime(const std::string& aQueryName, const double aTime) { _perfRuntime[aQueryName] = aTime; }
+        
+        /**
+         * @brief Setter for a accuracy measurement of a specific query
+         * @param aQueryName    the query to set the measurement for
+         * @param aAccuracy     the accuracy measurement to assign
+         */
         inline void setAccuracy(const std::string& aQueryName, const double aAccuracy) { _perfAccuracy[aQueryName] = aAccuracy; }
+        
+        /**
+         * @brief Setter for a precision measurement of a specific query
+         * @param aQueryName    the query to set the measurement for
+         * @param aPrecision    the precision measurement to assign
+         */
         inline void setPrecision(const std::string& aQueryName, const double aPrecision) { _perfPrecision[aQueryName] = aPrecision; }
+        
+        /**
+         * @brief Setter for a recall measurement of a specific query
+         * @param aQueryName    the query to set the measurement for
+         * @param aRecall       the recall measurement to assign
+         */
         inline void setRecall(const std::string& aQueryName, const double aRecall) { _perfRecall[aQueryName] = aRecall; }
+        
+        /**
+         * @brief Setter for a F-Measure measurement of a specific query
+         * @param aQueryName    the query to set the measurement for
+         * @param aFMeasure     the F-Measure measurement to assign
+         */
         inline void setFMeasure(const std::string& aQueryName, const double aFMeasure) { _perfFmeasure[aQueryName] = aFMeasure; }
+        
+        /**
+         * @brief Setter for a average precision measurement of a specific query
+         * @param aQueryName    the query to set the measurement for
+         * @param aAvgPrecision the average precision measurement to assign
+         */
         inline void setAvgPrecision(const std::string& aQueryName, const double aAvgPrecision) { _perfAvgPrecision[aQueryName] = aAvgPrecision; }
+        
+        /**
+         * @brief Setter for a DCG measurement of a specific query
+         * @param aQueryName    the query to set the measurement for
+         * @param aDCG          the DCG measurement to assign
+         */
         inline void setDCG(const std::string& aQueryName, const double aDCG) { _perfDCG[aQueryName] = aDCG; }
-        inline void setMAP(const double aMAP) { _perfMAP = aMAP; }
+
+        /**
+         * @brief Setter for a runtime measurement of a specific query
+         * @param aQueryName    the query to set the measurement for
+         * @param aMap          the map  measurement to assign
+         */
+        inline void setMAP(double aMAP) { _perfMAP = aMAP; }
 
       private:
         std::string _mode;
@@ -299,7 +437,8 @@ class Evaluation {
     using results_mt = std::unordered_map<std::string, EvalResults>;
 
   private:
-    explicit Evaluation();
+    /* Constructors, assignment operators and destructor */
+    Evaluation();
     explicit Evaluation(const Evaluation&) = delete;
     explicit Evaluation(Evaluation&&) = delete;
     Evaluation& operator=(const Evaluation&) = delete;
@@ -307,10 +446,20 @@ class Evaluation {
     ~Evaluation() = default;
 
   public:
-    inline static Evaluation& getInstance() {
+    /**
+     * @brief This getInstance() call is the only way to access the single instance of the Evaluation's object
+     * @return the single instance of the Evaluation object
+     */
+    inline static Evaluation& getInstance() 
+    {
         static Evaluation lInstance;
         return lInstance;
     }
+
+    /**
+     * @brief Initializes the single Evaluation instance 
+     * @param aControlBlock the control block containing specific runtime information
+     */
     void init(const CB& aControlBlock);
 
   public:

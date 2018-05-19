@@ -33,7 +33,7 @@ class IndexManager {
     IndexManager(IndexManager&&) = delete;
     IndexManager& operator=(const IndexManager&) = delete;
     IndexManager& operator=(IndexManager&&) = delete;
-    ~IndexManager();
+    ~IndexManager() = default;
 
   private:
     /**

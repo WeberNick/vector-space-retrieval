@@ -54,7 +54,7 @@ Document QueryManager::QueryType::createQueryDoc(const string_vt& aStopwords, st
 
 void QueryManager::QueryType::init(const string_vt& aStopwords, const std::string& aPath, const char aDelimiter)
 {
-    TRACE(std::string("QueryManager: Start reading the query collection and creating Document objects for query type '") + _qType  + "'");
+    TRACE(std::string("QueryManager: Start reading the query collection and creating Document objects for query type '") + _qType  + std::string("'"));
     const std::string lFilePath = aPath + std::string("q-") + _qType + std::string(".queries");
     string_vvt lFileContent;
     Util::readIn(lFilePath, aDelimiter, lFileContent);
@@ -91,7 +91,6 @@ void QueryManager::init(const CB& aControlBlock)
         }
         catch (const std::out_of_range& ex) 
         {
-            std::cerr << "################################ FIX THIS!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
             const std::string lErrMsg = std::string("Read in of stopwords failed, cannot recover: ") + std::string(ex.what());
             TRACE(lErrMsg);
             throw;
