@@ -20,7 +20,9 @@ void WordEmbeddings::init(const control_block_t& aControlBlock) {
 void WordEmbeddings::read(const std::string& aFile) {
     std::ifstream file(aFile);
     std::string line;
+    int count = 0;
     while (std::getline(file, line)) {
+        // std::cout << count << std::endl;
         string_vt parts;
         float_vt embedding;
         Util::splitStringBoost(line, ' ', parts);
@@ -29,6 +31,7 @@ void WordEmbeddings::read(const std::string& aFile) {
             embedding.push_back(stof(parts[j]));
         }
         this->insert(std::make_pair(word, embedding));
+        count++;
     }
 }
 
@@ -40,7 +43,7 @@ float_vt& WordEmbeddings::getWordEmbeddings(const std::string& word) {
     else
     {
         const std::string lErrMsg = std::string("The term '") + word + std::string("' does not appear in the word embeddings collection");
-        TRACE(lErrMsg);
+        //TRACE(lErrMsg);
         throw InvalidArgumentException(FLF, lErrMsg);
     }
 }

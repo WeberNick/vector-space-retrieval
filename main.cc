@@ -1,6 +1,7 @@
 #include "src/args.hh"
 #include "src/document_manager.hh"
 #include "src/index_manager.hh"
+#include "src/query_manager.hh"
 #include "src/inverted_index.hh"
 #include "src/measure.hh"
 #include "src/query_execution_engine.hh"
@@ -168,53 +169,79 @@ void testAlex(const control_block_t& aControlBlock) {
     }*/
 }
 
-//void testEval(const control_block_t& aControlBlock) {
-    //DocumentManager& docManager = DocumentManager::getInstance();
-    //docManager.init(aControlBlock);
-    //std::cout << "DOCUMENT MANAGER INITIALIZED" << std::endl;
+void testEval(const control_block_t& aControlBlock) {
+    DocumentManager& docManager = DocumentManager::getInstance();
+    docManager.init(aControlBlock);
+    std::cout << "Document Manager initialized" << std::endl;
 
-    //IndexManager& imInstance = IndexManager::getInstance();
-    //std::cout << "indexmanager vor init" << std::endl;
-    //imInstance.init(aControlBlock, docManager.getDocumentMap());
-    //std::cout << "Indexing done" << std::endl;
-    //QueryExecutionEngine::getInstance().init(aControlBlock);
-    //QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
+    IndexManager& imInstance = IndexManager::getInstance();
+    imInstance.init(aControlBlock, docManager.getDocumentMap());
+    std::cout << "Index Manager initialized" << std::endl;
 
-    //Evaluation& e = Evaluation::getInstance();
-    //e.init(aControlBlock);
-    //str_set queryNamesSet;
+    QueryManager& queryManager = QueryManager::getInstance();
+    queryManager.init(aControlBlock);
+    std::cout << "Query Manager initialized" << std::endl;
 
-    //std::cout << "Start eval " << std::endl;
-    //auto& types = DocumentManager::getInstance().getQueryTypes();
+    QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
+    qpe.init(aControlBlock);
+    std::cout << "Query Execution Engine initialized" << std::endl;
 
-    //std::cout << "Types size: " << types.size() << std::endl;
-    //std::string type = "titles";
-  
-    //for (int j = 0; j < kNumberOfModes; ++j) {
-        //IR_MODE mode = static_cast<IR_MODE>(j);
+    Evaluation& e = Evaluation::getInstance();
+    e.init(aControlBlock);
+    std::cout << "Evaluation initialized" << std::endl;
 
-        //std::cout << "Mode " << modeToString(mode) << ":" << j << std::endl;
+    str_set queryNamesSet;
 
-        //auto& queryForType = DocumentManager::getInstance().getQueriesForType(type);
+    std::cout << "Start eval " << std::endl;
+    // hier kommt die for schleife über die enums type
 
-        //std::cout << "queries for types geholt: " << queryForType.size() << std::endl;
+    QUERY_TYPE type = QUERY_TYPE::kTITLES;
 
-        //for (auto& [query_id, query] : queryForType) {
-            //std::cout << "Type: " << type << "Mode " << modeToString(mode) << "QueryId: " << query.getDocID() << std::endl;
-            //queryNamesSet.insert(query.getDocID());
-            //e.start(mode, query.getDocID());
-            //std::cout << "after start" << std::endl;
-            //std::vector<std::pair<size_t, float>> result = qpe.search(query, 30, mode, false);
-            //std::cout << "after result" << std::endl;
-            //e.stop();
-            //std::cout << "after stop" << std::endl;
-            //e.evalIR(mode, query.getDocID(), result);
-            //std::cout << "after eval ir" << std::endl;
-        //}
-    //}
+    const Document& query = queryManager.getQuery(type, "PLAIN-3448");
     
-    //e.constructJSON(queryNamesSet);
-//}
+    /**
+     * Type: 2Mode: Cluster_W2VQueryId: PLAIN-3448
+        Searching in mode: Cluster_W2V
+        Searching for: pesticid rins
+        Returning results
+        id: 0 sim: nan
+        id: 1 sim: nan
+        id: 2 sim: nan
+        id: 3 sim: nan
+        id: 4 sim: nan
+        id: 5 sim: nan
+        id: 6 sim: nan
+        id: 7 sim: nan
+        id: 8 sim: nan
+        id: 9 sim: nan
+     * 
+     */
+
+    std::vector<std::pair<size_t, float>> result = qpe.search(const_cast<Document&>(query), 30, IR_MODE::kCLUSTER_W2V);
+
+    for (int j = 0; j < kNumberOfModes; ++j) {
+        IR_MODE mode = static_cast<IR_MODE>(j);
+
+        std::cout << "Mode " << modeToString(mode) << ":" << j << std::endl;
+
+        auto& queryForType = QueryManager::getInstance().getQueryMap(type);//DocumentManager::getInstance().getQueriesForType(type);
+
+        std::cout << "queries for types geholt: " << queryForType.size() << std::endl;
+
+        for (auto& [query_id, query] : queryForType) {
+            std::cout << "Type: " << type << "Mode: " << modeToString(mode) << "QueryId: " << query.getDocID() << std::endl;
+            queryNamesSet.insert(query.getDocID());
+            e.start(mode, query.getDocID());
+            std::vector<std::pair<size_t, float>> result = qpe.search(query, 30, mode);
+            std::cout << "after result" << std::endl;
+            e.stop();
+            std::cout << "after stop" << std::endl;
+            e.evalIR(mode, query.getDocID(), result);
+            std::cout << "after eval ir" << std::endl;
+        }
+    }
+    e.constructJSON(queryNamesSet);
+}
 
 /**
  * @brief Starts the program
@@ -319,7 +346,7 @@ int main(const int argc, const char* argv[]) {
     // test(lCB);
     // testNico();
     // testAlex(lCB);
-    //testEval(lCB);
+    testEval(lCB);
 
     return 0;
 }
