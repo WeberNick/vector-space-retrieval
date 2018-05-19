@@ -1,13 +1,19 @@
-/**
- *	@file 	random_projection.hh
- *	@author	Alexander Weiß
- *	@brief  TODO
- *	@bugs 	Currently no bugs known
- *	@todos	Write @brief and DESCRIPTION
- *
- *	@section DESCRIPTION
- *	TODO
- */
+/*********************************************************************
+ * @file    query_execution_engine.hh
+ * @author 	Alexander Weiß
+ * @date    April 4, 2018
+ * @brief 	Implementing the random projections to lower the dimensions
+ *          of the TF-IDF vectors of documents
+ * @bugs 	  Currently no bugs known 
+ * @todos 	Currently no todos
+ * 
+ * @section	DESCRIPTION
+ * TBD
+ * 
+ * @section USE
+ * TBD
+ ********************************************************************/
+
 #pragma once
 
 #include "types.hh"
@@ -34,7 +40,9 @@ class RandomProjection {
   public:
     static RandomProjection& getInstance();
     /**
-     * @brief Uses
+     * @brief Implements a hash function which determines the value of an random projection vector at a given position
+     * The implemented hash function is simple:
+     *      if scalar_product(vec_a, vec_b) > 0 ? return 1 : return 0;
      *
      * @param vector
      * @return boost::dynamic_bitset<>
@@ -47,7 +55,7 @@ class RandomProjection {
     inline size_t getOrigvectorSize() { return _origVectorSize; };
 
     /**
-     * @brief Set the Dimensions object
+     * @brief Set the Dimensions object, determines the dimension of the random projection vectors
      *
      * @param dimensions
      * @return true
@@ -94,7 +102,7 @@ class RandomProjection {
     void init(const CB& aCB, const size_t origVectorSize); 
 
     /**
-     * @brief Initilaizes the random vectors
+     * @brief Initializes the random vectors
      *
      * @return true
      * @return bool indicating whether the random vectors have been set

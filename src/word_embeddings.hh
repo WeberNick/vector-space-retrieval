@@ -1,6 +1,18 @@
-//
-// Created by Alexander Weiß on 27.04.18.
-//
+/*********************************************************************
+ * @file    word_embeddings.hh
+ * @author 	Alexander Weiß
+ * @date    April 27, 2018
+ * @brief 	Implements the word embeddings which are used as additional features to
+ *          improve the retrieval results
+ * @bugs 	  Currently no bugs known 
+ * @todos 	Currently no todos
+ * 
+ * @section	DESCRIPTION
+ * TBD
+ * 
+ * @section USE
+ * TBD
+ ********************************************************************/
 
 #pragma once
 
@@ -56,7 +68,7 @@ class WordEmbeddings {
     inline str_float_vt_mt& getWordEmbeddingsMap() { return *_wordEmbeddings; };
 
     /**
-     * @brief Get he number of word embeddings
+     * @brief Get the number of word embeddings
      * @return
      */
     inline size_t getNoWordEmbeddings() { return (*_wordEmbeddings).size(); };
@@ -69,7 +81,7 @@ class WordEmbeddings {
     float_vt& getWordEmbeddings(const std::string& word);
 
     /**
-     * @brief Calculates the wordEmbeddings vector by getting all word2vecs for all words in the doc and averageing them
+     * @brief Calculates the wordEmbeddings vector by getting all word2vecs for all words in the doc and averaging them
      *
      * @param doc_content
      * @param out

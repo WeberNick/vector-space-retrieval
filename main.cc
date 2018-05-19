@@ -196,8 +196,33 @@ void testEval(const control_block_t& aControlBlock) {
     // hier kommt die for schleife über die enums type
 
     QUERY_TYPE type = QUERY_TYPE::kTITLES;
-  
-    for (int j = 0; j < kNumberOfModes; ++j) {
+
+
+    const Document& query = queryManager.getQuery(type, "PLAIN-3448");
+    
+    /**
+     * Type: 2Mode: Cluster_W2VQueryId: PLAIN-3448
+        Searching in mode: Cluster_W2V
+        Searching for: pesticid rins
+        Returning results
+        id: 0 sim: nan
+        id: 1 sim: nan
+        id: 2 sim: nan
+        id: 3 sim: nan
+        id: 4 sim: nan
+        id: 5 sim: nan
+        id: 6 sim: nan
+        id: 7 sim: nan
+        id: 8 sim: nan
+        id: 9 sim: nan
+     * 
+     */
+
+
+    std::vector<std::pair<size_t, float>> result = qpe.search(const_cast<Document&>(query), 30, IR_MODE::kCLUSTER_W2V);
+
+
+    /*for (int j = 0; j < kNumberOfModes; ++j) {
         IR_MODE mode = static_cast<IR_MODE>(j);
 
         std::cout << "Mode " << modeToString(mode) << ":" << j << std::endl;
@@ -218,7 +243,7 @@ void testEval(const control_block_t& aControlBlock) {
             std::cout << "after eval ir" << std::endl;
         }
     }
-    e.constructJSON(queryNamesSet);
+    e.constructJSON(queryNamesSet);*/
 }
 
 /**

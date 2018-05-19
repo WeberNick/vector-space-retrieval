@@ -43,7 +43,7 @@ float_vt& WordEmbeddings::getWordEmbeddings(const std::string& word) {
     else
     {
         const std::string lErrMsg = std::string("The term '") + word + std::string("' does not appear in the word embeddings collection");
-        TRACE(lErrMsg);
+        //TRACE(lErrMsg);
         throw InvalidArgumentException(FLF, lErrMsg);
     }
 }
