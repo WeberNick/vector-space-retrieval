@@ -1,5 +1,4 @@
 #include "string_util.hh"
-#include "ir_util.hh"
 
 namespace Util
 {

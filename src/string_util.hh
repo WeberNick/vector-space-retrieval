@@ -17,6 +17,7 @@
 #include "types.hh"
 #include "trace.hh"
 #include "exception.hh"
+#include "ir_util.hh"
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>
