@@ -2,7 +2,7 @@
  * @file    evaluation.hh
  * @author 	Nick Weber
  * @date    Apr 29, 2018
- * @brief 	this class handels the evaluation of query performance
+ * @brief 	Class handles the evaluation of query performance
  * @bugs 	TBD
  * @todos 	TBD
  *
@@ -446,10 +446,20 @@ class Evaluation {
     ~Evaluation() = default;
 
   public:
-    inline static Evaluation& getInstance() {
+    /**
+     * @brief This getInstance() call is the only way to access the single instance of the Evaluation's object
+     * @return the single instance of the Evaluation object
+     */
+    inline static Evaluation& getInstance() 
+    {
         static Evaluation lInstance;
         return lInstance;
     }
+
+    /**
+     * @brief Initializes the single Evaluation instance 
+     * @param aControlBlock the control block containing specific runtime information
+     */
     void init(const CB& aControlBlock);
 
   public:

@@ -23,8 +23,7 @@ void construct_arg_desc(argdesc_vt& x) {
                            "path to the data directory. relative path from repo root directory or absolute path possible"));
     x.push_back(new sarg_t("--word-embeddings-path", "./data/w2v/glove.6B.300d.txt", &Args::wordEmbeddingsPath,
                            "path to the data directory. relative path from repo root directory or absolute path possible"));
-    x.push_back(
-        new sarg_t("--trace-path", "./", &Args::tracePath, "path to the log directory. relative path from repo root directory or absolute path possible"));
+    x.push_back(new sarg_t("--trace-path", "./", &Args::tracePath, "path to the log directory. relative path from repo root directory or absolute path possible"));
     x.push_back(
         new sarg_t("--eval-path", "./", &Args::evalPath, "path to the evaluation directory. relative path from repo root directory or absolute path possible"));
 
