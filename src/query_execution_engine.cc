@@ -34,6 +34,10 @@ const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_
     std::cout << std::endl;
     pair_sizet_float_vt found_indices; // result vector
 
+    if(queryDoc.getContent.size() == 0){
+        return found_indices;
+    }
+
     switch (searchType) {
     case IR_MODE ::kVANILLA: {
         found_indices = this->searchCollectionCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);

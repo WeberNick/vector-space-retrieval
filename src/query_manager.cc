@@ -42,6 +42,7 @@ void QueryManager::QueryType::init(const string_vt& aStopwords, const std::strin
     {
         const std::string& lQueryID = line.at(0);
         std::string& lQueryContent = line.at(1);
+        std::cout << "inserting query with id: " << lQueryID << std::
         addDoc(QueryType::createQueryDoc(aStopwords, lQueryContent, lQueryID));
     }
     TRACE("QueryManager: Finished reading the query collection");
@@ -78,11 +79,13 @@ void QueryManager::init(const CB& aControlBlock)
         }
 
         const std::string& lQueryPath = _cb->queryPath();
-        _qAll.init(_stopwords, lQueryPath, _delimiter);
-        _qNTT.init(_stopwords, lQueryPath, _delimiter);
+        //_qAll.init(_stopwords, lQueryPath, _delimiter);
+        //_qNTT.init(_stopwords, lQueryPath, _delimiter);
+        std::cout << "before titles init" << std::endl;
         _qTitles.init(_stopwords, lQueryPath, _delimiter);
-        _qVidDesc.init(_stopwords, lQueryPath, _delimiter);
-        _qVidTitles.init(_stopwords, lQueryPath, _delimiter);
+        std::cout << "after titles init" << std::endl;
+        //_qVidDesc.init(_stopwords, lQueryPath, _delimiter);
+        //_qVidTitles.init(_stopwords, lQueryPath, _delimiter);
     }
 }
  

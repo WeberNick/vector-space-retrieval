@@ -31,8 +31,8 @@ void IndexManager::init(const CB& aControlBlock, doc_mt& aDocMap) {
         _clusteredIndex.init(aControlBlock);
 
         // TODO: hier gucken, iwas falsch
-        std::cout << "wordembeddings index init start" << std::endl;
-        _wordEmbeddingsIndex.init(aControlBlock);
+        std::cout << "wordembeddings index init start TODO NOT ACTIVATED" << std::endl;
+        //_wordEmbeddingsIndex.init(aControlBlock);
         std::cout << "wordembeddings index init finished" << std::endl;
         this->buildIndices(postinglist_out, tieredpostinglist_out, cluster_out, leaders);
         TRACE("IndexManager: Initialized");
