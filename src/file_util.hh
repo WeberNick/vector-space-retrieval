@@ -18,9 +18,8 @@
 #include "exception.hh"
 #include "trace.hh"
 #include "string_util.hh"
-#include "document.hh"
 
-#include <srtring>
+#include <string>
 #include <vector>
 
 namespace Util
@@ -32,6 +31,5 @@ namespace Util
      */
     void readIn(const std::string& aPath, const char aDelimiter, string_vvt& aOutput);
 
-    void readInAndCreateDocs(const std::string& aPath, const char aDelimiter, doc_mt& aDocMap);
 
 }

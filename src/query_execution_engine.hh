@@ -2,11 +2,11 @@
 
 #include "types.hh"
 #include "trace.hh"
-#include "exception.hh"
 #include "ir_util.hh"
 #include "string_util.hh"
 #include "similarity_util.hh"
 #include "document.hh"
+#include "query_manager.hh"
 #include "posting_list.hh"
 
 #include <iostream>
@@ -35,16 +35,7 @@ class QueryExecutionEngine {
 
     void init(const CB& aControlBlock);
 
-  private:
-    /**
-     * @brief Reads a stopwords file for the function @see QueryExecutionEngine#createQuery
-     *
-     * @param aFile The file containing stopwords separated by ","
-     */
-    void read(const std::string& aFile);
-
   public:
-    inline string_vt getStopwordlist() { return _stopword_list; }
 
     /**
      * @brief A top level implementation of the search function. Use a string and type to search for similar documents
@@ -108,6 +99,4 @@ class QueryExecutionEngine {
 
   private:
     const CB* _cb;
-    std::string _stopwordFile;
-    string_vt _stopword_list;
 };

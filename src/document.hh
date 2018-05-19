@@ -156,8 +156,8 @@ class Document {
   private:
     static size_t _documentCount;
 
-    size_t _ID;                                // e.g. 5
-    std::string _docID;                        // e.g. MED-123
+    const size_t _ID;                                // e.g. 5
+    const std::string _docID;                        // e.g. MED-123
     string_vt _content;                        // e.g. [studi, run, fish, ...]
     str_float_mt _term_tf_map;                 // stores TF values
     float_vt _tf_idf_vec;                      // e.g. <0, 2, 1.5, 3, .84, ..>

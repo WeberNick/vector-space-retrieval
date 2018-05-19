@@ -1,4 +1,5 @@
 #include "ir_util.hh"
+#include "string_util.hh"
 
 namespace Util
 {
@@ -8,16 +9,6 @@ namespace Util
 
         float calcTfIdf(const float tf, const float idf) { return tf * idf; }
 
-        void removeStopword(std::string& str, const string_vt& stopwordList) {
-            int counter = 0;
-            for (auto& elem : stopwordList) {
-                std::regex regex("\\b(" + elem + ")\\b");
-                while (std::regex_search(str, regex)) {
-                    str = std::regex_replace(str, regex, "");
-                }
-                ++counter;
-            }
-        }
 
         float calcTf(const std::string& term, const std::string& content) {
             return static_cast<float>((1 + log10(Util::countWordInString(content, term, false))) /

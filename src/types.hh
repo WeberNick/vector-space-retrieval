@@ -123,3 +123,14 @@ inline IR_MODE stringToMode(const std::string& aMode)
     else if(aMode == "kCLUSTER_W2V"){ return kCLUSTER_W2V; } 
     else{ return kNoMode; }
 }
+
+enum QUERY_TYPE
+{
+    kNoType = -1,
+    kALL = 0,
+    kNTT = 1,
+    kTITLES = 2,
+    kVIDDESC = 3,
+    kVIDTITLES = 4,
+    kNumberOfTypes = 5
+};

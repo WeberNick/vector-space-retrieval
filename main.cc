@@ -168,53 +168,53 @@ void testAlex(const control_block_t& aControlBlock) {
     }*/
 }
 
-void testEval(const control_block_t& aControlBlock) {
-    
-    DocumentManager& docManager = DocumentManager::getInstance();
-    docManager.init(aControlBlock);
+//void testEval(const control_block_t& aControlBlock) {
+    //DocumentManager& docManager = DocumentManager::getInstance();
+    //docManager.init(aControlBlock);
+    //std::cout << "DOCUMENT MANAGER INITIALIZED" << std::endl;
 
-    IndexManager& imInstance = IndexManager::getInstance();
-    imInstance.init(aControlBlock, docManager.getDocumentMap());
+    //IndexManager& imInstance = IndexManager::getInstance();
+    //std::cout << "indexmanager vor init" << std::endl;
+    //imInstance.init(aControlBlock, docManager.getDocumentMap());
+    //std::cout << "Indexing done" << std::endl;
+    //QueryExecutionEngine::getInstance().init(aControlBlock);
+    //QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
 
-    QueryExecutionEngine::getInstance().init(aControlBlock);
-    QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
+    //Evaluation& e = Evaluation::getInstance();
+    //e.init(aControlBlock);
+    //str_set queryNamesSet;
 
-    Evaluation::getInstance().init(aControlBlock);
-    Evaluation& e = Evaluation::getInstance();
-    
-    str_set queryNamesSet;
+    //std::cout << "Start eval " << std::endl;
+    //auto& types = DocumentManager::getInstance().getQueryTypes();
 
-    std::cout << "Start eval " << std::endl;
-    auto& types = DocumentManager::getInstance().getQueryTypes();
-
-    std::cout << "Types size: " << types.size() << std::endl;
-    std::string type = "titles";
+    //std::cout << "Types size: " << types.size() << std::endl;
+    //std::string type = "titles";
   
-    for (int j = 0; j < kNumberOfModes; ++j) {
-        IR_MODE mode = static_cast<IR_MODE>(j);
+    //for (int j = 0; j < kNumberOfModes; ++j) {
+        //IR_MODE mode = static_cast<IR_MODE>(j);
 
-        std::cout << "Mode " << modeToString(mode) << ":" << j << std::endl;
+        //std::cout << "Mode " << modeToString(mode) << ":" << j << std::endl;
 
-        auto& queryForType = DocumentManager::getInstance().getQueriesForType(type);
+        //auto& queryForType = DocumentManager::getInstance().getQueriesForType(type);
 
-        std::cout << "queries for types geholt: " << queryForType.size() << std::endl;
+        //std::cout << "queries for types geholt: " << queryForType.size() << std::endl;
 
-        for (auto& [query_id, query] : queryForType) {
-            std::cout << "Type: " << type << "Mode " << modeToString(mode) << "QueryId: " << query.getDocID() << std::endl;
-            queryNamesSet.insert(query.getDocID());
-            e.start(mode, query.getDocID());
-            std::cout << "after start" << std::endl;
-            std::vector<std::pair<size_t, float>> result = qpe.search(query, 30, mode);
-            std::cout << "after result" << std::endl;
-            e.stop();
-            std::cout << "after stop" << std::endl;
-            e.evalIR(mode, query.getDocID(), result);
-            std::cout << "after eval ir" << std::endl;
-        }
-    }
+        //for (auto& [query_id, query] : queryForType) {
+            //std::cout << "Type: " << type << "Mode " << modeToString(mode) << "QueryId: " << query.getDocID() << std::endl;
+            //queryNamesSet.insert(query.getDocID());
+            //e.start(mode, query.getDocID());
+            //std::cout << "after start" << std::endl;
+            //std::vector<std::pair<size_t, float>> result = qpe.search(query, 30, mode, false);
+            //std::cout << "after result" << std::endl;
+            //e.stop();
+            //std::cout << "after stop" << std::endl;
+            //e.evalIR(mode, query.getDocID(), result);
+            //std::cout << "after eval ir" << std::endl;
+        //}
+    //}
     
-    e.constructJSON(queryNamesSet);
-}
+    //e.constructJSON(queryNamesSet);
+//}
 
 /**
  * @brief Starts the program
@@ -283,7 +283,7 @@ int main(const int argc, const char* argv[]) {
     // test(lCB);
     // testNico();
     // testAlex(lCB);
-    testEval(lCB);
+    //testEval(lCB);
 
     return 0;
 }

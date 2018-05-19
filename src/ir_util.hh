@@ -17,12 +17,10 @@
 #include "types.hh"
 #include "exception.hh"
 #include "trace.hh"
-#include "string_util.hh"
 #include "posting_list.hh"
 
 #include <stemming/english_stem.h>
 #include <cmath>
-#include <regex>
 #include <sstream>
 #include <algorithm>
 #include <map>
@@ -56,14 +54,6 @@ namespace Util
          * @return the idf value
          */
         float calcTfIdf(const float tf, const float idf);
-
-        /**
-         * @brief Removes all stopwords specified in \stopwordList from \str
-         *
-         * @param str std::string
-         * @param stopwordList
-         */
-        void removeStopword(std::string& str, const string_vt& stopwordList); 
 
         /**
          * @brief Calculates the term frequency of a given term inside a given string

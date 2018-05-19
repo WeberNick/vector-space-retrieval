@@ -50,6 +50,7 @@ set(HEADER_FILES
         vec_util.hh
         ir_util.hh
         similarity_util.hh
+        file_util.hh
         args.hh
         exception.hh
         trace.hh
@@ -57,6 +58,7 @@ set(HEADER_FILES
         evaluation.hh
         document.hh
         document_manager.hh
+        query_manager.hh
         inverted_index.hh
         tiered_index.hh
         cluster.hh
@@ -74,9 +76,11 @@ set(SOURCE_FILES
         vec_util.cc
         ir_util.cc
         similarity_util.cc
+        file_util.cc
         evaluation.cc
         document.cc
         document_manager.cc
+        query_manager.cc
         inverted_index.cc
         tiered_index.cc
         cluster.cc

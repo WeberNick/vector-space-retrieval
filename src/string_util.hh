@@ -23,7 +23,9 @@
 #include <boost/algorithm/string_regex.hpp>
 #include <boost/regex.hpp>
 #include <string>
+#include <regex>
 #include <vector>
+#include <functional>
 
 namespace Util
 {
@@ -34,15 +36,6 @@ namespace Util
          * @return std::string
          */
         std::string string_vt_2_str(const string_vt& stringVector) ;
-
-        /**
-         * @brief Splits a given string by a delimiter and fills the given string vector
-         *
-         * @param str the input string to split
-         * @param splitChar the delimiter character indicating where to split
-         * @param out the vector storing the result
-         */
-        void splitString(const std::string& str, const char splitChar, string_vt& out);
 
         /*
          * @brief Splits a given string with the given delimiter. Wrapper function for call to boost
@@ -149,28 +142,21 @@ namespace Util
          *
          * @param s std::string
          */
-        static inline void ltrim(std::string& s) {
-            s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) { return !std::isspace(ch); }));
-        }
+        std::string& ltrim(std::string& s);
 
         /**
          * @brief Trims the right side of a string in place
          *
          * @param s std::string
          */
-        static inline void rtrim(std::string& s) {
-            s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) { return !std::isspace(ch); }).base(), s.end());
-        }
+        std::string& rtrim(std::string& s);
 
         /**
          * @brief Trims the left and right side of a string in place
          *
          * @param s std::string
          */
-        static inline void trim(std::string& s) {
-            ltrim(s);
-            rtrim(s);
-        }
+        std::string& trim(std::string& s);
 
         /**
          * @brief Trims the left side of a string
@@ -178,10 +164,7 @@ namespace Util
          * @param s std::string
          * @return
          */
-        static inline std::string ltrim_copy(std::string s) {
-            ltrim(s);
-            return s;
-        }
+        std::string ltrim_copy(const std::string& s); 
 
         /**
          * @brief Trims the right side of a string
@@ -189,10 +172,7 @@ namespace Util
          * @param s std::string
          * @return
          */
-        static inline std::string rtrim_copy(std::string s) {
-            rtrim(s);
-            return s;
-        }
+        std::string rtrim_copy(const std::string& s);
 
         /**
          * @brief Trims the left and right side of a string
@@ -200,9 +180,19 @@ namespace Util
          * @param s std::string
          * @return
          */
-        static inline std::string trim_copy(std::string s) {
-            trim(s);
-            return s;
-        }
+        std::string trim_copy(const std::string& s);
+
+        /**
+         * @brief Removes all stopwords specified in \stopwordList from \str
+         *
+         * @param str std::string
+         * @param stopwordList
+         */
+        void removeStopword(std::string& str, const string_vt& stopwordList); 
+
+        /**
+         *
+         */
+        string_vt preprocess(std::string& aContent, const string_vt& aStopwordsList);
 
 }
