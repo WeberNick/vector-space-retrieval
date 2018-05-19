@@ -9,7 +9,9 @@ namespace Util
         std::string line;
         size_t i = 0;
         while (std::getline(file, line)) {
+            aOutput.push_back(string_vt());
             Util::splitStringBoost(line, aDelimiter, aOutput[i]);
+            ++i;
         }
         file.close();
         TRACE("Finished reading the file content");

@@ -1,5 +1,4 @@
 #include "document_manager.hh"
-#include "index_manager.hh"
 
 /**
  * @brief Construct a new Document Manager:: Document Manager object

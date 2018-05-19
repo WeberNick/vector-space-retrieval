@@ -10,18 +10,24 @@ void IRPM::init(const CB& aControlBlock)
     {
         _cb = &aControlBlock;
         const std::string& lRelScorePath = _cb->relevanceScoresPath();
-        std::ifstream file(lRelScorePath);
-        std::string line;
-        TRACE(std::string("Evaluation::IR_PerformanceManager: Start reading query relevance scores from '") + lRelScorePath + std::string("'"));
-        while (std::getline(file, line)) {
-            string_vt parts;
-            Util::splitStringBoost(line, '~', parts);
-            const std::string qID = parts[0];
-            const std::string dID = parts[1];
-            const uint score = std::stoul(parts[2]);
-            _queryScores[qID].emplace_back(qID, dID, score);
+        string_vvt lRelScoreFile;
+        Util::readIn(lRelScorePath, '~', lRelScoreFile);
+        for(const auto& line : lRelScoreFile)
+        {
+            try
+            {
+                const std::string qID = line.at(0);
+                const std::string dID = line.at(1);
+                const uint score = std::stoul(line.at(2));
+                _queryScores[qID].emplace_back(qID, dID, score);
+            }
+            catch (const std::out_of_range& ex) 
+            {
+                const std::string lErrMsg = std::string("Evaluation::IR_PerformanceManager: Init failed, most probably the file at '" + lRelScorePath + std::string("' is in the wrong format!"));
+                TRACE(lErrMsg);
+                throw;
+            }
         }
-        TRACE(std::string("Evaluation::IR_PerformanceManager: Finished reading query relevance scores"));
         TRACE("Evaluation::IR_PerformanceManager: Initialized");
     }
 }
