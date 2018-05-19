@@ -2,7 +2,8 @@
 #include "document_manager.hh"
 #include "index_manager.hh"
 #include "types.hh"
-#include "utility.hh"
+#include "string_util.hh"
+#include "ir_util.hh"
 #include "gtest/gtest.h"
 
 /**
@@ -46,9 +47,9 @@ TEST_F(DocumentTest, Tf_Equals_Test) {
     float tf_lemon = docMan->getDocument(3).getTf("lemon");
     float tf_tomorrow = docMan->getDocument(3).getTf("tomorrow");
     EXPECT_EQ(tf_jon, 1);
-    EXPECT_EQ(tf_sun, Utility::IR::calcTf(1, Utility::StringOp::getMaxWordFrequency(docMan->getDocument(3).getContent())));
+    EXPECT_EQ(tf_sun, Util::calcTf(1, Util::getMaxWordFrequency(docMan->getDocument(3).getContent())));
     EXPECT_EQ(tf_lemon, 1);
-    EXPECT_EQ(tf_tomorrow, Utility::IR::calcTf(2, Utility::StringOp::getMaxWordFrequency(docMan->getDocument(3).getContent())));
+    EXPECT_EQ(tf_tomorrow, Util::calcTf(2, Util::getMaxWordFrequency(docMan->getDocument(3).getContent())));
 }
 
 TEST_F(DocumentTest, Idf_Equals_Test) {
@@ -57,5 +58,5 @@ TEST_F(DocumentTest, Idf_Equals_Test) {
     //float idf_today = indexManager->getInvertedIndex().getPostingList("today").getIdf();
     float idf_food = indexManager->getInvertedIndex().getPostingList("food").getIdf();
     EXPECT_EQ(idf_today, 0);
-    EXPECT_EQ(idf_food, Utility::IR::calcIdf(docMap->size(), 2));
+    EXPECT_EQ(idf_food, Util::calcIdf(docMap->size(), 2));
 }

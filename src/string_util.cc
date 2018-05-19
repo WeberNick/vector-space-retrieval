@@ -68,7 +68,7 @@ namespace Util
             std::string strCased = case_insensitive ? toLower(str) : str;
 
             string_vt content;
-            splitString(strCased, ' ', content);
+            splitStringBoost(strCased, ' ', content);
 
             size_t count = 0;
             for (size_t i = 0; i < content.size(); ++i) {
@@ -125,4 +125,67 @@ namespace Util
         void removeEmptyStringsFromVec(string_vt& vec) {
             vec.erase(std::remove_if(vec.begin(), vec.end(), [](const std::string& s) { return s.empty(); }), vec.end());
         }
+
+        std::string& ltrim(std::string& s){
+            s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int ch) { return !std::isspace(ch); }));
+            return s;
+        }
+
+        std::string& rtrim(std::string& s) {
+            s.erase(std::find_if(s.rbegin(), s.rend(), [](int ch) { return !std::isspace(ch); }).base(), s.end());
+            return s;
+        }
+
+        std::string& trim(std::string& s) {
+            return ltrim(rtrim(s));
+        }
+
+        std::string ltrim_copy(const std::string& s) {
+            std::string cp = s;
+            return ltrim(cp);
+        }
+
+        std::string rtrim_copy(const std::string& s) {
+            std::string cp = s;
+            return rtrim(cp);
+        }
+
+        std::string trim_copy(const std::string& s) {
+            std::string cp = s;
+            return trim(cp);
+        }
+
+        void removeStopword(std::string& str, const string_vt& stopwordList) {
+            int counter = 0;
+            for (auto& elem : stopwordList) {
+                std::regex lRegex("\\b(" + elem + ")\\b");
+                while (std::regex_search(str, lRegex)) {
+                    str = std::regex_replace(str, lRegex, "");
+                }
+                ++counter;
+            }
+        }
+
+        string_vt preprocess(std::string& aContent, const string_vt& aStopwordsList)
+        {
+            Util::toLower(aContent);
+            Util::removeStopword(aContent, aStopwordsList); // Remove stopwords
+            std::string temp;
+            std::remove_copy_if(aContent.begin(), aContent.end(),
+                                std::back_inserter(temp), // Store output
+                                std::ptr_fun<int, int>(&std::ispunct));
+            aContent = temp;
+            Util::trim(aContent); // Trim whitespaces at front and end
+            string_vt lProcessed;
+            Util::splitStringBoost(aContent, ' ', lProcessed); // Split string by whitespaces
+            Util::removeEmptyStringsFromVec(lProcessed);      // Remove eventually empty strings from the query term vector
+
+            string_vt preprocessed_content;
+            for (auto& elem : lProcessed) { // Preprocess query
+                std::string preprocess = Util::stemPorter(elem);
+                preprocessed_content.push_back(preprocess);
+            }
+            return preprocessed_content;
+        }
+
 }

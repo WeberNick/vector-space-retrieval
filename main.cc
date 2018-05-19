@@ -45,12 +45,12 @@ void test(const control_block_t& aControlBlock) {
     e.constructJSON(set);
 }
 
-void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
+void search(std::string query, size_t topK, IR_MODE mode) {
     QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
 
     Measure lMeasureQuery;
     lMeasureQuery.start();
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode, use_lsh);
+    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode);
     lMeasureQuery.stop();
 
     double lSecondsQuery = lMeasureQuery.mTotalTime();
@@ -103,7 +103,7 @@ void testNico() {
     QueryExecutionEngine::getInstance().init(aControlBlock);
 
     std::string qs = "Util";
-    search(qs, 10, IR_MODE::kTIERED, false);
+    search(qs, 10, IR_MODE::kTIERED);
 
 }
 
@@ -168,53 +168,53 @@ void testAlex(const control_block_t& aControlBlock) {
     }*/
 }
 
-void testEval(const control_block_t& aControlBlock) {
-    DocumentManager& docManager = DocumentManager::getInstance();
-    docManager.init(aControlBlock);
-    std::cout << "DOCUMENT MANAGER INITIALIZED" << std::endl;
+//void testEval(const control_block_t& aControlBlock) {
+    //DocumentManager& docManager = DocumentManager::getInstance();
+    //docManager.init(aControlBlock);
+    //std::cout << "DOCUMENT MANAGER INITIALIZED" << std::endl;
 
-    IndexManager& imInstance = IndexManager::getInstance();
-    std::cout << "indexmanager vor init" << std::endl;
-    imInstance.init(aControlBlock, docManager.getDocumentMap());
-    std::cout << "Indexing done" << std::endl;
-    QueryExecutionEngine::getInstance().init(aControlBlock);
-    QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
+    //IndexManager& imInstance = IndexManager::getInstance();
+    //std::cout << "indexmanager vor init" << std::endl;
+    //imInstance.init(aControlBlock, docManager.getDocumentMap());
+    //std::cout << "Indexing done" << std::endl;
+    //QueryExecutionEngine::getInstance().init(aControlBlock);
+    //QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
 
-    Evaluation& e = Evaluation::getInstance();
-    e.init(aControlBlock);
-    str_set queryNamesSet;
+    //Evaluation& e = Evaluation::getInstance();
+    //e.init(aControlBlock);
+    //str_set queryNamesSet;
 
-    std::cout << "Start eval " << std::endl;
-    auto& types = DocumentManager::getInstance().getQueryTypes();
+    //std::cout << "Start eval " << std::endl;
+    //auto& types = DocumentManager::getInstance().getQueryTypes();
 
-    std::cout << "Types size: " << types.size() << std::endl;
-    std::string type = "titles";
+    //std::cout << "Types size: " << types.size() << std::endl;
+    //std::string type = "titles";
   
-    for (int j = 0; j < kNumberOfModes; ++j) {
-        IR_MODE mode = static_cast<IR_MODE>(j);
+    //for (int j = 0; j < kNumberOfModes; ++j) {
+        //IR_MODE mode = static_cast<IR_MODE>(j);
 
-        std::cout << "Mode " << modeToString(mode) << ":" << j << std::endl;
+        //std::cout << "Mode " << modeToString(mode) << ":" << j << std::endl;
 
-        auto& queryForType = DocumentManager::getInstance().getQueriesForType(type);
+        //auto& queryForType = DocumentManager::getInstance().getQueriesForType(type);
 
-        std::cout << "queries for types geholt: " << queryForType.size() << std::endl;
+        //std::cout << "queries for types geholt: " << queryForType.size() << std::endl;
 
-        for (auto& [query_id, query] : queryForType) {
-            std::cout << "Type: " << type << "Mode " << modeToString(mode) << "QueryId: " << query.getDocID() << std::endl;
-            queryNamesSet.insert(query.getDocID());
-            e.start(mode, query.getDocID());
-            std::cout << "after start" << std::endl;
-            std::vector<std::pair<size_t, float>> result = qpe.search(query, 30, mode, false);
-            std::cout << "after result" << std::endl;
-            e.stop();
-            std::cout << "after stop" << std::endl;
-            e.evalIR(mode, query.getDocID(), result);
-            std::cout << "after eval ir" << std::endl;
-        }
-    }
+        //for (auto& [query_id, query] : queryForType) {
+            //std::cout << "Type: " << type << "Mode " << modeToString(mode) << "QueryId: " << query.getDocID() << std::endl;
+            //queryNamesSet.insert(query.getDocID());
+            //e.start(mode, query.getDocID());
+            //std::cout << "after start" << std::endl;
+            //std::vector<std::pair<size_t, float>> result = qpe.search(query, 30, mode, false);
+            //std::cout << "after result" << std::endl;
+            //e.stop();
+            //std::cout << "after stop" << std::endl;
+            //e.evalIR(mode, query.getDocID(), result);
+            //std::cout << "after eval ir" << std::endl;
+        //}
+    //}
     
-    e.constructJSON(queryNamesSet);
-}
+    //e.constructJSON(queryNamesSet);
+//}
 
 /**
  * @brief Starts the program
@@ -224,26 +224,6 @@ void testEval(const control_block_t& aControlBlock) {
  * @return int
  */
 int main(const int argc, const char* argv[]) {
-    // std::cout << "Test";
-    // this is just a test, needs a proper implementation later on
-    /*if (!Utility::StringOp::endsWith(fs::current_path().string(), "vector-space-retrieval")) {
-        // todo: change error message
-        std::cerr << "Incorrect execution path! Please start the executable from the path ending with 'vector-space-retrieval'" << std::endl;
-        std::cout << "Current Working Directory: " << fs::current_path() << std::endl;
-        return -1;
-    }*/
-
-    /*   if(!(fs::exists(lArgs.collectionPath())))
-       {
-           std::cerr << "Given path to the master partition is invalid." << std::endl;
-           //return -1; //wait until boot and so on works and uncomment this
-       }
-       if(lArgs.trace() && !fs::exists(lArgs.tracePath()))
-       {
-           std::cerr << "The path where to store the trace file is invalid." << std::endl;
-           return -1;
-       }
-   */
 
     /* How to use class Args is described in args.hh */
     Args lArgs;
@@ -260,7 +240,63 @@ int main(const int argc, const char* argv[]) {
         return 0;
     }
 
-    // THROW EXCEPTION if numtiers < 2
+
+    if(!Util::endsWith(fs::current_path().string(), "vector-space-retrieval")) 
+    {
+        std::cerr << " ## Warning : Programm was not executed from the recommended directory " 
+            << "'vector-space-retrieval'. Make sure to provide all necessary file "
+            << "paths as command line argument. For further information, start the executable with '--help'."
+            << "\n            ## Current Working Directory: " << fs::current_path() << std::endl;
+    }
+
+   if(!(fs::exists(lArgs.collectionPath())))
+   {
+       std::cerr << "Given path to the data collection is invalid." << std::endl;
+       return -1;
+   }
+
+   if(!fs::exists(lArgs.queryPath()))
+   {
+       std::cerr << "Given path to the query collection is invalid." << std::endl;
+       return -1;
+   }
+
+   if(!fs::exists(lArgs.relevanceScoresPath()))
+   {
+       std::cerr << "Given path to the relevance scores is invalid." << std::endl;
+       return -1;
+   }
+
+   if(!fs::exists(lArgs.wordEmbeddingsPath()))
+   {
+       std::cerr << "Given path to the word embeddings is invalid." << std::endl;
+       return -1;
+   }
+
+   if(!fs::exists(lArgs.stopwordPath()))
+   {
+       std::cerr << "Given path to the stopwords file is invalid." << std::endl;
+       return -1;
+   }
+
+   if(!fs::exists(lArgs.evalPath()))
+   {
+       std::cerr << "The path where to store the evaluation is invalid." << std::endl;
+       return -1;
+   }
+
+   if(lArgs.trace() && !fs::exists(lArgs.tracePath()))
+   {
+       std::cerr << "The path where to store the trace file is invalid." << std::endl;
+       return -1;
+   }
+
+   if(lArgs.tiers() < 2)
+   {
+       std::cerr << "The number of tiers must be larger than two." << std::endl;
+       return -1;
+   }
+
     const control_block_t lCB = {
         lArgs.trace(),               // trace activated?
         lArgs.measure(),             // measure runtime/IR performance?
@@ -283,7 +319,7 @@ int main(const int argc, const char* argv[]) {
     // test(lCB);
     // testNico();
     // testAlex(lCB);
-    testEval(lCB);
+    //testEval(lCB);
 
     return 0;
 }

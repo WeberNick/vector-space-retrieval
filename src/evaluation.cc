@@ -10,18 +10,24 @@ void IRPM::init(const CB& aControlBlock)
     {
         _cb = &aControlBlock;
         const std::string& lRelScorePath = _cb->relevanceScoresPath();
-        std::ifstream file(lRelScorePath);
-        std::string line;
-        TRACE(std::string("Evaluation::IR_PerformanceManager: Start reading query relevance scores from '") + lRelScorePath + std::string("'"));
-        while (std::getline(file, line)) {
-            string_vt parts;
-            Util::splitStringBoost(line, '~', parts);
-            const std::string qID = parts[0];
-            const std::string dID = parts[1];
-            const uint score = std::stoul(parts[2]);
-            _queryScores[qID].emplace_back(qID, dID, score);
+        string_vvt lRelScoreFile;
+        Util::readIn(lRelScorePath, '~', lRelScoreFile);
+        for(const auto& line : lRelScoreFile)
+        {
+            try
+            {
+                const std::string qID = line.at(0);
+                const std::string dID = line.at(1);
+                const uint score = std::stoul(line.at(2));
+                _queryScores[qID].emplace_back(qID, dID, score);
+            }
+            catch (const std::out_of_range& ex) 
+            {
+                const std::string lErrMsg = std::string("Evaluation::IR_PerformanceManager: Init failed, most probably the file at '" + lRelScorePath + std::string("' is in the wrong format!"));
+                TRACE(lErrMsg);
+                throw;
+            }
         }
-        TRACE(std::string("Evaluation::IR_PerformanceManager: Finished reading query relevance scores"));
         TRACE("Evaluation::IR_PerformanceManager: Initialized");
     }
 }
@@ -46,7 +52,7 @@ double IRPM::accuracy(const std::string& aQueryID, const sizet_vt& aRanking)
     tp_tn_fp_fn(aQueryID, aRanking, lTP, lTN, lFP, lFN);
     const double lNumerator = static_cast<double>(lTP) + static_cast<double>(lTN);
     const double lDenominator = lNumerator + static_cast<double>(lFP) + static_cast<double>(lFN);
-    return lNumerator / lDenominator;
+    return (lDenominator != 0) ? (lNumerator / lDenominator) : 0;
 }
 
 double IRPM::precision(const std::string& aQueryID, const sizet_vt& aRanking)
@@ -55,7 +61,7 @@ double IRPM::precision(const std::string& aQueryID, const sizet_vt& aRanking)
     tp_tn_fp_fn(aQueryID, aRanking, lTP, lTN, lFP, lFN);
     const double lNumerator = static_cast<double>(lTP);
     const double lDenominator = lNumerator + static_cast<double>(lFP);
-    return lNumerator / lDenominator;
+    return (lDenominator != 0) ? (lNumerator / lDenominator) : 0;
 }
 
 double IRPM::recall(const std::string& aQueryID, const sizet_vt& aRanking)
@@ -64,7 +70,7 @@ double IRPM::recall(const std::string& aQueryID, const sizet_vt& aRanking)
     tp_tn_fp_fn(aQueryID, aRanking, lTP, lTN, lFP, lFN);
     const double lNumerator = static_cast<double>(lTP);
     const double lDenominator = lNumerator + static_cast<double>(lFN);
-    return lNumerator / lDenominator;
+    return (lDenominator != 0) ? (lNumerator / lDenominator) : 0;
 }
 
 double IRPM::fMeasure(const std::string& aQueryID, const sizet_vt& aRanking, const double aBeta)
@@ -73,7 +79,7 @@ double IRPM::fMeasure(const std::string& aQueryID, const sizet_vt& aRanking, con
     const double lRecall = recall(aQueryID, aRanking);
     const double lNumerator = (std::pow(aBeta, 2) + 1) * lPrecision * lRecall; 
     const double lDenominator = (std::pow(aBeta, 2) * lPrecision) + lRecall;
-    return lNumerator / lDenominator;
+    return (lDenominator != 0) ? (lNumerator / lDenominator) : 0;
 }
 
 double IRPM::avgPrecision(const std::string& aQueryID, const sizet_vt& aRanking)
@@ -89,7 +95,8 @@ double IRPM::avgPrecision(const std::string& aQueryID, const sizet_vt& aRanking)
             lSum += precision(aQueryID, lSub);
         }
     }
-    return lSum / lRelevant.size();
+    const double lDenominator = lRelevant.size();
+    return (lDenominator != 0) ? (lSum / lDenominator) : 0;
 }
 
 double IRPM::meanAvgPrecision(const std::unordered_map<std::string, double>& aAvgPrecisionMap)
@@ -99,7 +106,8 @@ double IRPM::meanAvgPrecision(const std::unordered_map<std::string, double>& aAv
     {
         lSum += elem.second;
     }
-    return lSum / aAvgPrecisionMap.size();
+    const double lDenominator = aAvgPrecisionMap.size();
+    return (lDenominator != 0) ? (lSum / lDenominator) : 0;
 }
 
 double IRPM::bDCG(const std::string& aQueryID, const sizet_vt& aRanking)
@@ -199,13 +207,14 @@ Evaluation::Evaluation() :
     _cb(nullptr)
 {
         _evalResults[modeToString(kVANILLA)].init(modeToString(kVANILLA));
-        //_evalResults[modeToString(kVANILLAW2V)].init(modeToString(kVANILLAW2V));
-        _evalResults[modeToString(kTIERED)].init(modeToString(kTIERED)); 
-        _evalResults[modeToString(kTIEREDW2V)].init(modeToString(kTIEREDW2V)); 
-        _evalResults[modeToString(kCLUSTER)].init(modeToString(kCLUSTER)); 
-        _evalResults[modeToString(kCLUSTERW2V)].init(modeToString(kCLUSTERW2V)); 
-        _evalResults[modeToString(kRANDOM)].init(modeToString(kRANDOM)); 
-        _evalResults[modeToString(kRANDOMW2V)].init(modeToString(kRANDOMW2V)); 
+        _evalResults[modeToString(kVANILLA_RAND)].init(modeToString(kVANILLA_RAND));
+        _evalResults[modeToString(kVANILLA_W2V)].init(modeToString(kVANILLA_W2V));
+        _evalResults[modeToString(kTIERED)].init(modeToString(kTIERED));
+        _evalResults[modeToString(kTIERED_RAND)].init(modeToString(kTIERED_RAND));
+        _evalResults[modeToString(kTIERED_W2V)].init(modeToString(kTIERED_W2V));
+        _evalResults[modeToString(kCLUSTER)].init(modeToString(kCLUSTER));
+        _evalResults[modeToString(kCLUSTER_RAND)].init(modeToString(kCLUSTER_RAND));
+        _evalResults[modeToString(kCLUSTER_W2V)].init(modeToString(kCLUSTER_W2V));
 }
 
 void Evaluation::init(const CB& aControlBlock)
