@@ -251,7 +251,6 @@ void testEval(const control_block_t& aControlBlock) {
  * @return int
  */
 int main(const int argc, const char* argv[]) {
-
     /* How to use class Args is described in args.hh */
     Args lArgs;
     argdesc_vt lArgDesc;
@@ -276,53 +275,53 @@ int main(const int argc, const char* argv[]) {
             << "\n            ## Current Working Directory: " << fs::current_path() << std::endl;
     }
 
-   if(!(fs::exists(lArgs.collectionPath())))
-   {
-       std::cerr << "Given path to the data collection is invalid." << std::endl;
-       return -1;
-   }
-
-   if(!fs::exists(lArgs.queryPath()))
-   {
-       std::cerr << "Given path to the query collection is invalid." << std::endl;
-       return -1;
-   }
-
-   if(!fs::exists(lArgs.relevanceScoresPath()))
-   {
-       std::cerr << "Given path to the relevance scores is invalid." << std::endl;
-       return -1;
-   }
-
-   if(!fs::exists(lArgs.wordEmbeddingsPath()))
-   {
-       std::cerr << "Given path to the word embeddings is invalid." << std::endl;
-       return -1;
-   }
-
-   if(!fs::exists(lArgs.stopwordPath()))
-   {
-       std::cerr << "Given path to the stopwords file is invalid." << std::endl;
-       return -1;
-   }
-
-   if(!fs::exists(lArgs.evalPath()))
-   {
-       std::cerr << "The path where to store the evaluation is invalid." << std::endl;
-       return -1;
-   }
-
-   if(lArgs.trace() && !fs::exists(lArgs.tracePath()))
-   {
-       std::cerr << "The path where to store the trace file is invalid." << std::endl;
-       return -1;
-   }
-
-   if(lArgs.tiers() < 2)
-   {
-       std::cerr << "The number of tiers must be larger than two." << std::endl;
-       return -1;
-   }
+    if(!(fs::exists(lArgs.collectionPath())))
+    {
+        std::cerr << "Given path to the data collection is invalid." << std::endl;
+        return -1;
+    }
+ 
+    if(!fs::exists(lArgs.queryPath()))
+    {
+        std::cerr << "Given path to the query collection is invalid." << std::endl;
+        return -1;
+    }
+ 
+    if(!fs::exists(lArgs.relevanceScoresPath()))
+    {
+        std::cerr << "Given path to the relevance scores is invalid." << std::endl;
+        return -1;
+    }
+ 
+    if(!fs::exists(lArgs.wordEmbeddingsPath()))
+    {
+        std::cerr << "Given path to the word embeddings is invalid." << std::endl;
+        return -1;
+    }
+ 
+    if(!fs::exists(lArgs.stopwordPath()))
+    {
+        std::cerr << "Given path to the stopwords file is invalid." << std::endl;
+        return -1;
+    }
+ 
+    if(!fs::exists(lArgs.evalPath()))
+    {
+        std::cerr << "The path where to store the evaluation is invalid." << std::endl;
+        return -1;
+    }
+ 
+    if(lArgs.trace() && !fs::exists(lArgs.tracePath()))
+    {
+        std::cerr << "The path where to store the trace file is invalid." << std::endl;
+        return -1;
+    }
+ 
+    if(lArgs.tiers() < 2)
+    {
+        std::cerr << "The number of tiers must be larger than two." << std::endl;
+        return -1;
+    }
 
     const control_block_t lCB = {
         lArgs.trace(),               // trace activated?
