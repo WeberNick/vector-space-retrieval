@@ -63,3 +63,16 @@ void Cluster::getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, cons
         }
     }
 }
+
+std::ostream& operator<<(std::ostream& strm, const Cluster& clust) {
+    const auto& leaders = clust.getLeaders();
+        strm << "Cluster : \n"
+            << "Number of Leaders: " << leaders.size() << "\n"
+            << "Leader IDs: ";
+        for(size_t i = 0; i < leaders.size() - 1; ++i)
+        {
+            strm << leaders.at(i) << ", ";
+        }
+        strm << leaders.at(leaders.size() - 1) << std::endl;
+    return strm;
+}

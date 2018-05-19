@@ -8,12 +8,6 @@ IndexManager::IndexManager() :
     _cb(nullptr), _docs(nullptr), _idf_map(), _collection_terms(), _invertedIndex(InvertedIndex::getInstance()), _tieredIndex(TieredIndex::getInstance()),
     _clusteredIndex(Cluster::getInstance()), _wordEmbeddingsIndex(WordEmbeddings::getInstance()) {}
 
-/**
- * @brief Destroy the Index Manager:: Index Manager object
- *
- */
-IndexManager::~IndexManager() {}
-
 void IndexManager::init(const CB& aControlBlock, doc_mt& aDocMap) {
     if (!_cb) {
         _cb = &aControlBlock;
@@ -22,7 +16,7 @@ void IndexManager::init(const CB& aControlBlock, doc_mt& aDocMap) {
         _collection_terms.reserve(_docs->size());
         _clusteredIndex.chooseLeaders();
         const sizet_vt& leaders = _clusteredIndex.getLeaders();
-        cluster_mt* cluster_out = _clusteredIndex.getClusterMap();
+        cluster_mt* cluster_out = &_clusteredIndex.getCluster();
         str_postinglist_mt* postinglist_out = _invertedIndex.getTermPostingMap();
         str_tierplmap_mt* tieredpostinglist_out = _tieredIndex.getTermTierPostingMap();
 

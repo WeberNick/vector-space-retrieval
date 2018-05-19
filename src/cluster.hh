@@ -65,6 +65,7 @@ class Cluster
      * @brief Get the document IDs of the leader
      * @return a vector containing all document IDs
      */
+    inline const sizet_vt& getLeaders() const { return _leaders; }
     inline const sizet_vt& getLeaders() { return _leaders; }
 
     /**
@@ -81,6 +82,7 @@ class Cluster
      * @return const sizet_vt 
      */
     void getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, const size_t aTopK, sizet_vt& aOutputVec);
+    friend std::ostream& operator<<(std::ostream& strm, const Cluster& clust);
 
   private:
     const CB* _cb;
