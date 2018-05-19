@@ -136,7 +136,7 @@ doc_mt& QueryManager::getQueryMap(const QUERY_TYPE aQueryType)
     }
 }
 
-const sizet_vt& QueryManager::getQueryIDs(const QUERY_TYPE aQueryType)
+const sizet_vt& QueryManager::getQueryIDs(const QUERY_TYPE aQueryType) const
 {
     switch(aQueryType)
     {
@@ -154,6 +154,149 @@ const sizet_vt& QueryManager::getQueryIDs(const QUERY_TYPE aQueryType)
             break;
         case kVIDTITLES:
             return _qVidTitles.getQueryIDs();
+            break;
+        default: 
+            throw SwitchException(FLF); 
+            break;
+    }
+}
+
+const sizet_vt& QueryManager::getQueryIDs(const QUERY_TYPE aQueryType)
+{
+    switch(aQueryType)
+    {
+        case kALL:
+            return static_cast<const QueryManager&>(*this).getQueryIDs(aQueryType);
+            break;
+        case kNTT:
+            return static_cast<const QueryManager&>(*this).getQueryIDs(aQueryType);
+            break;
+        case kTITLES:
+            return static_cast<const QueryManager&>(*this).getQueryIDs(aQueryType);
+            break;
+        case kVIDDESC:
+            return static_cast<const QueryManager&>(*this).getQueryIDs(aQueryType);
+            break;
+        case kVIDTITLES:
+            return static_cast<const QueryManager&>(*this).getQueryIDs(aQueryType);
+            break;
+        default: 
+            throw SwitchException(FLF); 
+            break;
+    }
+}
+
+const Document& QueryManager::getQuery(const QUERY_TYPE aQueryType, size_t aQueryID) const
+{
+    try
+    {
+        switch(aQueryType)
+        {
+            case kALL:
+                return _qAll.getQuery(aQueryID);
+                break;
+            case kNTT:
+                return _qNTT.getQuery(aQueryID);
+                break;
+            case kTITLES:
+                return _qTitles.getQuery(aQueryID);
+                break;
+            case kVIDDESC:
+                return _qVidDesc.getQuery(aQueryID);
+                break;
+            case kVIDTITLES:
+                return _qVidTitles.getQuery(aQueryID);
+                break;
+            default: 
+                throw SwitchException(FLF); 
+                break;
+        }
+    }
+    catch (const std::out_of_range& ex) 
+    {
+        const std::string lErrMsg = std::string("No query found for the ID '") + std::to_string(aQueryID) + std::string("'");
+        TRACE(lErrMsg);
+        throw InvalidArgumentException(FLF, lErrMsg);
+    }
+}
+
+const Document& QueryManager::getQuery(const QUERY_TYPE aQueryType, size_t aQueryID)
+{
+    switch(aQueryType)
+    {
+        case kALL:
+            return static_cast<const QueryManager&>(*this).getQuery(aQueryType, aQueryID);
+            break;
+        case kNTT:
+            return static_cast<const QueryManager&>(*this).getQuery(aQueryType, aQueryID);
+            break;
+        case kTITLES:
+            return static_cast<const QueryManager&>(*this).getQuery(aQueryType, aQueryID);
+            break;
+        case kVIDDESC:
+            return static_cast<const QueryManager&>(*this).getQuery(aQueryType, aQueryID);
+            break;
+        case kVIDTITLES:
+            return static_cast<const QueryManager&>(*this).getQuery(aQueryType, aQueryID);
+            break;
+        default: 
+            throw SwitchException(FLF); 
+            break;
+    }
+}
+
+const Document& QueryManager::getQuery(const QUERY_TYPE aQueryType, const std::string& aQueryID) const
+{
+    try
+    {
+        switch(aQueryType)
+        {
+            case kALL:
+                return _qAll.getQuery(aQueryID);
+                break;
+            case kNTT:
+                return _qNTT.getQuery(aQueryID);
+                break;
+            case kTITLES:
+                return _qTitles.getQuery(aQueryID);
+                break;
+            case kVIDDESC:
+                return _qVidDesc.getQuery(aQueryID);
+                break;
+            case kVIDTITLES:
+                return _qVidTitles.getQuery(aQueryID);
+                break;
+            default: 
+                throw SwitchException(FLF); 
+                break;
+        }
+    }
+    catch (const std::out_of_range& ex) 
+    {
+        const std::string lErrMsg = std::string("No query found for the ID '") + aQueryID + std::string("'");
+        TRACE(lErrMsg);
+        throw InvalidArgumentException(FLF, lErrMsg);
+    }
+}
+
+const Document& QueryManager::getQuery(const QUERY_TYPE aQueryType, const std::string& aQueryID)
+{
+    switch(aQueryType)
+    {
+        case kALL:
+            return static_cast<const QueryManager&>(*this).getQuery(aQueryType, aQueryID);
+            break;
+        case kNTT:
+            return static_cast<const QueryManager&>(*this).getQuery(aQueryType, aQueryID);
+            break;
+        case kTITLES:
+            return static_cast<const QueryManager&>(*this).getQuery(aQueryType, aQueryID);
+            break;
+        case kVIDDESC:
+            return static_cast<const QueryManager&>(*this).getQuery(aQueryType, aQueryID);
+            break;
+        case kVIDTITLES:
+            return static_cast<const QueryManager&>(*this).getQuery(aQueryType, aQueryID);
             break;
         default: 
             throw SwitchException(FLF); 

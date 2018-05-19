@@ -224,26 +224,6 @@ void testAlex(const control_block_t& aControlBlock) {
  * @return int
  */
 int main(const int argc, const char* argv[]) {
-    // std::cout << "Test";
-    // this is just a test, needs a proper implementation later on
-    /*if (!Utility::StringOp::endsWith(fs::current_path().string(), "vector-space-retrieval")) {
-        // todo: change error message
-        std::cerr << "Incorrect execution path! Please start the executable from the path ending with 'vector-space-retrieval'" << std::endl;
-        std::cout << "Current Working Directory: " << fs::current_path() << std::endl;
-        return -1;
-    }*/
-
-    /*   if(!(fs::exists(lArgs.collectionPath())))
-       {
-           std::cerr << "Given path to the master partition is invalid." << std::endl;
-           //return -1; //wait until boot and so on works and uncomment this
-       }
-       if(lArgs.trace() && !fs::exists(lArgs.tracePath()))
-       {
-           std::cerr << "The path where to store the trace file is invalid." << std::endl;
-           return -1;
-       }
-   */
 
     /* How to use class Args is described in args.hh */
     Args lArgs;
@@ -259,6 +239,28 @@ int main(const int argc, const char* argv[]) {
         print_usage(std::cout, argv[0], lArgDesc);
         return 0;
     }
+
+
+    //if(!Util::endsWith(fs::current_path().string(), "vector-space-retrieval")) 
+    //{
+        //const std::string lErrMsg = std::string(" ## Warning : Executable Please start the executable from the path ending with 'vector-space-retrieval'! \n            ## Current Working Directory: ") + std::string(fs::current_path());
+        //TRACE(lErrMsg);
+        //std::cerr << lErrMsg << std::endl;
+        //return -1;
+    //}
+
+       //if(!(fs::exists(lArgs.collectionPath())))
+       //{
+           //std::cerr << "Given path to the master partition is invalid." << std::endl;
+           //return -1; //wait until boot and so on works and uncomment this
+       //}
+       //if(lArgs.trace() && !fs::exists(lArgs.tracePath()))
+       //{
+           //std::cerr << "The path where to store the trace file is invalid." << std::endl;
+           //return -1;
+       //}
+   
+
 
     // THROW EXCEPTION if numtiers < 2
     const control_block_t lCB = {

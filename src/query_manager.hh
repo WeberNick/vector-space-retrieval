@@ -25,6 +25,7 @@
 #include <unordered_map>
 #include <utility>
 #include <array>
+#include <string>
 
 class QueryManager
 {
@@ -91,7 +92,13 @@ class QueryManager
         //getter
         const doc_mt& getQueryMap(const QUERY_TYPE aQueryType) const;
         doc_mt& getQueryMap(const QUERY_TYPE aQueryType);
+        const sizet_vt& getQueryIDs(const QUERY_TYPE aQueryType) const;
         const sizet_vt& getQueryIDs(const QUERY_TYPE aQueryType);
+        const Document& getQuery(const QUERY_TYPE aQueryType, size_t aQueryID) const;
+        const Document& getQuery(const QUERY_TYPE aQueryType, size_t aQueryID);
+        const Document& getQuery(const QUERY_TYPE aQueryType, const std::string& aQueryID) const;
+        const Document& getQuery(const QUERY_TYPE aQueryType, const std::string& aQueryID);
+
 
 
     private:
@@ -104,48 +111,5 @@ class QueryManager
         QueryType   _qVidDesc;  //q-vid-desc
         QueryType   _qVidTitles;//q-vid-titles
 };
-
-
-
-    ////TODO docs
-    /**
-     * @brief Get the Queries object
-     * 
-     * @param aDocID 
-     * @return doc_mt& 
-     */
-    //inline doc_mt& getQueriesForType(const std::string& aQueryType) {
-        //try {
-            //return _queries.at(aQueryType);
-        //} catch (const std::out_of_range& ex) {
-            //const std::string lErrMsg = std::string("The query type ')" + aQueryType + std::string("' does not exist"));
-            //TRACE(lErrMsg);
-            //throw InvalidArgumentException(FLF, lErrMsg);
-        //}
-    //}
-
-    /**
-     * @brief Creates a preprocessed document query out of a string
-     *
-     * @param query The raw query string
-     * @return Document
-     */
-    //Document createQuery(std::string& query, const std::string& queryID = "query-0");
-
-    /**
-     * @brief Get the document map
-     *
-     * @return doc_mt& the document map
-     */
-    //inline const std::unordered_map<std::string, doc_mt>& getQueryMap() const { return _queries; }
-    ////TODO docs
-    /**
-     * @brief Get the Document Map object
-     * 
-     * @return doc_mt& 
-     */
-    //inline std::unordered_map<std::string, doc_mt>& getQueryMap() { return const_cast<std::unordered_map<std::string, doc_mt>&>(static_cast<const DocumentManager&>(*this).getQueryMap()); }
-    
-
 
 
