@@ -72,6 +72,13 @@ namespace Util
         return vec;
     }
 
+    float_vt combineVectors(const float_vt& a, const float_vt& b) {
+        float_vt result(a.size() + b.size());
+        result.insert( result.end(), a.begin(), a.end() );
+        result.insert( result.end(), b.begin(), b.end() );
+        return result;
+    }
+
     float_vt generateRandomVectorN(size_t dimension) {
         float_vt result(dimension);
         for (size_t i = 0; i < dimension; ++i) {

@@ -94,6 +94,15 @@ namespace Util
     float_vt generateRandomVectorN(size_t dimension);
 
     /**
+     * @brief Appends the second vector to the first one and returns a copy of a new combined vector
+     * 
+     * @param a first vector
+     * @param b second vector
+     * @return float_vt copy of the result
+     */
+    float_vt combineVectors(const float_vt& a, const float_vt& b);
+
+    /**
      * @brief Calculates the dot product of two vectors
      *
      * @param a

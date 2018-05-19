@@ -1,4 +1,4 @@
-#include "utility.hh"
+#include "ir_util"
 #include "gtest/gtest.h"
 
 TEST(IR, OrPostingLists_Equals_Test) {
@@ -8,6 +8,6 @@ TEST(IR, OrPostingLists_Equals_Test) {
     std::vector<sizet_vt> vecs = {vec_a, vec_b};
     const sizet_vt& result = {1, 2, 4, 5};
     sizet_vt out;
-    Utility::IR::orPostingLists(vecs, out);
+    Util::orPostingLists(vecs, out);
     EXPECT_EQ(result, out);
 }

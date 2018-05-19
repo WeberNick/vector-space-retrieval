@@ -45,12 +45,12 @@ void test(const control_block_t& aControlBlock) {
     e.constructJSON(set);
 }
 
-void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
+void search(std::string query, size_t topK, IR_MODE mode) {
     QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
 
     Measure lMeasureQuery;
     lMeasureQuery.start();
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode, use_lsh);
+    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode);
     lMeasureQuery.stop();
 
     double lSecondsQuery = lMeasureQuery.mTotalTime();
@@ -103,7 +103,7 @@ void testNico() {
     QueryExecutionEngine::getInstance().init(aControlBlock);
 
     std::string qs = "Util";
-    search(qs, 10, IR_MODE::kTIERED, false);
+    search(qs, 10, IR_MODE::kTIERED);
 
 }
 
@@ -169,19 +169,19 @@ void testAlex(const control_block_t& aControlBlock) {
 }
 
 void testEval(const control_block_t& aControlBlock) {
+    
     DocumentManager& docManager = DocumentManager::getInstance();
     docManager.init(aControlBlock);
-    std::cout << "DOCUMENT MANAGER INITIALIZED" << std::endl;
 
     IndexManager& imInstance = IndexManager::getInstance();
-    std::cout << "indexmanager vor init" << std::endl;
     imInstance.init(aControlBlock, docManager.getDocumentMap());
-    std::cout << "Indexing done" << std::endl;
+
     QueryExecutionEngine::getInstance().init(aControlBlock);
     QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
 
+    Evaluation::getInstance().init(aControlBlock);
     Evaluation& e = Evaluation::getInstance();
-    e.init(aControlBlock);
+    
     str_set queryNamesSet;
 
     std::cout << "Start eval " << std::endl;
@@ -204,7 +204,7 @@ void testEval(const control_block_t& aControlBlock) {
             queryNamesSet.insert(query.getDocID());
             e.start(mode, query.getDocID());
             std::cout << "after start" << std::endl;
-            std::vector<std::pair<size_t, float>> result = qpe.search(query, 30, mode, false);
+            std::vector<std::pair<size_t, float>> result = qpe.search(query, 30, mode);
             std::cout << "after result" << std::endl;
             e.stop();
             std::cout << "after stop" << std::endl;

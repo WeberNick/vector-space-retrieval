@@ -28,12 +28,12 @@ void QueryExecutionEngine::read(const std::string& aFile) {
     }
 }
 
-const pair_sizet_float_vt QueryExecutionEngine::search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh) {
+const pair_sizet_float_vt QueryExecutionEngine::search(std::string& query, size_t topK, IR_MODE searchType) {
     Document queryDoc = DocumentManager::getInstance().createQuery(query);
-    return this->search(queryDoc, topK, searchType, use_lsh);
+    return this->search(queryDoc, topK, searchType);
 }
 
-const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_t topK, IR_MODE searchType, bool use_lsh) {
+const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_t topK, IR_MODE searchType) {
 
     std::cout << "Searching in mode: " << modeToString(searchType) << std::endl;
     std::cout << "Searching for: ";
@@ -45,48 +45,51 @@ const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_
 
     switch (searchType) {
     case IR_MODE ::kVANILLA: {
-
-        if (use_lsh) {
-            found_indices = this->searchRandomProjCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
-        } else {
-            found_indices = this->searchCollectionCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
-        }
+        found_indices = this->searchCollectionCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
     } break;
+    case IR_MODE::kVANILLA_RAND: {
+        found_indices = this->searchRandomProjCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
+    } break;
+    case IR_MODE::kVANILLA_W2V: {
+         found_indices = this->searchCollectionCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK, true);
+    }
     case IR_MODE ::kCLUSTER: {
-        if (use_lsh) {
-            std::vector<std::pair<size_t, float>> leader_indexes =
-                this->searchRandomProjCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
+        std::vector<std::pair<size_t, float>> leader_indexes = this->searchClusterCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
 
-            // Get docIds from the clusters to search in, vector will be filled from the IndexManager::getInstance().getClusteredIndex().getIDs() method
-            sizet_vt clusterDocIds;
-            IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK, clusterDocIds);
+        // Get docIds from the clusters to search in, vector will be filled from the IndexManager::getInstance().getClusteredIndex().getIDs() method
+        sizet_vt clusterDocIds;
+        IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK, clusterDocIds);
 
-            // Search the docs from the clusters
-            found_indices = this->searchRandomProjCos(&queryDoc, clusterDocIds, topK);
-        } else {
-            std::vector<std::pair<size_t, float>> leader_indexes =
-                this->searchClusterCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
+        // Search the docs from the clusters
+        found_indices = this->searchClusterCos(&queryDoc, clusterDocIds, topK);
+    }break;
+    case IR_MODE::kCLUSTER_RAND: {
+        std::vector<std::pair<size_t, float>> leader_indexes = this->searchRandomProjCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
 
-            // Get docIds from the clusters to search in, vector will be filled from the IndexManager::getInstance().getClusteredIndex().getIDs() method
-            sizet_vt clusterDocIds;
-            IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK, clusterDocIds);
+        // Get docIds from the clusters to search in, vector will be filled from the IndexManager::getInstance().getClusteredIndex().getIDs() method
+        sizet_vt clusterDocIds;
+        IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK, clusterDocIds);
 
-            // Search the docs from the clusters
-            found_indices = this->searchClusterCos(&queryDoc, clusterDocIds, topK);
-        }
-    } break;
+        // Search the docs from the clusters
+        found_indices = this->searchRandomProjCos(&queryDoc, clusterDocIds, topK);
+    }break;
+    case IR_MODE::kCLUSTER_W2V: {
+         std::vector<std::pair<size_t, float>> leader_indexes = this->searchClusterCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0, true);
+        // Get docIds from the clusters to search in, vector will be filled from the IndexManager::getInstance().getClusteredIndex().getIDs() method
+        sizet_vt clusterDocIds;
+        IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK, clusterDocIds);
+        // Search the docs from the clusters
+        found_indices = this->searchClusterCos(&queryDoc, clusterDocIds, topK, true);
+    }break;
     case IR_MODE ::kTIERED: {
-        if (use_lsh) {
-            found_indices = QueryExecutionEngine::searchRandomProjCos(
-                &queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
-        } else {
-            found_indices =
-                QueryExecutionEngine::searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
-        }
+        found_indices = this->searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
     } break;
-    case IR_MODE ::kRANDOM: {
-        found_indices = QueryExecutionEngine::searchRandomProjCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
+    case IR_MODE::kTIERED_RAND: {
+        found_indices = this->searchRandomProjCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
     } break;
+    case IR_MODE::kTIERED_W2V: {
+        found_indices = this->searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK, true);
+    }break;
     case IR_MODE ::kNoMode: break;
     case IR_MODE ::kNumberOfModes: break;
     default: break;
@@ -100,7 +103,7 @@ const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_
     return found_indices;
 }
 
-const pair_sizet_float_vt QueryExecutionEngine::searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
+const pair_sizet_float_vt QueryExecutionEngine::searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK, bool use_w2v) {
 
     std::map<size_t, float> docId2Length;
     for (auto& elem : collectionIds) { // Map of doc id to length og that doc
@@ -108,18 +111,28 @@ const pair_sizet_float_vt QueryExecutionEngine::searchCollectionCos(const Docume
     }
 
     std::map<size_t, float> docId2Scores;
-    const string_vt& qcontent = query->getContent();
-    for (const auto& term :
-         qcontent) { // Calculate weightings per doc using the tf-idf of the word in the doc collection times the tf-idf of the term in the query
-        try {
-            const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList(term);
-            for (auto& [id, tf] : postingList.getPosting()) {
-                float idf = IndexManager::getInstance().getIdf(term);
-                docId2Scores[id] += (tf * idf * (Util::calcTf(term, qcontent) * idf));
-            }
-        } catch (const InvalidArgumentException& e) { continue; /* One of the query terms does not appear in the document collection. */ }
+    
+    // if we are using w2v we can not use our posting list, instead we have to use the normal tfidf vectors + the document word embedding vector
+    if (use_w2v) {
+        float_vt queryWordEmbedding = Util::combineVectors((*query).getTfIdfVector(), ((*query).getWordEmbeddingsVector()));
+        for (auto& elem : collectionIds) {
+            float sim = Util::calcCosSim(queryWordEmbedding,
+                                         Util::combineVectors(DocumentManager::getInstance().getDocument(elem).getTfIdfVector(), DocumentManager::getInstance().getDocument(elem).getWordEmbeddingsVector()));
+            docId2Scores[elem] = sim;
+        }
+    } else {
+        const string_vt& qcontent = query->getContent();
+        for (const auto& term : qcontent) { // Calculate weightings per doc using the tf-idf of the word in the doc collection times the tf-idf of the term in the query
+            try {
+                const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList(term);
+                for (auto& [id, tf] : postingList.getPosting()) {
+                    float idf = IndexManager::getInstance().getIdf(term);
+                    docId2Scores[id] += (tf * idf * (Util::calcTf(term, qcontent) * idf));
+                }
+            } catch (const InvalidArgumentException& e) { continue; /* One of the query terms does not appear in the document collection. */ }
+        }
     }
-
+    
     for (const auto& elem : docId2Length) { // Divide every score of a doc by the length of the document
         docId2Scores[elem.first] = docId2Scores[elem.first] / docId2Length[elem.first];
     }
@@ -134,14 +147,23 @@ const pair_sizet_float_vt QueryExecutionEngine::searchCollectionCos(const Docume
     return (!topK || topK > results.size()) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
 }
 
-const pair_sizet_float_vt QueryExecutionEngine::searchClusterCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
+const pair_sizet_float_vt QueryExecutionEngine::searchClusterCos(const Document* query, const sizet_vt& collectionIds, size_t topK, bool use_w2v) {
     std::map<size_t, float> docId2Scores;
 
-    for (auto& elem : collectionIds) {
-        float sim = Util::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
-        docId2Scores[elem] = sim;
+    if (use_w2v){
+        float_vt queryWordEmbedding = Util::combineVectors((*query).getTfIdfVector(), ((*query).getWordEmbeddingsVector()));
+        for (auto& elem : collectionIds) {
+            float sim = Util::calcCosSim(queryWordEmbedding,
+                                         Util::combineVectors(DocumentManager::getInstance().getDocument(elem).getTfIdfVector(), DocumentManager::getInstance().getDocument(elem).getWordEmbeddingsVector()));
+            docId2Scores[elem] = sim;
+        }
+    } else {
+        for (auto& elem : collectionIds) {
+            float sim = Util::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
+            docId2Scores[elem] = sim;
+        }
     }
-
+   
     // Convert map into vector of pairs
     std::vector<std::pair<size_t, float>> results;
     for (const auto& elem : docId2Scores) {
@@ -157,19 +179,22 @@ size_t QueryExecutionEngine::searchClusterCosFirstIndex(const Document* query, c
     return QueryExecutionEngine::getInstance().searchClusterCos(query, collectionIds, 1)[0].first; // get most similar leader
 }
 
-const pair_sizet_float_vt QueryExecutionEngine::searchTieredCos(const Document* query, const sizet_vt& collectionIds, size_t topK, bool useW2V) {
+const pair_sizet_float_vt QueryExecutionEngine::searchTieredCos(const Document* query, const sizet_vt& collectionIds, size_t topK, bool use_w2v) {
 
     std::map<size_t, float> docId2Scores;
 
-    for (auto& elem : collectionIds) {
-        float sim;
-        if (useW2V) {
-            std::cout << " we are using word2vec" << std::endl;
-            sim = Util::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
-        } else {
-            sim = Util::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
+     if (use_w2v){
+        float_vt queryWordEmbedding = Util::combineVectors((*query).getTfIdfVector(), ((*query).getWordEmbeddingsVector()));
+        for (auto& elem : collectionIds) {
+            float sim = Util::calcCosSim(queryWordEmbedding,
+                                         Util::combineVectors(DocumentManager::getInstance().getDocument(elem).getTfIdfVector(), DocumentManager::getInstance().getDocument(elem).getWordEmbeddingsVector()));
+            docId2Scores[elem] = sim;
         }
-        docId2Scores[elem] = sim;
+    } else {
+        for (auto& elem : collectionIds) {
+            float sim = Util::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
+            docId2Scores[elem] = sim;
+        }
     }
 
     // Convert map into vector of pairs
@@ -189,8 +214,7 @@ const pair_sizet_float_vt QueryExecutionEngine::searchRandomProjCos(const Docume
     std::map<size_t, float> docId2Scores;
 
     for (auto& elem : collectionIds) {
-        docId2Scores[elem] = Util::calcHammingDist(query->getRandProjTiVec(),
-                                                                          DocumentManager::getInstance().getDocumentMap().at(elem).getRandProjTiVec());
+        docId2Scores[elem] = Util::calcHammingDist(query->getRandProjTiVec(),DocumentManager::getInstance().getDocumentMap().at(elem).getRandProjTiVec());
     }
 
     // Convert map into vector of pairs
