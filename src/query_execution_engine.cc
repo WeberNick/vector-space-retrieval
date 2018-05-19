@@ -4,7 +4,8 @@
 /**
  * @brief Construct a new Query Processing Engine:: Query Processing Engine object
  */
-QueryExecutionEngine::QueryExecutionEngine() : _cb(nullptr), _stopwordFile() {}
+QueryExecutionEngine::QueryExecutionEngine() : _cb(nullptr)
+{}
 
 /**
  * @brief Initializes the singleton
@@ -14,22 +15,12 @@ QueryExecutionEngine::QueryExecutionEngine() : _cb(nullptr), _stopwordFile() {}
 void QueryExecutionEngine::init(const control_block_t& aControlBlock) {
     if (!_cb) {
         _cb = &aControlBlock;
-        _stopwordFile = _cb->stopwordPath(); // relative path from /path/to/repo/vector-space-retrieval
-        read(_stopwordFile);
         TRACE("QueryExecutionEngine: Initialized");
     }
 }
 
-void QueryExecutionEngine::read(const std::string& aFile) {
-    std::ifstream file(aFile);
-    std::string line;
-    while (std::getline(file, line)) {
-        Util::splitStringBoost(line, ',', this->_stopword_list);
-    }
-}
-
 const pair_sizet_float_vt QueryExecutionEngine::search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh) {
-    Document queryDoc = DocumentManager::getInstance().createQuery(query);
+    Document queryDoc = QueryManager::getInstance().createQueryDoc(query);
     return this->search(queryDoc, topK, searchType, use_lsh);
 }
 

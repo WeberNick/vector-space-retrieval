@@ -76,13 +76,6 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
         this->buildWordEmbeddingsVector(elem.second);
         this->buildRandProjVector(elem.second);
     }
-    for (auto& type: DocumentManager::getInstance().getQueryTypes()) {
-        for(auto& query: DocumentManager::getInstance().getQueriesForType(type)) {
-            this->buildTfIdfVector(query.second);
-            this->buildWordEmbeddingsVector(query.second);
-            this->buildRandProjVector(query.second);
-        }
-    }
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
         const size_t index = QueryExecutionEngine::getInstance().searchClusterCosFirstIndex(&doc, leaders);
