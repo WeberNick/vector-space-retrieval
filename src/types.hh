@@ -71,13 +71,15 @@ using CB = control_block_t;
 enum IR_MODE {
     kNoMode = -1,
     kVANILLA = 0,
-    kTIERED = 1,
-    kTIEREDW2V = 2,
-    kCLUSTER = 3,
-    kCLUSTERW2V = 4,
-    kRANDOM = 5,
-    kRANDOMW2V = 6,
-    kNumberOfModes = 7
+    kVANILLA_RAND = 1,
+    kVANILLA_W2V = 2,
+    kTIERED = 3,
+    kTIERED_RAND = 4,
+    kTIERED_W2V = 5,
+    kCLUSTER = 6,
+    kCLUSTER_RAND =7,
+    kCLUSTER_W2V = 8,
+    kNumberOfModes = 9
 };
 
 inline std::string modeToString(IR_MODE aMode) {
@@ -86,18 +88,22 @@ inline std::string modeToString(IR_MODE aMode) {
             return "Invalid!"; break;        // not needed but used for convention
         case kVANILLA: 
             return "VanillaVSM"; break;       // not needed but used for convention
+        case kVANILLA_RAND: 
+            return "VanillaVSM_RAND"; break;       // not needed but used for convention    
+        case kVANILLA_W2V: 
+            return "VanillaVSM_W2V"; break;       // not needed but used for convention
         case kTIERED: 
             return "TieredIndex"; break;      // not needed but used for convention
-        case kTIEREDW2V: 
-            return "TieredIndexW2V"; break;      // not needed but used for convention
+         case kTIERED_RAND: 
+            return "TieredIndex_RAND"; break;      // not needed but used for convention    
+        case kTIERED_W2V: 
+            return "TieredIndex_W2V"; break;      // not needed but used for convention
         case kCLUSTER: 
             return "Cluster"; break;          // not needed but used for convention
-        case kCLUSTERW2V: 
-            return "ClusterW2V"; break;          // not needed but used for convention
-        case kRANDOM: 
-            return "RandomProjection"; break; // not needed but used for convention
-        case kRANDOMW2V: 
-            return "RandomProjectionW2V"; break; // not needed but used for convention
+        case kCLUSTER_RAND: 
+            return "Cluster_RAND"; break;          // not needed but used for convention
+        case kCLUSTER_W2V: 
+            return "Cluster_W2V"; break;          // not needed but used for convention
         default:
             return "Mode not supported"; break;
     }
@@ -107,12 +113,14 @@ inline IR_MODE stringToMode(const std::string& aMode)
 {
     if(aMode == "kNoMode"){ return kNoMode; }
     else if(aMode == "kVANILLA"){ return kVANILLA; } 
+    else if(aMode == "kVANILLA_RAND"){ return kVANILLA_RAND; } 
+    else if(aMode == "kVANILLA_W2V"){ return kVANILLA_W2V; } 
     else if(aMode == "kTIERED"){ return kTIERED; } 
-    else if(aMode == "kTIEREDW2V"){ return kTIEREDW2V; } 
+    else if(aMode == "kTIERED_RAND"){ return kTIERED_RAND; } 
+    else if(aMode == "kTIERED_W2V"){ return kTIERED_W2V; } 
     else if(aMode == "kCLUSTER"){ return kCLUSTER; } 
-    else if(aMode == "kCLUSTERW2V"){ return kCLUSTERW2V; } 
-    else if(aMode == "kRANDOM"){ return kRANDOM; } 
-    else if(aMode == "kRANDOMW2V"){ return kRANDOMW2V; } 
+    else if(aMode == "kCLUSTER_RAND"){ return kCLUSTER_RAND; } 
+    else if(aMode == "kCLUSTER_W2V"){ return kCLUSTER_W2V; } 
     else{ return kNoMode; }
 }
 

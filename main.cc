@@ -45,12 +45,12 @@ void test(const control_block_t& aControlBlock) {
     e.constructJSON(set);
 }
 
-void search(std::string query, size_t topK, IR_MODE mode, bool use_lsh) {
+void search(std::string query, size_t topK, IR_MODE mode) {
     QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
 
     Measure lMeasureQuery;
     lMeasureQuery.start();
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode, use_lsh);
+    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode);
     lMeasureQuery.stop();
 
     double lSecondsQuery = lMeasureQuery.mTotalTime();
@@ -103,7 +103,7 @@ void testNico() {
     QueryExecutionEngine::getInstance().init(aControlBlock);
 
     std::string qs = "Util";
-    search(qs, 10, IR_MODE::kTIERED, false);
+    search(qs, 10, IR_MODE::kTIERED);
 
 }
 

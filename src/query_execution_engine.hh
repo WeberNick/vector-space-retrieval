@@ -45,8 +45,8 @@ class QueryExecutionEngine {
      * @param searchType What type of search should be executed
      * @return pair_sizet_float_vt A list of document - similarity pairs ordered descending
      */
-    const pair_sizet_float_vt search(std::string& query, size_t topK, IR_MODE searchType, bool use_lsh);
-    const pair_sizet_float_vt search(Document& query, size_t topK, IR_MODE searchType, bool use_lsh);
+    const pair_sizet_float_vt search(std::string& query, size_t topK, IR_MODE searchType);
+    const pair_sizet_float_vt search(Document& query, size_t topK, IR_MODE searchType);
 
     /**
      * @brief Search function for searching the whole document collection
@@ -56,7 +56,7 @@ class QueryExecutionEngine {
      * @param topK How many results are retrieved
      * @return pair_sizet_float_vt  A list of document - similarity pairs ordered descending
      */
-    const pair_sizet_float_vt searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK);
+    const pair_sizet_float_vt searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK, bool use_w2v = false);
 
     /**
      * @brief Search function for searching the cluster representation
@@ -66,7 +66,7 @@ class QueryExecutionEngine {
      * @param topK How many results are retrieved
      * @return pair_sizet_float_vt  A list of document - similarity pairs ordered descending
      */
-    const pair_sizet_float_vt searchClusterCos(const Document* query, const sizet_vt& collectionIds, size_t topK);
+    const pair_sizet_float_vt searchClusterCos(const Document* query, const sizet_vt& collectionIds, size_t topK, bool use_w2v = false);
 
     /**
      * @brief Just a wrapper function for @see QueryExecutionEngine::searchClusterCos to retrieve the docId of the most similar doc
@@ -85,7 +85,7 @@ class QueryExecutionEngine {
      * @param topK How many results are retrieved
      * @return pair_sizet_float_vt  A list of document - similarity pairs ordered descending
      */
-    const pair_sizet_float_vt searchTieredCos(const Document* query, const sizet_vt& collectionIds, size_t topK, bool useW2V = false);
+    const pair_sizet_float_vt searchTieredCos(const Document* query, const sizet_vt& collectionIds, size_t topK, bool use_w2v = false);
 
     /**
      * @brief Search function for searching when random projections are used
