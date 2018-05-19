@@ -43,7 +43,6 @@ class Search extends Component {
 
     search: {
       value: '',
-      lsh: false,
       vsm_type: 'kVANILLA',
       number_results: 10,
     },
@@ -95,7 +94,6 @@ class Search extends Component {
       query: this.state.search.value,
       topK: this.state.search.number_results,
       mode: this.state.search.vsm_type,
-      lsh: this.state.search.lsh,
     });
   };
 
@@ -165,7 +163,7 @@ class Search extends Component {
               </div>
               <div className="field-body">
                 <div className="field is-narrow">
-                  <div className="control">
+                  <div className="control no-radio-margin" style={{display: 'inline-grid'}}>
                     <label className="radio">
                       <input
                         type="radio"
@@ -176,6 +174,28 @@ class Search extends Component {
                         checked={this.state.search.vsm_type === 'kVANILLA'}
                       />
                       Vanilla
+                    </label>
+                    <label className="radio">
+                      <input
+                        type="radio"
+                        name="vsm_type"
+                        value="kVANILLA_RAND"
+                        disabled={!this.state.ready}
+                        onChange={this.handleSearchConfigChange}
+                        checked={this.state.search.vsm_type === 'kVANILLA_RAND'}
+                      />
+                      Vanilla + Random Projection
+                    </label>
+                    <label className="radio">
+                      <input
+                        type="radio"
+                        name="vsm_type"
+                        value="kVANILLA_W2V"
+                        disabled={!this.state.ready}
+                        onChange={this.handleSearchConfigChange}
+                        checked={this.state.search.vsm_type === 'kVANILLA_W2V'}
+                      />
+                      Vanilla + Word Embeddings
                     </label>
                     <label className="radio">
                       <input
@@ -192,6 +212,28 @@ class Search extends Component {
                       <input
                         type="radio"
                         name="vsm_type"
+                        value="kTIERED_RAND"
+                        disabled={!this.state.ready}
+                        onChange={this.handleSearchConfigChange}
+                        checked={this.state.search.vsm_type === 'kTIERED_RAND'}
+                      />
+                      Tiered + Random Projections
+                    </label>
+                    <label className="radio">
+                      <input
+                        type="radio"
+                        name="vsm_type"
+                        value="kTIERED_W2V"
+                        disabled={!this.state.ready}
+                        onChange={this.handleSearchConfigChange}
+                        checked={this.state.search.vsm_type === 'kTIERED_W2V'}
+                      />
+                      Tiered + Word Embeddings
+                    </label>
+                    <label className="radio">
+                      <input
+                        type="radio"
+                        name="vsm_type"
                         value="kCLUSTER"
                         disabled={!this.state.ready}
                         onChange={this.handleSearchConfigChange}
@@ -199,27 +241,27 @@ class Search extends Component {
                       />
                       Cluster
                     </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/*use random projections*/}
-            <div className="field is-horizontal">
-              <div className="field-label">
-                <label className="label">Use LSH</label>
-              </div>
-              <div className="field-body">
-                <div className="field is-narrow">
-                  <div className="control">
-                    <label className="checkbox">
+                    <label className="radio">
                       <input
-                        type="checkbox"
-                        name="lsh"
+                        type="radio"
+                        name="vsm_type"
+                        value="kCLUSTER_RAND"
                         disabled={!this.state.ready}
-                        defaultChecked={this.state.search.lsh}
                         onChange={this.handleSearchConfigChange}
+                        checked={this.state.search.vsm_type === 'kCLUSTER_RAND'}
                       />
+                      Cluster + Random Projections
+                    </label>
+                    <label className="radio">
+                      <input
+                        type="radio"
+                        name="vsm_type"
+                        value="kCLUSTER_W2V"
+                        disabled={!this.state.ready}
+                        onChange={this.handleSearchConfigChange}
+                        checked={this.state.search.vsm_type === 'kCLUSTER_W2V'}
+                      />
+                      Cluster + Word Embeddings
                     </label>
                   </div>
                 </div>

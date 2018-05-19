@@ -129,11 +129,16 @@ const gloablStyles = injectGlobal`
       }
     }
   
-
     .bar-legend-icon{
       min-width: 20px;
       min-height: 20px;
       display: inline-block;
+    }
+  }
+
+  .no-radio-margin {
+    .radio {
+      margin: 0px !important;
     }
   }
 
