@@ -241,28 +241,62 @@ int main(const int argc, const char* argv[]) {
     }
 
 
-    //if(!Util::endsWith(fs::current_path().string(), "vector-space-retrieval")) 
-    //{
-        //const std::string lErrMsg = std::string(" ## Warning : Executable Please start the executable from the path ending with 'vector-space-retrieval'! \n            ## Current Working Directory: ") + std::string(fs::current_path());
-        //TRACE(lErrMsg);
-        //std::cerr << lErrMsg << std::endl;
-        //return -1;
-    //}
+    if(!Util::endsWith(fs::current_path().string(), "vector-space-retrieval")) 
+    {
+        std::cerr << " ## Warning : Programm was not executed from the recommended directory " 
+            << "'vector-space-retrieval'. Make sure to provide all necessary file "
+            << "paths as command line argument. For further information, start the executable with '--help'."
+            << "\n            ## Current Working Directory: " << fs::current_path() << std::endl;
+    }
 
-       //if(!(fs::exists(lArgs.collectionPath())))
-       //{
-           //std::cerr << "Given path to the master partition is invalid." << std::endl;
-           //return -1; //wait until boot and so on works and uncomment this
-       //}
-       //if(lArgs.trace() && !fs::exists(lArgs.tracePath()))
-       //{
-           //std::cerr << "The path where to store the trace file is invalid." << std::endl;
-           //return -1;
-       //}
-   
+   if(!(fs::exists(lArgs.collectionPath())))
+   {
+       std::cerr << "Given path to the data collection is invalid." << std::endl;
+       return -1;
+   }
 
+   if(!fs::exists(lArgs.queryPath()))
+   {
+       std::cerr << "Given path to the query collection is invalid." << std::endl;
+       return -1;
+   }
 
-    // THROW EXCEPTION if numtiers < 2
+   if(!fs::exists(lArgs.relevanceScoresPath()))
+   {
+       std::cerr << "Given path to the relevance scores is invalid." << std::endl;
+       return -1;
+   }
+
+   if(!fs::exists(lArgs.wordEmbeddingsPath()))
+   {
+       std::cerr << "Given path to the word embeddings is invalid." << std::endl;
+       return -1;
+   }
+
+   if(!fs::exists(lArgs.stopwordPath()))
+   {
+       std::cerr << "Given path to the stopwords file is invalid." << std::endl;
+       return -1;
+   }
+
+   if(!fs::exists(lArgs.evalPath()))
+   {
+       std::cerr << "The path where to store the evaluation is invalid." << std::endl;
+       return -1;
+   }
+
+   if(lArgs.trace() && !fs::exists(lArgs.tracePath()))
+   {
+       std::cerr << "The path where to store the trace file is invalid." << std::endl;
+       return -1;
+   }
+
+   if(lArgs.tiers() < 2)
+   {
+       std::cerr << "The number of tiers must be larger than two." << std::endl;
+       return -1;
+   }
+
     const control_block_t lCB = {
         lArgs.trace(),               // trace activated?
         lArgs.measure(),             // measure runtime/IR performance?
