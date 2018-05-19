@@ -1,6 +1,6 @@
 /*********************************************************************
  * @file    vec_util.hh
- * @author 	Nick Weber
+ * @author 	Nick Weber, Alexander Weiß
  * @date    Mai 18, 2018
  * @brief 	
  * @bugs 	TBD
@@ -28,6 +28,7 @@ namespace Util
 {
     /**
      * @brief Create a vector consisting of the set difference of two vectors
+     * 
      * @param v1 the first vector
      * @param v2 the second vector
      * @return a vector containing the set difference of both input vectors

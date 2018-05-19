@@ -77,11 +77,11 @@ void QueryManager::init(const CB& aControlBlock)
         }
 
         const std::string& lQueryPath = _cb->queryPath();
-        _qAll.init(_stopwords, lQueryPath, _delimiter);
-        _qNTT.init(_stopwords, lQueryPath, _delimiter);
+        //_qAll.init(_stopwords, lQueryPath, _delimiter);
+        //_qNTT.init(_stopwords, lQueryPath, _delimiter);
         _qTitles.init(_stopwords, lQueryPath, _delimiter);
-        _qVidDesc.init(_stopwords, lQueryPath, _delimiter);
-        _qVidTitles.init(_stopwords, lQueryPath, _delimiter);
+        //_qVidDesc.init(_stopwords, lQueryPath, _delimiter);
+        //_qVidTitles.init(_stopwords, lQueryPath, _delimiter);
     }
 }
  

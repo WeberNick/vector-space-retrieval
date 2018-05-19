@@ -1,3 +1,20 @@
+/*********************************************************************
+ * @file    query_execution_engine.hh
+ * @author 	Nick Weber, Alexander Weiß
+ * @date    May 18, 2018
+ * @brief 	Top level implementation of the class responsible for
+ *          searching our document collection. Implements different
+ *          types of search modes.
+ * @bugs 	  Currently no bugs known 
+ * @todos 	Currently no todos
+ * 
+ * @section	DESCRIPTION
+ * TBD
+ * 
+ * @section USE
+ * TBD
+ ********************************************************************/
+
 #pragma once
 
 #include "types.hh"
