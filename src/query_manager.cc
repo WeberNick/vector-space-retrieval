@@ -29,6 +29,26 @@ Document QueryManager::QueryType::createQueryDoc(const string_vt& aStopwords, st
     IndexManager::getInstance().buildWordEmbeddingsVector(lQueryDoc);
     IndexManager::getInstance().buildRandProjVector(lQueryDoc);
 
+   
+    if (lQueryDoc.getDocID() == "PLAIN-3448") {
+
+      
+
+        std::cout << "TFIDFVECTOR" << std::endl;
+        for (auto& elem: lQueryDoc.getTfIdfVector()) {
+            std::cout << elem << ",";
+        }
+        std::cout << std::endl;
+        std::cout << "WordEmbeddingsVector" << std::endl;
+        for (auto& elem: lQueryDoc.getWordEmbeddingsVector()) {
+            std::cout << elem << ",";
+        }
+        std::cout << std::endl;
+        std::cout << "RandProjectionsVector" << std::endl;
+        std::cout << lQueryDoc.getRandProjTiVec() << std::endl;
+    }
+
+
     return lQueryDoc;
 }
 

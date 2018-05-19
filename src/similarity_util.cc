@@ -9,11 +9,20 @@ namespace Util
                 throw VectorException(FLF, traceMsg);
             }
 
+            if (vectorLength(aTfIdf_a) == 0 || vectorLength(aTfIdf_b) == 0){
+                return 0;
+            }
+
             double dotProduct = 0;
             for (size_t i = 0; i < aTfIdf_a.size(); ++i) {
                 dotProduct += (aTfIdf_a[i] * aTfIdf_b[i]);
             }
-            return static_cast<float>(dotProduct / (vectorLength(aTfIdf_a) * vectorLength(aTfIdf_b)));
+
+            double denom = vectorLength(aTfIdf_a) * vectorLength(aTfIdf_b);
+            float result = static_cast<float>(dotProduct / (vectorLength(aTfIdf_a) * vectorLength(aTfIdf_b)));    
+
+            std::cout << "Cos-Sim" << dotProduct << "/" << denom << " = " << result << std::endl;
+            return result;
         }
 
         float calcCosDist(const float_vt& aTF_IDF_a, const float_vt& aTF_IDF_b) { return 1 - calcCosSim(aTF_IDF_a, aTF_IDF_b); }

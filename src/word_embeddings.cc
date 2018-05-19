@@ -20,9 +20,7 @@ void WordEmbeddings::init(const control_block_t& aControlBlock) {
 void WordEmbeddings::read(const std::string& aFile) {
     std::ifstream file(aFile);
     std::string line;
-    int count = 0;
     while (std::getline(file, line)) {
-        std::cout << count << std::endl;
         string_vt parts;
         float_vt embedding;
         Util::splitStringBoost(line, ' ', parts);
@@ -31,7 +29,6 @@ void WordEmbeddings::read(const std::string& aFile) {
             embedding.push_back(stof(parts[j]));
         }
         this->insert(std::make_pair(word, embedding));
-        count++;
     }
 }
 
@@ -57,5 +54,12 @@ void WordEmbeddings::calcWordEmbeddingsVector(const string_vt& doc_content, floa
             count++;
         } catch (InvalidArgumentException e) {} //*std::cout << e.what() << std::endl; }
     }
-    std::transform(out.begin(), out.end(), out.begin(), [count](float i) { return i / count; });
+
+    if (count == 0){
+        std::transform(out.begin(), out.end(), out.begin(), [count](float i) { return i; });
+    } else {
+        std::transform(out.begin(), out.end(), out.begin(), [count](float i) { return i / count; });
+    }
+
+    
 }

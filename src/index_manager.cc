@@ -89,10 +89,10 @@ void IndexManager::buildWordEmbeddingsVector(Document& doc) {
     wevec.resize(300);
 
     const string_vt& content = doc.getContent();
-    
+
     // TODO:
     // test make_unique
-    
+
     this->getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, wevec);
     doc.setWordEmbeddingsVector(wevec);
 }
