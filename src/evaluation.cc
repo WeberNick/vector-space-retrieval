@@ -52,7 +52,7 @@ double IRPM::accuracy(const std::string& aQueryID, const sizet_vt& aRanking)
     tp_tn_fp_fn(aQueryID, aRanking, lTP, lTN, lFP, lFN);
     const double lNumerator = static_cast<double>(lTP) + static_cast<double>(lTN);
     const double lDenominator = lNumerator + static_cast<double>(lFP) + static_cast<double>(lFN);
-    return lNumerator / lDenominator;
+    return (lDenominator != 0) ? (lNumerator / lDenominator) : 0;
 }
 
 double IRPM::precision(const std::string& aQueryID, const sizet_vt& aRanking)
@@ -61,7 +61,7 @@ double IRPM::precision(const std::string& aQueryID, const sizet_vt& aRanking)
     tp_tn_fp_fn(aQueryID, aRanking, lTP, lTN, lFP, lFN);
     const double lNumerator = static_cast<double>(lTP);
     const double lDenominator = lNumerator + static_cast<double>(lFP);
-    return lNumerator / lDenominator;
+    return (lDenominator != 0) ? (lNumerator / lDenominator) : 0;
 }
 
 double IRPM::recall(const std::string& aQueryID, const sizet_vt& aRanking)
@@ -70,7 +70,7 @@ double IRPM::recall(const std::string& aQueryID, const sizet_vt& aRanking)
     tp_tn_fp_fn(aQueryID, aRanking, lTP, lTN, lFP, lFN);
     const double lNumerator = static_cast<double>(lTP);
     const double lDenominator = lNumerator + static_cast<double>(lFN);
-    return lNumerator / lDenominator;
+    return (lDenominator != 0) ? (lNumerator / lDenominator) : 0;
 }
 
 double IRPM::fMeasure(const std::string& aQueryID, const sizet_vt& aRanking, const double aBeta)
@@ -79,7 +79,7 @@ double IRPM::fMeasure(const std::string& aQueryID, const sizet_vt& aRanking, con
     const double lRecall = recall(aQueryID, aRanking);
     const double lNumerator = (std::pow(aBeta, 2) + 1) * lPrecision * lRecall; 
     const double lDenominator = (std::pow(aBeta, 2) * lPrecision) + lRecall;
-    return lNumerator / lDenominator;
+    return (lDenominator != 0) ? (lNumerator / lDenominator) : 0;
 }
 
 double IRPM::avgPrecision(const std::string& aQueryID, const sizet_vt& aRanking)
@@ -95,7 +95,8 @@ double IRPM::avgPrecision(const std::string& aQueryID, const sizet_vt& aRanking)
             lSum += precision(aQueryID, lSub);
         }
     }
-    return lSum / lRelevant.size();
+    const double lDenominator = lRelevant.size();
+    return (lDenominator != 0) ? (lSum / lDenominator) : 0;
 }
 
 double IRPM::meanAvgPrecision(const std::unordered_map<std::string, double>& aAvgPrecisionMap)
@@ -105,7 +106,8 @@ double IRPM::meanAvgPrecision(const std::unordered_map<std::string, double>& aAv
     {
         lSum += elem.second;
     }
-    return lSum / aAvgPrecisionMap.size();
+    const double lDenominator = aAvgPrecisionMap.size();
+    return (lDenominator != 0) ? (lSum / lDenominator) : 0;
 }
 
 double IRPM::bDCG(const std::string& aQueryID, const sizet_vt& aRanking)
