@@ -103,7 +103,7 @@ cd vector-space-retrieval
 |-----------------------|---------------------------------------------------------------------------------|----------------------------|-------------------|
 | -c/--c                | Set a custom C compiler path                                                    | Empty (Use system default) | String Path       |
 | -cxx/--cxx            | Set a custom C++ compiler path                                                  | Empty (Use system default) | String Path       |
-| -b/--boost            | Set path to Boost include dir                                                   | Empty (Try standard paths) | String Path       |
+| -b/--boost            | Set a path to Boost include dir                                                   | Empty (Try standard paths) | String Path       |
 | -a/--all              | Deletes every generated directory as well as all cloning all external Libraries | false                      | -                 |
 
 #### Run

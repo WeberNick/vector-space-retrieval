@@ -150,7 +150,6 @@ Temporary Items
 build/
 
 # Own Stuff
-docs/html
 docs/latex
 data/nfcorpus
 tests/lib/

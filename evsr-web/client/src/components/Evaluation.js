@@ -39,94 +39,98 @@ class Evaluation extends Component {
 
     const { data } = this.state;
 
+    
+
     if (data) {
-      var lineData = {
-        labels: data[0].queries.map(query => {
+      /*var lineData = {
+        labels: data[2].modes[0].queries.map(query => {
           return query.name;
         }),
         datasets: [
           {
-            label: 'Cluster',
+            label: 'Cluster_W2V',
             fillColor: 'rgba(231, 76, 60,0.5)',
             strokeColor: 'rgba(231, 76, 60,0.8)',
             highlightFill: 'rgba(231, 76, 60,0.75)',
             highlightStroke: 'rgba(231, 76, 60,1)',
             pointHighlightFill: 'rgba(231, 76, 60,1)',
-            data: data[0].queries.map(query => {
+            data: data[2].modes[0].queries.map(query => {
               return query.time;
             }),
           },
           {
-            label: 'Vanilla',
+            label: 'Cluster_RAND',
             fillColor: 'rgba(46, 204, 115,0.5)',
             strokeColor: 'rgba(46, 204, 115,0.8)',
             highlightFill: 'rgba(46, 204, 115,0.75)',
             highlightStroke: 'rgba(46, 204, 115,1)',
             pointHighlightFill: 'rgba(46, 204, 115,1)',
-            data: data[1].queries.map(query => {
+            data: data[2].modes[1].queries.map(query => {
               return query.time;
             }),
           },
           {
-            label: 'Tiered',
+            label: 'Cluster',
             fillColor: 'rgba(52, 153, 219,0.5)',
             strokeColor: 'rgba(52, 153, 219,0.8)',
             highlightFill: 'rgba(52, 153, 219,0.75)',
             highlightStroke: 'rgba(52, 153, 219,1)',
             pointHighlightFill: 'rgba(52, 153, 219,1)',
-            data: data[2].queries.map(query => {
+            data: data[2].modes[2].queries.map(query => {
               return query.time;
             }),
           },
         ],
-      };
+      };*/
 
       var barData = {
         labels: ['Type'],
         datasets: [
           {
-            label: 'Cluster',
+            label: data[2].modes[0].name,
             fillColor: 'rgba(231, 76, 60,0.5)',
             strokeColor: 'rgba(231, 76, 60,0.8)',
             highlightFill: 'rgba(231, 76, 60,0.75)',
             highlightStroke: 'rgba(231, 76, 60,1)',
             data: [
-              data[0].queries.reduce((sum, current) => {
-                return sum + current.time;
-              }, 0) / data[0].queries.length,
+              data[2].modes[0].queries.reduce((sum, current) => {
+                return sum + current.perf_rnt;
+              }, 0) / data[2].modes[0].queries.length,
             ],
           },
           {
-            label: 'Vanilla',
+            label: data[2].modes[1].name,
             fillColor: 'rgba(46, 204, 115,0.5)',
             strokeColor: 'rgba(46, 204, 115,0.8)',
             highlightFill: 'rgba(46, 204, 115,0.75)',
             highlightStroke: 'rgba(46, 204, 115,1)',
             data: [
-              data[1].queries.reduce((sum, current) => {
-                return sum + current.time;
-              }, 0) / data[1].queries.length,
+              data[2].modes[1].queries.reduce((sum, current) => {
+                return sum + current.perf_rnt;
+              }, 0) / data[2].modes[1].queries.length,
             ],
           },
           {
-            label: 'Tiered',
+            label: data[2].modes[2].name,
             fillColor: 'rgba(52, 153, 219,0.5)',
             strokeColor: 'rgba(52, 153, 219,0.8)',
             highlightFill: 'rgba(52, 153, 219,0.75)',
             highlightStroke: 'rgba(52, 153, 219,1)',
             data: [
-              data[2].queries.reduce((sum, current) => {
-                return sum + current.time;
-              }, 0) / data[2].queries.length,
+              data[2].modes[2].queries.reduce((sum, current) => {
+                return sum + current.perf_rnt;
+              }, 0) / data[2].modes[2].queries.length,
             ],
           },
         ],
       };
 
+      console.log(barData)
+
       return (
         <div>
           <h2 className="title is-2">Perfomance per query</h2>
-          <LineChart
+          {/*<LineChart
             data={lineData}
             ref={element => (this.lineChart = element)}
             options={{
@@ -139,8 +143,8 @@ class Evaluation extends Component {
               },
             }}
           />
-          <div dangerouslySetInnerHTML={{ __html: legendLine }} />
-
+          <div dangerouslySetInnerHTML={{ __html: legendLine }} />*/}
+          
           <h2 className="title is-2">Perfomance per type averaged</h2>
           <BarChart
             data={barData}
