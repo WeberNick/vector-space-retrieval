@@ -125,7 +125,49 @@ class Evaluation extends Component {
         ],
       };
 
-      console.log(barData)
+      var barData2 = {
+        labels: ['Type'],
+        datasets: [
+          {
+            label: data[2].modes[0].name,
+            fillColor: 'rgba(231, 76, 60,0.5)',
+            strokeColor: 'rgba(231, 76, 60,0.8)',
+            highlightFill: 'rgba(231, 76, 60,0.75)',
+            highlightStroke: 'rgba(231, 76, 60,1)',
+            data: [
+              data[2].modes[0].queries.reduce((sum, current) => {
+                return sum + current.perf_fms;
+              }, 0) / data[2].modes[0].queries.length,
+            ],
+          },
+          {
+            label: data[2].modes[1].name,
+            fillColor: 'rgba(46, 204, 115,0.5)',
+            strokeColor: 'rgba(46, 204, 115,0.8)',
+            highlightFill: 'rgba(46, 204, 115,0.75)',
+            highlightStroke: 'rgba(46, 204, 115,1)',
+            data: [
+              data[2].modes[1].queries.reduce((sum, current) => {
+                return sum + current.perf_fms;
+              }, 0) / data[2].modes[1].queries.length,
+            ],
+          },
+          {
+            label: data[2].modes[2].name,
+            fillColor: 'rgba(52, 153, 219,0.5)',
+            strokeColor: 'rgba(52, 153, 219,0.8)',
+            highlightFill: 'rgba(52, 153, 219,0.75)',
+            highlightStroke: 'rgba(52, 153, 219,1)',
+            data: [
+              data[2].modes[2].queries.reduce((sum, current) => {
+                return sum + current.perf_fms;
+              }, 0) / data[2].modes[2].queries.length,
+            ],
+          },
+        ],
+      };
+
+      console.log(barData2)
 
       return (
         <div>
@@ -145,7 +187,7 @@ class Evaluation extends Component {
           />
           <div dangerouslySetInnerHTML={{ __html: legendLine }} />*/}
           
-          <h2 className="title is-2">Perfomance per type averaged</h2>
+          <h2 className="title is-2">Runtime Performance (Averaged)</h2>
           <BarChart
             data={barData}
             ref={element => (this.barChart = element)}
@@ -160,6 +202,20 @@ class Evaluation extends Component {
           />
 
           <div dangerouslySetInnerHTML={{ __html: legendBar }} />
+
+           <h2 className="title is-2">Mean F-Measure (Averaged)</h2>
+          <BarChart
+            data={barData2}
+            ref={element => (this.barChart = element)}
+            options={{
+              scaleShowGridLines: true,
+              responsive: true,
+              maintainAspectRatio: false,
+              scaleLabel: f => {
+                return f.value ;
+              },
+            }}
+          />
         </div>
       );
     } else {

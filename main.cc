@@ -212,7 +212,7 @@ void testEval(const control_block_t& aControlBlock) {
         std::cout << "Type " << queryManager.getTypeName(type) << std::endl;
         */
 
-       QUERY_TYPE type = QUERY_TYPE::kTITLES;
+       QUERY_TYPE type = QUERY_TYPE::kVIDDESC;
         for (int j = 0; j < kNumberOfModes; ++j) {
             IR_MODE mode = static_cast<IR_MODE>(j);
 
