@@ -162,7 +162,8 @@ double IRPM::nDCG(const std::string& aQueryID, const sizet_vt& aRanking, const b
 {
     uint lRelevantDocsFound = 0;
     double lDCG = (aBDCG) ? bDCG(aQueryID, aRanking, lRelevantDocsFound) : rDCG(aQueryID, aRanking, lRelevantDocsFound);
-    return (lDCG / iDCG(aQueryID, lRelevantDocsFound));
+    const double lDenominator = iDCG(aQueryID, lRelevantDocsFound);
+    return (lDenominator != 0) ? (lDCG / lDenominator) : 0;
 }
 
 const IRPM::scores_vt& IRPM::getQueryScores(const std::string& aQueryID)
@@ -230,15 +231,6 @@ Evaluation::Evaluation() :
         }
     
     }
-        //_evalResults[modeToString(kVANILLA)].init(modeToString(kVANILLA));
-        //_evalResults[modeToString(kVANILLA_RAND)].init(modeToString(kVANILLA_RAND));
-        //_evalResults[modeToString(kVANILLA_W2V)].init(modeToString(kVANILLA_W2V));
-        //_evalResults[modeToString(kTIERED)].init(modeToString(kTIERED));
-        //_evalResults[modeToString(kTIERED_RAND)].init(modeToString(kTIERED_RAND));
-        //_evalResults[modeToString(kTIERED_W2V)].init(modeToString(kTIERED_W2V));
-        //_evalResults[modeToString(kCLUSTER)].init(modeToString(kCLUSTER));
-        //_evalResults[modeToString(kCLUSTER_RAND)].init(modeToString(kCLUSTER_RAND));
-        //_evalResults[modeToString(kCLUSTER_W2V)].init(modeToString(kCLUSTER_W2V));
 }
 
 void Evaluation::init(const CB& aControlBlock)
@@ -383,45 +375,4 @@ void Evaluation::constructJSON(const str_set& aQueryNames)
     std::ofstream lOutputFile(lPath.c_str(), std::ofstream::out);
     lOutputFile << lTypes << std::endl;
     lOutputFile.close();
-
-
-    //TRACE("Construct JSON object containing all evaluation results");
-    //json lModes = json::array();    
-    //for(const auto& [mode, results] : _evalResults)
-    //{
-        //json lMode = json::object();
-        //lMode["name"] = mode;
-        //json lQueryResults = json::array();
-        //for(const auto& query : aQueryNames)
-        //{
-            //try
-            //{
-                //json lQuery = json::object();
-                //lQuery["name"] = query;
-                //lQuery["perf_rnt"] = results.getPerfRuntime(query);
-                //lQuery["perf_acc"] = results.getPerfAccuracy(query);
-                //lQuery["perf_pre"] = results.getPerfPrecision(query);
-                //lQuery["perf_rec"] = results.getPerfRecall(query);
-                //lQuery["perf_fms"] = results.getPerfFMeasure(query);
-                //lQuery["perf_avp"] = results.getPerfAvgPrecision(query);
-                //lQuery["perf_dcg"] = results.getPerfDCG(query);
-                //lQueryResults.push_back(lQuery);
-            //}
-            //catch (const std::out_of_range& ex) 
-            //{
-                //const std::string lErrMsg = std::string("No evaluation found for query '" + query + std::string("'"));
-                //TRACE(lErrMsg);
-            //}
-        //}
-        //lMode["queries"] = lQueryResults;
-        //lMode["map"] = results.getPerfMAP();
-        //lModes.push_back(lMode);
-    //}
-    //std::time_t lCurrTime = std::time(nullptr);
-    //std::string lTime = std::string(std::ctime(&lCurrTime));
-    //std::string lPath = _evalPath;
-    //lPath.append(lTime.substr(0, lTime.size() - 1).append(".json"));
-    //std::ofstream lOutputFile(lPath.c_str(), std::ofstream::out);
-    //lOutputFile << lModes << std::endl;
-    //lOutputFile.close();
 }
