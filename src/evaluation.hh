@@ -85,6 +85,9 @@ class Evaluation {
             ~RelScore() = default;
 
           public:
+            inline bool operator<(const RelScore& aRHS){ return _score < aRHS.getScore(); }
+
+          public:
             inline const std::string& getQueryID() const { return _qID; }
             inline const std::string& getDocumentID() const { return _dID; }
             inline uint getScore() const { return _score; }
