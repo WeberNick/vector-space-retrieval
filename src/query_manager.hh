@@ -82,36 +82,22 @@ class QueryManager
                  * @brief Getter for the he document map containing all queries as documents
                  * @return Return the ID->Document map for this type where the query documents are stored in
                  */
-                inline const doc_mt&        getQueryMap() const { return _qMap; }
-                inline const doc_mt&        getQueryMap() { return _qMap; }
+                inline const str_str_mt&        getQueryMap() const { return _qMap; }
+                inline const str_str_mt&        getQueryMap() { return _qMap; }
 
                 /**
                  * @brief Getter for the internal (size_t) query IDs
                  * @return vector containing all query IDs of this query typee
                  */
-                inline const sizet_vt&      getQueryIDs() const { return _qIDs; }
-                inline const sizet_vt&      getQueryIDs() { return _qIDs; }
-
-                /**
-                 * @brief Getter for the string ID to size_t ID map
-                 * @return returns the map containing all mappings from string ID to size_t ID
-                 */
-                inline const str_sizet_mt&  getStrToIDs() const { return _qStrIDs; }
-                inline const str_sizet_mt&  getStrToIDs() { return _qStrIDs; }
-
-                /**
-                 * @brief Getter for the query document associated with the given internal size_t ID
-                 * @return the query document representation
-                 */
-                inline const Document&      getQuery(size_t aID) const { return _qMap.at(aID); }
-                inline const Document&      getQuery(size_t aID) { return _qMap.at(aID); }
+                inline const string_vt&      getQueryIDs() const { return _qIDs; }
+                inline const string_vt&      getQueryIDs() { return _qIDs; }
 
                 /**
                  * @brief Getter for the query document associated with the given string ID
                  * @return the query document representation
                  */
-                inline const Document&      getQuery(const std::string& aID) const { return getQuery(_qStrIDs.at(aID)); }
-                inline const Document&      getQuery(const std::string& aID) { return getQuery(_qStrIDs.at(aID)); }
+                inline const std::string&      getQuery(const std::string& aID) const { return _qMap.at(aID); }
+                inline const std::string&      getQuery(const std::string& aID) { return _qMap.at(aID); }
 
                 /**
                  * @brief Adds the given document to all the data structures maintained by the query type:
@@ -119,18 +105,16 @@ class QueryManager
                  *        -Add internal size_t ID to the vector of query IDs
                  *        -Add string ID to the mapping of string ID to internal size_t ID
                  */
-                inline void addDoc(const Document& aDoc)
+                inline void addDoc(const std::string& aQueryID, const std::string& aContent)
                 { 
-                    _qMap.try_emplace(aDoc.getID(), aDoc); 
-                    _qIDs.push_back(aDoc.getID());
-                    _qStrIDs.insert(std::make_pair(aDoc.getDocID(), aDoc.getID()));
+                    _qMap.insert(std::make_pair(aQueryID, aContent)); 
+                    _qIDs.push_back(aQueryID);
                 }
 
             private:
                 const std::string   _qType;
-                doc_mt              _qMap;
-                sizet_vt            _qIDs;
-                str_sizet_mt        _qStrIDs;
+                str_str_mt          _qMap;
+                string_vt           _qIDs;
         }; //end QueryType class scope
 
     private:
@@ -181,25 +165,16 @@ class QueryManager
          * @param aQueryType enum representation of the query type
          * @return Return the ID->Document map for this type where the query documents are stored in
          */
-        const doc_mt& getQueryMap(const QUERY_TYPE aQueryType) const;
-        doc_mt& getQueryMap(const QUERY_TYPE aQueryType);
+        const str_str_mt& getQueryMap(const QUERY_TYPE aQueryType) const;
+        str_str_mt& getQueryMap(const QUERY_TYPE aQueryType);
 
         /**
          * @brief Getter call to get access to the internal (size_t) query IDs for this type
          * @param aQueryType enum representation of the query type
          * @return vector containing all query IDs of this query typee
          */
-        const sizet_vt& getQueryIDs(const QUERY_TYPE aQueryType) const;
-        const sizet_vt& getQueryIDs(const QUERY_TYPE aQueryType);
-
-        /**
-         * @brief Getter for the query document associated with the given internal size_t ID
-         * @param aQueryType enum representation of the query type
-         * @param aQueryID the internal size_t ID representing the query
-         * @return the query document representation
-         */
-        const Document& getQuery(const QUERY_TYPE aQueryType, size_t aQueryID) const;
-        const Document& getQuery(const QUERY_TYPE aQueryType, size_t aQueryID);
+        const string_vt& getQueryIDs(const QUERY_TYPE aQueryType) const;
+        const string_vt& getQueryIDs(const QUERY_TYPE aQueryType);
 
         /**
          * @brief Getter for the query document associated with the given string ID
@@ -207,8 +182,8 @@ class QueryManager
          * @param aQueryID the string ID representing the query
          * @return the query document representation
          */
-        const Document& getQuery(const QUERY_TYPE aQueryType, const std::string& aQueryID) const;
-        const Document& getQuery(const QUERY_TYPE aQueryType, const std::string& aQueryID);
+        const std::string& getQueryContent(const QUERY_TYPE aQueryType, const std::string& aQueryID) const;
+        const std::string& getQueryContent(const QUERY_TYPE aQueryType, const std::string& aQueryID);
 
 
     private:

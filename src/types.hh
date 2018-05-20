@@ -32,6 +32,7 @@ using str_set = std::set<std::string>;
 using str_int_mt = std::map<std::string, uint>;
 using str_float_mt = std::map<std::string, float>;
 using str_sizet_mt = std::unordered_map<std::string, size_t>;
+using str_str_mt = std::unordered_map<std::string, std::string>;
 using sizet_float_mt = std::map<size_t, float>;
 using float_vector_vt = std::vector<std::vector<float>>;
 using pair_sizet_float_vt = std::vector<std::pair<size_t, float>>;
