@@ -64,11 +64,10 @@ class QueryManager
                 /**
                  * @brief Initializes the query type object. In this procedure the content of the query file
                  *        is read into the in-memory data structure (ID->Document Map) of the query type object
-                 * @param aStopwords    the stopwords used for preprocessing
                  * @param aPath         the path to the query file from which to read the content into main memory
                  * @param aDelimiter    the delimiter to split the file content with
                  */
-                void init(const str_set& aStopwords, const std::string& aPath, const char aDelimiter);
+                void init(const std::string& aPath, const char aDelimiter);
 
             public:
                 /**

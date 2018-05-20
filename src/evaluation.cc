@@ -28,8 +28,9 @@ void IRPM::init(const CB& aControlBlock)
                 throw;
             }
         }
-        for(auto& [qID, scores] : _queryScores)
+        for(auto& elem : _queryScores)
         {
+            auto& scores = elem.second;
             std::sort(scores.begin(), scores.end(), [](const RelScore& aLHS, const RelScore& aRHS){ return aLHS.getScore() > aRHS.getScore(); }); 
         }
         TRACE("Evaluation::IR_PerformanceManager: Initialized");

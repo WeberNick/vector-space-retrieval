@@ -39,7 +39,7 @@ Document QueryManager::QueryType::createQueryDoc(const str_set& aStopwords, std:
     return lQueryDoc;
 }
 
-void QueryManager::QueryType::init(const str_set& aStopwords, const std::string& aPath, const char aDelimiter)
+void QueryManager::QueryType::init(const std::string& aPath, const char aDelimiter)
 {
     TRACE(std::string("QueryManager: Start reading the query collection and creating Document objects for query type '") + _qType  + std::string("'"));
     const std::string lFilePath = aPath + std::string("q-") + _qType + std::string(".queries");
@@ -88,11 +88,11 @@ void QueryManager::init(const CB& aControlBlock)
         }
 
         const std::string& lQueryPath = _cb->queryPath();
-        //_qAll.init(_stopwords, lQueryPath, _delimiter);
-        //_qNTT.init(_stopwords, lQueryPath, _delimiter);
-        //_qTitles.init(_stopwords, lQueryPath, _delimiter);
-        _qVidDesc.init(_stopwords, lQueryPath, _delimiter);
-        //_qVidTitles.init(_stopwords, lQueryPath, _delimiter);
+        _qAll.init(lQueryPath, _delimiter);
+        _qNTT.init(lQueryPath, _delimiter);
+        _qTitles.init(lQueryPath, _delimiter);
+        _qVidDesc.init(lQueryPath, _delimiter);
+        _qVidTitles.init(lQueryPath, _delimiter);
     }
 }
 
