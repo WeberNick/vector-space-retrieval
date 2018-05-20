@@ -22,7 +22,7 @@ void WordEmbeddings::read(const std::string& aFile) {
     std::string line;
     int count = 0;
     while (std::getline(file, line)) {
-        std::cout << count << std::endl;
+        // std::cout << count << std::endl;
         string_vt parts;
         float_vt embedding;
         Util::splitStringBoost(line, ' ', parts);

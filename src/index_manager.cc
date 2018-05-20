@@ -5,8 +5,21 @@
  *
  */
 IndexManager::IndexManager() :
-    _cb(nullptr), _docs(nullptr), _idf_map(), _collection_terms(), _invertedIndex(InvertedIndex::getInstance()), _tieredIndex(TieredIndex::getInstance()),
-    _clusteredIndex(Cluster::getInstance()), _wordEmbeddingsIndex(WordEmbeddings::getInstance()) {}
+    _cb(nullptr),
+    _docs(nullptr),
+    _idf_map(),
+    _collection_terms(),
+    _invertedIndex(InvertedIndex::getInstance()),
+    _tieredIndex(TieredIndex::getInstance()),
+    _clusteredIndex(Cluster::getInstance()),
+    _wordEmbeddingsIndex(WordEmbeddings::getInstance())
+{}
+
+/**
+ * @brief Destroy the Index Manager:: Index Manager object
+ *
+ */
+IndexManager::~IndexManager() {}
 
 void IndexManager::init(const CB& aControlBlock, doc_mt& aDocMap) {
     if (!_cb) {
@@ -25,9 +38,9 @@ void IndexManager::init(const CB& aControlBlock, doc_mt& aDocMap) {
         _clusteredIndex.init(aControlBlock);
 
         // TODO: hier gucken, iwas falsch
-        std::cout << "wordembeddings index init start TODO NOT ACTIVATED" << std::endl;
+        std::cout << "Wordembeddings initialization started" << std::endl;
         _wordEmbeddingsIndex.init(aControlBlock);
-        std::cout << "wordembeddings index init finished" << std::endl;
+        std::cout << "Wordembeddings initialization finished" << std::endl;
         this->buildIndices(postinglist_out, tieredpostinglist_out, cluster_out, leaders);
         TRACE("IndexManager: Initialized");
     }
@@ -81,12 +94,9 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
 void IndexManager::buildWordEmbeddingsVector(Document& doc) {
     float_vt& wevec = doc.getWordEmbeddingsVector();
     wevec.resize(300);
-
     const string_vt& content = doc.getContent();
-    
     // TODO:
     // test make_unique
-    
     this->getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, wevec);
     doc.setWordEmbeddingsVector(wevec);
 }

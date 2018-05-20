@@ -24,19 +24,18 @@
 #include <random>
 #include <functional>
 
-namespace Util
-{
+namespace Util {
     /**
      * @brief Create a vector consisting of the set difference of two vectors
-     * 
+     *
      * @param v1 the first vector
      * @param v2 the second vector
      * @return a vector containing the set difference of both input vectors
      * @todo implement function as template for generic vector types if needed
      */
     sizet_vt difference(const sizet_vt& v1, const sizet_vt& v2);
-    //template<typename T> std::vector<T> difference(std::vector<T>& v1, std::vector<T>& v2);
-    
+    // template<typename T> std::vector<T> difference(std::vector<T>& v1, std::vector<T>& v2);
+
     /**
      * @brief Create a vector consisting of the set intersection of two vectors
      * @param v1 the first vector
@@ -45,27 +44,27 @@ namespace Util
      * @todo implement function as template for generic vector types if needed
      */
     sizet_vt intersection(const sizet_vt& v1, const sizet_vt& v2);
-    //template<typename T> std::vector<T> intersection(std::vector<T>& v1, std::vector<T>& v2);
+    // template<typename T> std::vector<T> intersection(std::vector<T>& v1, std::vector<T>& v2);
 
     /**
-     * @brief Calculate the number of different elements in both input vectors 
+     * @brief Calculate the number of different elements in both input vectors
      * @param v1 the first vector
      * @param v2 the second vector
-     * @return the number of different elements 
+     * @return the number of different elements
      * @todo implement function as template for generic vector types if needed
      */
     size_t numberOfDifferences(const sizet_vt& v1, const sizet_vt& v2);
-    //template<typename T> size_t numberOfDifferences(std::vector<T>& v1, std::vector<T>& v2);
+    // template<typename T> size_t numberOfDifferences(std::vector<T>& v1, std::vector<T>& v2);
 
     /**
-     * @brief Calculate the number of equal elements in both input vectors 
+     * @brief Calculate the number of equal elements in both input vectors
      * @param v1 the first vector
      * @param v2 the second vector
-     * @return the number of equal elements 
+     * @return the number of equal elements
      * @todo implement function as template for generic vector types if needed
      */
     size_t numberOfIntersections(const sizet_vt& v1, const sizet_vt& v2);
-    //template<typename T> size_t numberOfIntersections(std::vector<T>& v1, std::vector<T>& v2);
+    // template<typename T> size_t numberOfIntersections(std::vector<T>& v1, std::vector<T>& v2);
 
     /**
      * @brief Generates a random normal distributed double number based on the Box muller method
@@ -84,7 +83,7 @@ namespace Util
      * @param max maximum number value
      * @return
      */
-     float_vt generateRandomVector(size_t dimension, int min, int max);
+    float_vt generateRandomVector(size_t dimension, int min, int max);
 
     /**
      * @brief Generates a random vector of size \dimension with random standard normal distributed values
@@ -96,7 +95,7 @@ namespace Util
 
     /**
      * @brief Appends the second vector to the first one and returns a copy of a new combined vector
-     * 
+     *
      * @param a first vector
      * @param b second vector
      * @return float_vt copy of the result
@@ -112,14 +111,22 @@ namespace Util
      */
     template <typename T>
     inline double scalar_product(std::vector<T> const& a, std::vector<T> const& b) {
-        if (a.size() != b.size())
-        {
-                const std::string traceMsg = "Vectors do not have the same size";
-                TRACE(traceMsg);
-                throw VectorException(FLF, traceMsg);
+        if (a.size() != b.size()) {
+            const std::string traceMsg = "Vectors do not have the same size";
+            TRACE(traceMsg);
+            throw VectorException(FLF, traceMsg);
         }
         return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
     }
 
+    //TODO docs
+    /**
+     * @brief 
+     * 
+     * @param origVec 
+     * @param randVec 
+     * @return true 
+     * @return false 
+     */
     bool randomProjectionHash(float_vt& origVec, float_vt& randVec);
 }

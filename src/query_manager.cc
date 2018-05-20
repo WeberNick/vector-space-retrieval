@@ -134,7 +134,6 @@ const std::string& QueryManager::getTypeName(const QUERY_TYPE aQueryType)
     }
 }
 
- 
 const str_str_mt& QueryManager::getQueryMap(const QUERY_TYPE aQueryType) const 
 {
     switch(aQueryType)

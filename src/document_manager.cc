@@ -18,8 +18,7 @@ void DocumentManager::init(const control_block_t& aControlBlock) {
         const std::string& lCollectionPath = _cb->collectionPath();
         string_vvt lCollectionFiles;
         Util::readIn(lCollectionPath, _delimiter, lCollectionFiles);
-        for(auto& line : lCollectionFiles)
-        {
+        for (auto& line : lCollectionFiles) {
             std::string lDocID = line.at(0);
             string_vt lContent;
             Util::splitStringBoost(line.at(1), ' ', lContent); // Split string by whitespaces
@@ -29,5 +28,3 @@ void DocumentManager::init(const control_block_t& aControlBlock) {
         TRACE("DocumentManager: Initialized");
     }
 }
-
-
