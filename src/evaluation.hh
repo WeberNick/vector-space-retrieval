@@ -32,6 +32,7 @@ using json = nlohmann::json;
 #include <fstream>
 #include <ios>
 #include <iostream>
+#include <functional>
 #include <iterator>
 #include <string>
 #include <unordered_map>
@@ -76,26 +77,26 @@ class Evaluation {
         class RelScore {
           public:
             /* Constructors, assignment operators and destructor */
-            RelScore() = delete;
+            RelScore() = default;
             RelScore(const std::string& aQueryID, const std::string& aDocID, const uint aScore) : _qID(aQueryID), _dID(aDocID), _score(aScore) {}
-            explicit RelScore(const RelScore&) = delete;
-            explicit RelScore(RelScore&&) = default;
-            RelScore& operator=(const RelScore&) = delete;
+            RelScore(const RelScore&) = default;
+            RelScore(RelScore&&) = default;
+            RelScore& operator=(const RelScore&) = default;
             RelScore& operator=(RelScore&&) = default;
             ~RelScore() = default;
-
-          public:
-            inline bool operator<(const RelScore& aRHS){ return _score < aRHS.getScore(); }
 
           public:
             inline const std::string& getQueryID() const { return _qID; }
             inline const std::string& getDocumentID() const { return _dID; }
             inline uint getScore() const { return _score; }
+            inline const std::string& getQueryID() { return _qID; }
+            inline const std::string& getDocumentID() { return _dID; }
+            inline uint getScore() { return _score; }
 
           private:
-            const std::string _qID;
-            const std::string _dID;
-            const uint _score;
+            std::string _qID;
+            std::string _dID;
+            uint _score;
         };
 
       public:
@@ -185,7 +186,7 @@ class Evaluation {
          * @param aRanking  a ranking of documents produced for the respective query
          * @return the calculated basic DCG
          */
-        double bDCG(const std::string& aQueryID, const sizet_vt& aRanking);
+        double bDCG(const std::string& aQueryID, const sizet_vt& aRanking, uint& aCounter);
 
         /**
          * @brief Calculates the relevance Discounted Cumulative Gain (DCG with higher emphasis on
@@ -194,7 +195,7 @@ class Evaluation {
          * @param aRanking  a ranking of documents produced for the respective query
          * @return the calculated relevance DCG
          */
-        double rDCG(const std::string& aQueryID, const sizet_vt& aRanking);
+        double rDCG(const std::string& aQueryID, const sizet_vt& aRanking, uint& aCounter);
 
         /**
          * @brief Calculates the ideal Discounted Cumulative Gain (best possible DCG score) as
@@ -202,7 +203,7 @@ class Evaluation {
          * @param aQueryID  a query to calculate the DCG for
          * @return the calculated ideal DCG
          */
-        double iDCG(const std::string& aQueryID);
+        double iDCG(const std::string& aQueryID, const uint aRelDocsFound);
 
         /**
          * @brief Calculates the normalized Discounted Cumulative Gain (DCG) as (DCG / IDCG)

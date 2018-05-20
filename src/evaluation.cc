@@ -30,13 +30,7 @@ void IRPM::init(const CB& aControlBlock)
         }
         for(auto& [qID, scores] : _queryScores)
         {
-            std::sort(scores.begin(), scores.end());
-            std::cout << "Sorted Scores of Query '" << qID << "'" << std::endl;
-            for(const auto& elem : scores)
-            {
-                std::cout << elem.getScore() ", ";
-            }
-            std::cout << std::endl;
+            std::sort(scores.begin(), scores.end(), [](const RelScore& aLHS, const RelScore& aRHS){ return aLHS.getScore() > aRHS.getScore(); }); 
         }
         TRACE("Evaluation::IR_PerformanceManager: Initialized");
     }
@@ -120,30 +114,32 @@ double IRPM::meanAvgPrecision(const std::unordered_map<std::string, double>& aAv
     return (lDenominator != 0) ? (lSum / lDenominator) : 0;
 }
 
-double IRPM::bDCG(const std::string& aQueryID, const sizet_vt& aRanking)
+double IRPM::bDCG(const std::string& aQueryID, const sizet_vt& aRanking, uint& aCounter)
 {    
     double lSum = 0;
     for(size_t i = 1; i <= aRanking.size(); ++i)
     {
         const uint lScore = getScore(aQueryID, DocumentManager::getInstance().getDocument(aRanking[i-1]).getDocID());
+        if(lScore > 0) ++aCounter;
         lSum += (lScore / std::log2(i + 1));
     }
     return lSum;
 }
 
-double IRPM::rDCG(const std::string& aQueryID, const sizet_vt& aRanking)
+double IRPM::rDCG(const std::string& aQueryID, const sizet_vt& aRanking, uint& aCounter)
 {
     double lSum = 0;
     for(size_t i = 1; i <= aRanking.size(); ++i)
     {
         const uint lScore = getScore(aQueryID, DocumentManager::getInstance().getDocument(aRanking[i-1]).getDocID());
+        if(lScore > 0) ++aCounter;
         const double lNumerator = std::pow(2, lScore) - 1;
         lSum += (lNumerator / std::log2(i + 1));
     }
     return lSum;
 }
 
-double IRPM::iDCG(const std::string& aQueryID)
+double IRPM::iDCG(const std::string& aQueryID, const uint aRelDocsFound)
 {
     const scores_vt& lRelScores = getQueryScores(aQueryID);
     double lSum = 0;
@@ -151,9 +147,13 @@ double IRPM::iDCG(const std::string& aQueryID)
     std::cout << "################# iDCG ####################" << std::endl;
     for(const RelScore& relScore : lRelScores)
     {
-        std::cout << "QueryID : " << relScore.getQueryID() << ", DocumentID : " << relScore.getDocumentID() << ", Score: " << relScore.getScore() << std::endl;
-        const double lNumerator = std::pow(2, relScore.getScore()) - 1;
-        lSum += (lNumerator / std::log2(i++ + 1));
+        if(i <= aRelDocsFound)
+        {
+            std::cout << "QueryID : " << relScore.getQueryID() << ", DocumentID : " << relScore.getDocumentID() << ", Score: " << relScore.getScore() << std::endl;
+            const double lNumerator = std::pow(2, relScore.getScore()) - 1;
+            lSum += (lNumerator / std::log2(i++ + 1));
+        }
+        else break;
     }
     return lSum;
 }
@@ -167,8 +167,9 @@ double IRPM::nDCG(const std::string& aQueryID, const sizet_vt& aRanking, const b
         const std::string& str = DocumentManager::getInstance().getDocument(i).getDocID();
         std::cout << "Internal ID : " << i << ", String ID : " << str << ", Query Rel. Score : " << getScore(aQueryID, str) << std::endl;
     }
-    double lDCG = (aBDCG) ? bDCG(aQueryID, aRanking) : rDCG(aQueryID, aRanking);
-    double liDCGDCG = iDCG(aQueryID);
+    uint lRelevantDocsFound = 0;
+    double lDCG = (aBDCG) ? bDCG(aQueryID, aRanking, lRelevantDocsFound) : rDCG(aQueryID, aRanking, lRelevantDocsFound);
+    double liDCGDCG = iDCG(aQueryID, lRelevantDocsFound);
     double res = lDCG / liDCGDCG;
     std::cout << "DCG : " << lDCG << ", iDCG : " << liDCGDCG << ", Result (DCG/iDCG) : " << res << std::endl;
     exit(0);
