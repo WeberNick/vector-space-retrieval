@@ -96,7 +96,23 @@ cd vector-space-retrieval
 ./install.sh [-b [/path/to/boost/include]] [-cxx [/path/to/c++-compiler]] 
 ```
 
-(__ALEX PROVIDE LIST OF OTHER INTERESTING OPTIONS__)
+(__ALEX PROVIDE LIST OF OTHER INTERESTING OPTIONS! YOU MAY WANT TO REUSE THE FOLLOWING__)
+```
+ SYNOPSIS
+    configure.sh [-h] [-c[compiler_path]]  [-cxx[compiler_path]] [-b[boost_path]] [-a]
+
+ DESCRIPTION
+    Setting up CMake, directory structure and compile everything to start the main evsr executable
+
+ OPTIONS
+    -c [path], --c [path]         Set a custom C compiler path
+    -cxx [path], --cxx [path]     Set a custom C++ compiler path
+    -b, --boost                   Set path to your boost library
+    -a, --all                     Also delete external lib folders and clone again
+
+ EXAMPLES
+    ./configure.sh -c /usr/local/Cellar/gcc/7.3.0_1/bin/gcc-7 -cxx /usr/local/Cellar/gcc/7.3.0_1/bin/g++-7 -b /usr/local/Cellar/boost/1.66.0/ -a
+```
 
 #### Run
  * To run the system, several additional command line arguments can be provided to the executable. A complete list of command line arguments is provided in the console by running
@@ -125,55 +141,6 @@ In the following table we briefly introduce all the command line arguments.
 
 
 
-
-## ./
-
-* main.cc - Main entry point, starts application
-* CMakeLists.txt - Links `evsr_lib` to main executable `evsr_run`, build documentation, builds tests
-
-## ./src
-
-* CMakeLists.txt builds the `evsr_lib` executable which is linked to the `evsr_run` and the unit tests later on
-* Files and directories for our efficient vector space retrieval IR
-
-## ./preprocessing
-
-* preprocess.py - aggregate queries and document collection from [nfcorpus](http://www.cl.uni-heidelberg.de/statnlpgroup/nfcorpus/)
-
-## ./tests
-
-* CMakeLists.txt downloads googletest library if not already installed and builds googletest and our own unit tests
-
-### ./tests/unit_tests
-
-* CMakeLists.txt builds `Unit_Tests_run` and links it against our own `evsr_lib`, `gtest` and `gtest_main`
-* Also contains tests for different parts of our library
-* Tests can be run by either exectuing `Unit_Tests_run` or Ctest from CMake
-
-# Set Up
-
-To initial everything after cloning or unzipping the repo run `./configure.sh` to create needed directories, download external libraries via CMake and let CMake compile everything.
-
-**IMPORTANT:**
-
-You need to have Boost installed on your machine in order to build the binary. It is recommended to use the `-b` option of `./configure.sh` to tell the script the location of Boost
-
-```
- SYNOPSIS
-    configure.sh [-h] [-c[compiler_path]]  [-cxx[compiler_path]] [-b[boost_path]] [-a]
-
- DESCRIPTION
-    Setting up CMake, directory structure and compile everything to start the main evsr executable
-
- OPTIONS
-    -c [path], --c [path]         Set a custom C compiler path
-    -cxx [path], --cxx [path]     Set a custom C++ compiler path
-    -b, --boost                   Set path to your boost library
-    -a, --all                     Also delete external lib folders and clone again
-
- EXAMPLES
-    ./configure.sh -c /usr/local/Cellar/gcc/7.3.0_1/bin/gcc-7 -cxx /usr/local/Cellar/gcc/7.3.0_1/bin/g++-7 -b /usr/local/Cellar/boost/1.66.0/ -a
-```
 
 # Server
 

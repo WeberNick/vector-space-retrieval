@@ -5,7 +5,7 @@ QueryManager::QueryType::QueryType(const std::string& aType) :
     _qMap()
 {}
                 
-Document QueryManager::QueryType::createQueryDoc(const string_vt& aStopwords, std::string& aContent, const std::string aQueryID)
+Document QueryManager::QueryType::createQueryDoc(const str_set& aStopwords, std::string& aContent, const std::string aQueryID)
 {
     Document lQueryDoc(aQueryID, Util::preprocess(aContent, aStopwords));
 
@@ -30,7 +30,7 @@ Document QueryManager::QueryType::createQueryDoc(const string_vt& aStopwords, st
     return lQueryDoc;
 }
 
-void QueryManager::QueryType::init(const string_vt& aStopwords, const std::string& aPath, const char aDelimiter)
+void QueryManager::QueryType::init(const str_set& aStopwords, const std::string& aPath, const char aDelimiter)
 {
     TRACE(std::string("QueryManager: Start reading the query collection and creating Document objects for query type '") + _qType  + std::string("'"));
     const std::string lFilePath = aPath + std::string("q-") + _qType + std::string(".queries");
@@ -61,11 +61,12 @@ void QueryManager::init(const CB& aControlBlock)
     if(!_cb)
     {
         _cb = &aControlBlock;
-        string_vvt lStopwords;
-        Util::readIn(_cb->stopwordPath(), ',', lStopwords); //read in stopwords
+        string_vvt lStopwordFile;
+        Util::readIn(_cb->stopwordPath(), ',', lStopwordFile); //read in stopwords
         try
         {
-            _stopwords = lStopwords.at(0);
+            const string_vt& lStopwords = lStopwordFile.at(0);
+            _stopwords = str_set(lStopwords.cbegin(), lStopwords.cend());
         }
         catch (const std::out_of_range& ex) 
         {
