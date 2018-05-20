@@ -22,14 +22,11 @@
 #include <string>
 #include <vector>
 
-namespace Util
-{
+namespace Util {
     /**
      * @brief Reads in the file content line by line and splits each line at the specified delimiter
      *
      *
      */
     void readIn(const std::string& aPath, const char aDelimiter, string_vvt& aOutput);
-
-
 }

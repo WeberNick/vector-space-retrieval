@@ -1,7 +1,7 @@
 #include "vec_util.hh"
 
-namespace Util
-{
+namespace Util {
+
     sizet_vt difference(const sizet_vt& v1, const sizet_vt& v2)
     {
         sizet_vt lDifference;

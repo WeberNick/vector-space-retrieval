@@ -174,13 +174,21 @@ void testEval(const control_block_t& aControlBlock) {
     docManager.init(aControlBlock);
     std::cout << "Document Manager initialized" << std::endl;
 
+    Measure mes2;
+    mes2.start();
     IndexManager& imInstance = IndexManager::getInstance();
     imInstance.init(aControlBlock, docManager.getDocumentMap());
     std::cout << "Index Manager initialized" << std::endl;
+    mes2.stop();
+    std::cout << "IndexManager took " << mes2.mTotalTime() << std::endl;
 
+    Measure mes;
+    mes.start();
     QueryManager& queryManager = QueryManager::getInstance();
     queryManager.init(aControlBlock);
     std::cout << "Query Manager initialized" << std::endl;
+    mes.stop();
+    std::cout << "QueryManager took " << mes.mTotalTime() << std::endl;
 
     QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
     qpe.init(aControlBlock);
@@ -220,25 +228,24 @@ void testEval(const control_block_t& aControlBlock) {
     std::vector<std::pair<size_t, float>> result = qpe.search(const_cast<Document&>(query), 30, IR_MODE::kCLUSTER_W2V);
 
     for (int j = 0; j < kNumberOfModes; ++j) {
+        
         IR_MODE mode = static_cast<IR_MODE>(j);
-
         std::cout << "Mode " << modeToString(mode) << ":" << j << std::endl;
-
         auto& queryForType = QueryManager::getInstance().getQueryMap(type);//DocumentManager::getInstance().getQueriesForType(type);
-
-        std::cout << "queries for types geholt: " << queryForType.size() << std::endl;
+        //std::cout << "Queries for types geholt: " << queryForType.size() << std::endl;
 
         for (auto& [query_id, query] : queryForType) {
-            std::cout << "Type: " << type << "Mode: " << modeToString(mode) << "QueryId: " << query.getDocID() << std::endl;
+            std::cout << "Type: " << type << ", Mode: " << modeToString(mode) << ", QueryId: " << query.getDocID() << std::endl;
             queryNamesSet.insert(query.getDocID());
             e.start(mode, query.getDocID());
             std::vector<std::pair<size_t, float>> result = qpe.search(query, 30, mode);
-            std::cout << "after result" << std::endl;
+            //std::cout << "after result" << std::endl;
             e.stop();
-            std::cout << "after stop" << std::endl;
+            //std::cout << "after stop" << std::endl;
             e.evalIR(mode, query.getDocID(), result);
-            std::cout << "after eval ir" << std::endl;
+            //std::cout << "after eval ir" << std::endl;
         }
+        //std::cout << std::endl;
     }
     e.constructJSON(queryNamesSet);
 }
@@ -265,7 +272,6 @@ int main(const int argc, const char* argv[]) {
         print_usage(std::cout, argv[0], lArgDesc);
         return 0;
     }
-
 
     if(!Util::endsWith(fs::current_path().string(), "vector-space-retrieval")) 
     {

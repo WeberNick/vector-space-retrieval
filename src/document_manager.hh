@@ -13,11 +13,11 @@
 
 #include "document.hh"
 #include "exception.hh"
+#include "file_util.hh"
+#include "ir_util.hh"
+#include "string_util.hh"
 #include "trace.hh"
 #include "types.hh"
-#include "string_util.hh"
-#include "ir_util.hh"
-#include "file_util.hh"
 
 #include <sstream>
 #include <string>
@@ -33,7 +33,7 @@ class DocumentManager {
     DocumentManager& operator=(const DocumentManager&) = delete;
     DocumentManager& operator=(DocumentManager&&) = delete;
     ~DocumentManager() = default;
-    
+
   public:
     /**
      * @brief Get the document map
@@ -42,7 +42,6 @@ class DocumentManager {
      */
     inline const doc_mt& getDocumentMap() const { return _docs; }
     inline doc_mt& getDocumentMap() { return const_cast<doc_mt&>(static_cast<const DocumentManager&>(*this).getDocumentMap()); }
-
 
     /**
      * @brief Get the number of documents in the collection
@@ -58,8 +57,7 @@ class DocumentManager {
      * @return sizet_vt& the ids
      */
     inline const sizet_vt& getIDs() const { return _docids; }
-    inline sizet_vt& getIDs() { return const_cast<sizet_vt &>(static_cast<const DocumentManager&>(*this).getIDs()); }
-
+    inline sizet_vt& getIDs() { return const_cast<sizet_vt&>(static_cast<const DocumentManager&>(*this).getIDs()); }
 
     /**
      * @brief Get the document object with id aDocID
@@ -78,38 +76,37 @@ class DocumentManager {
     }
     /**
      * @brief Get the Document object
-     * 
-     * @param aDocID 
-     * @return Document& 
+     *
+     * @param aDocID
+     * @return Document&
      */
-    inline Document& getDocument(size_t aDocID) { return const_cast<Document&>(static_cast<const DocumentManager&>(*this).getDocument(aDocID)); }
+    inline Document& getDocument(size_t aDocID) {
+        return const_cast<Document&>(static_cast<const DocumentManager&>(*this).getDocument(aDocID));
+    }
     /**
      * @brief Get the Document object
-     * 
-     * @param aDocID 
-     * @return const Document& 
+     *
+     * @param aDocID
+     * @return const Document&
      */
-    inline const Document& getDocument(const std::string& aDocID) const 
-    {
-        try
-        {
-            return getDocument(_str_docid.at(aDocID)); 
-        }
-        catch (const std::out_of_range& ex) {
+    inline const Document& getDocument(const std::string& aDocID) const {
+        try {
+            return getDocument(_str_docid.at(aDocID));
+        } catch (const std::out_of_range& ex) {
             const std::string lErrMsg = std::string("The doc ID ')" + aDocID + std::string("' does not appear in the document collection"));
             TRACE(lErrMsg);
             throw InvalidArgumentException(FLF, lErrMsg);
         }
-
-    } 
+    }
     /**
      * @brief Get the Document object
-     * 
-     * @param aDocID 
-     * @return Document& 
+     *
+     * @param aDocID
+     * @return Document&
      */
-    inline Document& getDocument(const std::string& aDocID) { return const_cast<Document&>(static_cast<const DocumentManager&>(*this).getDocument(aDocID)); }
-
+    inline Document& getDocument(const std::string& aDocID) {
+        return const_cast<Document&>(static_cast<const DocumentManager&>(*this).getDocument(aDocID));
+    }
 
     /**
      * @brief Get the Instance object
@@ -128,19 +125,17 @@ class DocumentManager {
     void init(const CB& aControlBlock);
 
   private:
-    inline void addDoc(const Document& aDoc)
-    {
-        _docs.try_emplace(aDoc.getID(), aDoc); 
+    inline void addDoc(const Document& aDoc) {
+        _docs.try_emplace(aDoc.getID(), aDoc);
         _docids.push_back(aDoc.getID());
         _str_docid.insert(std::make_pair(aDoc.getDocID(), aDoc.getID()));
     }
 
   private:
-    const control_block_t*                    _cb;
-    const char                                _delimiter; // defined manually
-    
-    doc_mt                                    _docs;
-    sizet_vt                                  _docids;
-    str_sizet_mt                              _str_docid;
+    const control_block_t* _cb;
+    const char _delimiter; // defined manually
 
+    doc_mt _docs;
+    sizet_vt _docids;
+    str_sizet_mt _str_docid;
 };
