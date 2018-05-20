@@ -24,7 +24,7 @@ There are several tools you will need to install and execute the application. In
 ## Project Structure
 
 ### data/
- All data files required for the system are stored here. By default, the system will search here for the required data files. Optionally, you can provide your own file paths as command line argument (for more details see [Command Line Arguments](#command-line-arguments)). Note: For queries, it is not possible to provide a custom path for each query type (_all_, _nontopictitles_, _titles_, and so on...) but you can provide a path to the directory where all the query files are stored. It is __IMPORTANT__ to keep the same naming conventions otherwise the query files can not be found (The convention is: `q-[Query Type].queries`).
+ All data files required for the system are stored here. By default, the system will search here for the required data files. Optionally, you can provide your own file paths as command line argument (for more details see [Command Line Arguments](#command-line-arguments)). __Note__: For queries, it is not possible to provide a custom path for each query type (_all_, _nontopictitles_, _titles_, and so on...) but you can provide a path to the directory where all the query files are stored. It is __IMPORTANT__ to keep the same naming conventions otherwise the query files can not be found (The convention is: `q-[Query Type].queries`).
  * __NICO DESCRIBE THIS OR REFER TO README IN DATA__
  * dev/raw: 
  * test/raw: 
@@ -51,13 +51,13 @@ There are several tools you will need to install and execute the application. In
  * wiki-crawler/: (__ALEX DESCRIBE THIS__)
 
 ### src/
-Directory of the C++ source code of the system and its libraries. For further information regarding the source code, take a look into the [Documentation](#doc/) at doc/.
+Directory of the C++ source code of the system and its libraries. For further information regarding the source code, take a look into the [Documentation](#docs/) at doc/.
 
 ### test/
 Directory of the unit tests.
 
 ## Getting Started
-The build and installation process will be described in the following. Follow [Quick Start Guide](#quick-start-guide) for a fast installation and get the system running (works only if the _boost_ library can be located in its default path). For a more detailed installation guide or if you encounter problems, take a look at [Detailed Installation Guide](#detailed-installation-guide).
+The build and installation process will be described in the following. Follow the [Quick Start Guide](#quick-start-guide) for a fast installation and get the system running. This works only if the _boost_ library can be located in its default path. For a more detailed installation guide or if you encounter problems, take a look at [Detailed Installation Guide](#detailed-installation-guide).
 
 ### Quick Start Guide
 
@@ -83,9 +83,9 @@ cd vector-space-retrieval
 
  * Make sure all the [Requirements](#prerequisites) are satisfied
  * Clone the source with `git`:
-    ```
-    git clone https://github.com/WeberNick/vector-space-retrieval.git
-    ```
+```
+git clone https://github.com/WeberNick/vector-space-retrieval.git
+```
 
 #### Set Up
  * To install and build the system, several additional options can be (and sometimes must be) provided to the installation process. A complete list of options is provided later.
@@ -100,15 +100,15 @@ cd vector-space-retrieval
 
 #### Run
  * To run the system, several additional command line arguments can be provided to the executable. A complete list of command line arguments is provided in the console by running
-    ```
-    ./bin/evsr_run --help
-    ```
+```
+./bin/evsr_run --help
+```
  * (__DISCUSS THE MOST IMPORTANT ARGUMENTS__)
 
 #### Command Line Arguments
 In the following table we briefly introduce all the command line arguments.
 | Command Line Argument | Description                                         | Default                      | Expects parameter |
-|----------------------:|-----------------------------------------------------|------------------------------|-------------------|
+|-----------------------|-----------------------------------------------------|------------------------------|-------------------|
 |                --help | Print all command line arguments                    | false                        | -                 |
 |               --trace | Activate tracing                                    | false                        | -                 |
 |             --measure | Activate the performance measurement                | false                        | -                 |
