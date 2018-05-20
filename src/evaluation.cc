@@ -173,7 +173,7 @@ double IRPM::nDCG(const std::string& aQueryID, const sizet_vt& aRanking, const b
     double res = lDCG / liDCGDCG;
     std::cout << "DCG : " << lDCG << ", iDCG : " << liDCGDCG << ", Result (DCG/iDCG) : " << res << std::endl;
     exit(0);
-    return (lDCG / iDCG(aQueryID));
+    return (lDCG / iDCG(aQueryID, lRelevantDocsFound));
 }
 
 const IRPM::scores_vt& IRPM::getQueryScores(const std::string& aQueryID)
