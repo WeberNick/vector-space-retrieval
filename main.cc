@@ -209,22 +209,28 @@ void testEval(const control_block_t& aControlBlock) {
     for (int i = 0; i < kNumberOfTypes; ++i ) {
 
         QUERY_TYPE type = static_cast<QUERY_TYPE>(i);
-        std::cout << "Type " << queryManager.getTypeName(type) << std::endl;
         
         for (int j = 0; j < kNumberOfModes; ++j) {
-            if (j  != 1 || j != 4 || j != 7) break;
+            
+            /*REMOVE*/
+            if(aControlBlock.rand()){
+                if(!(j==1||j==4||j==7)){
+                    continue;
+                }
+            } else if(aControlBlock.tiered()){
+                if(!(j==3||j==4||j==5)){
+                    continue;
+                }
+            }
 
             IR_MODE mode = static_cast<IR_MODE>(j);
 
-            std::cout << "Mode " << modeToString(mode) << ":" << j << std::endl;
-
+            std::cout <<  typeToString(type) << " for mode " << modeToString(mode) << std::endl; 
+            
             auto& queryForType = QueryManager::getInstance().getQueryMap(type);
-            std::cout << "queries for types geholt: " << queryForType.size() << std::endl;
-
             for (auto& [query_id, query] : queryForType) {
                 Document queryDoc = queryManager.createQueryDoc(query, query_id, true);
 
-                std::cout << "Type: " << type << "Mode: " << modeToString(mode) << "QueryId: " << query_id << std::endl;
                 queryNamesSet.insert(queryDoc.getDocID());
                 e.start(type, mode, queryDoc.getDocID());
                 std::vector<std::pair<size_t, float>> result = qpe.search(queryDoc, 30, mode);

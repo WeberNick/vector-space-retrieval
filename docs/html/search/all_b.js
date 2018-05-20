@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['posting_5flist_2ehh',['posting_list.hh',['../posting__list_8hh.html',1,'']]],
-  ['postinglist',['PostingList',['../class_posting_list.html',1,'PostingList'],['../class_posting_list.html#a46ea0b5cae97e25471cde714874911af',1,'PostingList::PostingList(const float aIdf, const sizet_float_mt &amp;aPosting)'],['../class_posting_list.html#a82a4230d86abb3e6a9246e9bde254046',1,'PostingList::PostingList(const PostingList &amp;pl)']]]
+  ['operator_3c_3c',['operator&lt;&lt;',['../class_document.html#aa41278f73b631c469d67a2f939a39002',1,'Document::operator&lt;&lt;()'],['../class_inverted_index.html#a14d872e8c28944644a41a6ecc14d1ff8',1,'InvertedIndex::operator&lt;&lt;()'],['../class_posting_list.html#a8d5536a56d70f166469fbb2f1c78830f',1,'PostingList::operator&lt;&lt;()'],['../class_tiered_index.html#abfee6bf9657d6ba59055844748f341e9',1,'TieredIndex::operator&lt;&lt;()']]],
+  ['outofmemoryexception',['OutOfMemoryException',['../class_out_of_memory_exception.html',1,'']]]
 ];

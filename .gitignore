@@ -152,12 +152,12 @@ build/
 # Own Stuff
 docs/latex
 data/nfcorpus
+data/w2v
 tests/lib/
 tests/lib/**
 bin/**
 src/lib/
 src/lib/**
-data/w2v/**
 logs/
 eval/
 

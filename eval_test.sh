@@ -18,7 +18,6 @@ echo "> [Eval] Random Projections with dimension 2500"
 echo "> [Eval] Random Projections with dimension 5000"
 ./bin/evsr_run --dimensions 5000 --tiers 10 --collection-path ./data/d-collection.docs --stopword-path ./data/stopwords.large --word-embeddings-path ./data/w2v/glove.6B.300d.txt --rand
 
-
 ##### Evaluate different random projections dimensions ##### 
 echo "> [Eval] Tiered Index with tiers 5"
 ./bin/evsr_run --dimensions 100 --tiers 5 --collection-path ./data/d-collection.docs --stopword-path ./data/stopwords.large --word-embeddings-path ./data/w2v/glove.6B.300d.txt --tiered
@@ -31,3 +30,4 @@ echo "> [Eval] Tiered Index with tiers 25"
 
 echo "> [Eval] Tiered Index with tiers 50"
 ./bin/evsr_run --dimensions 100 --tiers 50 --collection-path ./data/d-collection.docs --stopword-path ./data/stopwords.large --word-embeddings-path ./data/w2v/glove.6B.300d.txt --tiered
+

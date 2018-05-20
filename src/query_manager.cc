@@ -45,9 +45,7 @@ void QueryManager::QueryType::init(const std::string& aPath, const char aDelimit
     const std::string lFilePath = aPath + std::string("q-") + _qType + std::string(".queries");
     string_vvt lFileContent;
     Util::readIn(lFilePath, aDelimiter, lFileContent);
-    std::cout << "Build Vecs for QueryType: " << lFilePath << std::endl;
-    Measure lMeasure;
-    lMeasure.start();
+    //std::cout << "Build Vecs for QueryType: " << lFilePath << std::endl;
     for(auto& line : lFileContent)
     {
         const std::string& lQueryID = line.at(0);

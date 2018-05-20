@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wordembeddings',['WordEmbeddings',['../class_word_embeddings.html',1,'']]]
+  ['vectorexception',['VectorException',['../class_vector_exception.html',1,'']]]
 ];
