@@ -1,3 +1,4 @@
+#!/bin/sh
 echo "[Install] evsr-root"
 cd ./evsr-web/
 npm install

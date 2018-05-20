@@ -47,7 +47,7 @@ class RandomProjection {
      * @param vector
      * @return boost::dynamic_bitset<>
      */
-    boost::dynamic_bitset<> localitySensitiveHashProjection(float_vt& vector, std::function<unsigned int(float_vt&, float_vt&)>);
+    boost::dynamic_bitset<> localitySensitiveHashProjection(std::vector<float>& vector, std::function<unsigned int(std::vector<float>&, std::vector<float>&)>);
 
   public:
     inline const float_vector_vt& getRandomVectors() { return _randomVectors; }

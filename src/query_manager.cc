@@ -1,4 +1,5 @@
 #include "query_manager.hh"
+#include "measure.hh"
 
 QueryManager::QueryType::QueryType(const std::string& aType) :
     _qType(aType),
@@ -28,27 +29,7 @@ Document QueryManager::QueryType::createQueryDoc(const string_vt& aStopwords, st
     IndexManager::getInstance().buildTfIdfVector(lQueryDoc);
     IndexManager::getInstance().buildWordEmbeddingsVector(lQueryDoc);
     IndexManager::getInstance().buildRandProjVector(lQueryDoc);
-
-   
-    if (lQueryDoc.getDocID() == "PLAIN-3448") {
-
-      
-
-        std::cout << "TFIDFVECTOR" << std::endl;
-        for (auto& elem: lQueryDoc.getTfIdfVector()) {
-            std::cout << elem << ",";
-        }
-        std::cout << std::endl;
-        std::cout << "WordEmbeddingsVector" << std::endl;
-        for (auto& elem: lQueryDoc.getWordEmbeddingsVector()) {
-            std::cout << elem << ",";
-        }
-        std::cout << std::endl;
-        std::cout << "RandProjectionsVector" << std::endl;
-        std::cout << lQueryDoc.getRandProjTiVec() << std::endl;
-    }
-
-
+  
     return lQueryDoc;
 }
 
@@ -58,12 +39,18 @@ void QueryManager::QueryType::init(const string_vt& aStopwords, const std::strin
     const std::string lFilePath = aPath + std::string("q-") + _qType + std::string(".queries");
     string_vvt lFileContent;
     Util::readIn(lFilePath, aDelimiter, lFileContent);
+    std::cout << "Build Vecs for QueryType: " << lFilePath << std::endl;
+    Measure lMeasure;
+    lMeasure.start();
     for(auto& line : lFileContent)
     {
         const std::string& lQueryID = line.at(0);
         std::string& lQueryContent = line.at(1);
         addDoc(QueryType::createQueryDoc(aStopwords, lQueryContent, lQueryID));
     }
+      
+    lMeasure.stop();
+    std::cout << "Took " << lMeasure.mTotalTime() << std::endl;
     TRACE("QueryManager: Finished reading the query collection");
 }
 
@@ -97,11 +84,11 @@ void QueryManager::init(const CB& aControlBlock)
         }
 
         const std::string& lQueryPath = _cb->queryPath();
-        //_qAll.init(_stopwords, lQueryPath, _delimiter);
-        //_qNTT.init(_stopwords, lQueryPath, _delimiter);
+        _qAll.init(_stopwords, lQueryPath, _delimiter);
+        _qNTT.init(_stopwords, lQueryPath, _delimiter);
         _qTitles.init(_stopwords, lQueryPath, _delimiter);
-        //_qVidDesc.init(_stopwords, lQueryPath, _delimiter);
-        //_qVidTitles.init(_stopwords, lQueryPath, _delimiter);
+        _qVidDesc.init(_stopwords, lQueryPath, _delimiter);
+        _qVidTitles.init(_stopwords, lQueryPath, _delimiter);
     }
 }
  

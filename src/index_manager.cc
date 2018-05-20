@@ -1,4 +1,5 @@
 #include "index_manager.hh"
+#include "measure.hh"
 
 /**
  * @brief Construct a new Index Manager:: Index Manager object
@@ -26,7 +27,7 @@ void IndexManager::init(const CB& aControlBlock, doc_mt& aDocMap) {
 
         // TODO: hier gucken, iwas falsch
         std::cout << "wordembeddings index init start TODO NOT ACTIVATED" << std::endl;
-        _wordEmbeddingsIndex.init(aControlBlock);
+       // _wordEmbeddingsIndex.init(aControlBlock);
         std::cout << "wordembeddings index init finished" << std::endl;
         this->buildIndices(postinglist_out, tieredpostinglist_out, cluster_out, leaders);
         TRACE("IndexManager: Initialized");
@@ -66,9 +67,14 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
     }
     RandomProjection::getInstance().init(*_cb, _collection_terms.size());
     for (auto& elem : *(_docs)) {
+        std::cout << "Build Vecs for Doc" << elem.second.getDocID() << std::endl;
+        Measure lMeasure;
+        lMeasure.start();
         this->buildTfIdfVector(elem.second);
         this->buildWordEmbeddingsVector(elem.second);
         this->buildRandProjVector(elem.second);
+        lMeasure.stop();
+        std::cout << "Took " << lMeasure.mTotalTime() << std::endl;
     }
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;
@@ -83,10 +89,8 @@ void IndexManager::buildWordEmbeddingsVector(Document& doc) {
     wevec.resize(300);
 
     const string_vt& content = doc.getContent();
-
     // TODO:
     // test make_unique
-
     this->getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, wevec);
     doc.setWordEmbeddingsVector(wevec);
 }
@@ -106,10 +110,8 @@ void IndexManager::buildTfIdfVector(Document& doc) {
 }
 
 void IndexManager::buildRandProjVector(Document& doc) {
-    const boost::dynamic_bitset<>& rand_proj_ti =
-    RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(), Util::randomProjectionHash);
-    doc.setRandProjTiVec(rand_proj_ti);
-    // TODO das geht nicht so einfach, weil wir vorher ja die dimension setzen
-    // const boost::dynamic_bitset<>& rand_proj_we = RandomProjection::getInstance().localitySensitiveHashProjection(doc.getWordEmbeddingsVector(),
-    // Utility::randomProjectionHash); doc.setRandProjWeVec(rand_proj_we);
+    const boost::dynamic_bitset<>& rand_proj =
+        RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(),
+                                                                        Util::randomProjectionHash);
+    doc.setRandProjTiVec(rand_proj);
 }

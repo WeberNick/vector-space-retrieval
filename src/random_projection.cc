@@ -28,8 +28,8 @@ void RandomProjection::init(const control_block_t& aCB, const size_t origVectorS
  * @param hashFunc hash function to use to combine original vector and random vectors
  * @return boost::dynamic_bitset bitvector
  */
-boost::dynamic_bitset<> RandomProjection::localitySensitiveHashProjection(float_vt& vector,
-                                                                          std::function<unsigned int(float_vt&, float_vt&)> hashFunc) {
+boost::dynamic_bitset<> RandomProjection::localitySensitiveHashProjection(std::vector<float>& vector,
+                                                                          std::function<unsigned int(std::vector<float>&, std::vector<float>&)> hashFunc) {
 
     boost::dynamic_bitset<> result(_dimension);
     for (size_t j = 0; j < _dimension; ++j) {

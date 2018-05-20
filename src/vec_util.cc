@@ -86,16 +86,4 @@ namespace Util
         }
         return result;
     }
-
-    bool randomProjectionHash(float_vt& origVec, float_vt& randVec) {
-        if (origVec.size() != randVec.size()) 
-        {
-                const std::string traceMsg = "Vectors do not have the same size";
-                TRACE(traceMsg);
-                throw VectorException(FLF, traceMsg);
-        }
-
-        double dot = scalar_product(origVec, randVec);
-        return dot >= 0;
-    }
 }

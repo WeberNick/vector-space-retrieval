@@ -17,6 +17,7 @@
 #include "types.hh"
 #include "exception.hh"
 #include "trace.hh"
+#include "measure.hh"
 
 #include <vector>
 #include <iterator>
@@ -110,16 +111,18 @@ namespace Util
      * @param b
      * @return
      */
-    template <typename T>
+     template <typename T>
     inline double scalar_product(std::vector<T> const& a, std::vector<T> const& b) {
-        if (a.size() != b.size())
-        {
-                const std::string traceMsg = "Vectors do not have the same size";
-                TRACE(traceMsg);
-                throw VectorException(FLF, traceMsg);
-        }
-        return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
+        if (a.size() != b.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
+
+        double result = std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
+        return result;
     }
 
-    bool randomProjectionHash(float_vt& origVec, float_vt& randVec);
+    inline bool randomProjectionHash(std::vector<float>& origVec, std::vector<float>& randVec) {
+        if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
+
+        double dot = scalar_product(origVec, randVec);
+        return dot >= 0;
+    }
 }

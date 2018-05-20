@@ -18,18 +18,14 @@ namespace Util
                 dotProduct += (aTfIdf_a[i] * aTfIdf_b[i]);
             }
 
-            double denom = vectorLength(aTfIdf_a) * vectorLength(aTfIdf_b);
-            float result = static_cast<float>(dotProduct / (vectorLength(aTfIdf_a) * vectorLength(aTfIdf_b)));    
-
-            std::cout << "Cos-Sim" << dotProduct << "/" << denom << " = " << result << std::endl;
-            return result;
+            return static_cast<float>(dotProduct / (vectorLength(aTfIdf_a) * vectorLength(aTfIdf_b)));  
         }
 
         float calcCosDist(const float_vt& aTF_IDF_a, const float_vt& aTF_IDF_b) { return 1 - calcCosSim(aTF_IDF_a, aTF_IDF_b); }
 
         float calcCosSim(const Document& doc_a, const Document& doc_b) { return calcCosSim(doc_a.getTfIdfVector(), doc_b.getTfIdfVector()); }
-        float calcCosDist(const Document& doc_a, const Document& doc_b) { return calcCosDist(doc_a.getTfIdfVector(), doc_b.getTfIdfVector()); }
 
+        float calcCosDist(const Document& doc_a, const Document& doc_b) { return calcCosDist(doc_a.getTfIdfVector(), doc_b.getTfIdfVector()); }
 
         float calcAngularSimilarity(const float_vt& aTfIdf_a, const float_vt& aTfIdf_b) {
 
