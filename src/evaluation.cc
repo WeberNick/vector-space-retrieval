@@ -198,7 +198,8 @@ uint IRPM::getScore(const std::string& aQueryID, const std::string& aDocID)
 Evaluation::Evaluation() : 
     _irpm(IR_PerformanceManager::getInstance()), 
     _evalResults(),
-    _mode(""), 
+    _type(kNoType),
+    _mode(kNoMode), 
     _queryName(""), 
     _evalPath(""), 
     _measureInstance(nullptr), 
@@ -206,15 +207,25 @@ Evaluation::Evaluation() :
     _started(false), 
     _cb(nullptr)
 {
-        _evalResults[modeToString(kVANILLA)].init(modeToString(kVANILLA));
-        _evalResults[modeToString(kVANILLA_RAND)].init(modeToString(kVANILLA_RAND));
-        _evalResults[modeToString(kVANILLA_W2V)].init(modeToString(kVANILLA_W2V));
-        _evalResults[modeToString(kTIERED)].init(modeToString(kTIERED));
-        _evalResults[modeToString(kTIERED_RAND)].init(modeToString(kTIERED_RAND));
-        _evalResults[modeToString(kTIERED_W2V)].init(modeToString(kTIERED_W2V));
-        _evalResults[modeToString(kCLUSTER)].init(modeToString(kCLUSTER));
-        _evalResults[modeToString(kCLUSTER_RAND)].init(modeToString(kCLUSTER_RAND));
-        _evalResults[modeToString(kCLUSTER_W2V)].init(modeToString(kCLUSTER_W2V));
+    for(int type = 0; type < QUERY_TYPE::kNumberOfTypes; ++type)
+    {
+        for(int mode = 0; mode < IR_MODE::kNumberOfModes; ++mode)
+        {
+            const auto t = static_cast<QUERY_TYPE>(type);
+            const auto m = static_cast<IR_MODE>(mode);
+            _qTypeToEvalResults[t][m].init(t, m); 
+        }
+    
+    }
+        //_evalResults[modeToString(kVANILLA)].init(modeToString(kVANILLA));
+        //_evalResults[modeToString(kVANILLA_RAND)].init(modeToString(kVANILLA_RAND));
+        //_evalResults[modeToString(kVANILLA_W2V)].init(modeToString(kVANILLA_W2V));
+        //_evalResults[modeToString(kTIERED)].init(modeToString(kTIERED));
+        //_evalResults[modeToString(kTIERED_RAND)].init(modeToString(kTIERED_RAND));
+        //_evalResults[modeToString(kTIERED_W2V)].init(modeToString(kTIERED_W2V));
+        //_evalResults[modeToString(kCLUSTER)].init(modeToString(kCLUSTER));
+        //_evalResults[modeToString(kCLUSTER_RAND)].init(modeToString(kCLUSTER_RAND));
+        //_evalResults[modeToString(kCLUSTER_W2V)].init(modeToString(kCLUSTER_W2V));
 }
 
 void Evaluation::init(const CB& aControlBlock)
@@ -229,14 +240,15 @@ void Evaluation::init(const CB& aControlBlock)
     }
 }
 
-void Evaluation::start(const IR_MODE aMode, const std::string& aQueryName)
+void Evaluation::start(const QUERY_TYPE aQueryType, const IR_MODE aMode, const std::string& aQueryName)
 {
     if(!_started)
     {
-        _mode = modeToString(aMode);
+        _type = aQueryType;
+        _mode = aMode;
         _queryName = aQueryName;
         _started = true;
-        const std::string lTraceMsg = std::string("Evaluating performance of mode '") + _mode + std::string("' for query '") + _queryName + std::string("'");
+        const std::string lTraceMsg = std::string("Evaluating performance of type '") + typeToString(aQueryType) + std::string("', mode '") + modeToString(_mode) + std::string("' for query '") + _queryName + std::string("'");
         TRACE(lTraceMsg);
         _measureInstance = new Measure;
         _measureInstance->start();
@@ -251,16 +263,17 @@ void Evaluation::stop()
         _time = _measureInstance->mTotalTime();
         delete _measureInstance;
         _measureInstance = nullptr;
-        const std::string lTraceMsg = std::string("Time to process query '") + _queryName + std::string("' in mode '") + _mode + std::string("' : ") + std::to_string(_time);
+        const std::string lTraceMsg = std::string("Time to process query '") + _queryName + std::string("' of type '") + typeToString(_type) + std::string("' in mode '") + modeToString(_mode) + std::string("' : ") + std::to_string(_time);
         TRACE(lTraceMsg);
-        getEvalResult(_mode).setTime(_queryName, _time);
-        _mode = "";
+        getEvalResult(_type, _mode).setTime(_queryName, _time);
+        _type = kNoType;
+        _mode = kNoMode;
         _queryName = "";
         _started = false;
     }
 }
 
-void Evaluation::evalIR(const IR_MODE aMode, const std::string& aQueryName, const pair_sizet_float_vt& aRanking)
+void Evaluation::evalIR(const QUERY_TYPE aQueryType, const IR_MODE aMode, const std::string& aQueryName, const pair_sizet_float_vt& aRanking)
 {
     sizet_vt lRanking;
     lRanking.reserve(aRanking.size());
@@ -269,16 +282,17 @@ void Evaluation::evalIR(const IR_MODE aMode, const std::string& aQueryName, cons
     {
         lRanking.push_back(elem.first);
     }
-    evalIR(aMode, aQueryName, lRanking);
+    evalIR(aQueryType, aMode, aQueryName, lRanking);
 }
 
 
-void Evaluation::evalIR(const IR_MODE aMode, const std::string& aQueryName, const sizet_vt& aRanking)
+void Evaluation::evalIR(const QUERY_TYPE aQueryType, const IR_MODE aMode, const std::string& aQueryName, const sizet_vt& aRanking)
 {
+    const std::string lType = typeToString(aQueryType);
     const std::string lMode = modeToString(aMode);
-    EvalResults& lER = getEvalResult(lMode);
+    EvalResults& lER = getEvalResult(aQueryType, aMode);
     std::string lTraceMsg = "";
-    const std::string lMsgEnd(std::string(" (query: '") + aQueryName + std::string("', mode: '") + lMode + std::string("')"));
+    const std::string lMsgEnd(std::string(" (query: '") + aQueryName + std::string("', type: '") + lType + std::string("', mode: '") + lMode + std::string("')"));
     lER.setAccuracy(aQueryName, _irpm.accuracy(aQueryName, aRanking));
     lTraceMsg = std::to_string(lER.getPerfAccuracy(aQueryName)) + std::string(" accuracy") + lMsgEnd;
     TRACE(lTraceMsg);

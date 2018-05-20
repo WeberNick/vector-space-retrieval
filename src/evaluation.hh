@@ -237,7 +237,7 @@ class Evaluation {
       public:
         /* Constructors, assignment operators and destructor */
         EvalResults() :
-            _mode(""), _perfRuntime(), _perfAccuracy(), _perfPrecision(), _perfRecall(), _perfFmeasure(), _perfAvgPrecision(), _perfDCG(), _perfMAP(0) {}
+            _type(kNoType), _mode(kNoMode), _perfRuntime(), _perfAccuracy(), _perfPrecision(), _perfRecall(), _perfFmeasure(), _perfAvgPrecision(), _perfDCG(), _perfMAP(0) {}
         explicit EvalResults(const EvalResults&) = delete;
         explicit EvalResults(EvalResults&&) = delete;
         EvalResults& operator=(const EvalResults&) = delete;
@@ -248,12 +248,14 @@ class Evaluation {
          * @brief Initializes the EvalResults object with its corresponding mode 
          * @param aMode the mode to initialize the EvalResult object with
          */
-        inline void init(const std::string& aMode) 
+        inline void init(QUERY_TYPE aQueryType, IR_MODE aMode) 
         {
-            if (_mode == "") 
+            if(_type == kNoType && _mode == kNoMode) 
             {
+                _type = aQueryType;
                 _mode = aMode;
-                TRACE(std::string("Evaluation::EvalResults: Initialized for mode '") + aMode + std::string("'"));
+                const std::string lTraceMsg = std::string("Evaluation::EvalResults: Initialized for type '") + typeToString(_type) + std::string("', mode '") + modeToString(_mode) + std::string("'");
+                TRACE(lTraceMsg);
             }
         }
 
@@ -333,6 +335,7 @@ class Evaluation {
          * @return the map with average precision measurements
          */
         inline const query_apr_mt& getPerfAvgPrecision() const { return _perfAvgPrecision; }
+        inline const query_apr_mt& getPerfAvgPrecision() { return _perfAvgPrecision; }
 
         /**
          * @brief Getter for a average precision measurement for a specific query
@@ -420,7 +423,8 @@ class Evaluation {
         inline void setMAP(double aMAP) { _perfMAP = aMAP; }
 
       private:
-        std::string _mode;
+        QUERY_TYPE      _type;
+        IR_MODE         _mode;
         query_rtp_mt _perfRuntime;
         query_acc_mt _perfAccuracy;
         query_pre_mt _perfPrecision;
@@ -434,7 +438,8 @@ class Evaluation {
   public:
     using IR = IR_PerformanceManager;
     using RS = IR::RelScore;
-    using results_mt = std::unordered_map<std::string, EvalResults>;
+    using results_mt = std::unordered_map<IR_MODE, EvalResults>;
+    using type_results_mt = std::unordered_map<QUERY_TYPE, results_mt>;
 
   private:
     /* Constructors, assignment operators and destructor */
@@ -468,7 +473,7 @@ class Evaluation {
      * @param aMode the mode for which the measurement is done (enum representing vanilla, tiered, etc..)
      * @pram aQueryName the name of the current query to evaluate
      */
-    void start(const IR_MODE aMode, const std::string& aQueryName);
+    void start(const QUERY_TYPE aQueryType, const IR_MODE aMode, const std::string& aQueryName);
 
     /**
      * @brief stops the run time performance measurement and inserts the measurement result into
@@ -482,8 +487,8 @@ class Evaluation {
      * @param aQueryName the name of the current query to evaluate
      * @param aRanking the ranking to evaluate
      */
-    void evalIR(const IR_MODE aMode, const std::string& aQueryName, const pair_sizet_float_vt& aRanking);
-    void evalIR(const IR_MODE aMode, const std::string& aQueryName, const sizet_vt& aRanking);
+    void evalIR(const QUERY_TYPE aQueryType, const IR_MODE aMode, const std::string& aQueryName, const pair_sizet_float_vt& aRanking);
+    void evalIR(const QUERY_TYPE aQueryType, const IR_MODE aMode, const std::string& aQueryName, const sizet_vt& aRanking);
 
     /**
      * @brief constructs the physical JSON object with all evaluation results
@@ -491,11 +496,12 @@ class Evaluation {
     void constructJSON(const str_set& aQueryNames);
 
   private:
-    inline EvalResults& getEvalResult(const std::string& aMode) {
+    inline EvalResults& getEvalResult(const QUERY_TYPE aQueryType, const IR_MODE aMode) {
         try {
-            return _evalResults.at(aMode);
+            //return _evalResults.at(aMode);
+            return _qTypeToEvalResults.at(aQueryType).at(aMode);
         } catch (const std::out_of_range& ex) {
-            const std::string lErrMsg = std::string("IR mode '") + aMode + std::string("' not found in evaluation data");
+            const std::string lErrMsg = std::string("Query Type '") + typeToString(aQueryType) + std::string("' or IR mode '") + modeToString(aMode) + std::string("' not found in evaluation data");
             TRACE(lErrMsg);
             throw InvalidArgumentException(FLF, lErrMsg);
         }
@@ -503,14 +509,16 @@ class Evaluation {
 
   private:
     IR_PerformanceManager& _irpm;
-    results_mt _evalResults;
-    std::string _mode;
-    std::string _queryName;
-    std::string _evalPath;
-    Measure* _measureInstance;
-    double _time;
-    bool _started;
+    results_mt      _evalResults;
+    type_results_mt _qTypeToEvalResults;
+    QUERY_TYPE      _type;
+    IR_MODE         _mode;
+    std::string     _queryName;
+    std::string     _evalPath;
+    Measure*        _measureInstance;
+    double          _time;
+    bool            _started;
 
-    const CB* _cb;
+    const CB*       _cb;
 };
 using IRPM = Evaluation::IR;

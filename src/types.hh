@@ -135,3 +135,23 @@ enum QUERY_TYPE
     kVIDTITLES = 4,
     kNumberOfTypes = 5
 };
+
+
+inline std::string typeToString(QUERY_TYPE aType) {
+    switch (aType) {
+        case kNoType:
+            return "InvalidType!"; break;        // not needed but used for convention
+        case kALL: 
+            return "all"; break;       // not needed but used for convention
+        case kNTT: 
+            return "non-topic-titles"; break;       // not needed but used for convention    
+        case kTITLES: 
+            return "titles"; break;       // not needed but used for convention
+        case kVIDDESC: 
+            return "vid-description"; break;      // not needed but used for convention
+         case kVIDTITLES: 
+            return "vid-titles"; break;      // not needed but used for convention    
+        default:
+            return "Type not supported"; break;
+    }
+}
