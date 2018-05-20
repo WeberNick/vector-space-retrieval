@@ -4,6 +4,7 @@ An efficient Vector Space Model (VSM) implementation for retrieving medical data
 ## Table of Contents
  * [Problem Description](#problem-description)
  * [Prerequisites](#prerequisites)
+ * [Project Structure](#project-structure)
  * [Getting Started](#getting-started)
  
 ## Problem Description
@@ -17,14 +18,100 @@ There are several tools you will need to install and execute the application. In
  * [GNU Make](https://www.gnu.org/software/make/): As development and testing was carried out on UNIX-like operating systems, the de-facto standard build and install system _GNU Make_ is used internally by CMake.
  * [_C++17_ compatible compiler](https://gcc.gnu.org): As all tests were carried out with _GCC 7.3.0_, we recommend to use this one or a never version
  * [_boost_](https://www.boost.org): We use the popular C++ library _boost_ for several convenience functionalities such as efficiently splitting strings or dynamically creating bit vectors. If not already installed on your system, you will need to download the _Header-Only Library_ part of _boost_.
- * If you want to use the system with a web interface you will need to have [Node.js](https://nodejs.org/en/) installed. (more details alex..)
+ * [Node.js](https://nodejs.org/en/): If you want to use the system with a web interface you will need to have _Node.js_ installed. (more details alex..)
  * Other libraries used in our project are the [Oleander Stemming Library](http://www.oleandersolutions.com/stemming/stemming.html) and a [C++ JSON Library](https://nlohmann.github.io/json/). The source code of these libraries is automatically cloned when running our installation script.
 
+## Project Structure
+
+### data/
+ All data files required for the system are stored here. By default, the system will search here for the required data files. Optionally, you can provide your own file paths as command line argument (for more details see [Command Line Arguments](#command-line-arguments)). Note: For queries, it is not possible to provide a custom path for each query type (_all_, _nontopictitles_, _titles_, and so on...) but you can provide a path to the directory where all the query files are stored. It is __IMPORTANT__ to keep the same naming conventions otherwise the query files can not be found (The convention is: `q-[Query Type].queries`).
+ * __NICO DESCRIBE THIS OR REFER TO README IN DATA__
+ * dev/raw: 
+ * test/raw: 
+ * train/raw: 
+ * collection\_test.docs:
+ * collection\_test\_mwe.docs:
+ * d-collection.docs:
+ * q-all.queries:
+ * q-nontopictitles.queries:
+ * q-titles.queries:
+ * q-viddesc.queries:
+ * q-vidtitles.queries:
+ * s-3.qrel:
+ * stopwords.large:
+
+### docs/
+(__ALEX DESCRIBE THIS__)
+
+### evsr-web/
+(__ALEX DESCRIBE THIS__)
+
+### python/
+ * preprocessing/: (__NICO DESCRIBE THIS__)
+ * wiki-crawler/: (__ALEX DESCRIBE THIS__)
+
+### src/
+Directory of the C++ source code of the system and its libraries. For further information regarding the source code, take a look into the [Documentation](#doc/) at doc/.
+
+### test/
+Directory of the unit tests.
+
 ## Getting Started
+The build and installation process will be described in the following. Follow [Quick Start Guide](#quick-start-guide) for a fast installation and get the system running (works only if the _boost_ library can be located in its default path). For a more detailed installation guide or if you encounter problems, take a look at [Detailed Installation Guide](#detailed-installation-guide).
+
+### Quick Start Guide
+
+1. Make sure all the [Requirements](#prerequisites) are satisfied
+
+2. Clone the source with `git`:
+```
+git clone https://github.com/WeberNick/vector-space-retrieval.git
+```
+
+3. Build and install:
+```
+cd vector-space-retrieval
+./install.sh
+```
+
+4. Run
+```
+./bin/evsr_run
+```
+
+### Detailed Installation Guide
+
+ * Make sure all the [Requirements](#prerequisites) are satisfied
+ * Clone the source with `git`:
+    ```
+    git clone https://github.com/WeberNick/vector-space-retrieval.git
+    ```
+
+#### Set Up
+ * To install and build the system, several additional options can be (and sometimes must be) provided to the installation process. A complete list of options is provided later.
+ * If _boost_ is not located in the default search path (on Linux `/usr/include/boost`, `/usr/local/Cellar/boost` if installed using _homebrew_), you have to provide the absolute or relative path to the include directory of _boost_ via the `-b`option.
+ * If _GCC_ is not the default compiler on your system (on macOS `g++` is often mapped to use `clang` instead) you may want to provide a path to the C++ compiler via the `-cxx` option (e.g., `/usr/bin/g++`)
+```
+cd vector-space-retrieval
+./install.sh [-b [/path/to/boost/include]] [-cxx [/path/to/c++-compiler]] 
+```
+
+(__ALEX PROVIDE LIST OF OTHER INTERESTING OPTIONS__)
+
+#### Run
+ * To run the system, several additional command line arguments can be provided to the executable. A complete list of command line arguments is provided in the console by running
+    ```
+    ./bin/evsr_run --help
+    ```
+ * (__DISCUSS THE MOST IMPORTANT ARGUMENTS__)
+
+#### Command Line Arguments
+In the following table we briefly introduce all the command line arguments.
 
 
 
-# Project Structure
+
+
 
 ## ./
 
