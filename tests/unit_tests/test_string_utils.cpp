@@ -1,4 +1,4 @@
-#include "string_util"
+#include "string_util.hh"
 #include "gtest/gtest.h"
 #include <vector>
 
@@ -15,7 +15,6 @@ TEST(StringOp, Ends_With_Equals_Test) {
     std::string word = "Thisends";
     EXPECT_EQ(true, Util::endsWith("Thisends", "sends"));
 }
-
 
 TEST(StringOp, Count_Word_Equals_Test) {
 
@@ -34,21 +33,6 @@ TEST(StringOp, Word_Trim_Equals_Test) {
     std::string sentence = " Whitespaces are lost ";
     Util::trim(sentence);
     EXPECT_EQ("Whitespaces are lost", sentence);
-}
-
-TEST(StringOp, Split_String_Test) {
-
-    std::string sentence = "This is split by Space.";
-    string_vt vec;
-    string_vt split_res = {"This", "is", "split", "by", "Space." };
-    Util::splitString(sentence, ' ', vec);
-    EXPECT_EQ(split_res, vec);
-
-    std::string sentence_two = "today sun jon lemon food hi";
-    string_vt vec_two;
-    string_vt vec_comp_two = { "today", "sun", "jon", "lemon", "food", "hi" };
-    Util::splitString(sentence_two, ' ', vec_two);
-    EXPECT_EQ(vec_comp_two, vec_two);
 }
 
 TEST(StringOp, Split_String_Boost_Test) {

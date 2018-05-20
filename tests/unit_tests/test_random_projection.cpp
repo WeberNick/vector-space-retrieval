@@ -1,11 +1,12 @@
 #include "random_projection.hh"
 #include "gtest/gtest.h"
+#include "vec_util.hh"
 
 unsigned int sampleHashing(std::vector<float>& origVec, std::vector<float>& randVec) {
     if (origVec.size() != randVec.size())
         throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
 
-    double dot = Utility::scalar_product(origVec, randVec);
+    double dot = Util::scalar_product(origVec, randVec);
     if (dot > 0.75) {
         return 1;
     } else {

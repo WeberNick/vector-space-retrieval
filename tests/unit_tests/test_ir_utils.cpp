@@ -1,4 +1,4 @@
-#include "ir_util"
+#include "ir_util.hh"
 #include "gtest/gtest.h"
 
 TEST(IR, OrPostingLists_Equals_Test) {
