@@ -170,6 +170,13 @@ class QueryManager
     
     public:
         /**
+         * @brief Getter call to get access to the query types string representation
+         * @param aQueryType enum representation of the query type
+         * @return the string representation of the query type
+         */
+        const std::string& getTypeName(const QUERY_TYPE aQueryType) const;
+        const std::string& getTypeName(const QUERY_TYPE aQueryType);
+        /**
          * @brief Getter call to get access to the query document map for this type
          * @param aQueryType enum representation of the query type
          * @return Return the ID->Document map for this type where the query documents are stored in

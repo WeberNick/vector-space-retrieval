@@ -3,14 +3,17 @@ An efficient Vector Space Model (VSM) implementation for retrieving medical data
 
 ## Table of Contents
  * [Problem Description](#problem-description)
- * [Requirements](#requirements)
- * [Installation](#installation)
+ * [Prerequisites](#prerequisites)
+ * [Getting Started](#getting-started)
  
 ## Problem Description
 
-## Requirements
 
-## Installation
+## Prerequisites
+
+
+## Getting Started
+
 
 # Project Structure
 
