@@ -325,42 +325,90 @@ void Evaluation::evalIR(const QUERY_TYPE aQueryType, const IR_MODE aMode, const 
 void Evaluation::constructJSON(const str_set& aQueryNames)
 {
     TRACE("Construct JSON object containing all evaluation results");
-    json lModes = json::array();    
-    for(const auto& [mode, results] : _evalResults)
+    json lTypes = json::array();    
+    for(const auto& [type, modes] : _qTypeToEvalResults)
     {
-        json lMode = json::object();
-        lMode["name"] = mode;
-        json lQueryResults = json::array();
-        for(const auto& query : aQueryNames)
-        {
-            try
+        json lType = json::object();
+        lType["name"] = typeToString(type);
+        json lModes = json::array();
+        for(const auto& [mode, results] : modes){
+            json lMode = json::object();
+            lMode["name"] = modeToString(mode);
+            json lQueryResults = json::array();
+            for(const auto& query : aQueryNames)
             {
-                json lQuery = json::object();
-                lQuery["name"] = query;
-                lQuery["perf_rnt"] = results.getPerfRuntime(query);
-                lQuery["perf_acc"] = results.getPerfAccuracy(query);
-                lQuery["perf_pre"] = results.getPerfPrecision(query);
-                lQuery["perf_rec"] = results.getPerfRecall(query);
-                lQuery["perf_fms"] = results.getPerfFMeasure(query);
-                lQuery["perf_avp"] = results.getPerfAvgPrecision(query);
-                lQuery["perf_dcg"] = results.getPerfDCG(query);
-                lQueryResults.push_back(lQuery);
+                try
+                {
+                    json lQuery = json::object();
+                    lQuery["name"] = query;
+                    lQuery["perf_rnt"] = results.getPerfRuntime(query);
+                    lQuery["perf_acc"] = results.getPerfAccuracy(query);
+                    lQuery["perf_pre"] = results.getPerfPrecision(query);
+                    lQuery["perf_rec"] = results.getPerfRecall(query);
+                    lQuery["perf_fms"] = results.getPerfFMeasure(query);
+                    lQuery["perf_avp"] = results.getPerfAvgPrecision(query);
+                    lQuery["perf_dcg"] = results.getPerfDCG(query);
+                    lQueryResults.push_back(lQuery);
+                }
+                catch (const std::out_of_range& ex) 
+                {
+                    const std::string lErrMsg = std::string("No evaluation found for query '" + query + std::string("'"));
+                    TRACE(lErrMsg);
+                }
             }
-            catch (const std::out_of_range& ex) 
-            {
-                const std::string lErrMsg = std::string("No evaluation found for query '" + query + std::string("'"));
-                TRACE(lErrMsg);
-            }
+            lMode["queries"] = lQueryResults;
+            lMode["map"] = results.getPerfMAP();
+            lModes.push_back(lMode);
         }
-        lMode["queries"] = lQueryResults;
-        lMode["map"] = results.getPerfMAP();
-        lModes.push_back(lMode);
+        lType["modes"] = lModes;
+        lTypes.push_back(lType);
     }
     std::time_t lCurrTime = std::time(nullptr);
     std::string lTime = std::string(std::ctime(&lCurrTime));
     std::string lPath = _evalPath;
     lPath.append(lTime.substr(0, lTime.size() - 1).append(".json"));
     std::ofstream lOutputFile(lPath.c_str(), std::ofstream::out);
-    lOutputFile << lModes << std::endl;
+    lOutputFile << lTypes << std::endl;
     lOutputFile.close();
+
+
+    //TRACE("Construct JSON object containing all evaluation results");
+    //json lModes = json::array();    
+    //for(const auto& [mode, results] : _evalResults)
+    //{
+        //json lMode = json::object();
+        //lMode["name"] = mode;
+        //json lQueryResults = json::array();
+        //for(const auto& query : aQueryNames)
+        //{
+            //try
+            //{
+                //json lQuery = json::object();
+                //lQuery["name"] = query;
+                //lQuery["perf_rnt"] = results.getPerfRuntime(query);
+                //lQuery["perf_acc"] = results.getPerfAccuracy(query);
+                //lQuery["perf_pre"] = results.getPerfPrecision(query);
+                //lQuery["perf_rec"] = results.getPerfRecall(query);
+                //lQuery["perf_fms"] = results.getPerfFMeasure(query);
+                //lQuery["perf_avp"] = results.getPerfAvgPrecision(query);
+                //lQuery["perf_dcg"] = results.getPerfDCG(query);
+                //lQueryResults.push_back(lQuery);
+            //}
+            //catch (const std::out_of_range& ex) 
+            //{
+                //const std::string lErrMsg = std::string("No evaluation found for query '" + query + std::string("'"));
+                //TRACE(lErrMsg);
+            //}
+        //}
+        //lMode["queries"] = lQueryResults;
+        //lMode["map"] = results.getPerfMAP();
+        //lModes.push_back(lMode);
+    //}
+    //std::time_t lCurrTime = std::time(nullptr);
+    //std::string lTime = std::string(std::ctime(&lCurrTime));
+    //std::string lPath = _evalPath;
+    //lPath.append(lTime.substr(0, lTime.size() - 1).append(".json"));
+    //std::ofstream lOutputFile(lPath.c_str(), std::ofstream::out);
+    //lOutputFile << lModes << std::endl;
+    //lOutputFile.close();
 }
