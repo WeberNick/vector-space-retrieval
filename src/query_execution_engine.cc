@@ -1,5 +1,6 @@
 #include "query_execution_engine.hh"
 #include "index_manager.hh"
+#include "measure.hh"
 
 /**
  * @brief Construct a new Query Processing Engine:: Query Processing Engine object
@@ -83,12 +84,6 @@ const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_
     case IR_MODE ::kNumberOfModes: break;
     default: break;
     }
-
-    // Return search result
-    std::cout << "Returning results" << std::endl;
-    for (auto& elem : found_indices) {
-        std::cout << "id: " << elem.first << " sim: " << elem.second << std::endl;
-    }
     return found_indices;
 }
 
@@ -98,7 +93,6 @@ const pair_sizet_float_vt QueryExecutionEngine::searchCollectionCos(const Docume
     for (auto& elem : collectionIds) { // Map of doc id to length og that doc
         docId2Length[elem] = DocumentManager::getInstance().getDocumentMap().at(elem).getNormLength();
     }
-
     std::map<size_t, float> docId2Scores;
     
     // if we are using w2v we can not use our posting list, instead we have to use the normal tfidf vectors + the document word embedding vector
@@ -116,7 +110,7 @@ const pair_sizet_float_vt QueryExecutionEngine::searchCollectionCos(const Docume
                 const PostingList& postingList = IndexManager::getInstance().getInvertedIndex().getPostingList(term);
                 for (auto& [id, tf] : postingList.getPosting()) {
                     float idf = IndexManager::getInstance().getIdf(term);
-                    docId2Scores[id] += (tf * idf * (Util::calcTf(term, qcontent) * idf));
+                    docId2Scores[id] += (tf * idf * (query->getTf(term) * idf));
                 }
             } catch (const InvalidArgumentException& e) { continue; /* One of the query terms does not appear in the document collection. */ }
         }

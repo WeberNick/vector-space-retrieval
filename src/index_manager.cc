@@ -16,12 +16,6 @@ IndexManager::IndexManager() :
     _wordEmbeddingsIndex(WordEmbeddings::getInstance())
 {}
 
-/**
- * @brief Destroy the Index Manager:: Index Manager object
- *
- */
-IndexManager::~IndexManager() {}
-
 void IndexManager::init(const CB& aControlBlock, doc_mt& aDocMap) {
     if (!_cb) {
         _cb = &aControlBlock;
@@ -77,14 +71,9 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
     }
     RandomProjection::getInstance().init(*_cb, _collection_terms.size());
     for (auto& elem : *(_docs)) {
-        std::cout << "Build Vecs for Doc" << elem.second.getDocID() << std::endl;
-        Measure lMeasure;
-        lMeasure.start();
         this->buildTfIdfVector(elem.second);
         this->buildWordEmbeddingsVector(elem.second);
         this->buildRandProjVector(elem.second);
-        lMeasure.stop();
-        std::cout << "Took " << lMeasure.mTotalTime() << std::endl;
     }
     for (auto& elem : *(_docs)) {
         Document& doc = elem.second;

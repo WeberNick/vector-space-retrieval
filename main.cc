@@ -206,11 +206,13 @@ void testEval(const control_block_t& aControlBlock) {
     // hier kommt die for schleife über die enums type
 
 
-    for (int i = 0; i < kNumberOfTypes; ++i ) {
+    /*for (int i = 0; i < kNumberOfTypes; ++i ) {
 
         QUERY_TYPE type = static_cast<QUERY_TYPE>(i);
         std::cout << "Type " << queryManager.getTypeName(type) << std::endl;
+        */
 
+       QUERY_TYPE type = QUERY_TYPE::kALL;
         for (int j = 0; j < kNumberOfModes; ++j) {
             IR_MODE mode = static_cast<IR_MODE>(j);
 
@@ -228,9 +230,10 @@ void testEval(const control_block_t& aControlBlock) {
                 e.evalIR(mode, query.getDocID(), result);
             }
         }
+        e.constructJSON(queryNamesSet);
         //std::cout << std::endl;
-    }
-    e.constructJSON(queryNamesSet);
+    //}
+    //e.constructJSON(queryNamesSet);
 }
 
 /**

@@ -14,11 +14,6 @@ namespace Util {
         return tf * idf;
     }
 
-    float calcTf(const std::string& term, const std::vector<std::string>& content) {
-        return static_cast<float>((1 + log10(Util::countWordInString(content, term, false))) /
-                                  (1 + log10(Util::getMaxWordFrequency(content))));
-    }
-
     std::string stemPorter(const std::string& sentence) {
         std::istringstream iss(sentence);
         std::ostringstream os;
