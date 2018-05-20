@@ -56,6 +56,8 @@ class QueryExecutionEngine {
 
     /**
      * @brief A top level implementation of the search function. Use a string and type to search for similar documents
+     * If search is called on a raw string preprocessing is always done, and then the raw string is converted into a
+     * document.
      *
      * @param query The raw string query
      * @param topK How many results are retrieved
@@ -63,6 +65,17 @@ class QueryExecutionEngine {
      * @return pair_sizet_float_vt A list of document - similarity pairs ordered descending
      */
     const pair_sizet_float_vt search(std::string& query, size_t topK, IR_MODE searchType);
+
+    /**
+     * @brief A top level implementation of the search function. Use a string and type to search for similar documents
+     * This version of search is called on a document object, so it assumes that the content of the document is already
+     * preprocessed and will not preprocess it again
+     *
+     * @param query A query document
+     * @param topK How many results are retrieved
+     * @param searchType What type of search should be executed
+     * @return pair_sizet_float_vt A list of document - similarity pairs ordered descending
+     */
     const pair_sizet_float_vt search(Document& query, size_t topK, IR_MODE searchType);
 
     /**

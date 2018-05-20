@@ -59,7 +59,7 @@ class QueryManager
                  * @param aQueryID      the textual query ID to assign
                  * @return the created document
                  */
-                static Document createQueryDoc(const string_vt& aStopwords, std::string& aContent, const std::string aQueryID = "query-0");
+                static Document createQueryDoc(const string_vt& aStopwords, std::string& aContent, const bool aPreprocess, const std::string aQueryID = "query-0");
 
                 /**
                  * @brief Initializes the query type object. In this procedure the content of the query file
@@ -166,7 +166,7 @@ class QueryManager
          * @param aQueryID      the textual query ID to assign
          * @return the created document
          */
-        inline Document createQueryDoc(std::string& aContent){ return QueryType::createQueryDoc(_stopwords, aContent); }
+        inline Document createQueryDoc(std::string& aContent, const bool aPreprocess = false){ return QueryType::createQueryDoc(_stopwords, aContent, aPreprocess); }
     
     public:
         /**

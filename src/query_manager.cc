@@ -8,9 +8,23 @@ QueryManager::QueryType::QueryType(const std::string& aType) :
     _qStrIDs()
 {}
                 
-Document QueryManager::QueryType::createQueryDoc(const string_vt& aStopwords, std::string& aContent, const std::string aQueryID)
+Document QueryManager::QueryType::createQueryDoc(const string_vt& aStopwords, std::string& aContent, const bool aPreprocess, const std::string aQueryID)
 {
-    Document lQueryDoc(aQueryID, Util::preprocess(aContent, aStopwords));
+    Measure lMeasure0;
+    lMeasure0.start();
+
+    string_vt content;
+
+    if (aPreprocess) {
+        content = Util::preprocess(aContent, aStopwords);
+    } else {
+        Util::splitStringBoost(aContent, ' ', content);
+    }
+
+    Document lQueryDoc(aQueryID, content);
+    
+    lMeasure0.stop();
+    std::cout << "Preprocess TOOK " << lMeasure0.mTotalTime() << std::endl;
 
     const string_vt& con = lQueryDoc.getContent(); // start build docTermTFMap
     str_int_mt tf_counts;
@@ -26,10 +40,24 @@ Document QueryManager::QueryType::createQueryDoc(const string_vt& aStopwords, st
     }
     lQueryDoc.setTermTfMap(tf_out); // end build docTermTFMap
 
+    Measure lMeasure;
+    lMeasure.start();
     IndexManager::getInstance().buildTfIdfVector(lQueryDoc);
+    lMeasure.stop();
+    std::cout << "TF-IDF TOOK " << lMeasure.mTotalTime() << std::endl;
+
+    Measure lMeasure2;
+    lMeasure.start();
     IndexManager::getInstance().buildWordEmbeddingsVector(lQueryDoc);
+    lMeasure2.stop();
+    std::cout << "WORD EMBEDDINGS TOOK " << lMeasure.mTotalTime() << std::endl;
+
+    Measure lMeasure3;
+    lMeasure.start();
     IndexManager::getInstance().buildRandProjVector(lQueryDoc);
-  
+    lMeasure3.stop();
+    std::cout << "RAND PROJ TOOK " << lMeasure.mTotalTime() << std::endl;
+
     return lQueryDoc;
 }
 
@@ -46,7 +74,12 @@ void QueryManager::QueryType::init(const string_vt& aStopwords, const std::strin
     {
         const std::string& lQueryID = line.at(0);
         std::string& lQueryContent = line.at(1);
+        std::cout << "Build Vecs for Query: " << lQueryID << std::endl;
+        Measure lMeasure;
+        lMeasure.start();
         addDoc(QueryType::createQueryDoc(aStopwords, lQueryContent, lQueryID));
+        lMeasure.stop();
+        std::cout << "Took " << lMeasure.mTotalTime() << std::endl;
     }
       
     lMeasure.stop();
