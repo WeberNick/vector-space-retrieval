@@ -7,12 +7,21 @@ An efficient Vector Space Model (VSM) implementation for retrieving medical data
  * [Getting Started](#getting-started)
  
 ## Problem Description
+Describe the problem we want to solve in more detail here. Maybe just copy paste from report..
 
 
 ## Prerequisites
-
+There are several tools you will need to install and execute the application. In the following is a list with all required tools and technologies required for installing and running the system:
+ * _UNIX-like_ operating system: All development and testing was carried out on UNIX-like operating systems. On _Windows_ we encountered several compiler problems. Although fixed, we still strongly recommend to use a UNIX-like operating system (tested under _macOS High Sierra Version 10.13.4_, Arch Linux [Version..] and Ubuntu [Version...])
+ * [CMake](https://cmake.org): We use CMake as platform independent build system. Before compiling several requirements will be checked by CMake and the compilation process will either fail or a warning will be emitted if requirements are not satisfied.
+ * [GNU Make](https://www.gnu.org/software/make/): As development and testing was carried out on UNIX-like operating systems, the de-facto standard build and install system _GNU Make_ is used internally by CMake.
+ * [_C++17_ compatible compiler](https://gcc.gnu.org): As all tests were carried out with _GCC 7.3.0_, we recommend to use this one or a never version
+ * [_boost_](https://www.boost.org): We use the popular C++ library _boost_ for several convenience functionalities such as efficiently splitting strings or dynamically creating bit vectors. If not already installed on your system, you will need to download the _Header-Only Library_ part of _boost_.
+ * If you want to use the system with a web interface you will need to have [Node.js](https://nodejs.org/en/) installed. (more details alex..)
+ * Other libraries used in our project are the [Oleander Stemming Library](http://www.oleandersolutions.com/stemming/stemming.html) and a [C++ JSON Library](https://nlohmann.github.io/json/). The source code of these libraries is automatically cloned when running our installation script.
 
 ## Getting Started
+
 
 
 # Project Structure
