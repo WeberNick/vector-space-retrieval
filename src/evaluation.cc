@@ -90,6 +90,7 @@ double IRPM::avgPrecision(const std::string& aQueryID, const sizet_vt& aRanking)
 {
     const sizet_vt lRelevant = getRelevantDocIDs(aQueryID); //ids of the relevant docs
     double lSum = 0;
+    size_t lRelevantDocsFound = 0;
     for(size_t id : lRelevant)
     {
         size_t pos = std::distance(aRanking.cbegin(), std::find(aRanking.cbegin(), aRanking.cend(), id));
@@ -97,9 +98,10 @@ double IRPM::avgPrecision(const std::string& aQueryID, const sizet_vt& aRanking)
         {
             const sizet_vt lSub(aRanking.cbegin(), aRanking.cbegin() + pos);
             lSum += precision(aQueryID, lSub);
+            ++lRelevantDocsFound; 
         }
     }
-    const double lDenominator = lRelevant.size();
+    const double lDenominator = lRelevantDocsFound;
     return (lDenominator != 0) ? (lSum / lDenominator) : 0;
 }
 
@@ -144,12 +146,10 @@ double IRPM::iDCG(const std::string& aQueryID, const uint aRelDocsFound)
     const scores_vt& lRelScores = getQueryScores(aQueryID);
     double lSum = 0;
     size_t i = 1;
-    std::cout << "################# iDCG ####################" << std::endl;
     for(const RelScore& relScore : lRelScores)
     {
         if(i <= aRelDocsFound)
         {
-            std::cout << "QueryID : " << relScore.getQueryID() << ", DocumentID : " << relScore.getDocumentID() << ", Score: " << relScore.getScore() << std::endl;
             const double lNumerator = std::pow(2, relScore.getScore()) - 1;
             lSum += (lNumerator / std::log2(i++ + 1));
         }
@@ -160,19 +160,8 @@ double IRPM::iDCG(const std::string& aQueryID, const uint aRelDocsFound)
 
 double IRPM::nDCG(const std::string& aQueryID, const sizet_vt& aRanking, const bool aBDCG)
 {
-    std::cout << "######################## nDCG ####################" << std::endl;
-    std::cout << "Query ID: " << aQueryID << "\n";
-    for(auto i : aRanking)
-    {
-        const std::string& str = DocumentManager::getInstance().getDocument(i).getDocID();
-        std::cout << "Internal ID : " << i << ", String ID : " << str << ", Query Rel. Score : " << getScore(aQueryID, str) << std::endl;
-    }
     uint lRelevantDocsFound = 0;
     double lDCG = (aBDCG) ? bDCG(aQueryID, aRanking, lRelevantDocsFound) : rDCG(aQueryID, aRanking, lRelevantDocsFound);
-    double liDCGDCG = iDCG(aQueryID, lRelevantDocsFound);
-    double res = lDCG / liDCGDCG;
-    std::cout << "DCG : " << lDCG << ", iDCG : " << liDCGDCG << ", Result (DCG/iDCG) : " << res << std::endl;
-    exit(0);
     return (lDCG / iDCG(aQueryID, lRelevantDocsFound));
 }
 
