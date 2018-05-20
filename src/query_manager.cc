@@ -84,7 +84,58 @@ void QueryManager::init(const CB& aControlBlock)
         //_qVidTitles.init(_stopwords, lQueryPath, _delimiter);
     }
 }
- 
+
+
+const std::string& QueryManager::getTypeName(const QUERY_TYPE aQueryType) const
+{
+    switch(aQueryType)
+    {
+        case kALL:
+            return _qAll.getTypeName();
+            break;
+        case kNTT:
+            return _qNTT.getTypeName();
+            break;
+        case kTITLES:
+            return _qTitles.getTypeName();
+            break;
+        case kVIDDESC:
+            return _qVidDesc.getTypeName();
+            break;
+        case kVIDTITLES:
+            return _qVidTitles.getTypeName();
+            break;
+        default: 
+            throw SwitchException(FLF); 
+            break;
+    }
+}
+
+const std::string& QueryManager::getTypeName(const QUERY_TYPE aQueryType)
+{
+    switch(aQueryType)
+    {
+        case kALL:
+            return static_cast<const QueryManager&>(*this).getTypeName(aQueryType);
+            break;
+        case kNTT:
+            return static_cast<const QueryManager&>(*this).getTypeName(aQueryType);
+            break;
+        case kTITLES:
+            return static_cast<const QueryManager&>(*this).getTypeName(aQueryType);
+            break;
+        case kVIDDESC:
+            return static_cast<const QueryManager&>(*this).getTypeName(aQueryType);
+            break;
+        case kVIDTITLES:
+            return static_cast<const QueryManager&>(*this).getTypeName(aQueryType);
+            break;
+        default: 
+            throw SwitchException(FLF); 
+            break;
+    }
+}
+
 const doc_mt& QueryManager::getQueryMap(const QUERY_TYPE aQueryType) const 
 {
     switch(aQueryType)

@@ -41,55 +41,48 @@ class Cluster
   private:
     /**
      * @brief Get the Cluster Singleton instance.
-     *
      * @return Cluster& a reference to the Cluster Singleton instance.
      */
-    inline static Cluster& getInstance() {
+    inline static Cluster& getInstance() 
+    {
         static Cluster lInstance;
         return lInstance;
     }
+
     /**
      * @brief Initialize control block and cluster
-     *
-     * @param aControlBlock the control block
+     * @param aControlBlock the control block containing runtime specific data
      */
     void init(const CB& aControlBlock);
 
     /**
-     * @brief Get the Cluster Map object
-     * 
-     * @return cluster_mt* 
-     */
-    inline cluster_mt* getClusterMap() { return &_cluster; }
-    /**
-     * @brief Choose Leaders
-     *
+     * @brief Choose sqrt(N) random leaders
      */
     void chooseLeaders();
 
   public:
     /**
-     * @brief Get the Leaders object
-     * 
-     * @return const doc_ptr_vt& 
+     * @brief Get the document IDs of the leader
+     * @return a vector containing all document IDs
      */
+    inline const sizet_vt& getLeaders() const { return _leaders; }
     inline const sizet_vt& getLeaders() { return _leaders; }
+
     /**
-     * @brief Get the Cluster object
-     *
-     * @return const cluster_mt&
+     * @brief Getter for the cluster map
+     * @return the cluster map
      */
     inline cluster_mt& getCluster() { return _cluster; }
 
   public:
     /**
      * @brief 
-     * 
      * @param aLeaders 
      * @param aTopK 
      * @return const sizet_vt 
      */
     void getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, const size_t aTopK, sizet_vt& aOutputVec);
+    friend std::ostream& operator<<(std::ostream& strm, const Cluster& clust);
 
   private:
     const CB* _cb;
