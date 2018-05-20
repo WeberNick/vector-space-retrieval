@@ -24,6 +24,10 @@ void construct_arg_desc(argdesc_vt& x) {
     x.push_back(new uarg_t("--topk", 10, &Args::results, "the maximum number of results a query shall return (top k)"));
     x.push_back(new uarg_t("--tiers", 10, &Args::tiers, "the number of tiers used for the tiered index"));
     x.push_back(new uarg_t("--dimensions", 1000, &Args::dimensions, "the number of dimensions used for the random projection"));
+
+    /*REMOVE*/
+    x.push_back(new barg_t("--rand", false, &Args::rand, "print this message"));
+    x.push_back(new barg_t("--tiered", false, &Args::tiered, "print this message"));
 }
 
 Args::Args() : 
@@ -39,5 +43,7 @@ Args::Args() :
     _evalPath("./"),
     _results(10),
     _tiers(10),
-    _dimensions(1000)
+    _dimensions(1000),
+    _rand(false),
+    _tiered(false)
 {}

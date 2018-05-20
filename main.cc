@@ -327,7 +327,10 @@ int main(const int argc, const char* argv[]) {
         lArgs.evalPath(),            // path to evaluation results (JSON object is stored here)
         lArgs.results(),             // topK argument
         lArgs.tiers(),               // number of tiers
-        lArgs.dimensions()           // number of dimensions
+        lArgs.dimensions(),          // number of dimensions
+        /*REMOVE*/
+        lArgs.rand(),
+        lArgs.tiered()
     };
 
     Trace::getInstance().init(lCB);
