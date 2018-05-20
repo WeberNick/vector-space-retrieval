@@ -113,9 +113,9 @@ double IRPM::meanAvgPrecision(const std::unordered_map<std::string, double>& aAv
 double IRPM::bDCG(const std::string& aQueryID, const sizet_vt& aRanking)
 {    
     double lSum = 0;
-    for(size_t i = 0; i < aRanking.size(); ++i)
+    for(size_t i = 1; i <= aRanking.size(); ++i)
     {
-        const uint lScore = getScore(aQueryID, DocumentManager::getInstance().getDocument(aRanking[i]).getDocID());
+        const uint lScore = getScore(aQueryID, DocumentManager::getInstance().getDocument(aRanking[i-1]).getDocID());
         lSum += (lScore / std::log2(i + 1));
     }
     return lSum;
@@ -124,9 +124,9 @@ double IRPM::bDCG(const std::string& aQueryID, const sizet_vt& aRanking)
 double IRPM::rDCG(const std::string& aQueryID, const sizet_vt& aRanking)
 {
     double lSum = 0;
-    for(size_t i = 0; i < aRanking.size(); ++i)
+    for(size_t i = 1; i <= aRanking.size(); ++i)
     {
-        const uint lScore = getScore(aQueryID, DocumentManager::getInstance().getDocument(aRanking[i]).getDocID());
+        const uint lScore = getScore(aQueryID, DocumentManager::getInstance().getDocument(aRanking[i-1]).getDocID());
         const double lNumerator = std::pow(2, lScore) - 1;
         lSum += (lNumerator / std::log2(i + 1));
     }
@@ -137,9 +137,11 @@ double IRPM::iDCG(const std::string& aQueryID)
 {
     const scores_vt& lRelScores = getQueryScores(aQueryID);
     double lSum = 0;
-    size_t i = 0;
+    size_t i = 1;
+    std::cout << "################# iDCG ####################" << std::endl;
     for(const RelScore& relScore : lRelScores)
     {
+        std::cout << "QueryID : " << relScore.getQueryID() << ", DocumentID : " << relScore.getDocumentID() << ", Score: " << relScore.getScore() << std::endl;
         const double lNumerator = std::pow(2, relScore.getScore()) - 1;
         lSum += (lNumerator / std::log2(i++ + 1));
     }
@@ -148,7 +150,18 @@ double IRPM::iDCG(const std::string& aQueryID)
 
 double IRPM::nDCG(const std::string& aQueryID, const sizet_vt& aRanking, const bool aBDCG)
 {
+    std::cout << "######################## nDCG ####################" << std::endl;
+    std::cout << "Query ID: " << aQueryID << "\n";
+    for(auto i : aRanking)
+    {
+        const std::string& str = DocumentManager::getInstance().getDocument(i).getDocID();
+        std::cout << "Internal ID : " << i << ", String ID : " << str << ", Query Rel. Score : " << getScore(aQueryID, str) << std::endl;
+    }
     double lDCG = (aBDCG) ? bDCG(aQueryID, aRanking) : rDCG(aQueryID, aRanking);
+    double liDCGDCG = iDCG(aQueryID);
+    double res = lDCG / liDCGDCG;
+    std::cout << "DCG : " << lDCG << ", iDCG : " << liDCGDCG << ", Result (DCG/iDCG) : " << res << std::endl;
+    exit(0);
     return (lDCG / iDCG(aQueryID));
 }
 
