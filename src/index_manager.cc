@@ -6,8 +6,21 @@
  *
  */
 IndexManager::IndexManager() :
-    _cb(nullptr), _docs(nullptr), _idf_map(), _collection_terms(), _invertedIndex(InvertedIndex::getInstance()), _tieredIndex(TieredIndex::getInstance()),
-    _clusteredIndex(Cluster::getInstance()), _wordEmbeddingsIndex(WordEmbeddings::getInstance()) {}
+    _cb(nullptr),
+    _docs(nullptr),
+    _idf_map(),
+    _collection_terms(),
+    _invertedIndex(InvertedIndex::getInstance()),
+    _tieredIndex(TieredIndex::getInstance()),
+    _clusteredIndex(Cluster::getInstance()),
+    _wordEmbeddingsIndex(WordEmbeddings::getInstance())
+{}
+
+/**
+ * @brief Destroy the Index Manager:: Index Manager object
+ *
+ */
+IndexManager::~IndexManager() {}
 
 void IndexManager::init(const CB& aControlBlock, doc_mt& aDocMap) {
     if (!_cb) {
@@ -84,7 +97,6 @@ void IndexManager::buildIndices(str_postinglist_mt* postinglist_out, str_tierplm
 void IndexManager::buildWordEmbeddingsVector(Document& doc) {
     float_vt& wevec = doc.getWordEmbeddingsVector();
     wevec.resize(300);
-
     const string_vt& content = doc.getContent();
     // TODO:
     // test make_unique

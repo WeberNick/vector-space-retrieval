@@ -174,13 +174,21 @@ void testEval(const control_block_t& aControlBlock) {
     docManager.init(aControlBlock);
     std::cout << "Document Manager initialized" << std::endl;
 
+    Measure mes2;
+    mes2.start();
     IndexManager& imInstance = IndexManager::getInstance();
     imInstance.init(aControlBlock, docManager.getDocumentMap());
     std::cout << "Index Manager initialized" << std::endl;
+    mes2.stop();
+    std::cout << "IndexManager took " << mes2.mTotalTime() << std::endl;
 
+    Measure mes;
+    mes.start();
     QueryManager& queryManager = QueryManager::getInstance();
     queryManager.init(aControlBlock);
     std::cout << "Query Manager initialized" << std::endl;
+    mes.stop();
+    std::cout << "QueryManager took " << mes.mTotalTime() << std::endl;
 
     QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
     qpe.init(aControlBlock);
@@ -220,6 +228,7 @@ void testEval(const control_block_t& aControlBlock) {
                 e.evalIR(mode, query.getDocID(), result);
             }
         }
+        //std::cout << std::endl;
     }
     e.constructJSON(queryNamesSet);
 }
@@ -232,7 +241,6 @@ void testEval(const control_block_t& aControlBlock) {
  * @return int
  */
 int main(const int argc, const char* argv[]) {
-
     /* How to use class Args is described in args.hh */
     Args lArgs;
     argdesc_vt lArgDesc;
@@ -248,7 +256,6 @@ int main(const int argc, const char* argv[]) {
         return 0;
     }
 
-
     if(!Util::endsWith(fs::current_path().string(), "vector-space-retrieval")) 
     {
         std::cerr << " ## Warning : Programm was not executed from the recommended directory " 
@@ -257,53 +264,53 @@ int main(const int argc, const char* argv[]) {
             << "\n            ## Current Working Directory: " << fs::current_path() << std::endl;
     }
 
-   if(!(fs::exists(lArgs.collectionPath())))
-   {
-       std::cerr << "Given path to the data collection is invalid." << std::endl;
-       return -1;
-   }
-
-   if(!fs::exists(lArgs.queryPath()))
-   {
-       std::cerr << "Given path to the query collection is invalid." << std::endl;
-       return -1;
-   }
-
-   if(!fs::exists(lArgs.relevanceScoresPath()))
-   {
-       std::cerr << "Given path to the relevance scores is invalid." << std::endl;
-       return -1;
-   }
-
-   if(!fs::exists(lArgs.wordEmbeddingsPath()))
-   {
-       std::cerr << "Given path to the word embeddings is invalid." << std::endl;
-       return -1;
-   }
-
-   if(!fs::exists(lArgs.stopwordPath()))
-   {
-       std::cerr << "Given path to the stopwords file is invalid." << std::endl;
-       return -1;
-   }
-
-   if(!fs::exists(lArgs.evalPath()))
-   {
-       std::cerr << "The path where to store the evaluation is invalid." << std::endl;
-       return -1;
-   }
-
-   if(lArgs.trace() && !fs::exists(lArgs.tracePath()))
-   {
-       std::cerr << "The path where to store the trace file is invalid." << std::endl;
-       return -1;
-   }
-
-   if(lArgs.tiers() < 2)
-   {
-       std::cerr << "The number of tiers must be larger than two." << std::endl;
-       return -1;
-   }
+    if(!(fs::exists(lArgs.collectionPath())))
+    {
+        std::cerr << "Given path to the data collection is invalid." << std::endl;
+        return -1;
+    }
+ 
+    if(!fs::exists(lArgs.queryPath()))
+    {
+        std::cerr << "Given path to the query collection is invalid." << std::endl;
+        return -1;
+    }
+ 
+    if(!fs::exists(lArgs.relevanceScoresPath()))
+    {
+        std::cerr << "Given path to the relevance scores is invalid." << std::endl;
+        return -1;
+    }
+ 
+    if(!fs::exists(lArgs.wordEmbeddingsPath()))
+    {
+        std::cerr << "Given path to the word embeddings is invalid." << std::endl;
+        return -1;
+    }
+ 
+    if(!fs::exists(lArgs.stopwordPath()))
+    {
+        std::cerr << "Given path to the stopwords file is invalid." << std::endl;
+        return -1;
+    }
+ 
+    if(!fs::exists(lArgs.evalPath()))
+    {
+        std::cerr << "The path where to store the evaluation is invalid." << std::endl;
+        return -1;
+    }
+ 
+    if(lArgs.trace() && !fs::exists(lArgs.tracePath()))
+    {
+        std::cerr << "The path where to store the trace file is invalid." << std::endl;
+        return -1;
+    }
+ 
+    if(lArgs.tiers() < 2)
+    {
+        std::cerr << "The number of tiers must be larger than two." << std::endl;
+        return -1;
+    }
 
     const control_block_t lCB = {
         lArgs.trace(),               // trace activated?
