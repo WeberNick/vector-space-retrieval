@@ -15,6 +15,7 @@
 #include <iostream>
 #include <map>
 #include <unordered_map>
+#include <unordered_set>
 #include <set>
 #include <string>
 #include <vector>
@@ -28,7 +29,7 @@ using float_vt = std::vector<float>;
 using sizet_vt = std::vector<size_t>;
 using string_vt = std::vector<std::string>;
 using string_vvt = std::vector<string_vt>;
-using str_set = std::set<std::string>;
+using str_set = std::unordered_set<std::string>;
 using str_int_mt = std::map<std::string, uint>;
 using str_float_mt = std::map<std::string, float>;
 using str_sizet_mt = std::unordered_map<std::string, size_t>;

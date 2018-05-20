@@ -151,7 +151,7 @@ namespace Util {
     }
 
     void removeStopword(string_vt& str, const str_set& stopwordList) {
-       str.erase(std::remove_if(
+        str.erase(std::remove_if(
             str.begin(),
             str.end(),
             [stopwordList](const std::string& s){ return stopwordList.find(s) != stopwordList.end(); }),
@@ -159,69 +159,29 @@ namespace Util {
     }
 
     string_vt preprocess(std::string& aContent, const str_set& aStopwordsList) {
-
-        std::cout << "toLower" << std::endl;
-        Measure m1;
-        m1.start();
         Util::toLower(aContent);
-        m1.stop();
-        std::cout << "toLower took " << m1.mTotalTime() << std::endl;
 
-        std::cout << "remove_copy_if" << std::endl;
-        Measure m3;
-        m3.start();
         std::string temp;
         std::remove_copy_if(aContent.begin(), aContent.end(),
                             std::back_inserter(temp), // Store output
                             std::ptr_fun<int, int>(&std::ispunct));
         aContent = temp;
-        m3.stop();
-        std::cout << "remove_copy_if took " << m3.mTotalTime() << std::endl;
 
-        std::cout << "trim" << std::endl;
-        Measure m4;
-        m4.start();
         Util::trim(aContent); // Trim whitespaces at front and end
-        m4.stop();
-        std::cout << "trim took " << m4.mTotalTime() << std::endl;
 
         string_vt lProcessed;
-        
-        
-        std::cout << "splitStringBoost" << std::endl;
-        Measure m5;
-        m5.start();
         Util::splitStringBoost(aContent, ' ', lProcessed); // Split string by whitespaces
-        m5.stop();
-        std::cout << "splitStringBoost took " << m5.mTotalTime() << std::endl;
 
-        std::cout << "removeStopword" << std::endl;
-        Measure m2;
-        m2.start();
         Util::removeStopword(lProcessed, aStopwordsList); // Remove stopwords
-        m2.stop();
-        std::cout << "removeStopword took " << m2.mTotalTime() << std::endl;
 
-        std::cout << "removeEmptyStringsFromVec" << std::endl;
-        Measure m6;
-        m6.start();
+
         Util::removeEmptyStringsFromVec(lProcessed);       // Remove eventually empty strings from the query term vector
-        m6.stop();
-        std::cout << "removeEmptyStringsFromVec took " << m6.mTotalTime() << std::endl;
 
-
-        std::cout << "stemPorter" << std::endl;
-        Measure m7;
-        m7.start();
         string_vt preprocessed_content;
         for (auto& elem : lProcessed) { // Preprocess query
             std::string preprocess = Util::stemPorter(elem);
             preprocessed_content.push_back(preprocess);
         }
-        m7.stop();
-        std::cout << "stemPorter took " << m7.mTotalTime() << std::endl;
-
-
         return preprocessed_content;
     }
 } // namespace Util

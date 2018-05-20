@@ -123,6 +123,7 @@ cd vector-space-retrieval
 
 #### Command Line Arguments
 In the following table we briefly introduce all the command line arguments.
+
 | Command Line Argument | Description                                         | Default                      | Expects parameter |
 |-----------------------|-----------------------------------------------------|------------------------------|-------------------|
 |                --help | Print all command line arguments                    | false                        | -                 |
