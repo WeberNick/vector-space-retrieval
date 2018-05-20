@@ -193,7 +193,6 @@ const pair_sizet_float_vt QueryExecutionEngine::searchTieredCos(const Document* 
 
 const pair_sizet_float_vt QueryExecutionEngine::searchRandomProjCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
 
-    std::cout << "using rand projections vectors " << std::endl;
     std::map<size_t, float> docId2Scores;
 
     for (auto& elem : collectionIds) {

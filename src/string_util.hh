@@ -194,6 +194,6 @@ namespace Util
         /**
          *
          */
-        string_vt preprocess(std::string& aContent, const string_vt& aStopwordsList);
+        string_vt preprocess(std::string& aContent, const str_set& aStopwordsList);
 
 }
