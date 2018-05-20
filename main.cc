@@ -22,7 +22,7 @@ namespace fs = std::experimental::filesystem;
 void test(const control_block_t& aControlBlock) {
     /* Example how to use Measurement class (also described in measure.hh) */
 
-    Evaluation& e = Evaluation::getInstance();
+    /*Evaluation& e = Evaluation::getInstance();
 
     e.start(kVANILLA, "Med1");
 
@@ -43,7 +43,7 @@ void test(const control_block_t& aControlBlock) {
     e.stop();
 
     str_set set = {"Med-1", "Med-2", "Med-3"};
-    e.constructJSON(set);
+    e.constructJSON(set);*/
 }
 
 void search(std::string query, size_t topK, IR_MODE mode) {
@@ -212,7 +212,7 @@ void testEval(const control_block_t& aControlBlock) {
         std::cout << "Type " << queryManager.getTypeName(type) << std::endl;
         */
 
-       QUERY_TYPE type = QUERY_TYPE::kALL;
+       QUERY_TYPE type = QUERY_TYPE::kTITLES;
         for (int j = 0; j < kNumberOfModes; ++j) {
             IR_MODE mode = static_cast<IR_MODE>(j);
 
@@ -226,10 +226,10 @@ void testEval(const control_block_t& aControlBlock) {
 
                 std::cout << "Type: " << type << "Mode: " << modeToString(mode) << "QueryId: " << query_id << std::endl;
                 queryNamesSet.insert(queryDoc.getDocID());
-                e.start(mode, queryDoc.getDocID());
+                e.start(type, mode, queryDoc.getDocID());
                 std::vector<std::pair<size_t, float>> result = qpe.search(queryDoc, 30, mode);
                 e.stop();
-                e.evalIR(mode, queryDoc.getDocID(), result);
+                e.evalIR(type, mode, queryDoc.getDocID(), result);
             }
         }
         e.constructJSON(queryNamesSet);
