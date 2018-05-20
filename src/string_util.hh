@@ -189,7 +189,7 @@ namespace Util
          * @param str std::string
          * @param stopwordList
          */
-        void removeStopword(std::string& str, const string_vt& stopwordList); 
+        void removeStopword(string_vt& str, const str_set& stopwordList); 
 
         /**
          *

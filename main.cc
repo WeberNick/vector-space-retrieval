@@ -222,12 +222,14 @@ void testEval(const control_block_t& aControlBlock) {
             std::cout << "queries for types geholt: " << queryForType.size() << std::endl;
 
             for (auto& [query_id, query] : queryForType) {
-                std::cout << "Type: " << type << "Mode: " << modeToString(mode) << "QueryId: " << query.getDocID() << std::endl;
-                queryNamesSet.insert(query.getDocID());
-                e.start(mode, query.getDocID());
-                std::vector<std::pair<size_t, float>> result = qpe.search(query, 30, mode);
+                Document queryDoc = queryManager.createQueryDoc(query, query_id, true);
+
+                std::cout << "Type: " << type << "Mode: " << modeToString(mode) << "QueryId: " << query_id << std::endl;
+                queryNamesSet.insert(queryDoc.getDocID());
+                e.start(mode, queryDoc.getDocID());
+                std::vector<std::pair<size_t, float>> result = qpe.search(queryDoc, 30, mode);
                 e.stop();
-                e.evalIR(mode, query.getDocID(), result);
+                e.evalIR(mode, queryDoc.getDocID(), result);
             }
         }
         e.constructJSON(queryNamesSet);

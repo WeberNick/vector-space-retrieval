@@ -6,7 +6,7 @@ QueryManager::QueryType::QueryType(const std::string& aType) :
     _qMap()
 {}
                 
-Document QueryManager::QueryType::createQueryDoc(const string_vt& aStopwords, std::string& aContent, const bool aPreprocess, const std::string aQueryID)
+Document QueryManager::QueryType::createQueryDoc(const str_set& aStopwords, std::string& aContent, const bool aPreprocess, const std::string aQueryID)
 {
     string_vt content;
 
