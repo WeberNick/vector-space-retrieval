@@ -68,7 +68,7 @@ class QueryManager
                  * @param aPath         the path to the query file from which to read the content into main memory
                  * @param aDelimiter    the delimiter to split the file content with
                  */
-                void init(const string_vt& aStopwords, const std::string& aPath, const char aDelimiter);
+                void init(const str_set& aStopwords, const std::string& aPath, const char aDelimiter);
 
             public:
                 /**
@@ -189,7 +189,7 @@ class QueryManager
     private:
         const CB*   _cb;
         const char  _delimiter;
-        string_vt   _stopwords;
+        str_set     _stopwords;
         QueryType   _qAll;      //q-all
         QueryType   _qNTT;      //q-non topic titles
         QueryType   _qTitles;   //q-titles
