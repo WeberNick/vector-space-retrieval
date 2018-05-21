@@ -157,12 +157,13 @@ export function listenToSockets(httpServer) {
      */
     socket.on('client:getEvalData', data => {
       logger.info('Client requested evaluation data');
-      fs.readFile(`${__dirname}/../data/graph.json`, 'utf8', function(
+      let file = `${__dirname}/../eval/tier10.json`;
+      fs.readFile(file, 'utf8', function(
         err,
         data,
       ) {
         if (err) throw err;
-        socket.emit('server:returnEvalData', JSON.parse(data));
+        socket.emit('server:returnEvalData', {filename: file.split('/').pop(), data: JSON.parse(data)});
       });
     });
   });
