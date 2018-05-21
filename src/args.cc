@@ -14,7 +14,7 @@ void construct_arg_desc(argdesc_vt& x) {
     x.push_back(new barg_t("--measure", false, &Args::measure, "sets the flag to measure performance"));
 
     x.push_back(new sarg_t("--collection-path", "./data/d-collection.docs", &Args::collectionPath, "path to the collection file. relative path from repo root directory or absolute path possible"));
-    x.push_back(new sarg_t("--query-path", "./data/", &Args::collectionPath, "path to the query directory. relative path from repo root directory or absolute path possible"));
+    x.push_back(new sarg_t("--query-path", "./data/", &Args::queryPath, "path to the query directory. relative path from repo root directory or absolute path possible"));
     x.push_back(new sarg_t("--scores-path", "./data/s-3.qrel", &Args::relevanceScoresPath, "path to the relevance scores file. relative path from repo root directory or absolute path possible"));
     x.push_back(new sarg_t("--stopword-path", "./data/stopwords.large", &Args::stopwordPath, "path to the stopwords file. relative path from repo root directory or absolute path possible"));
     x.push_back(new sarg_t("--word-embeddings-path", "./data/w2v/glove.6B.300d.txt", &Args::wordEmbeddingsPath, "path to the word embeddings file. relative path from repo root directory or absolute path possible"));
