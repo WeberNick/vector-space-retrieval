@@ -1,0 +1,522 @@
+[
+  {
+    "name": "vid-titles",
+    "modes": [
+      {
+        "name": "Cluster_W2V",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "Cluster_RAND",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "Cluster",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM_RAND",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM_W2V",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "TieredIndex",
+        "map": 0.17578778128141148,
+        "average_rnt": 0.013588355314960636,
+        "average_acc": 0.9865997602900797,
+        "average_avp": 0.17578778128141131,
+        "average_dcg": 0.3235327147253625,
+        "average_fms": 0.10443780775969144,
+        "average_pre": 0.105981852084076,
+        "average_rec": 0.16997634586057347
+      },
+      {
+        "name": "TieredIndex_RAND",
+        "map": 0.14114800015217566,
+        "average_rnt": 0.00013428937007874012,
+        "average_acc": 0.986394403011763,
+        "average_avp": 0.14114800015217574,
+        "average_dcg": 0.2929472139045015,
+        "average_fms": 0.09218813220222322,
+        "average_pre": 0.09354746888197629,
+        "average_rec": 0.150222106260782
+      },
+      {
+        "name": "TieredIndex_W2V",
+        "map": 0.12607898713194138,
+        "average_rnt": 0.02889862007874016,
+        "average_acc": 0.9863851917354259,
+        "average_avp": 0.12607898713194132,
+        "average_dcg": 0.27761391081393566,
+        "average_fms": 0.09265646193419903,
+        "average_pre": 0.09298972609982396,
+        "average_rec": 0.15400128624655202
+      }
+    ]
+  },
+  {
+    "name": "vid-description",
+    "modes": [
+      {
+        "name": "Cluster_W2V",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "Cluster_RAND",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "Cluster",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM_RAND",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM_W2V",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "TieredIndex",
+        "map": 0.18711390476152667,
+        "average_rnt": 0.051748122047244126,
+        "average_acc": 0.9866252267599499,
+        "average_avp": 0.18711390476152692,
+        "average_dcg": 0.3452855681187079,
+        "average_fms": 0.11537887261181712,
+        "average_pre": 0.11595681221665462,
+        "average_rec": 0.19496234341706536
+      },
+      {
+        "name": "TieredIndex_RAND",
+        "map": 0.1314662528147347,
+        "average_rnt": 0.0004439094488188979,
+        "average_acc": 0.9860449163507751,
+        "average_avp": 0.13146625281473462,
+        "average_dcg": 0.2969168531296035,
+        "average_fms": 0.08078741635738454,
+        "average_pre": 0.08081901694106408,
+        "average_rec": 0.1407349808629497
+      },
+      {
+        "name": "TieredIndex_W2V",
+        "map": 0.15393126955240993,
+        "average_rnt": 0.1099052687007875,
+        "average_acc": 0.9863342587956849,
+        "average_avp": 0.15393126955240982,
+        "average_dcg": 0.3203213239702026,
+        "average_fms": 0.09900537417448242,
+        "average_pre": 0.09833870198043403,
+        "average_rec": 0.1748793352023943
+      }
+    ]
+  },
+  {
+    "name": "titles",
+    "modes": [
+      {
+        "name": "Cluster_W2V",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "Cluster_RAND",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "Cluster",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM_RAND",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM_W2V",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "TieredIndex",
+        "map": 0.19605588397103743,
+        "average_rnt": 0.008888980537534744,
+        "average_acc": 0.9841615078748601,
+        "average_avp": 0.19605588397103743,
+        "average_dcg": 0.44016781818172207,
+        "average_fms": 0.11763314345684121,
+        "average_pre": 0.1829250740532226,
+        "average_rec": 0.16185340007937116
+      },
+      {
+        "name": "TieredIndex_RAND",
+        "map": 0.1720516200596916,
+        "average_rnt": 0.0000937843682421999,
+        "average_acc": 0.9840443312133542,
+        "average_avp": 0.1720516200596916,
+        "average_dcg": 0.41645931087211846,
+        "average_fms": 0.11180181358590983,
+        "average_pre": 0.17583002719913957,
+        "average_rec": 0.15205338221646802
+      },
+      {
+        "name": "TieredIndex_W2V",
+        "map": 0.16085766894556172,
+        "average_rnt": 0.018906810627123873,
+        "average_acc": 0.984014569361739,
+        "average_avp": 0.16085766894556172,
+        "average_dcg": 0.40079370986025903,
+        "average_fms": 0.11128831230085047,
+        "average_pre": 0.17402794708380667,
+        "average_rec": 0.153559946510609
+      }
+    ]
+  },
+  {
+    "name": "all",
+    "modes": [
+      {
+        "name": "Cluster_W2V",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "Cluster_RAND",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "Cluster",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM_RAND",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM_W2V",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "TieredIndex",
+        "map": 0.22669283273084048,
+        "average_rnt": 0.17474217886932353,
+        "average_acc": 0.9828187381638173,
+        "average_avp": 0.22669283273084048,
+        "average_dcg": 0.5430587608216281,
+        "average_fms": 0.1347674696058829,
+        "average_pre": 0.15112758727216835,
+        "average_rec": 0.2744444554337427
+      },
+      {
+        "name": "TieredIndex_RAND",
+        "map": 0.10488849931183909,
+        "average_rnt": 0.0030824226135310506,
+        "average_acc": 0.9816367674853612,
+        "average_avp": 0.10488849931183909,
+        "average_dcg": 0.39464857017191945,
+        "average_fms": 0.07172618082413855,
+        "average_pre": 0.07955926269179131,
+        "average_rec": 0.16631275271335635
+      },
+      {
+        "name": "TieredIndex_W2V",
+        "map": 0.1885304644765348,
+        "average_rnt": 0.3708930756873657,
+        "average_acc": 0.982473670752796,
+        "average_avp": 0.1885304644765348,
+        "average_dcg": 0.49086845792391276,
+        "average_fms": 0.11668719104780256,
+        "average_pre": 0.13023375553496228,
+        "average_rec": 0.24345993502450838
+      }
+    ]
+  },
+  {
+    "name": "non-topic-titles",
+    "modes": [
+      {
+        "name": "Cluster_W2V",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "Cluster_RAND",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "Cluster",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM_RAND",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM_W2V",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "TieredIndex",
+        "map": 0.16966418181115533,
+        "average_rnt": 0.01432015605318404,
+        "average_acc": 0.9861889217435154,
+        "average_avp": 0.1696641818111555,
+        "average_dcg": 0.33473989607842525,
+        "average_fms": 0.09738943127579529,
+        "average_pre": 0.0997975203805399,
+        "average_rec": 0.1649965462839855
+      },
+      {
+        "name": "TieredIndex_RAND",
+        "map": 0.13550451851394646,
+        "average_rnt": 0.00014192022393282023,
+        "average_acc": 0.9859963013022858,
+        "average_avp": 0.13550451851394632,
+        "average_dcg": 0.30307082845501987,
+        "average_fms": 0.08617445358427124,
+        "average_pre": 0.08813435266418851,
+        "average_rec": 0.14642878810211413
+      },
+      {
+        "name": "TieredIndex_W2V",
+        "map": 0.121494905605476,
+        "average_rnt": 0.030461748775367416,
+        "average_acc": 0.9859866702802255,
+        "average_avp": 0.1214949056054758,
+        "average_dcg": 0.2874841195211243,
+        "average_fms": 0.08653264987161828,
+        "average_pre": 0.08755119427837087,
+        "average_rec": 0.14990912435312218
+      }
+    ]
+  }
+]

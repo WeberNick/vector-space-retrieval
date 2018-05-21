@@ -186,3 +186,4 @@ evsr-web/yarn-error.log*
 
 # JSON
 *.json
+!evsr-web/server/eval

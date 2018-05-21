@@ -1002,7 +1002,7 @@ class Evaluation extends Component {
               <div key={queryTypeData.name}>
                 <h2 className="title is-2">{queryTypeData.name}</h2>
 
-                <h3 className="title is-3">Runtime Performance (Averaged)</h3>
+               {/* <h3 className="title is-3">Runtime Performance (Averaged)</h3>
                 <BarChart
                 data={queryTypeData.average_rnt_per_mode}
                 ref={element => (this.barChart = element)}
@@ -1018,8 +1018,8 @@ class Evaluation extends Component {
               <div dangerouslySetInnerHTML={{ __html: legendBar }} />
 
 
-                
-                {/*<h3 className="title is-3">Accuracy (Averaged)</h3>
+            
+                <h3 className="title is-3">Accuracy (Averaged)</h3>
                 <BarChart
                 data={queryTypeData.average_acc_per_mode}
                 ref={element => (this.barChart = element)}
@@ -1047,7 +1047,7 @@ class Evaluation extends Component {
                   },
                 }}
                 />
-              <div dangerouslySetInnerHTML={{ __html: legendBar }} />
+              <div dangerouslySetInnerHTML={{ __html: legendBar }} />*/}
 
                <h3 className="title is-3">nDCG (Averaged)</h3>
                 <BarChart
