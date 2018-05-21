@@ -26,7 +26,7 @@ router.get('/presentation/', (req, res) => {
   res.sendFile(path.join(__dirname + '/../presentation/index.html'));
 });
 
-app.get('/app*', (req, res) => {
+router.get('/app*', (req, res) => {
   res.sendFile(path.join(__dirname + '/../client/build/index.html'));
 });
 
