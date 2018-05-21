@@ -30,4 +30,3 @@ echo "> [Eval] Tiered Index with tiers 25"
 
 echo "> [Eval] Tiered Index with tiers 50"
 ./bin/evsr_run --tiers 50 --collection-path ./testdata/d-collection.docs --query-path ./testdata/ --scores-path ./testdata/s-3.qrel --stopword-path ./testdata/stopwords.large --word-embeddings-path ./testdata/w2v/glove.6B.300d.txt --tiered
-
