@@ -22,7 +22,7 @@ void construct_arg_desc(argdesc_vt& x) {
     x.push_back(new sarg_t("--eval-path", "./", &Args::evalPath, "path to the evaluation directory. relative path from repo root directory or absolute path possible"));
 
     x.push_back(new uarg_t("--topk", 20, &Args::results, "the maximum number of results a query shall return (top k)"));
-    x.push_back(new uarg_t("--tiers", 10, &Args::tiers, "the number of tiers used for the tiered index"));
+    x.push_back(new uarg_t("--tiers", 50, &Args::tiers, "the number of tiers used for the tiered index"));
     x.push_back(new uarg_t("--dimensions", 1000, &Args::dimensions, "the number of dimensions used for the random projection"));
 
     /*REMOVE*/
