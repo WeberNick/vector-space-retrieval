@@ -211,7 +211,7 @@ class Evaluation {
          * @param aRanking  a ranking of documents produced for the respective query
          * @return the calculated normalized DCG
          */
-        double nDCG(const std::string& aQueryID, const sizet_vt& aRanking, const bool aBDCG = true);
+        double nDCG(const std::string& aQueryID, const sizet_vt& aRanking, const bool aBDCG = false);
 
       private:
         const scores_vt& getQueryScores(const std::string& aQueryID);

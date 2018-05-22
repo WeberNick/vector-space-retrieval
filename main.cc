@@ -109,64 +109,46 @@ void testNico() {
 }
 
 void testAlex(const control_block_t& aControlBlock) {
-
-    /*Measure lMeasureIndexing;
-    lMeasureIndexing.start();
-
-    DocumentManager& docManager = DocumentManager::getInstance();
+ DocumentManager& docManager = DocumentManager::getInstance();
     docManager.init(aControlBlock);
+    std::cout << "Document Manager initialized" << std::endl;
 
-    doc_mt& docMap = docManager.getDocumentMap();
-
+    Measure mes2;
+    mes2.start();
     IndexManager& imInstance = IndexManager::getInstance();
-    imInstance.init(aControlBlock, docMap);
+    imInstance.init(aControlBlock, docManager.getDocumentMap());
+    std::cout << "Index Manager initialized" << std::endl;
+    mes2.stop();
+    std::cout << "IndexManager took " << mes2.mTotalTime() << std::endl;
 
-    std::cout << "after index manager init" << std::endl;
+    Measure mes;
+    mes.start();
+    QueryManager& queryManager = QueryManager::getInstance();
+    queryManager.init(aControlBlock);
+    std::cout << "Query Manager initialized" << std::endl;
+    mes.stop();
+    std::cout << "QueryManager took " << mes.mTotalTime() << std::endl;
 
-    lMeasureIndexing.stop();
-    double lSeconds = lMeasureIndexing.mTotalTime();
-    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
+    QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
+    qpe.init(aControlBlock);
+    std::cout << "Query Execution Engine initialized" << std::endl;
 
-    std::cout << "number of embeddings: " << imInstance.getWordEmbeddingsIndex().getNoWordEmbeddings() << std::endl;
-
-    float_vt result;
-    result.resize(300);
-    string_vt content = {"the", "to"};
-
-    imInstance.getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, result);
-
-
-    std::cout << result.size() << std::endl;
-
-    for (auto& elem : result) {
-        std::cout << elem << ",";
-    for(auto& elem: docManager.getDocument("MED-241").getWordEmbeddingsVector()) {
-        std::cout << elem  << ",";
-    }
-    std::cout << std::endl;
-
-    /*std::string word = "the";
-
-    for(auto& elem: imInstance.getWordEmbeddingsIndex().getWordEmbeddings(word)) {
-        std::cout << elem  << ",";
-    }
-    std::cout << std::endl;
-
-    std::cout << imInstance.getWordEmbeddingsIndex().getWordEmbeddings(word).size() << std::endl;*/
-
-    //
-
-    /*QueryExecutionEngine::getInstance().init(aControlBlock);
+    Evaluation& e = Evaluation::getInstance();
+    e.init(aControlBlock);
+    std::cout << "Evaluation initialized" << std::endl;
 
     std::cout << "[Ready]" << std::endl;
 
-    // search("Why breast cancer", 10, IR_MODE::kCLUSTER);
-
     while (true) {
         json j;
-        std::cin >> j;
-        search(j["query"].get<std::string>(), j["topK"].get<size_t>(), stringToMode(j["mode"].get<std::string>()), j["lsh"].get<bool>());
-    }*/
+        try {
+            std::cin >> j;
+            search(j["query"].get<std::string>(), j["topK"].get<size_t>(), stringToMode(j["mode"].get<std::string>()));
+        }catch (std::exception& e) {
+            std::cout << "Malformated JSON" << std::endl;
+        }
+        
+    }
 }
 
 void testEval(const control_block_t& aControlBlock) {
@@ -341,8 +323,9 @@ int main(const int argc, const char* argv[]) {
     // insert everything here what is not actually meant to be in main
     // test(lCB);
     // testNico();
-    // testAlex(lCB);
-    testEval(lCB);
+    testAlex(lCB);
+    //testEval(lCB);
+
 
     return 0;
 }

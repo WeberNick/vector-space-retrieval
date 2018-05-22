@@ -615,10 +615,8 @@ class Evaluation extends Component {
                 return (
                   <ScrollSyncPane>
                     <div key={queryTypeData.name} className="query-type-data">
-                      <div style={{ position: 'absolute' }}>
-                        <div style={{ position: 'sticky', left: 0 }}>
-                          <strong>{queryTypeData.name}</strong>
-                        </div>
+                      <div style={{ position: 'sticky', left: 0 }}>
+                        <strong>{queryTypeData.name}</strong>
                       </div>
                       <div className="per-measure">
                         <p>Runtime Performance (Averaged)</p>

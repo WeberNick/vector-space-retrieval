@@ -108,7 +108,7 @@ fs.readdir(eval_dir, (err, files) => {
 
           aggregatedTypeData.modes.push(aggregatedMode);
           aggregatedTypeData.modes.sort((a, b) => {
-            if (a.name > b.name) return 1;
+            if (a.name > b.name) return 1; // if (a.name.split('_').pop() > b.name.split('_').pop()) return 1;
           });
         });
         aggregated.push(aggregatedTypeData);
