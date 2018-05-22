@@ -327,8 +327,8 @@ int main(const int argc, const char* argv[]) {
     // insert everything here what is not actually meant to be in main
     // test(lCB);
     // testNico();
-    testAlex(lCB);
-    //testEval(lCB);
+    //testAlex(lCB);
+    testEval(lCB);
 
 
     return 0;

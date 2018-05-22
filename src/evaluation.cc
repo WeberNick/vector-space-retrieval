@@ -97,13 +97,16 @@ double IRPM::avgPrecision(const std::string& aQueryID, const sizet_vt& aRanking)
         size_t pos = std::distance(aRanking.cbegin(), std::find(aRanking.cbegin(), aRanking.cend(), id));
         if(pos < aRanking.size()) //found
         {
-            const sizet_vt lSub(aRanking.cbegin(), aRanking.cbegin() + pos);
-            lSum += precision(aQueryID, lSub);
+            const size_t lEnd = pos + 1;
+            const sizet_vt lSub(aRanking.cbegin(), aRanking.cbegin() + lEnd);
+            const double lPrecision = precision(aQueryID, lSub);
+            lSum += lPrecision;
             ++lRelevantDocsFound; 
         }
     }
     const double lDenominator = lRelevantDocsFound;
-    return (lDenominator != 0) ? (lSum / lDenominator) : 0;
+    const double lReturn = (lDenominator != 0) ? (lSum / lDenominator) : 0;
+    return lReturn; 
 }
 
 double IRPM::meanAvgPrecision(const std::unordered_map<std::string, double>& aAvgPrecisionMap)
@@ -122,7 +125,7 @@ double IRPM::bDCG(const std::string& aQueryID, const sizet_vt& aRanking, uint& a
     double lSum = 0;
     for(size_t i = 1; i <= aRanking.size(); ++i)
     {
-        const uint lScore = getScore(aQueryID, DocumentManager::getInstance().getDocument(aRanking[i-1]).getDocID());
+        const uint lScore = getScore(aQueryID, DocumentManager::getInstance().getDocument(aRanking.at(i-1)).getDocID());
         if(lScore > 0) ++aCounter;
         lSum += (lScore / std::log2(i + 1));
     }
@@ -134,10 +137,12 @@ double IRPM::rDCG(const std::string& aQueryID, const sizet_vt& aRanking, uint& a
     double lSum = 0;
     for(size_t i = 1; i <= aRanking.size(); ++i)
     {
-        const uint lScore = getScore(aQueryID, DocumentManager::getInstance().getDocument(aRanking[i-1]).getDocID());
+        const std::string& lDocID = DocumentManager::getInstance().getDocument(aRanking.at(i-1)).getDocID();
+        const uint lScore = getScore(aQueryID, lDocID);
         if(lScore > 0) ++aCounter;
         const double lNumerator = std::pow(2, lScore) - 1;
-        lSum += (lNumerator / std::log2(i + 1));
+        const double lDenominator = std::log2(i + 1);
+        lSum += (lNumerator / lDenominator);
     }
     return lSum;
 }
