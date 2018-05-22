@@ -53,6 +53,9 @@ class Args {
     inline bool measure() { return _measure; }
     inline void measure(const bool& x) { _measure = x; }
 
+    inline bool server() { return _server; }
+    inline void server(const bool& x) { _server = x; }
+
     inline const std::string& collectionPath() { return _collectionPath; }
     inline void collectionPath(const std::string& x) { _collectionPath = x; }
 
@@ -87,6 +90,7 @@ class Args {
     bool _help;
     bool _trace;
     bool _measure;
+    bool _server;
 
     std::string _collectionPath;
     std::string _queryPath;

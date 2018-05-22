@@ -42,6 +42,7 @@ using sizet_set = std::set<size_t>;
 struct control_block_t {
     const bool _trace;   // indicate if tracing is activated
     const bool _measure; // indicate if measurement is activated
+    const bool _server;
 
     const std::string _collectionPath;     // the path to the document collection
     const std::string _queryPath;          // the path where the query files are stored
@@ -63,6 +64,7 @@ struct control_block_t {
 
     bool trace() const { return _trace; }
     bool measure() const { return _measure; }
+    bool server() const { return _server; }
     const std::string& collectionPath() const { return _collectionPath; }
     const std::string& queryPath() const { return _queryPath; }
     const std::string& relevanceScoresPath() const { return _relScoresPath; }

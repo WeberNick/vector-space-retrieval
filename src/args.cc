@@ -12,6 +12,7 @@ void construct_arg_desc(argdesc_vt& x) {
     x.push_back(new barg_t("--help", false, &Args::help, "print this message"));
     x.push_back(new barg_t("--trace", false, &Args::trace, "sets the flag to activate tracing"));
     x.push_back(new barg_t("--measure", false, &Args::measure, "sets the flag to measure performance"));
+    x.push_back(new barg_t("--server", false, &Args::server, "sets the flag to indicate a server connection"));
 
     x.push_back(new sarg_t("--collection-path", "./data/d-collection.docs", &Args::collectionPath, "path to the collection file. relative path from repo root directory or absolute path possible"));
     x.push_back(new sarg_t("--query-path", "./data/", &Args::queryPath, "path to the query directory. relative path from repo root directory or absolute path possible"));
@@ -34,6 +35,7 @@ Args::Args() :
     _help(false),
     _trace(false),
     _measure(false),
+    _server(false),
     _collectionPath("./data/d-collection.docs"),
     _queryPath("./data/"),
     _relScoresPath("./data/s-3.qrel"),

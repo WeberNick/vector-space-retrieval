@@ -25,5 +25,11 @@ echo "> [Eval] Tiered Index with Tiers 250"
 echo "> [Eval] Tiers: 100, Dimensions: 5000"
 ./bin/evsr_run --tiers 100 --dimensions 5000
 
+echo "> [Eval] Tiers: 250, Dimensions: 5000"
+./bin/evsr_run --tiers 250 --dimensions 5000
+
+echo "> [Eval] Tiers: 100, Dimensions: 10000"
+./bin/evsr_run --tiers 100 --dimensions 10000
+
 echo "> [Eval] Tiers: 250, Dimensions: 10000"
 ./bin/evsr_run --tiers 250 --dimensions 10000
