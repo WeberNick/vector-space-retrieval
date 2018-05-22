@@ -1,4 +1,4 @@
-#Server
+# Server:
 Because we build a _"search-engine-like"_ project, we decied to implement a small web server which provides users with a simple interface to issue free text queries against the document collection. This is realized with an `express.js` server and a `React` built front-end. With the help of the interface the user is able to start the project with different configurations as well as use different index strucures to query the collection. This gives a more natural feeling of using the system than over the command line.
 
 ![GitHub Logo](evsr_web.png)
