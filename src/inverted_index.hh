@@ -16,6 +16,7 @@
 #include "trace.hh"
 #include "document.hh"
 #include "posting_list.hh"
+#include "ir_util.hh"
 
 #include <map>
 #include <string>
@@ -114,6 +115,15 @@ class InvertedIndex {
      * @return size_t the number of documents in which aTerm appears
      */
     size_t getNoDocs(const std::string& aTerm);
+    // TODO docs
+    /**
+     * @brief Get the Doc I D List object
+     * 
+     * @param top 
+     * @param terms 
+     * @return sizet_vt 
+     */
+    sizet_vt getDocIDList(const string_vt& terms) const;
     
     // TODO docs
     /**

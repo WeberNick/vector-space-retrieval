@@ -46,6 +46,23 @@ size_t InvertedIndex::getNoDocs(const std::string& aTerm) {
         throw InvalidArgumentException(FLF, "The term " + aTerm + " does not appear in the document collection.");
 }
 
+sizet_vt InvertedIndex::getDocIDList(const string_vt& terms) const {
+    sizet_vt qids;
+
+    std::vector<sizet_vt> vecs;
+    vecs.resize(terms.size());
+    for (size_t i = 0; i < terms.size(); ++i) {
+        try {
+            const sizet_vt& ids = this->getPostingList(terms.at(i)).getIDs();
+            sizet_vt& termIDs = vecs.at(i);
+            termIDs.insert(termIDs.end(), ids.begin(), ids.end());
+            vecs.at(i) = termIDs;
+        } catch (const InvalidArgumentException& e) { continue; /* One of the (query) terms does not appear in the document collection. */ }
+    }
+    Util::orPostingLists(vecs, qids);
+    return qids;
+}
+
 std::ostream& operator<<(std::ostream& strm, const InvertedIndex& ii) {
     std::string sepout = "\n";
     const auto& tpm = ii.getPostingLists();
