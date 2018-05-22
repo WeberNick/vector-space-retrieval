@@ -71,38 +71,58 @@ export default class Presentation extends React.Component {
             Making Vector Space Retrieval Lightning Fast ⚡
           </Text>
         </Slide>
-        <Slide align="center center" transition={['slide']} bgColor="tertiary">
-          <Heading size={6} textColor="primary" caps>
+        <Slide align="center center" transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
             Agenda
           </Heading>
-          <List textColor="primary">
+          <List>
             <ListItem>Task</ListItem>
             <ListItem>Implementation</ListItem>
             <ListItem>Additional Feature</ListItem>
             <ListItem>Results</ListItem>
           </List>
         </Slide>
-        <Slide transition={['slide']}>
-          <Heading size={6} textColor="secondary" caps>
+        <Slide transition={['slide']} bgColor="tertiary">
+          <Heading size={6} textColor="primary" caps>
             The Task 📝
           </Heading>
         </Slide>
         <Slide transition={['slide']}>
-          <Heading size={6} textColor="secondary" caps>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            The Task
+          </Heading>
+          <List>
+            <ListItem>Implement fast VSM Model</ListItem>
+            <ListItem>Using following techniques
+              <List>
+                <ListItem>
+                  Clustering
+                </ListItem>
+                <ListItem>
+                  Tiered Index
+                </ListItem>
+                <ListItem>
+                  Random Projections
+                </ListItem>
+              </List>
+            </ListItem>
+          </List>
+        </Slide>
+        <Slide transition={['slide']} bgColor="tertiary">
+          <Heading size={6} textColor="primary" caps>
             Implementation 💻
           </Heading>
         </Slide>
-        <Slide transition={['slide']}>
-          <Heading size={6} textColor="secondary" caps>
-            Additional Feature 💡
-          </Heading>
-        </Slide>
-        <Slide transition={['slide']}>
-          <Heading size={6} textColor="secondary" caps>
-            Result 📊
-          </Heading>
-        </Slide>
-
         <Slide transition={['slide']}>
           <div>
             <Heading
@@ -111,7 +131,7 @@ export default class Presentation extends React.Component {
               caps
               style={{ marginBottom: '100px' }}
             >
-              Building following indexes
+              Application Structure
             </Heading>
             <List textColor="secondary">
               <ListItem>Inverted Index</ListItem>
@@ -121,29 +141,30 @@ export default class Presentation extends React.Component {
             </List>
           </div>
         </Slide>
+        <Slide transition={['slide']} bgColor="tertiary">
+          <Heading size={6} textColor="primary" caps>
+            Additional Feature 💡
+          </Heading>
+        </Slide>
         <Slide transition={['slide']}>
           <Heading
             size={6}
             textColor="tertiary"
             caps
-            style={{ marginBottom: '30px' }}
+            style={{ marginBottom: '100px' }}
           >
-            Building the indexes
+            Additional Feature
           </Heading>
-          <CodePane
-            lang="cpp"
-            source={require('raw-loader!../assets/index_manager_init.example')}
-            theme="external"
-            margin="20px auto"
-            overflow="overflow"
-          />
-          <Text margin="10px 0 0" textColor="secondary" lineHeight={0.5}>
-            Builds every index we need during retrieval
-          </Text>
+          <List>
+            <ListItem>Pure VSM not suitable in this project case</ListItem>
+            <ListItem>Documents and queries are not sharing much of vocabulary</ListItem>
+            <ListItem>Need some semantic relationship between words</ListItem>
+            <ListItem><strong>WordEmbeddings</strong> to the rescue... ⛑️</ListItem>
+          </List>
         </Slide>
-        <Slide transition={['slide']}>
-          <Heading size={6} textColor="secondary" caps>
-            Additional Feature: Word embeddings 📝
+        <Slide transition={['slide']} bgColor="tertiary">
+          <Heading size={6} textColor="primary" caps >
+            Result 📊
           </Heading>
         </Slide>
         <Slide transition={['slide']}>
@@ -151,7 +172,7 @@ export default class Presentation extends React.Component {
             size={6}
             textColor="tertiary"
             caps
-            style={{ marginBottom: '30px' }}
+            style={{ marginBottom: '100px' }}
           >
             Evaluation
           </Heading>

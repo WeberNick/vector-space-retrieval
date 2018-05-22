@@ -211,7 +211,7 @@ void testEval(const control_block_t& aControlBlock) {
 
                 queryNamesSet.insert(queryDoc.getDocID());
                 e.start(type, mode, queryDoc.getDocID());
-                std::vector<std::pair<size_t, float>> result = qpe.search(queryDoc, 30, mode);
+                std::vector<std::pair<size_t, float>> result = qpe.search(queryDoc, aControlBlock.results(), mode);
                 e.stop();
                 e.evalIR(type, mode, queryDoc.getDocID(), result);
             }

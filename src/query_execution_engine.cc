@@ -65,6 +65,7 @@ const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_
     }break;
     case IR_MODE::kCLUSTER_W2V: {
          std::vector<std::pair<size_t, float>> leader_indexes = this->searchClusterCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0, true);
+        
         // Get docIds from the clusters to search in, vector will be filled from the IndexManager::getInstance().getClusteredIndex().getIDs() method
         sizet_vt clusterDocIds;
         IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK, clusterDocIds);
@@ -201,7 +202,6 @@ const pair_sizet_float_vt QueryExecutionEngine::searchTieredCos(const Document* 
 const pair_sizet_float_vt QueryExecutionEngine::searchRandomProjCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
 
     std::map<size_t, float> docId2Scores;
-    std::cout << collectionIds.size() << std::endl;
 
     for (auto& elem : collectionIds) {
         docId2Scores[elem] = Util::calcHammingDist(query->getRandProjTiVec(),DocumentManager::getInstance().getDocumentMap().at(elem).getRandProjTiVec());
