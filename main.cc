@@ -261,13 +261,13 @@ int main(const int argc, const char* argv[]) {
         return -1;
     }
  
-    if(!fs::exists(lArgs.queryPath()))
+    if(!lArgs.server() && !fs::exists(lArgs.queryPath()))
     {
         std::cerr << "Given path to the query collection is invalid." << std::endl;
         return -1;
     }
  
-    if(!fs::exists(lArgs.relevanceScoresPath()))
+    if(!lArgs.server() && !fs::exists(lArgs.relevanceScoresPath()))
     {
         std::cerr << "Given path to the relevance scores is invalid." << std::endl;
         return -1;
