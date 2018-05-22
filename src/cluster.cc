@@ -59,6 +59,14 @@ void Cluster::getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, cons
         aOutputVec.insert(aOutputVec.end(), lCluster.begin(), lCluster.end());
         if(aOutputVec.size() >= aTopK)
         {
+            TRACE(std::string("############################# >>>>>>>>>>>>>>>>>>>>>>  CLUSTER RETURN <<<<<<<<<<<<<<<<<<<<<<<  ##############################"));
+            TRACE(std::string("Return Size: ") + std::to_string(aOutputVec.size()) + std::string(", TopK: ") + std::to_string(aTopK));
+            std::string lIDs = "";
+            for(auto id : aOutputVec)
+            {
+                lIDs += std::to_string(id) + std::string(", ");
+            }
+            TRACE(std::string("## IDs: ") + lIDs);
             break;
         }
     }

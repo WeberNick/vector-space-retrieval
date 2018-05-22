@@ -211,7 +211,7 @@ void testEval(const control_block_t& aControlBlock) {
 
                 queryNamesSet.insert(queryDoc.getDocID());
                 e.start(type, mode, queryDoc.getDocID());
-                std::vector<std::pair<size_t, float>> result = qpe.search(queryDoc, 30, mode);
+                std::vector<std::pair<size_t, float>> result = qpe.search(queryDoc, aControlBlock.results(), mode);
                 e.stop();
                 e.evalIR(type, mode, queryDoc.getDocID(), result);
             }
@@ -323,8 +323,8 @@ int main(const int argc, const char* argv[]) {
     // insert everything here what is not actually meant to be in main
     // test(lCB);
     // testNico();
-    testAlex(lCB);
-    //testEval(lCB);
+    //testAlex(lCB);
+    testEval(lCB);
 
 
     return 0;

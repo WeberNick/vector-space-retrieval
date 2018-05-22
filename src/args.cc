@@ -41,7 +41,7 @@ Args::Args() :
     _wordEmbeddingsPath("./data/w2v/glove.6B.300d.txt"),
     _tracePath("./"),
     _evalPath("./"),
-    _results(10),
+    _results(20),
     _tiers(10),
     _dimensions(1000),
     _rand(false),
