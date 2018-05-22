@@ -502,7 +502,6 @@ class Evaluation {
   private:
     inline EvalResults& getEvalResult(const QUERY_TYPE aQueryType, const IR_MODE aMode) {
         try {
-            //return _evalResults.at(aMode);
             return _qTypeToEvalResults.at(aQueryType).at(aMode);
         } catch (const std::out_of_range& ex) {
             const std::string lErrMsg = std::string("Query Type '") + typeToString(aQueryType) + std::string("' or IR mode '") + modeToString(aMode) + std::string("' not found in evaluation data");
@@ -513,7 +512,6 @@ class Evaluation {
 
   private:
     IR_PerformanceManager& _irpm;
-    results_mt      _evalResults;
     type_results_mt _qTypeToEvalResults;
     QUERY_TYPE      _type;
     IR_MODE         _mode;

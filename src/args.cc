@@ -42,7 +42,7 @@ Args::Args() :
     _tracePath("./"),
     _evalPath("./"),
     _results(20),
-    _tiers(10),
+    _tiers(50),
     _dimensions(1000),
     _rand(false),
     _tiered(false)

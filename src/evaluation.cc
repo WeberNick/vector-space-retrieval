@@ -217,7 +217,7 @@ uint IRPM::getScore(const std::string& aQueryID, const std::string& aDocID)
 
 Evaluation::Evaluation() : 
     _irpm(IR_PerformanceManager::getInstance()), 
-    _evalResults(),
+    _qTypeToEvalResults(),
     _type(kNoType),
     _mode(kNoMode), 
     _queryName(""), 
@@ -227,6 +227,7 @@ Evaluation::Evaluation() :
     _started(false), 
     _cb(nullptr)
 {
+    //Initialize Map containing evaluation results
     for(int type = 0; type < QUERY_TYPE::kNumberOfTypes; ++type)
     {
         for(int mode = 0; mode < IR_MODE::kNumberOfModes; ++mode)
