@@ -3,7 +3,7 @@
     "name": "vid-titles",
     "modes": [
       {
-        "name": "Cluster_W2V",
+        "name": "Cluster",
         "map": 0,
         "average_rnt": 0,
         "average_acc": 0,
@@ -25,40 +25,7 @@
         "average_rec": 0.035777415363911526
       },
       {
-        "name": "Cluster",
-        "map": 0,
-        "average_rnt": 0,
-        "average_acc": 0,
-        "average_avp": 0,
-        "average_dcg": 0,
-        "average_fms": 0,
-        "average_pre": 0,
-        "average_rec": 0
-      },
-      {
-        "name": "VanillaVSM_RAND",
-        "map": 0.1512458433992983,
-        "average_rnt": 0.002043979330708664,
-        "average_acc": 0.9861698104210966,
-        "average_avp": 0.1512458433992984,
-        "average_dcg": 0.292783672122541,
-        "average_fms": 0.08905396576328599,
-        "average_pre": 0.09061679790026236,
-        "average_rec": 0.14261445576606582
-      },
-      {
-        "name": "VanillaVSM",
-        "map": 0,
-        "average_rnt": 0,
-        "average_acc": 0,
-        "average_avp": 0,
-        "average_dcg": 0,
-        "average_fms": 0,
-        "average_pre": 0,
-        "average_rec": 0
-      },
-      {
-        "name": "VanillaVSM_W2V",
+        "name": "Cluster_W2V",
         "map": 0,
         "average_rnt": 0,
         "average_acc": 0,
@@ -100,6 +67,39 @@
         "average_fms": 0,
         "average_pre": 0,
         "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM_RAND",
+        "map": 0.1512458433992983,
+        "average_rnt": 0.002043979330708664,
+        "average_acc": 0.9861698104210966,
+        "average_avp": 0.1512458433992984,
+        "average_dcg": 0.292783672122541,
+        "average_fms": 0.08905396576328599,
+        "average_pre": 0.09061679790026236,
+        "average_rec": 0.14261445576606582
+      },
+      {
+        "name": "VanillaVSM_W2V",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
       }
     ]
   },
@@ -107,7 +107,7 @@
     "name": "vid-description",
     "modes": [
       {
-        "name": "Cluster_W2V",
+        "name": "Cluster",
         "map": 0,
         "average_rnt": 0,
         "average_acc": 0,
@@ -129,40 +129,7 @@
         "average_rec": 0.0457250358051177
       },
       {
-        "name": "Cluster",
-        "map": 0,
-        "average_rnt": 0,
-        "average_acc": 0,
-        "average_avp": 0,
-        "average_dcg": 0,
-        "average_fms": 0,
-        "average_pre": 0,
-        "average_rec": 0
-      },
-      {
-        "name": "VanillaVSM_RAND",
-        "map": 0.1334887328315185,
-        "average_rnt": 0.0020432391732283462,
-        "average_acc": 0.9860202626405811,
-        "average_avp": 0.13348873283151835,
-        "average_dcg": 0.29785376294453003,
-        "average_fms": 0.0818108741173871,
-        "average_pre": 0.08057742782152208,
-        "average_rec": 0.14898075995039733
-      },
-      {
-        "name": "VanillaVSM",
-        "map": 0,
-        "average_rnt": 0,
-        "average_acc": 0,
-        "average_avp": 0,
-        "average_dcg": 0,
-        "average_fms": 0,
-        "average_pre": 0,
-        "average_rec": 0
-      },
-      {
-        "name": "VanillaVSM_W2V",
+        "name": "Cluster_W2V",
         "map": 0,
         "average_rnt": 0,
         "average_acc": 0,
@@ -204,6 +171,39 @@
         "average_fms": 0,
         "average_pre": 0,
         "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM_RAND",
+        "map": 0.1334887328315185,
+        "average_rnt": 0.0020432391732283462,
+        "average_acc": 0.9860202626405811,
+        "average_avp": 0.13348873283151835,
+        "average_dcg": 0.29785376294453003,
+        "average_fms": 0.0818108741173871,
+        "average_pre": 0.08057742782152208,
+        "average_rec": 0.14898075995039733
+      },
+      {
+        "name": "VanillaVSM_W2V",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
       }
     ]
   },
@@ -211,7 +211,7 @@
     "name": "titles",
     "modes": [
       {
-        "name": "Cluster_W2V",
+        "name": "Cluster",
         "map": 0,
         "average_rnt": 0,
         "average_acc": 0,
@@ -233,40 +233,7 @@
         "average_rec": 0.029874754794683468
       },
       {
-        "name": "Cluster",
-        "map": 0,
-        "average_rnt": 0,
-        "average_acc": 0,
-        "average_avp": 0,
-        "average_dcg": 0,
-        "average_fms": 0,
-        "average_pre": 0,
-        "average_rec": 0
-      },
-      {
-        "name": "VanillaVSM_RAND",
-        "map": 0.16799728917592166,
-        "average_rnt": 0.002611686129131912,
-        "average_acc": 0.9819990117364567,
-        "average_avp": 0.16799728917592166,
-        "average_dcg": 0.4092098509456087,
-        "average_fms": 0.08101838381116798,
-        "average_pre": 0.10118422407579089,
-        "average_rec": 0.14361859522296055
-      },
-      {
-        "name": "VanillaVSM",
-        "map": 0,
-        "average_rnt": 0,
-        "average_acc": 0,
-        "average_avp": 0,
-        "average_dcg": 0,
-        "average_fms": 0,
-        "average_pre": 0,
-        "average_rec": 0
-      },
-      {
-        "name": "VanillaVSM_W2V",
+        "name": "Cluster_W2V",
         "map": 0,
         "average_rnt": 0,
         "average_acc": 0,
@@ -308,6 +275,39 @@
         "average_fms": 0,
         "average_pre": 0,
         "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM_RAND",
+        "map": 0.16799728917592166,
+        "average_rnt": 0.002611686129131912,
+        "average_acc": 0.9819990117364567,
+        "average_avp": 0.16799728917592166,
+        "average_dcg": 0.4092098509456087,
+        "average_fms": 0.08101838381116798,
+        "average_pre": 0.10118422407579089,
+        "average_rec": 0.14361859522296055
+      },
+      {
+        "name": "VanillaVSM_W2V",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
       }
     ]
   },
@@ -315,7 +315,7 @@
     "name": "all",
     "modes": [
       {
-        "name": "Cluster_W2V",
+        "name": "Cluster",
         "map": 0,
         "average_rnt": 0,
         "average_acc": 0,
@@ -337,40 +337,7 @@
         "average_rec": 0.04287520151043987
       },
       {
-        "name": "Cluster",
-        "map": 0,
-        "average_rnt": 0,
-        "average_acc": 0,
-        "average_avp": 0,
-        "average_dcg": 0,
-        "average_fms": 0,
-        "average_pre": 0,
-        "average_rec": 0
-      },
-      {
-        "name": "VanillaVSM_RAND",
-        "map": 0.10676009989091541,
-        "average_rnt": 0.0027650117392647535,
-        "average_acc": 0.9816491824291794,
-        "average_avp": 0.10676009989091541,
-        "average_dcg": 0.39519121668957335,
-        "average_fms": 0.07252035394812395,
-        "average_pre": 0.08031098753990197,
-        "average_rec": 0.16735279135555514
-      },
-      {
-        "name": "VanillaVSM",
-        "map": 0,
-        "average_rnt": 0,
-        "average_acc": 0,
-        "average_avp": 0,
-        "average_dcg": 0,
-        "average_fms": 0,
-        "average_pre": 0,
-        "average_rec": 0
-      },
-      {
-        "name": "VanillaVSM_W2V",
+        "name": "Cluster_W2V",
         "map": 0,
         "average_rnt": 0,
         "average_acc": 0,
@@ -412,6 +379,39 @@
         "average_fms": 0,
         "average_pre": 0,
         "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM_RAND",
+        "map": 0.10676009989091541,
+        "average_rnt": 0.0027650117392647535,
+        "average_acc": 0.9816491824291794,
+        "average_avp": 0.10676009989091541,
+        "average_dcg": 0.39519121668957335,
+        "average_fms": 0.07252035394812395,
+        "average_pre": 0.08031098753990197,
+        "average_rec": 0.16735279135555514
+      },
+      {
+        "name": "VanillaVSM_W2V",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
       }
     ]
   },
@@ -419,7 +419,7 @@
     "name": "non-topic-titles",
     "modes": [
       {
-        "name": "Cluster_W2V",
+        "name": "Cluster",
         "map": 0,
         "average_rnt": 0,
         "average_acc": 0,
@@ -441,40 +441,7 @@
         "average_rec": 0.03509327593335272
       },
       {
-        "name": "Cluster",
-        "map": 0,
-        "average_rnt": 0,
-        "average_acc": 0,
-        "average_avp": 0,
-        "average_dcg": 0,
-        "average_fms": 0,
-        "average_pre": 0,
-        "average_rec": 0
-      },
-      {
-        "name": "VanillaVSM_RAND",
-        "map": 0.14766601731546194,
-        "average_rnt": 0.002608261021693497,
-        "average_acc": 0.9858360410951843,
-        "average_avp": 0.14766601731546217,
-        "average_dcg": 0.3026386601323916,
-        "average_fms": 0.08494031825016525,
-        "average_pre": 0.08733379986004178,
-        "average_rec": 0.1410394341747069
-      },
-      {
-        "name": "VanillaVSM",
-        "map": 0,
-        "average_rnt": 0,
-        "average_acc": 0,
-        "average_avp": 0,
-        "average_dcg": 0,
-        "average_fms": 0,
-        "average_pre": 0,
-        "average_rec": 0
-      },
-      {
-        "name": "VanillaVSM_W2V",
+        "name": "Cluster_W2V",
         "map": 0,
         "average_rnt": 0,
         "average_acc": 0,
@@ -508,6 +475,39 @@
       },
       {
         "name": "TieredIndex_W2V",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM",
+        "map": 0,
+        "average_rnt": 0,
+        "average_acc": 0,
+        "average_avp": 0,
+        "average_dcg": 0,
+        "average_fms": 0,
+        "average_pre": 0,
+        "average_rec": 0
+      },
+      {
+        "name": "VanillaVSM_RAND",
+        "map": 0.14766601731546194,
+        "average_rnt": 0.002608261021693497,
+        "average_acc": 0.9858360410951843,
+        "average_avp": 0.14766601731546217,
+        "average_dcg": 0.3026386601323916,
+        "average_fms": 0.08494031825016525,
+        "average_pre": 0.08733379986004178,
+        "average_rec": 0.1410394341747069
+      },
+      {
+        "name": "VanillaVSM_W2V",
         "map": 0,
         "average_rnt": 0,
         "average_acc": 0,

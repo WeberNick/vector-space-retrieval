@@ -1,5 +1,6 @@
 // Import React
 import React from 'react';
+import slidesMarkdown from 'raw-loader!../assets/markdown.md';
 
 // Import Spectacle Core tags
 import {
@@ -22,6 +23,8 @@ import {
   TableHeader,
   TableBody,
   Image,
+  MarkdownSlides,
+  Markdown,
 } from 'spectacle';
 
 // Import theme
@@ -75,6 +78,7 @@ export default class Presentation extends React.Component {
           <List textColor="primary">
             <ListItem>Task</ListItem>
             <ListItem>Implementation</ListItem>
+            <ListItem>Additional Feature</ListItem>
             <ListItem>Results</ListItem>
           </List>
         </Slide>
@@ -84,24 +88,38 @@ export default class Presentation extends React.Component {
           </Heading>
         </Slide>
         <Slide transition={['slide']}>
-          <Appear>
-            <div>
-              <Heading
-                size={6}
-                textColor="tertiary"
-                caps
-                style={{ marginBottom: '100px' }}
-              >
-                Building following indexes
-              </Heading>
-              <List textColor="secondary">
-                <ListItem>Inverted Index</ListItem>
-                <ListItem>Tiered Index</ListItem>
-                <ListItem>Clustered Index</ListItem>
-                <ListItem>Results</ListItem>
-              </List>
-            </div>
-          </Appear>
+          <Heading size={6} textColor="secondary" caps>
+            Implementation 💻
+          </Heading>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading size={6} textColor="secondary" caps>
+            Additional Feature 💡
+          </Heading>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading size={6} textColor="secondary" caps>
+            Result 📊
+          </Heading>
+        </Slide>
+
+        <Slide transition={['slide']}>
+          <div>
+            <Heading
+              size={6}
+              textColor="tertiary"
+              caps
+              style={{ marginBottom: '100px' }}
+            >
+              Building following indexes
+            </Heading>
+            <List textColor="secondary">
+              <ListItem>Inverted Index</ListItem>
+              <ListItem>Tiered Index</ListItem>
+              <ListItem>Clustered Index</ListItem>
+              <ListItem>Results</ListItem>
+            </List>
+          </div>
         </Slide>
         <Slide transition={['slide']}>
           <Heading
@@ -123,55 +141,20 @@ export default class Presentation extends React.Component {
             Builds every index we need during retrieval
           </Text>
         </Slide>
-        <Slide
-          transition={['slide']}
-          bgColor="primary"
-          notes="Hard to find cities without any pizza"
-        >
-          <Heading size={6} caps style={{ marginBottom: '30px' }}>
-            Retrieval Results
+        <Slide transition={['slide']}>
+          <Heading size={6} textColor="secondary" caps>
+            Additional Feature: Word embeddings 📝
           </Heading>
-          <Layout>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHeaderItem />
-                  <TableHeaderItem>2011</TableHeaderItem>
-                  <TableHeaderItem>2013</TableHeaderItem>
-                  <TableHeaderItem>2015</TableHeaderItem>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableItem>None</TableItem>
-                  <TableItem>61.8%</TableItem>
-                  <TableItem>39.6%</TableItem>
-                  <TableItem>35.0%</TableItem>
-                </TableRow>
-                <TableRow>
-                  <TableItem>Pineapple</TableItem>
-                  <TableItem>28.3%</TableItem>
-                  <TableItem>54.5%</TableItem>
-                  <TableItem>61.5%</TableItem>
-                </TableRow>
-                <TableRow>
-                  <TableItem>Pepperoni</TableItem>
-                  <TableItem />
-                  <TableItem>50.2%</TableItem>
-                  <TableItem>77.2%</TableItem>
-                </TableRow>
-                <TableRow>
-                  <TableItem>Olives</TableItem>
-                  <TableItem />
-                  <TableItem>24.9%</TableItem>
-                  <TableItem>55.9%</TableItem>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Layout>
         </Slide>
-        <Slide>
-          <Image src={images.kat} margin="0px auto 40px" />
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '30px' }}
+          >
+            Evaluation
+          </Heading>
         </Slide>
       </Deck>
     );

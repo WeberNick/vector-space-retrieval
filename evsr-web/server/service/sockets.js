@@ -157,13 +157,13 @@ export function listenToSockets(httpServer) {
      */
     socket.on('client:getEvalData', data => {
       logger.info('Client requested evaluation data');
-      let file = `${__dirname}/../eval/tier10.json`;
-      fs.readFile(file, 'utf8', function(
-        err,
-        data,
-      ) {
+      let file = `${__dirname}/../eval/aggregated/Comb_Tier50Dim1000.json-aggregated.json`;
+      fs.readFile(file, 'utf8', function(err, data) {
         if (err) throw err;
-        socket.emit('server:returnEvalData', {filename: file.split('/').pop(), data: JSON.parse(data)});
+        socket.emit('server:returnEvalData', {
+          filename: file.split('/').pop(),
+          data: JSON.parse(data),
+        });
       });
     });
   });
