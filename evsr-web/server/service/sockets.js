@@ -157,7 +157,7 @@ export function listenToSockets(httpServer) {
      */
     socket.on('client:getEvalData', data => {
       logger.info('Client requested evaluation data');
-      let file = `${__dirname}/../eval/aggregated/Dim500.json-aggregated.json`;
+      let file = `${__dirname}/../eval/aggregated-per-mode/Tier100.json-aggregated.json`;
       fs.readFile(file, 'utf8', function(err, data) {
         if (err) throw err;
         socket.emit('server:returnEvalData', {

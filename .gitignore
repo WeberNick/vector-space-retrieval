@@ -187,3 +187,5 @@ evsr-web/yarn-error.log*
 # JSON
 *.json
 !evsr-web/server/eval
+!evsr-web/server/eval/aggregated
+!evsr-web/server/eval/aggregated-per-mode

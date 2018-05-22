@@ -194,8 +194,12 @@ void testEval(const control_block_t& aControlBlock) {
         
         for (int j = 0; j < kNumberOfModes; ++j) {
             
-            /*REMOVE*/
-            if(aControlBlock.tiered()){
+             /*REMOVE*/
+            if(aControlBlock.rand()){
+                if(!(j==1||j==4||j==7)){
+                    continue;
+                }
+            } else if(aControlBlock.tiered()){
                 if(!(j==3||j==4||j==5)){
                     continue;
                 }
