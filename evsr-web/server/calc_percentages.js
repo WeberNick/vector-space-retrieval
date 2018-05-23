@@ -6,11 +6,18 @@ let aggregated = fs.readFileSync('./eval/aggregated-per-mode/Test_VSM_RAND_Seed1
 let aggregatedJSON = JSON.parse(aggregated);
 
 
-aggregatedJSON.map((mode) => {
-  console.log(mode.name);
-  console.log(mode.average_rnt);
 
+console.log("                     Cluster                     Cluser_Rand                     Cluster_W2V                     TieredIndex                     TieredIndex_RAND                     TieredIndex_W2V                     VanillaVSM                     VanillaVSM_RAND                     VanillaVSM_W2V") 
+
+
+
+aggregatedJSON.map((mode) => {
+  console.log(`${mode.name}`);
   aggregatedJSON.map((inner_mode) => {
-    console.log(`${inner_mode.name} ${(mode.average_rnt/inner_mode.average_rnt)*100}`)
+    let string = `${inner_mode.name} `;
+    string += `${((inner_mode.average_rnt - mode.average_rnt)/inner_mode.average_rnt) * 100 }   `
+
+
+    console.log(string)
   })
 })  

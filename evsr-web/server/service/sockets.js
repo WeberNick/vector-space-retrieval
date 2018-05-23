@@ -162,7 +162,7 @@ export function listenToSockets(httpServer) {
      */
     socket.on('client:getEvalData', data => {
       logger.info('Client requested evaluation data');
-      let file = `${__dirname}/../eval/aggregated-per-mode/Tier250.json-aggregated.json`;
+      let file = `${__dirname}/../eval/aggregated-per-mode/Test_VSM_RAND_Seed1_2.json-aggregated.json`;
       fs.readFile(file, 'utf8', function(err, data) {
         if (err) throw err;
         socket.emit('server:returnEvalData', {
