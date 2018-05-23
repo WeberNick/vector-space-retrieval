@@ -220,6 +220,7 @@ Evaluation::Evaluation() :
     _qTypeToEvalResults(),
     _type(kNoType),
     _mode(kNoMode), 
+    _measuredQueries(),
     _queryName(""), 
     _evalPath(""), 
     _measureInstance(nullptr), 
@@ -258,6 +259,7 @@ void Evaluation::start(const QUERY_TYPE aQueryType, const IR_MODE aMode, const s
     {
         _type = aQueryType;
         _mode = aMode;
+        _measuredQueries.insert(aQueryName);
         _queryName = aQueryName;
         _started = true;
         const std::string lTraceMsg = std::string("Evaluating performance of type '") + typeToString(aQueryType) + std::string("', mode '") + modeToString(_mode) + std::string("' for query '") + _queryName + std::string("'");
@@ -332,6 +334,12 @@ void Evaluation::evalIR(const QUERY_TYPE aQueryType, const IR_MODE aMode, const 
     lER.setMAP(_irpm.meanAvgPrecision(lER.getPerfAvgPrecision()));
     lTraceMsg = std::to_string(lER.getPerfMAP()) + std::string(" MAP (mode: '") + lMode + std::string("')");
     TRACE(lTraceMsg);
+    _measuredQueries.insert(aQueryName);
+}
+
+void Evaluation::constructJSON()
+{
+    constructJSON(_measuredQueries);
 }
 
 void Evaluation::constructJSON(const str_set& aQueryNames)

@@ -133,9 +133,8 @@ void evalMode(const control_block_t& aControlBlock) {
     }*/
     IR_MODE mode1 = IR_MODE::kVANILLA;
     IR_MODE mode2 = IR_MODE::kVANILLA_RAND;
-    IR_MODE mode3 = IR_MODE::kVANILLA_W2V;
 
-    std::vector<IR_MODE> modes{mode1, mode2, mode3};
+    const std::vector<IR_MODE> modes{mode1, mode2};
 
     for (int i = 0; i < kNumberOfTypes; ++i ) {
 
@@ -259,6 +258,8 @@ int main(const int argc, const char* argv[]) {
         lArgs.dimensions(),          // number of dimensions
         lArgs.seed()                 // seed for random projections and cluster leader election
     };
+
+    std::cout << lCB;
 
     // Init tracing
     Trace::getInstance().init(lCB);

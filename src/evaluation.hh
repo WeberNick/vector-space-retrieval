@@ -497,6 +497,7 @@ class Evaluation {
     /**
      * @brief constructs the physical JSON object with all evaluation results
      */
+    void constructJSON();
     void constructJSON(const str_set& aQueryNames);
 
   private:
@@ -515,6 +516,7 @@ class Evaluation {
     type_results_mt _qTypeToEvalResults;
     QUERY_TYPE      _type;
     IR_MODE         _mode;
+    str_set         _measuredQueries;
     std::string     _queryName;
     std::string     _evalPath;
     Measure*        _measureInstance;
