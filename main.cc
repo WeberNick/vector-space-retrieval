@@ -1,15 +1,14 @@
 #include "src/args.hh"
 #include "src/document_manager.hh"
+#include "src/evaluation.hh"
 #include "src/index_manager.hh"
-#include "src/query_manager.hh"
 #include "src/inverted_index.hh"
 #include "src/measure.hh"
 #include "src/query_execution_engine.hh"
+#include "src/query_manager.hh"
 #include "src/random_projection.hh"
-#include "src/evaluation.hh"
-#include "src/types.hh"
-#include "src/word_embeddings.hh"
 #include "src/string_util.hh"
+#include "src/types.hh"
 #include "src/vec_util.hh"
 #include "src/measure.hh"
 
@@ -42,7 +41,6 @@ void search(std::string query, size_t topK, IR_MODE mode) {
 }
 
 void serverMode(const control_block_t& aControlBlock) {
-    
     DocumentManager& docManager = DocumentManager::getInstance();
     docManager.init(aControlBlock);
 
@@ -70,7 +68,6 @@ void serverMode(const control_block_t& aControlBlock) {
 }
 
 void evalMode(const control_block_t& aControlBlock) {
-
     std::cout << "[Evaluation mode]" << std::endl;
 
     DocumentManager& docManager = DocumentManager::getInstance();
@@ -101,48 +98,14 @@ void evalMode(const control_block_t& aControlBlock) {
     std::cout << "[Ready]" << std::endl;
     std::cout << "[Start Evaluating]" << std::endl;
 
-     str_set queryNamesSet;
+    str_set queryNamesSet;
 
-    /*
-    for (int i = 0; i < kNumberOfTypes; ++i ) {
-
-        QUERY_TYPE type = static_cast<QUERY_TYPE>(i);
-        
-        for (int j = 0; j < kNumberOfModes; ++j) {
-            
-             REMOVE
-            if(aControlBlock.rand()){
-                if(!(j==1||j==4||j==7)){
-                    continue;
-                }
-            } else if(aControlBlock.tiered()){
-                if(!(j==3||j==4||j==5)){
-                    continue;
-                }
-            }
-
-            IR_MODE mode = static_cast<IR_MODE>(j);
-
-            std::cout <<  typeToString(type) << " for mode " << modeToString(mode) << std::endl; 
-            
-            auto& queryForType = QueryManager::getInstance().getQueryMap(type);
-            for (auto& [query_id, query] : queryForType) {
-                Document queryDoc = queryManager.createQueryDoc(query, query_id, true);
-
-                queryNamesSet.insert(queryDoc.getDocID());
-                e.start(type, mode, queryDoc.getDocID());
-                std::vector<std::pair<size_t, float>> result = qpe.search(queryDoc, aControlBlock.results(), mode);
-                e.stop();
-                e.evalIR(type, mode, queryDoc.getDocID(), result);
-            }
-        }
-    }*/
     IR_MODE mode1 = IR_MODE::kVANILLA;
     IR_MODE mode2 = IR_MODE::kVANILLA_RAND;
 
     const std::vector<IR_MODE> modes{mode1, mode2};
 
-    for (int i = 0; i < kNumberOfTypes; ++i ) {
+    for (int i = 0; i < kNumberOfTypes; ++i) {
 
         QUERY_TYPE type = static_cast<QUERY_TYPE>(i);
         
@@ -162,9 +125,6 @@ void evalMode(const control_block_t& aControlBlock) {
         }
     }
     
-
-
-
     e.constructJSON(queryNamesSet);
     std::cout << "[Finish Evaluating]" << std::endl;
 }
@@ -172,9 +132,9 @@ void evalMode(const control_block_t& aControlBlock) {
 /**
  * @brief Starts the program
  *
- * @param argc
- * @param argv
- * @return int
+ * @param argc arg counter
+ * @param argv arg vector
+ * @return int status exit code
  */
 int main(const int argc, const char* argv[]) {
     /* How to use class Args is described in args.hh */
@@ -182,12 +142,14 @@ int main(const int argc, const char* argv[]) {
     argdesc_vt lArgDesc;
     construct_arg_desc(lArgDesc);
 
-    if (!parse_args<Args>(1, argc, argv, lArgDesc, lArgs)) {
+    if (!parse_args<Args>(1, argc, argv, lArgDesc, lArgs))
+    {
         std::cerr << "error while parsing arguments." << std::endl;
         return -1;
     }
 
-    if (lArgs.help()) {
+    if (lArgs.help())
+    {
         print_usage(std::cout, argv[0], lArgDesc);
         return 0;
     }
@@ -251,7 +213,7 @@ int main(const int argc, const char* argv[]) {
     const control_block_t lCB = {
         lArgs.trace(),               // trace activated?
         lArgs.measure(),             // measure runtime/IR performance?
-        lArgs.server(),              // Starting the binary in server mode (free text search) ?
+        lArgs.server(),              // starting the binary in server mode (free text search) ?
         lArgs.collectionPath(),      // path to doc collection file
         lArgs.queryPath(),           // path to directory with query files
         lArgs.relevanceScoresPath(), // path to relevance score path
@@ -265,10 +227,9 @@ int main(const int argc, const char* argv[]) {
         lArgs.seed()                 // seed for random projections and cluster leader election
     };
 
-    std::cout << lCB;
+    std::cout << lCB;                // print control block
 
-    // Init tracing
-    Trace::getInstance().init(lCB);
+    Trace::getInstance().init(lCB);  // init tracing
     
     if (lCB.server()){
         serverMode(lCB);

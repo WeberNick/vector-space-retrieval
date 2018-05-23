@@ -1,19 +1,15 @@
-/*********************************************************************
+/*
  * @file    query_execution_engine.hh
- * @author 	Nick Weber, Alexander Weiß
+ * @author 	Nick Weber
+ *          Alexander Weiß
+ *          Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
  * @date    May 18, 2018
  * @brief 	Top level implementation of the class responsible for
  *          searching our document collection. Implements different
  *          types of search modes.
- * @bugs 	  Currently no bugs known 
- * @todos 	Currently no todos
  * 
- * @section	DESCRIPTION
- * TBD
- * 
- * @section USE
- * TBD
- ********************************************************************/
+ * @section	DESCRIPTION docto_
+ */
 
 #pragma once
 
@@ -41,15 +37,19 @@ class QueryExecutionEngine {
 
   public:
     /**
-     * @brief Get the Instance object
+     * @brief Get the query execution engine instance
      *
-     * @return QueryExecutionEngine&
+     * @return QueryExecutionEngine& the instance
      */
     inline static QueryExecutionEngine& getInstance() {
         static QueryExecutionEngine lInstance;
         return lInstance;
     }
-
+    /**
+     * @brief Initialize control block and query execution engine
+     *
+     * @param aControlBlock the control block
+     */
     void init(const CB& aControlBlock);
 
   public:

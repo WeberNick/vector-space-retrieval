@@ -1,17 +1,10 @@
-/*********************************************************************
+/*
  * @file    file_util.hh
  * @author 	Nick Weber
  * @date    Mai 19, 2018
- * @brief 	
- * @bugs 	TBD
- * @todos 	TBD
+ * @brief 	Some file utils 
  * 
- * @section	DESCRIPTION
- * TBD
- * 
- * @section USE
- * TBD
- ********************************************************************/
+ */
 #pragma once
 
 #include "types.hh"
