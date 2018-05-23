@@ -86,8 +86,7 @@ void IndexManager::buildWordEmbeddingsVector(Document& doc) {
     float_vt& wevec = doc.getWordEmbeddingsVector();
     wevec.resize(300);
     const string_vt& content = doc.getContent();
-    // TODO:
-    // test make_unique
+    // OptionalTodo: test make_unique
     this->getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, wevec);
     doc.setWordEmbeddingsVector(wevec);
 }
@@ -110,5 +109,5 @@ void IndexManager::buildRandProjVector(Document& doc) {
     const boost::dynamic_bitset<>& rand_proj =
         RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(),
                                                                         Util::randomProjectionHash);
-    doc.setRandProjTiVec(rand_proj);
+    doc.setRandProjVec(rand_proj);
 }

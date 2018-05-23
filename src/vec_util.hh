@@ -1,17 +1,11 @@
-/*********************************************************************
+/*
  * @file    vec_util.hh
- * @author 	Nick Weber, Alexander Weiß
+ * @author 	Nick Weber
+ *          Alexander Weiß
+ *          Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
  * @date    Mai 18, 2018
- * @brief 	
- * @bugs 	TBD
- * @todos 	TBD
- * 
- * @section	DESCRIPTION
- * TBD
- * 
- * @section USE
- * TBD
- ********************************************************************/
+ * @section	DESCRIPTION doc_to
+ */
 #pragma once
 
 #include "types.hh"
@@ -32,7 +26,7 @@ namespace Util {
      * @param v1 the first vector
      * @param v2 the second vector
      * @return a vector containing the set difference of both input vectors
-     * @todo implement function as template for generic vector types if needed
+     * @optionaltodo implement function as template for generic vector types if needed
      */
     sizet_vt difference(const sizet_vt& v1, const sizet_vt& v2);
     // template<typename T> std::vector<T> difference(std::vector<T>& v1, std::vector<T>& v2);
@@ -42,7 +36,7 @@ namespace Util {
      * @param v1 the first vector
      * @param v2 the second vector
      * @return a vector containing the set intersection of both input vectors
-     * @todo implement function as template for generic vector types if needed
+     * @optionaltodo implement function as template for generic vector types if needed
      */
     sizet_vt intersection(const sizet_vt& v1, const sizet_vt& v2);
     // template<typename T> std::vector<T> intersection(std::vector<T>& v1, std::vector<T>& v2);
@@ -52,7 +46,7 @@ namespace Util {
      * @param v1 the first vector
      * @param v2 the second vector
      * @return the number of different elements
-     * @todo implement function as template for generic vector types if needed
+     * @optionaltodo implement function as template for generic vector types if needed
      */
     size_t numberOfDifferences(const sizet_vt& v1, const sizet_vt& v2);
     // template<typename T> size_t numberOfDifferences(std::vector<T>& v1, std::vector<T>& v2);
@@ -62,7 +56,7 @@ namespace Util {
      * @param v1 the first vector
      * @param v2 the second vector
      * @return the number of equal elements
-     * @todo implement function as template for generic vector types if needed
+     * @optionaltodo implement function as template for generic vector types if needed
      */
     size_t numberOfIntersections(const sizet_vt& v1, const sizet_vt& v2);
     // template<typename T> size_t numberOfIntersections(std::vector<T>& v1, std::vector<T>& v2);
@@ -90,11 +84,11 @@ namespace Util {
     /**
      * @brief Calculates the dot product of two vectors
      *
-     * @param a
-     * @param b
-     * @return
+     * @param a first vector
+     * @param b second vector
+     * @return the scalar product
      */
-     template <typename T>
+    template <typename T>
     inline double scalar_product(std::vector<T> const& a, std::vector<T> const& b) {
         if (a.size() != b.size()) {
             const std::string traceMsg = "Vectors do not have the same size";
@@ -104,6 +98,14 @@ namespace Util {
         return std::inner_product(a.begin(), a.end(), b.begin(), 0.0);
     }
 
+    /**
+     * @brief the random projection hash function, returning whether the scalar product
+     *        between origVec and randVec is >= 0 (this will result in a 1 in the random projection vector)
+     * 
+     * @param origVec the original vector
+     * @param randVec the random projection vector
+     * @return whether the dot product is >= 0
+     */
     inline bool randomProjectionHash(std::vector<float>& origVec, std::vector<float>& randVec) {
         if (origVec.size() != randVec.size()) throw VectorException(__FILE__, __LINE__, __PRETTY_FUNCTION__, "Vectors are not the same size");
 

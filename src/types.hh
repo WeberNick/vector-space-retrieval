@@ -3,10 +3,8 @@
  *	@author	Alexander Weiß, Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de), Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
  *	@brief  Specification of basic types and the control block used in the project
  *	@bugs 	Currently no bugs known
- *	@todos	Write DESCRIPTION
  *
- *	@section DESCRIPTION
- *	TODO
+ *	@section DESCRIPTION docto_
  */
 #pragma once
 

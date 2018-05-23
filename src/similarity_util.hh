@@ -1,17 +1,12 @@
-/*********************************************************************
+/*
  * @file    similarity_util.hh
  * @author 	Nick Weber
+ *          Alexander Weiß
+ *          Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
  * @date    Mai 18, 2018
- * @brief 	
- * @bugs 	TBD
- * @todos 	TBD
  * 
- * @section	DESCRIPTION
- * TBD
- * 
- * @section USE
- * TBD
- ********************************************************************/
+ * @section	docto_
+ */
 #pragma once
 
 #include "types.hh"
@@ -26,11 +21,9 @@
 #include <cmath>
 #include <string>
 
-namespace Util
-{
-
+namespace Util {
         /**
-         * @brief calculate and return the length of the given vector
+         * @brief Calculate and return the length of the given vector
          *
          * @param vec the vector
          * @return float the length

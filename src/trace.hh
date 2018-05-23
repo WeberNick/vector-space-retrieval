@@ -1,13 +1,10 @@
 /**
+ *  @file   trace.hh
  *  @author Nick Weber
  *  @brief  Implements tracing functionality
  *  @todo   If multi threaded access causes problems, add mutex
- *  @bugs   -
  *
- *  @section DESCRIPTION
- *  todo 
- *  @section USE
- *  todo
+ *  @section DESCRIPTION docto_
  */
 #pragma once
 

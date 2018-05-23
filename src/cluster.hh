@@ -1,13 +1,11 @@
 /**
  *	@file 	cluster.hh
  *	@author	Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de)
+            Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
  *	@brief  Implements the pre-clustering functionality for documents
  *	@bugs 	Currently no bugs known
- *	@todos	A cluster can be created and it will automatically initiated itself.
- *	        But: need to add functionality.
  *
- *	@section DESCRIPTION
- *	TODO
+ *	@section DESCRIPTION docto_
  */
 #pragma once
 
@@ -40,8 +38,9 @@ class Cluster
 
   private:
     /**
-     * @brief Get the Cluster Singleton instance.
-     * @return Cluster& a reference to the Cluster Singleton instance.
+     * @brief Get the Cluster Singleton instance
+     * 
+     * @return Cluster& a reference to the Cluster Singleton instance
      */
     inline static Cluster& getInstance() 
     {
@@ -51,6 +50,7 @@ class Cluster
 
     /**
      * @brief Initialize control block and cluster
+     * 
      * @param aControlBlock the control block containing runtime specific data
      */
     void init(const CB& aControlBlock);
@@ -63,25 +63,40 @@ class Cluster
   public:
     /**
      * @brief Get the document IDs of the leader
+     * 
      * @return a vector containing all document IDs
      */
     inline const sizet_vt& getLeaders() const { return _leaders; }
+    /**
+     * @brief Get the document IDs of the leader
+     * 
+     * @return a vector containing all document IDs
+     */
     inline const sizet_vt& getLeaders() { return _leaders; }
 
     /**
      * @brief Getter for the cluster map
+     * 
      * @return the cluster map
      */
     inline cluster_mt& getCluster() { return _cluster; }
 
   public:
     /**
-     * @brief 
-     * @param aLeaders 
-     * @param aTopK 
-     * @return const sizet_vt 
+     * @brief Get the topK ids for the given leaders and write them to aOutputVec
+     * 
+     * @param aLeaders the leaders
+     * @param aTopK the amount of results (ids) requested
+     * @return const sizet_vt the output vector
      */
     void getIDs(const std::vector<std::pair<size_t, float>>& aLeaders, const size_t aTopK, sizet_vt& aOutputVec);
+    /**
+     * @brief Override the <<operator for clustered index
+     * 
+     * @param strm the output stream
+     * @param clust the cluster instance
+     * @return std::ostream& the modified output stream
+     */
     friend std::ostream& operator<<(std::ostream& strm, const Cluster& clust);
 
   private:
