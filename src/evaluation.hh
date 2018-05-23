@@ -513,15 +513,15 @@ class Evaluation {
 
   private:
     IR_PerformanceManager& _irpm;
-    results_mt      _evalResults;
-    type_results_mt _qTypeToEvalResults;
-    QUERY_TYPE      _type;
-    IR_MODE         _mode;
-    std::string     _queryName;
-    std::string     _evalPath;
-    Measure*        _measureInstance;
-    double          _time;
-    bool            _started;
+    results_mt             _evalResults;
+    type_results_mt        _qTypeToEvalResults;
+    QUERY_TYPE             _type;
+    IR_MODE                _mode;
+    std::string            _queryName;
+    std::string            _evalPath;
+    Measure*               _measureInstance;
+    double                 _time;
+    bool                   _started;
 
     const CB*       _cb;
 };

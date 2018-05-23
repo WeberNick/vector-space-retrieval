@@ -88,20 +88,33 @@ class IndexManager {
      * @return const Cluster& the clustered index
      */
     inline Cluster& getClusteredIndex() { return _clusteredIndex; }
-  /**
-   * @brief Get the word embeddings index objectt
-   *
-   * @return const WordEmbeddings& the word embeddings index
-   */
-  inline WordEmbeddings& getWordEmbeddingsIndex() { return _wordEmbeddingsIndex; }
+    /**
+     * @brief Get the word embeddings index objectt
+     *
+     * @return const WordEmbeddings& the word embeddings index
+     */
+    inline WordEmbeddings& getWordEmbeddingsIndex() { return _wordEmbeddingsIndex; }
 
-    //TODO docs
+    // TODO docs
     /**
      * @brief 
      * 
+     * @param doc 
      */
     void buildTfIdfVector(Document& doc);
+    // TODO docs
+    /**
+     * @brief 
+     * 
+     * @param doc 
+     */
     void buildRandProjVector(Document& doc);
+    // TODO docs
+    /**
+     * @brief 
+     * 
+     * @param doc 
+     */
     void buildWordEmbeddingsVector(Document& doc);
 
     /**

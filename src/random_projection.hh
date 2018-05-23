@@ -50,8 +50,26 @@ class RandomProjection {
     boost::dynamic_bitset<> localitySensitiveHashProjection(std::vector<float>& vector, std::function<unsigned int(std::vector<float>&, std::vector<float>&)>);
 
   public:
+    // TODO docs
+    /**
+     * @brief Get the Random Vectors object
+     * 
+     * @return const float_vector_vt& 
+     */
     inline const float_vector_vt& getRandomVectors() { return _randomVectors; }
+    // TODO docs
+    /**
+     * @brief Get the Dimensions object
+     * 
+     * @return size_t 
+     */
     inline size_t getDimensions() { return _dimension; };
+    // TODO docs
+    /**
+     * @brief Get the Origvector Size object
+     * 
+     * @return size_t 
+     */
     inline size_t getOrigvectorSize() { return _origVectorSize; };
 
     /**
@@ -69,14 +87,12 @@ class RandomProjection {
             return true;
         }
     }
-
     /**
      * @brief Set the Random Vectors object
      *
      * @param randomVectors
      */
     inline void setRandomVectors(float_vector_vt randomVectors) { _randomVectors = randomVectors; }
-
     /**
      * @brief Set the Orig Vector Size object
      *
@@ -91,7 +107,7 @@ class RandomProjection {
             return true;
         }
     }
-
+    
     /**
      * @brief Initializes the RandomProjection object with the control block
      *
