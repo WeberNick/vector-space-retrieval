@@ -4,10 +4,8 @@
  *	@brief  Implements the index manager which handles the initialization of the vector space model components and
  *          the different indices (Inverted, Tiered, Cluster)
  *	@bugs 	Currently no bugs known
- *	@todos	to exception handling for all calls to .at() -> possible out of range exception. Write DESCRIPTION
  *
- *	@section DESCRIPTION
- *	TODO
+ *	@section DESCRIPTION docto_
  */
 #pragma once
 
@@ -95,39 +93,36 @@ class IndexManager {
      */
     inline WordEmbeddings& getWordEmbeddingsIndex() { return _wordEmbeddingsIndex; }
 
-    // TODO docs
     /**
-     * @brief 
+     * @brief Build the tf idf vector for a document
      * 
-     * @param doc 
+     * @param doc the document
      */
     void buildTfIdfVector(Document& doc);
-    // TODO docs
     /**
-     * @brief 
+     * @brief Build the random projection vector for a document
      * 
-     * @param doc 
+     * @param doc the document
      */
     void buildRandProjVector(Document& doc);
-    // TODO docs
     /**
-     * @brief 
+     * @brief Build the word embeddings vector for a document
      * 
-     * @param doc 
+     * @param doc the document
      */
     void buildWordEmbeddingsVector(Document& doc);
 
     /**
-     * @brief Get the IndexManager Singleton instance.
+     * @brief Get the IndexManager Singleton instance
      *
-     * @return IndexManager& a reference to the IndexManager Singleton instance.
+     * @return IndexManager& a reference to the IndexManager Singleton instance
      */
     inline static IndexManager& getInstance() {
         static IndexManager indexManager;
         return indexManager;
     }
     /**
-     * @brief initialize control block and index manager
+     * @brief Initialize control block and index manager
      *
      * @param aControlBlock the control block
      */

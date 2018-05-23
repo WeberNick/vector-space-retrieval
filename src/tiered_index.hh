@@ -2,11 +2,8 @@
  *	@file 	tiered_index.hh
  *	@author	Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
  *	@brief  Implements the tiered index
- *	@bugs 	Currently no bugs known
- *	@todos	Write DESCRIPTION
  *
- *	@section DESCRIPTION
- *	TODO
+ *	@section DESCRIPTION docto_
  */
 #pragma once
 
@@ -29,14 +26,12 @@ class TieredIndex {
     ~TieredIndex() = default;
 
   private:
-    // TODO docs
     /**
      * @brief Insert aTierMap for aTerm, if this term is not in the tiered index yet
      *
-     * @param aTerm
-     * @param aTierMap
-     * @return true
-     * @return false
+     * @param aTerm the term to insert the tierMap for
+     * @param aTierMap the tierMap to insert
+     * @return whether the insertion was successful
      */
     bool insert(const std::string& aTerm, const std::map<size_t, PostingList>& aTierMap);
     /**
@@ -69,7 +64,7 @@ class TieredIndex {
         return instance;
     }
     /**
-     * @brief initialize control block and tiered index
+     * @brief Initialize control block and tiered index
      *
      * @param aControlBlock the control block
      */
@@ -83,35 +78,31 @@ class TieredIndex {
     inline str_tierplmap_mt* getTermTierPostingMap() { return &_term_tier_map; }
 
   public:
-    // TODO docs
     /**
-     * @brief Get the Posting Lists object
+     * @brief Get the posting lists
      *
-     * @return str_tierplmap_mt&
+     * @return str_tierplmap_mt& the posting lists
      */
     inline const str_tierplmap_mt& getPostingLists() const { return _term_tier_map; }
-    // TODO docs
     /**
-     * @brief Get the Dictionary Size object
+     * @brief Get the dictionary size
      *
-     * @return size_t
+     * @return size_t the dictionary size
      */
     inline size_t getDictionarySize() { return _term_tier_map.size(); }
-    // TODO docs
     /**
-     * @brief Get the Num Tiers object
+     * @brief Get the number of tiers
      *
-     * @return size_t
+     * @return size_t the number of tiers
      */
     inline size_t getNumTiers() { return _num_tiers; }
 
-    // TODO docs
     /**
-     * @brief Get the Doc ID List object
+     * @brief Get the top doc ids
      *
-     * @param top at least top ids
-     * @param terms
-     * @return std::map<size_t, sizet_vt>
+     * @param top the requested amount of results (ids)
+     * @param terms the query terms for which to retrieve the ids
+     * @return sizet_vt the ids to return
      */
     sizet_vt getDocIDList(const size_t top, const string_vt& terms) const;
     /**
@@ -122,23 +113,21 @@ class TieredIndex {
      * @return PostingList&
      */
     const PostingList& getPostingList(const std::string& aTerm, const size_t aTier) const;
-    // TODO docs
     /**
-     * @brief Get the No Docs object
+     * @brief Get the number of documents of a term in a tier
      *
-     * @param aTerm
-     * @param aTier
-     * @return size_t
+     * @param aTerm the term
+     * @param aTier the tier
+     * @return size_t the number of docs for this term in this tier
      */
     size_t getNoDocs(const std::string& aTerm, const size_t aTier);
     
-    // TODO docs
     /**
-     * @brief Override operator<< for pretty printing a 
+     * @brief Override operator<< for pretty printing a tiered index
      *
      * @param strm the output stream
-     * @param ti
-     * @return std::ostream& the output stream to be returned
+     * @param ti the tiered index
+     * @return std::ostream& the modified output stream
      */
     friend std::ostream& operator<<(std::ostream& strm, const TieredIndex& ti);
 

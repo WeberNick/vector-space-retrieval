@@ -5,14 +5,10 @@
 /**
  * @brief Construct a new Query Processing Engine:: Query Processing Engine object
  */
-QueryExecutionEngine::QueryExecutionEngine() : _cb(nullptr)
+QueryExecutionEngine::QueryExecutionEngine() :
+    _cb(nullptr)
 {}
 
-/**
- * @brief Initializes the singleton
- *
- * @param aControlBlock
- */
 void QueryExecutionEngine::init(const control_block_t& aControlBlock) {
     if (!_cb) {
         _cb = &aControlBlock;
@@ -26,12 +22,9 @@ const pair_sizet_float_vt QueryExecutionEngine::search(std::string& query, size_
 }
 
 const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_t topK, IR_MODE searchType) {
-
-
     std::cout << "Searchin in mode " << modeToString(searchType) << std::endl;
 
-    pair_sizet_float_vt found_indices; // result vector
-
+    pair_sizet_float_vt found_indices;       // result vector
     if (queryDoc.getContent().size() == 0) { // if content is empty stop searching
         return found_indices;
     }
@@ -44,10 +37,11 @@ const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_
         found_indices = this->searchRandomProjCos(&queryDoc, IndexManager::getInstance().getInvertedIndex().getDocIDList(queryDoc.getContent()), topK);
     } break;
     case IR_MODE::kVANILLA_W2V: {
-         found_indices = this->searchCollectionCos(&queryDoc, IndexManager::getInstance().getInvertedIndex().getDocIDList(queryDoc.getContent()), topK, true);
+        found_indices = this->searchCollectionCos(&queryDoc, IndexManager::getInstance().getInvertedIndex().getDocIDList(queryDoc.getContent()), topK, true);
     }
     case IR_MODE ::kCLUSTER: {
-        std::vector<std::pair<size_t, float>> leader_indexes = this->searchClusterCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
+        std::vector<std::pair<size_t, float>> leader_indexes =
+            this->searchClusterCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
 
         // Get docIds from the clusters to search in, vector will be filled from the IndexManager::getInstance().getClusteredIndex().getIDs() method
         sizet_vt clusterDocIds;
@@ -55,9 +49,10 @@ const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_
 
         // Search the docs from the clusters
         found_indices = this->searchClusterCos(&queryDoc, clusterDocIds, topK);
-    }break;
+    } break;
     case IR_MODE::kCLUSTER_RAND: {
-        std::vector<std::pair<size_t, float>> leader_indexes = this->searchRandomProjCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
+        std::vector<std::pair<size_t, float>> leader_indexes =
+            this->searchRandomProjCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
 
         // Get docIds from the clusters to search in, vector will be filled from the IndexManager::getInstance().getClusteredIndex().getIDs() method
         sizet_vt clusterDocIds;
@@ -65,16 +60,17 @@ const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_
 
         // Search the docs from the clusters
         found_indices = this->searchRandomProjCos(&queryDoc, clusterDocIds, topK);
-    }break;
+    } break;
     case IR_MODE::kCLUSTER_W2V: {
-         std::vector<std::pair<size_t, float>> leader_indexes = this->searchClusterCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0, true);
-        
+        std::vector<std::pair<size_t, float>> leader_indexes =
+            this->searchClusterCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0, true);
+
         // Get docIds from the clusters to search in, vector will be filled from the IndexManager::getInstance().getClusteredIndex().getIDs() method
         sizet_vt clusterDocIds;
         IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK, clusterDocIds);
         // Search the docs from the clusters
         found_indices = this->searchClusterCos(&queryDoc, clusterDocIds, topK, true);
-    }break;
+    } break;
     case IR_MODE ::kTIERED: {
         found_indices = this->searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK);
     } break;
@@ -83,7 +79,7 @@ const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_
     } break;
     case IR_MODE::kTIERED_W2V: {
         found_indices = this->searchTieredCos(&queryDoc, IndexManager::getInstance().getTieredIndex().getDocIDList(topK, queryDoc.getContent()), topK, true);
-    }break;
+    } break;
     case IR_MODE ::kNoMode: break;
     case IR_MODE ::kNumberOfModes: break;
     default: break;

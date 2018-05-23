@@ -1,32 +1,32 @@
 /**
- *	@file 	args.hh
- *	@author	Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de)
- *	@brief	Implementation of command line arguements
- *	@bugs 	Currently no bugs known
- *	@todos  -
+ *	@file 	 args.hh
+ *	@author	 Nick Weber (nickwebe@pi3.informatik.uni-mannheim.de)
+             Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
+ *	@brief	 Implementation of command line arguements
  *
  *	@section DESCRIPTION
- *	        This class implements the command line arguements. A command line arguement has the form:
- * 	        --[command] [optional parameter]
- * 	        Where '--' indicates a command will follow,
- *	        'command' is the command name (e.g., 'help'),
- *	        'optional parameter' is an optional parameter only needed for certain commands (e.g., for 'path' a string is needed)
- *	        A complete invocation example could be:
- *	        "./bin/evsr_run --path "../data/" --trace --print" to use the relative path from src, activate tracing and printing information to std out
+ *	         This class implements the command line arguements. A command line arguement has the form:
+ * 	         --[command] [optional parameter]
+ * 	         Where '--' indicates a command will follow,
+ *	         'command' is the command name (e.g., 'help'),
+ *	         'optional parameter' is an optional parameter only needed for certain commands (e.g., for 'path' a string is needed)
+ *	         A complete invocation example could be:
+ *	         "./bin/evsr_run --path "../data/" --trace --print" to use the relative path from src, activate tracing and printing information to std out
  *
  *	@section USAGE
- *	        In main, create class 'Args' with the default constructor and add the following code:
- *              Args lArgs;                                           // create Args object with default constructor
- *              argdesc_vt lArgDesc;                                  // create vector where to store the command line arguments (used for internal processing)
- *              construct_arg_desc(lArgDesc);                         // pass vector to a internal routine which processes the command line arguments
- *              // parses arguments in their respective date type, stores them in an object of Args and return an status flag
- *              if(!parse_args<Args>(1, argc, argv, lArgDesc, lArgs)) // if != 0, an error occured while parsing arguments...
- *              {
- *                  std::cerr << "error while parsing arguments." << std::endl;
- *                  return -1;
- *              }
- *              bool help = lArgs.help();                             // now use the data stored in object lArgs like this:
- *              // write your own functions and command line arguments in this header and use the same structure as seen in args.cc
+ *	         In main, create class 'Args' with the default constructor and add the following code:
+ *
+ *               Args lArgs;                                           // create Args object with default constructor
+ *               argdesc_vt lArgDesc;                                  // create vector where to store the command line arguments (used for internal processing)
+ *               construct_arg_desc(lArgDesc);                         // pass vector to a internal routine which processes the command line arguments
+ *               // parses arguments in their respective date type, stores them in an object of Args and return an status flag
+ *               if(!parse_args<Args>(1, argc, argv, lArgDesc, lArgs)) // if != 0, an error occured while parsing arguments...
+ *               {
+ *                   std::cerr << "error while parsing arguments." << std::endl;
+ *                   return -1;
+ *               }
+ *               bool help = lArgs.help();                             // now use the data stored in object lArgs like this:
+ *               // write your own functions and command line arguments in this header and use the same structure as seen in args.cc
  */
 #pragma once
 

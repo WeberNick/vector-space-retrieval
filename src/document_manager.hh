@@ -4,7 +4,6 @@
  *	@brief  The document manager handles everything regarding the document collection. It parses the
  *          document collection and creates a document map
  *	@bugs 	Currently no bugs known
- *	@todos	-
  *
  *	@section DESCRIPTION docto_
  */
@@ -117,9 +116,9 @@ class DocumentManager {
         return lInstance;
     }
     /**
-     * @brief
+     * @brief Initialize control block and document manager
      *
-     * @param aControlBlock
+     * @param aControlBlock the control block
      */
     void init(const CB& aControlBlock);
 

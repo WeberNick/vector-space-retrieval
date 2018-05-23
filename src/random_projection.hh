@@ -1,18 +1,12 @@
-/*********************************************************************
- * @file    query_execution_engine.hh
+/*
+ * @file    random_projection.hh
  * @author 	Alexander Weiß
  * @date    April 4, 2018
  * @brief 	Implementing the random projections to lower the dimensions
  *          of the TF-IDF vectors of documents
- * @bugs 	  Currently no bugs known 
- * @todos 	Currently no todos
  * 
- * @section	DESCRIPTION
- * TBD
- * 
- * @section USE
- * TBD
- ********************************************************************/
+ * @section	DESCRIPTION docto_
+ */
 
 #pragma once
 
@@ -50,35 +44,36 @@ class RandomProjection {
     boost::dynamic_bitset<> localitySensitiveHashProjection(std::vector<float>& vector, std::function<unsigned int(std::vector<float>&, std::vector<float>&)>);
 
   public:
-    // TODO docs
     /**
-     * @brief Get the Random Vectors object
+     * @brief Get the random vectors
      * 
-     * @return const float_vector_vt& 
+     * @return const float_vector_vt& the random vectors
      */
     inline const float_vector_vt& getRandomVectors() { return _randomVectors; }
-    // TODO docs
     /**
-     * @brief Get the Dimensions object
+     * @brief Get the dimensions
      * 
-     * @return size_t 
+     * @return size_t the dimensions
      */
     inline size_t getDimensions() { return _dimension; };
-    // TODO docs
     /**
-     * @brief Get the Origvector Size object
+     * @brief Get the orig vector size
      * 
-     * @return size_t 
+     * @return size_t the orig vector size
      */
     inline size_t getOrigvectorSize() { return _origVectorSize; };
+    /**
+     * @brief Get the seed
+     * 
+     * @return uint the seed
+     */
     inline uint getSeed() { return _seed; };
 
     /**
-     * @brief Set the Dimensions object, determines the dimension of the random projection vectors
+     * @brief Set the dimensions attribute, determines the dimension of the random projection vectors
      *
-     * @param dimensions
-     * @return true
-     * @return false
+     * @param dimensions the dimensions
+     * @return whether the dimension has been set
      */
     inline bool setDimensions(const size_t dimensions) {
         if (_dimension) {
@@ -89,15 +84,15 @@ class RandomProjection {
         }
     }
     /**
-     * @brief Set the Random Vectors object
+     * @brief Set the random vectors
      *
-     * @param randomVectors
+     * @param randomVectors the random vectors
      */
     inline void setRandomVectors(float_vector_vt randomVectors) { _randomVectors = randomVectors; }
     /**
-     * @brief Set the Orig Vector Size object
+     * @brief Set the orig vector size
      *
-     * @param origVectorSize
+     * @param origVectorSize the orig vector size
      * @return bool indicating whether the orig size has been set
      */
     inline bool setOrigVectorSize(const size_t origVectorSize) {
@@ -110,16 +105,15 @@ class RandomProjection {
     }
     
     /**
-     * @brief Initializes the RandomProjection object with the control block
+     * @brief Initialize control block and the random projection
      *
-     * @param aCB
-     * @param origVectorSize
-     * @return
+     * @param aCB the control block
+     * @param origVectorSize the orig vector size
      */
     void init(const CB& aCB, const size_t origVectorSize); 
 
     /**
-     * @brief Initializes the random vectors
+     * @brief Initialize the random vectors
      *
      * @return true
      * @return bool indicating whether the random vectors have been set

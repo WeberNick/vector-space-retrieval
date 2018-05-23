@@ -87,8 +87,7 @@ void IndexManager::buildWordEmbeddingsVector(Document& doc) {
     float_vt& wevec = doc.getWordEmbeddingsVector();
     wevec.resize(300);
     const string_vt& content = doc.getContent();
-    // TODO:
-    // test make_unique
+    // OptionalTodo: test make_unique
     this->getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, wevec);
     doc.setWordEmbeddingsVector(wevec);
 }

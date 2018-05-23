@@ -1,30 +1,23 @@
-/*********************************************************************
+/*
  * @file    ir_util.hh
  * @author 	Nick Weber
  * @date    Mai 18, 2018
- * @brief 	
- * @bugs 	TBD
- * @todos 	TBD
  * 
- * @section	DESCRIPTION
- * TBD
- * 
- * @section USE
- * TBD
- ********************************************************************/
+ * @section	DESCRIPTION docto_
+ */
 #pragma once
 
-#include "types.hh"
 #include "exception.hh"
-#include "trace.hh"
-#include "string_util.hh"
 #include "posting_list.hh"
+#include "string_util.hh"
+#include "trace.hh"
+#include "types.hh"
 
-#include <stemming/english_stem.h>
-#include <cmath>
-#include <sstream>
 #include <algorithm>
+#include <cmath>
 #include <map>
+#include <sstream>
+#include <stemming/english_stem.h>
 
 namespace Util {
 
@@ -72,6 +65,15 @@ namespace Util {
      */
     std::string stemPorter(const std::string& sentence); 
 
+    /**
+     * @brief Pop the front element of a vector, modify the vector accordingly
+     *        (so it contains one element less - the front element) and return
+     *        this front element
+     * 
+     * @tparam T the type of the vector
+     * @param vec the vector to modify
+     * @return T the front element
+     */
     template <typename T>
     inline T pop_front(std::vector<T>& vec) {
         assert(!vec.empty());
@@ -80,43 +82,37 @@ namespace Util {
         return elem;
     }
 
-    // input: (1, 0.5), (2, 0), (3, 0.45), ..
-    // output: {(0, <PLObj>: (1, 0.4), (3, 0.8), ..), (1, ..), ..}
-    // TODO docs
     /**
-     * @brief
-     *
-     * @param aNumTiers
-     * @param aPostingList
-     * @return std::map<size_t, PostingList>
+     * @brief Calculate the tiers for a given number of tiers and a posting list
+     *        input: (1, 0.5), (2, 0), (3, 0.45), ..
+     *        output: {(0, <PLObj>: (1, 0.4), (3, 0.8), ..), (1, ..), ..}
+     * 
+     * @param aNumTiers the number of tiers
+     * @param aPostingList the posting list
+     * @return std::map<size_t, PostingList> the map of tier, posting list
      */
     std::map<size_t, PostingList> calculateTiers(const size_t aNumTiers, const PostingList& aPostingList);
 
-    //TODO docs
     /**
-     * @brief
+     * @brief Merge two vectors by taking the intersection and writing to out
      *
-     * @param first
-     * @param second
-     * @return sizet_vt
+     * @param first the first postinglist
+     * @param second the second postinglist
+     * @param out the result vector
      */
     void andPostingLists(sizet_vt& first, sizet_vt& second, sizet_vt& out);
-
-    //TODO docs
     /**
-     * @brief
+     * @brief Merge vectors by taking the intersection and writing to out
      *
-     * @param vecs
-     * @param out
+     * @param vecs containing the posting list vectors
+     * @param out the result vector
      */
     void andPostingLists(std::vector<sizet_vt>& vecs, sizet_vt& out);
-
-    //TODO docs
     /**
-     * @brief 
+     * @brief Merge vectors by taking the union and writing to out
      * 
-     * @param vecs 
-     * @param out 
+     * @param vecs containing the posting list vectors
+     * @param out the result vector
      */
     void orPostingLists(std::vector<sizet_vt>& vecs, sizet_vt& out);
 }
