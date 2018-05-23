@@ -7,10 +7,13 @@ import { createServer } from 'http';
 import { listenToSockets } from './service/sockets';
 
 const app = express();
+const router = express.Router();
 
+app.use(router); 
 app.use(express.static(path.join(__dirname, '/../client/build')));
 app.use(express.static(path.join(__dirname, '/../presentation')));
-console.log(path.join(__dirname, '/../presentation'));
+ 
+
 app.use(
   '*',
   cors({
@@ -18,13 +21,21 @@ app.use(
   }),
 );
 
-app.get('/presentation', (req, res) => {
+
+router.get('/presentation/', (req, res) => {
   res.sendFile(path.join(__dirname + '/../presentation/index.html'));
 });
 
-app.get(/.*/, (req, res) => {
+router.get('/app*', (req, res) => {
   res.sendFile(path.join(__dirname + '/../client/build/index.html'));
 });
+
+router.get('/', function (req, res) {  
+  res.send('HEllo World');
+});
+
+
+
 
 // Set up socket.io
 var http = createServer(app);

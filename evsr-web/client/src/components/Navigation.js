@@ -64,14 +64,14 @@ class Navigation extends Component {
           <Brand>
             <NavItem>
               <h1>
-                <Link to={'/'}>EVSR</Link>
+                <Link to={'/app'}>EVSR</Link>
               </h1>
             </NavItem>
           </Brand>
           <NavMenu>
             <NavStart>
               <NavItem>
-                <Link to={'/evaluation'}>Evaluation</Link>
+                <Link to={'/app/evaluation'}>Evaluation</Link>
               </NavItem>
               <NavItem>
                 <Link to="/presentation" target="_self">

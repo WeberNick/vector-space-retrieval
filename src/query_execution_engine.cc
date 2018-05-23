@@ -27,6 +27,9 @@ const pair_sizet_float_vt QueryExecutionEngine::search(std::string& query, size_
 
 const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_t topK, IR_MODE searchType) {
 
+
+    std::cout << "Searchin in mode " << modeToString(searchType) << std::endl;
+
     pair_sizet_float_vt found_indices; // result vector
 
     if (queryDoc.getContent().size() == 0) { // if content is empty stop searching
@@ -35,13 +38,13 @@ const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_
 
     switch (searchType) {
     case IR_MODE ::kVANILLA: {
-        found_indices = this->searchCollectionCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
+        found_indices = this->searchCollectionCos(&queryDoc, IndexManager::getInstance().getInvertedIndex().getDocIDList(queryDoc.getContent()), topK);
     } break;
     case IR_MODE::kVANILLA_RAND: {
-        found_indices = this->searchRandomProjCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK);
+        found_indices = this->searchRandomProjCos(&queryDoc, IndexManager::getInstance().getInvertedIndex().getDocIDList(queryDoc.getContent()), topK);
     } break;
     case IR_MODE::kVANILLA_W2V: {
-         found_indices = this->searchCollectionCos(&queryDoc, DocumentManager::getInstance().getIDs(), topK, true);
+         found_indices = this->searchCollectionCos(&queryDoc, IndexManager::getInstance().getInvertedIndex().getDocIDList(queryDoc.getContent()), topK, true);
     }
     case IR_MODE ::kCLUSTER: {
         std::vector<std::pair<size_t, float>> leader_indexes = this->searchClusterCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0);
@@ -65,6 +68,7 @@ const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_
     }break;
     case IR_MODE::kCLUSTER_W2V: {
          std::vector<std::pair<size_t, float>> leader_indexes = this->searchClusterCos(&queryDoc, IndexManager::getInstance().getClusteredIndex().getLeaders(), 0, true);
+        
         // Get docIds from the clusters to search in, vector will be filled from the IndexManager::getInstance().getClusteredIndex().getIDs() method
         sizet_vt clusterDocIds;
         IndexManager::getInstance().getClusteredIndex().getIDs(leader_indexes, topK, clusterDocIds);
@@ -104,6 +108,13 @@ const pair_sizet_float_vt QueryExecutionEngine::searchCollectionCos(const Docume
             docId2Scores[elem] = sim;
         }
     } else {
+
+        for (auto& elem : collectionIds) {
+            float sim = Util::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
+            docId2Scores[elem] = sim;
+        }
+
+        /* Efficient Vanilla VSM Algorithm, not used for comparison reasons
         const string_vt& qcontent = query->getContent();
         for (const auto& term : qcontent) { // Calculate weightings per doc using the tf-idf of the word in the doc collection times the tf-idf of the term in the query
             try {
@@ -112,8 +123,8 @@ const pair_sizet_float_vt QueryExecutionEngine::searchCollectionCos(const Docume
                     float idf = IndexManager::getInstance().getIdf(term);
                     docId2Scores[id] += (tf * idf * (query->getTf(term) * idf));
                 }
-            } catch (const InvalidArgumentException& e) { continue; /* One of the query terms does not appear in the document collection. */ }
-        }
+            } catch (const InvalidArgumentException& e) { continue; } // One of the query terms does not appear in the document collection.
+        }*/
     }
     
     for (const auto& elem : docId2Length) { // Divide every score of a doc by the length of the document
@@ -194,7 +205,6 @@ const pair_sizet_float_vt QueryExecutionEngine::searchTieredCos(const Document* 
 const pair_sizet_float_vt QueryExecutionEngine::searchRandomProjCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
 
     std::map<size_t, float> docId2Scores;
-
     for (auto& elem : collectionIds) {
         docId2Scores[elem] = Util::calcHammingDist(query->getRandProjTiVec(),DocumentManager::getInstance().getDocumentMap().at(elem).getRandProjTiVec());
     }

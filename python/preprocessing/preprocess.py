@@ -63,6 +63,24 @@ def quer(folders, files, end, qrelids):
                     result.add('~'.join(doc))
         _write(result, '{}/{}.{}'.format(DATA_PATH, filename, end))
 
+def quer_no_preprocessing(folders, files, end, qrelids):
+    ''' Preprocess queries '''
+    stemmer = SnowballStemmer(language='english')
+    regex = re.compile('[%s]' % re.escape(string.punctuation))
+    with open('{}/{}'.format(DATA_PATH, 'stopwords.large'), 'r') as stopwordfile:
+        stopwords = stopwordfile.readline().strip("\"").split(",")
+    for filename in files:
+        result = set()
+        for folder in folders:
+            with open('{}/{}/{}/{}.{}'.format(DATA_PATH, folder, RAW_FOLDER, filename, end), 'r') as file_from:
+                for line in file_from.readlines():
+                    content = re.split(r'\t+', line.rstrip('\t\n'))
+                    if not content[0] in qrelids:
+                        print("Skipped: " + content[0])
+                        continue
+                    result.add('~'.join(content))
+        _write(result, '{}/{}.{}'.format(DATA_PATH, filename, end))
+
 def _write(result_set, filename):
     ''' Write results to a file '''
     with open(filename, 'w') as file_to:
@@ -73,4 +91,4 @@ if __name__ == '__main__':
     folders = ['test', 'dev', 'train']
     qrelids = qrel(folders, 's-3', 'qrel')
     docs(folders, 'd-collection', 'docs')
-    quer(folders, ['q-all', 'q-titles', 'q-nontopictitles', 'q-vidtitles', 'q-viddesc'], 'queries', list(qrelids))
+    quer_no_preprocessing(folders, ['q-all', 'q-titles', 'q-nontopictitles', 'q-vidtitles', 'q-viddesc'], 'queries', list(qrelids))

@@ -22,12 +22,15 @@ import {
   TableHeader,
   TableBody,
   Image,
+  MarkdownSlides,
+  Markdown,
 } from 'spectacle';
 
 // Import theme
 import createTheme from 'spectacle/lib/themes/default';
 
 import '../prism-atom-dark.css';
+import '../assets/custom.css';
 
 // Require CSS
 require('normalize.css');
@@ -45,13 +48,6 @@ const theme = createTheme(
   },
 );
 
-const images = {
-  city: require('../assets/city.jpg'),
-  kat: require('../assets/kat.png'),
-  logo: require('../assets/formidable-logo.svg'),
-  markdown: require('../assets/markdown.png'),
-};
-
 export default class Presentation extends React.Component {
   render() {
     return (
@@ -68,110 +64,182 @@ export default class Presentation extends React.Component {
             Making Vector Space Retrieval Lightning Fast ⚡
           </Text>
         </Slide>
-        <Slide align="center center" transition={['slide']} bgColor="tertiary">
-          <Heading size={6} textColor="primary" caps>
+        <Slide align="center center" transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
             Agenda
           </Heading>
-          <List textColor="primary">
-            <ListItem>Task</ListItem>
+          <List>
+            <ListItem>The Problem</ListItem>
             <ListItem>Implementation</ListItem>
+            <ListItem>Additional Feature</ListItem>
             <ListItem>Results</ListItem>
           </List>
         </Slide>
-        <Slide transition={['slide']}>
-          <Heading size={6} textColor="secondary" caps>
-            The Task 📝
+        <Slide transition={['slide']} bgColor="tertiary">
+          <Heading size={6} textColor="primary" caps>
+            The Problem 📝
           </Heading>
-        </Slide>
-        <Slide transition={['slide']}>
-          <Appear>
-            <div>
-              <Heading
-                size={6}
-                textColor="tertiary"
-                caps
-                style={{ marginBottom: '100px' }}
-              >
-                Building following indexes
-              </Heading>
-              <List textColor="secondary">
-                <ListItem>Inverted Index</ListItem>
-                <ListItem>Tiered Index</ListItem>
-                <ListItem>Clustered Index</ListItem>
-                <ListItem>Results</ListItem>
-              </List>
-            </div>
-          </Appear>
         </Slide>
         <Slide transition={['slide']}>
           <Heading
             size={6}
             textColor="tertiary"
             caps
-            style={{ marginBottom: '30px' }}
+            style={{ marginBottom: '100px' }}
           >
-            Building the indexes
+            The Problem
           </Heading>
-          <CodePane
-            lang="cpp"
-            source={require('raw-loader!../assets/index_manager_init.example')}
-            theme="external"
-            margin="20px auto"
-            overflow="overflow"
-          />
-          <Text margin="10px 0 0" textColor="secondary" lineHeight={0.5}>
-            Builds every index we need during retrieval
-          </Text>
+          <List>
+            <ListItem>Vanilla Vector Space Model slow</ListItem>
+            <ListItem>Faster possibilites ?
+              <List>
+                <ListItem>
+                  Clustering
+                </ListItem>
+                <ListItem>
+                  Tiered Index
+                </ListItem>
+                <ListItem>
+                  Random Projections
+                </ListItem>
+              </List>
+            </ListItem>
+            <ListItem>What about retrieval performance ?</ListItem>
+            <ListItem>Find tradeoff</ListItem>
+          </List>
         </Slide>
-        <Slide
-          transition={['slide']}
-          bgColor="primary"
-          notes="Hard to find cities without any pizza"
-        >
-          <Heading size={6} caps style={{ marginBottom: '30px' }}>
-            Retrieval Results
+        <Slide transition={['slide']} bgColor="tertiary">
+          <Heading size={6} textColor="primary" caps>
+            Implementation 💻
           </Heading>
-          <Layout>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHeaderItem />
-                  <TableHeaderItem>2011</TableHeaderItem>
-                  <TableHeaderItem>2013</TableHeaderItem>
-                  <TableHeaderItem>2015</TableHeaderItem>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableItem>None</TableItem>
-                  <TableItem>61.8%</TableItem>
-                  <TableItem>39.6%</TableItem>
-                  <TableItem>35.0%</TableItem>
-                </TableRow>
-                <TableRow>
-                  <TableItem>Pineapple</TableItem>
-                  <TableItem>28.3%</TableItem>
-                  <TableItem>54.5%</TableItem>
-                  <TableItem>61.5%</TableItem>
-                </TableRow>
-                <TableRow>
-                  <TableItem>Pepperoni</TableItem>
-                  <TableItem />
-                  <TableItem>50.2%</TableItem>
-                  <TableItem>77.2%</TableItem>
-                </TableRow>
-                <TableRow>
-                  <TableItem>Olives</TableItem>
-                  <TableItem />
-                  <TableItem>24.9%</TableItem>
-                  <TableItem>55.9%</TableItem>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Layout>
         </Slide>
-        <Slide>
-          <Image src={images.kat} margin="0px auto 40px" />
+        <Slide transition={['slide']}>
+          <div>
+            <Heading
+              size={6}
+              textColor="tertiary"
+              caps
+              style={{ marginBottom: '100px' }}
+            >
+             Core
+            </Heading>
+            <List>
+              <ListItem>Document & DocumentManager</ListItem>
+              <ListItem>QueryManager</ListItem>
+              <ListItem>IndexManager</ListItem>
+              <ListItem>QueryExecutionEngine</ListItem>
+          </List>
+          </div>
+        </Slide>
+        <Slide transition={['slide']}>
+          <div>
+            <Heading
+              size={6}
+              textColor="tertiary"
+              caps
+              style={{ marginBottom: '100px' }}
+            >
+             Application Structure
+            </Heading>
+          
+            <Image width="100%" src={require('../assets/IR.svg')} />
+            
+          </div>
+        </Slide>
+        <Slide transition={['slide']} bgColor="tertiary">
+          <Heading size={6} textColor="primary" caps>
+            Additional Feature 💡
+          </Heading>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Additional Feature
+          </Heading>
+          <List>
+            <ListItem>VSM has a fundamental problem</ListItem>
+            <ListItem>Documents and queries don't have a high term overlap</ListItem>
+            <ListItem>Need some semantic relationship between words</ListItem>
+            <ListItem><strong>Word Embeddings</strong> to the rescue...</ListItem>
+          </List>
+        </Slide>
+        <Slide transition={['slide']} bgColor="tertiary">
+          <Heading size={6} textColor="primary" caps >
+            Results 📊
+          </Heading>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation
+          </Heading>
+          <List>
+            <ListItem>As expected...
+              <List>
+                <ListItem>Cluster and Tiered Index fast</ListItem>
+                <ListItem>Random Projections add speed up</ListItem>
+                <ListItem>VSM best retrieval performance but slow</ListItem>
+              </List>
+            </ListItem>
+          </List>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation
+          </Heading>
+          <Text>Speed up images MAP/DCG/RNT</Text>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation
+          </Heading>
+          <List>
+            <ListItem>Did Word Embeddings help ? Problems:
+              <List>
+                <ListItem>Word Embeddings were built on non preprocessed words</ListItem>
+                <ListItem>Word Embeddings were not domain specific</ListItem>
+              </List>
+            </ListItem>
+          </List>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation
+          </Heading>
+          <Text>Graph mit word embeddings</Text>
+        </Slide>
+        <Slide transition={['slide']} bgColor="tertiary">
+          <Heading size={6} textColor="primary" caps >
+            Conclusion 📊
+          </Heading>
         </Slide>
       </Deck>
     );

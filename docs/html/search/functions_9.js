@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['scalar_5fproduct',['scalar_product',['../namespace_utility.html#a21e81c7db0d45c5551c7d1467690dc17',1,'Utility']]],
+  ['search',['search',['../class_query_processing_engine.html#a9025fa9ec5ee27fef34c6c4bcc398b26',1,'QueryProcessingEngine']]],
+  ['searchclustercos',['searchClusterCos',['../class_query_processing_engine.html#a1142ed25b062307df69b70e064c8d4c5',1,'QueryProcessingEngine']]],
+  ['searchclustercosfirstindex',['searchClusterCosFirstIndex',['../class_query_processing_engine.html#a606f4abab25a2c1d3c375d38a1cca618',1,'QueryProcessingEngine']]],
+  ['searchcollectioncos',['searchCollectionCos',['../class_query_processing_engine.html#a6acd6968a5e731a6cad08f4336e089c1',1,'QueryProcessingEngine']]],
+  ['searchrandomprojcos',['searchRandomProjCos',['../class_query_processing_engine.html#aa8dcb4243ffe08e9f4d7a28684d9d53b',1,'QueryProcessingEngine']]],
+  ['searchtieredcos',['searchTieredCos',['../class_query_processing_engine.html#a8ac4a633134ac859b47a966b467e841b',1,'QueryProcessingEngine']]],
+  ['setdimensions',['setDimensions',['../class_random_projection.html#ac163996d87169b35d4cb0bef312bb5ba',1,'RandomProjection']]],
+  ['setidf',['setIdf',['../class_posting_list.html#a9af4121ae7d3204e2332b92b300aed44',1,'PostingList']]],
+  ['setnormlength',['setNormLength',['../class_document.html#ad4a2bb58a6b461200d219fbdb6ae6763',1,'Document']]],
+  ['setorigvectorsize',['setOrigVectorSize',['../class_random_projection.html#a1df10b29476a26c5eeb2ff91d81cff58',1,'RandomProjection']]],
+  ['setrandomvectors',['setRandomVectors',['../class_random_projection.html#ae9a736802283af23d3c5d9ecc1d4d2b7',1,'RandomProjection']]],
+  ['setrandprojvec',['setRandProjVec',['../class_document.html#a5bf1d08202fcf5f430813d255e3ba016',1,'Document']]],
+  ['settermtfmap',['setTermTfMap',['../class_document.html#ac67279e5aaffd6a7352959f448ff085c',1,'Document']]],
+  ['settf',['setTf',['../class_posting_list.html#aa88f211400f81b1b18d8a2216b745b45',1,'PostingList']]],
+  ['settfidfvector',['setTfIdfVector',['../class_document.html#aa1d5bb6342ef571fae8dc4505bd7c54f',1,'Document']]],
+  ['splitstring',['splitString',['../namespace_utility_1_1_string_op.html#a489a795dc37e451d8279c21b864aa169',1,'Utility::StringOp']]],
+  ['stemporter',['stemPorter',['../namespace_utility_1_1_i_r.html#a12c6477f5c41c11f5703ee510ccb9f44',1,'Utility::IR']]],
+  ['string2wstring',['string2wstring',['../namespace_utility_1_1_string_op.html#a8fcbeaa98a420a1894a8174160136b66',1,'Utility::StringOp']]]
+];

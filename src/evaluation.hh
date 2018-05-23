@@ -32,6 +32,7 @@ using json = nlohmann::json;
 #include <fstream>
 #include <ios>
 #include <iostream>
+#include <functional>
 #include <iterator>
 #include <string>
 #include <unordered_map>
@@ -76,11 +77,11 @@ class Evaluation {
         class RelScore {
           public:
             /* Constructors, assignment operators and destructor */
-            RelScore() = delete;
+            RelScore() = default;
             RelScore(const std::string& aQueryID, const std::string& aDocID, const uint aScore) : _qID(aQueryID), _dID(aDocID), _score(aScore) {}
-            explicit RelScore(const RelScore&) = delete;
-            explicit RelScore(RelScore&&) = default;
-            RelScore& operator=(const RelScore&) = delete;
+            RelScore(const RelScore&) = default;
+            RelScore(RelScore&&) = default;
+            RelScore& operator=(const RelScore&) = default;
             RelScore& operator=(RelScore&&) = default;
             ~RelScore() = default;
 
@@ -88,11 +89,14 @@ class Evaluation {
             inline const std::string& getQueryID() const { return _qID; }
             inline const std::string& getDocumentID() const { return _dID; }
             inline uint getScore() const { return _score; }
+            inline const std::string& getQueryID() { return _qID; }
+            inline const std::string& getDocumentID() { return _dID; }
+            inline uint getScore() { return _score; }
 
           private:
-            const std::string _qID;
-            const std::string _dID;
-            const uint _score;
+            std::string _qID;
+            std::string _dID;
+            uint _score;
         };
 
       public:
@@ -182,7 +186,7 @@ class Evaluation {
          * @param aRanking  a ranking of documents produced for the respective query
          * @return the calculated basic DCG
          */
-        double bDCG(const std::string& aQueryID, const sizet_vt& aRanking);
+        double bDCG(const std::string& aQueryID, const sizet_vt& aRanking, uint& aCounter);
 
         /**
          * @brief Calculates the relevance Discounted Cumulative Gain (DCG with higher emphasis on
@@ -191,7 +195,7 @@ class Evaluation {
          * @param aRanking  a ranking of documents produced for the respective query
          * @return the calculated relevance DCG
          */
-        double rDCG(const std::string& aQueryID, const sizet_vt& aRanking);
+        double rDCG(const std::string& aQueryID, const sizet_vt& aRanking, uint& aCounter);
 
         /**
          * @brief Calculates the ideal Discounted Cumulative Gain (best possible DCG score) as
@@ -199,7 +203,7 @@ class Evaluation {
          * @param aQueryID  a query to calculate the DCG for
          * @return the calculated ideal DCG
          */
-        double iDCG(const std::string& aQueryID);
+        double iDCG(const std::string& aQueryID, const uint aRelDocsFound);
 
         /**
          * @brief Calculates the normalized Discounted Cumulative Gain (DCG) as (DCG / IDCG)
@@ -207,7 +211,7 @@ class Evaluation {
          * @param aRanking  a ranking of documents produced for the respective query
          * @return the calculated normalized DCG
          */
-        double nDCG(const std::string& aQueryID, const sizet_vt& aRanking, const bool aBDCG = true);
+        double nDCG(const std::string& aQueryID, const sizet_vt& aRanking, const bool aBDCG = false);
 
       private:
         const scores_vt& getQueryScores(const std::string& aQueryID);
@@ -493,12 +497,12 @@ class Evaluation {
     /**
      * @brief constructs the physical JSON object with all evaluation results
      */
+    void constructJSON();
     void constructJSON(const str_set& aQueryNames);
 
   private:
     inline EvalResults& getEvalResult(const QUERY_TYPE aQueryType, const IR_MODE aMode) {
         try {
-            //return _evalResults.at(aMode);
             return _qTypeToEvalResults.at(aQueryType).at(aMode);
         } catch (const std::out_of_range& ex) {
             const std::string lErrMsg = std::string("Query Type '") + typeToString(aQueryType) + std::string("' or IR mode '") + modeToString(aMode) + std::string("' not found in evaluation data");
@@ -509,10 +513,10 @@ class Evaluation {
 
   private:
     IR_PerformanceManager& _irpm;
-    results_mt      _evalResults;
     type_results_mt _qTypeToEvalResults;
     QUERY_TYPE      _type;
     IR_MODE         _mode;
+    str_set         _measuredQueries;
     std::string     _queryName;
     std::string     _evalPath;
     Measure*        _measureInstance;

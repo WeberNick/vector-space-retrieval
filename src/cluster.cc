@@ -21,19 +21,18 @@ void Cluster::init(const CB& aControlBlock)
 
 void Cluster::chooseLeaders()
 {
+    uint lSeed = _cb->seed();
     const doc_mt& lDocs = DocumentManager::getInstance().getDocumentMap();
-    std::random_device lSeeder;                               // the random device that will seed the generator
-    std::mt19937 lRNG(lSeeder());                             // then make a mersenne twister engine
     const size_t lMin = 0;                                    // random numbers between 0...
     const size_t lMax = Document::getDocumentCount() - 1;     // ...and the current highest doc ID
     std::uniform_int_distribution<size_t> lDistr(lMin, lMax); // the distribution
-
     const size_t lNumberOfDocuments = DocumentManager::getInstance().getNoDocuments();
     const size_t lNumberOfClusters = std::sqrt(lNumberOfDocuments);
     sizet_set lUniqueLeader;
     size_t lRandomID;
     while(lUniqueLeader.size() != lNumberOfClusters)
     {
+        std::mt19937 lRNG(lSeed++);                             // then make a mersenne twister engine
         lRandomID = lDistr(lRNG);                             // generate random doc id
         auto lDocIt = lDocs.find(lRandomID);
         while (lDocIt == lDocs.end())                         // doc with ID does not exist or ID in blacklist

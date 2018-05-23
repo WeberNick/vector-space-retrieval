@@ -142,6 +142,16 @@ const gloablStyles = injectGlobal`
     }
   }
 
+  .query-type-data{
+    display: flex;
+    overflow: auto;
+    .per-measure{
+      margin-right: 20px;
+      margin-top: 30px;
+    }
+  }
+
+
   
 
   
