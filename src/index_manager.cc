@@ -19,6 +19,10 @@ IndexManager::IndexManager() :
 void IndexManager::init(const CB& aControlBlock, doc_mt& aDocMap) {
     if (!_cb) {
         _cb = &aControlBlock;
+        _clusteredIndex.init(aControlBlock);
+        _invertedIndex.init(aControlBlock);
+        _tieredIndex.init(aControlBlock);
+        _wordEmbeddingsIndex.init(aControlBlock);
         _docs = &aDocMap;
 
         _invertedIndex.init(aControlBlock);

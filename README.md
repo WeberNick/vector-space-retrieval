@@ -22,7 +22,7 @@ There are several tools you will need to install and execute the application. In
 
 ## Project Structure
 
-### data/
+### data
 All data files required for the system are stored here. We used the medical dataset [nfcorpus](http://www.cl.uni-heidelberg.de/statnlpgroup/nfcorpus/) from the Statistical NLP Group of the University of Heidelberg (a detailed description of the dataset can be found in [data/README.md](/data/README.md)). By default, the system will search here for the required data files. Optionally, you can provide your own file paths as command line argument (for more details see [Command Line Arguments](#command-line-arguments)). __Note__: For queries, it is not possible to provide a custom path for each query type but you can provide a path to the directory where all the query files are stored. It is __IMPORTANT__ to keep the same naming conventions otherwise the query files can not be found (The convention is: `q-[Query Type].queries`; Possible Query Types are `{'all', 'nontopictitles', 'titles', 'viddesc', 'vidtitles'}`). Also, in our setting, the query document file uses a `'~'` delimiter between the query ID and its content. The delimiter is hard coded into the system and must therefore match.
 
 ### docs
@@ -31,18 +31,13 @@ In this directory you can find the documentation of our source code. It was gene
 ### evsr-web
 In order to use the system from within a web interface, we implemented a small web server. For further informations read the instructions in this directory.
 
-### python/
- * preprocessing/: The preprocess.py module provides methods to preprocess the data, namely queries and documents (for more information on the data see [data/](#data/). Basically, the queries and documents are tokenized, stemmed and stopwords are removed (according to the [stopwords.large](/data/stopwords.large) file from nfcorpus). Queries for which there are no query relevance score in the .qrel files are disregarded. To run it, you have to install the virtual environment using pipenv and run it afterwards:
- ```
- ~python/preprocessing$ pipenv install
- ~python/preprocessing$ pipenv run python preprocess.py
- ```
- * wiki-crawler/: Python scripts used for crawling the web, initially intended for building our own word embeddings model.
+### python
+Python scripts used for preprocessing and crawling the web.
 
-### src/
+### src
 Directory of the C++ source code of the system and its libraries. For further information regarding the source code, take a look into the [Documentation](#docs) at docs.
 
-### test/
+### test
 Directory of the unit tests.
 
 ## Getting Started
