@@ -56,12 +56,6 @@ struct control_block_t {
     const uint _noTiers;      // number of tiers for the tiered index
     const uint _noDimensions; // the number of dimensions for the random projection
 
-    /**REMOVE*/
-    const bool _rand;
-    const bool _tiered;
-    bool rand() const { return _rand; }
-    bool tiered() const { return _tiered; }
-
     bool trace() const { return _trace; }
     bool measure() const { return _measure; }
     bool server() const { return _server; }
