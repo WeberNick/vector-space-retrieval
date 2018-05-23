@@ -227,10 +227,7 @@ int main(const int argc, const char* argv[]) {
         lArgs.results(),             // topK argument
         lArgs.tiers(),               // number of tiers
         lArgs.dimensions(),          // number of dimensions
-        lArgs.seed(),
-        /*REMOVE*/
-        lArgs.rand(),
-        lArgs.tiered()
+        lArgs.seed()                 // seed for random projections and cluster leader election
     };
 
     // Init tracing
