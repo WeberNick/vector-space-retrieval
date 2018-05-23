@@ -131,16 +131,12 @@ void evalMode(const control_block_t& aControlBlock) {
             }
         }
     }*/
-    IR_MODE mode1 = IR_MODE::kVANILLA;
-    IR_MODE mode2 = IR_MODE::kVANILLA_RAND;
 
-    const std::vector<IR_MODE> modes{mode1, mode2};
+    const std::vector<IR_MODE> modes{kVANILLA, kVANILLA_RAND};
+    const std::vector<QUERY_TYPE> types{kALL, kTITLES};
 
-    for (int i = 0; i < kNumberOfTypes; ++i ) {
-
-        QUERY_TYPE type = static_cast<QUERY_TYPE>(i);
-        
-        for (auto& mode: modes) {
+    for(auto type : types){
+        for(auto mode: modes) {
             std::cout <<  typeToString(type) << " for mode " << modeToString(mode) << std::endl; 
             
             auto& queryForType = QueryManager::getInstance().getQueryMap(type);
