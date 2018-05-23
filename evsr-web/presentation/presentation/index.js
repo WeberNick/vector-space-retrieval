@@ -137,19 +137,7 @@ export default class Presentation extends React.Component {
           </div>
         </Slide>
         <Slide transition={['slide']}>
-          <div>
-            <Heading
-              size={6}
-              textColor="tertiary"
-              caps
-              style={{ marginBottom: '100px' }}
-            >
-             Application Structure
-            </Heading>
-          
-            <Image width="100%" src={require('../assets/IR.svg')} />
-            
-          </div>
+          <Image src={require('../assets/IR.png')} />
         </Slide>
         <Slide transition={['slide']} bgColor="tertiary">
           <Heading size={6} textColor="primary" caps>
@@ -240,6 +228,19 @@ export default class Presentation extends React.Component {
           <Heading size={6} textColor="primary" caps >
             Conclusion 📊
           </Heading>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Conclusion
+          </Heading>
+          <Text fit>Best index in terms of runtime & retrieval performance: <br/>
+          <strong>Tiered Index with 100 Tiers and Random Projection</strong></Text>
+          
         </Slide>
       </Deck>
     );
