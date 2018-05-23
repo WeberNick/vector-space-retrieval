@@ -86,6 +86,9 @@ class Args {
     inline uint dimensions() { return _dimensions; }
     inline void dimensions(const uint& x) { _dimensions = x; }
 
+    inline uint seed() { return _seed; }
+    inline void seed(const uint& x) { _seed = x; }
+
   private:
     bool _help;
     bool _trace;
@@ -103,6 +106,7 @@ class Args {
     uint _results;
     uint _tiers;
     uint _dimensions;
+    uint _seed;
 
   public:
     bool _rand;

@@ -40,6 +40,7 @@ using pair_sizet_float_vt = std::vector<std::pair<size_t, float>>;
 using sizet_set = std::set<size_t>;
 
 struct control_block_t {
+    
     const bool _trace;   // indicate if tracing is activated
     const bool _measure; // indicate if measurement is activated
     const bool _server;
@@ -55,6 +56,7 @@ struct control_block_t {
     const uint _noResults;    // the number of results to return for each query
     const uint _noTiers;      // number of tiers for the tiered index
     const uint _noDimensions; // the number of dimensions for the random projection
+    const uint _seed;         // seed for random projection and selecting the cluster leaders
 
     bool trace() const { return _trace; }
     bool measure() const { return _measure; }
@@ -69,6 +71,7 @@ struct control_block_t {
     uint results() const { return _noResults; }
     uint tiers() const { return _noTiers; }
     uint dimensions() const { return _noDimensions; }
+    uint seed() const { return _seed; }
 };
 using CB = control_block_t;
 

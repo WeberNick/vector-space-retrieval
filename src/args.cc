@@ -25,6 +25,7 @@ void construct_arg_desc(argdesc_vt& x) {
     x.push_back(new uarg_t("--topk", 20, &Args::results, "the maximum number of results a query shall return (top k)"));
     x.push_back(new uarg_t("--tiers", 50, &Args::tiers, "the number of tiers used for the tiered index"));
     x.push_back(new uarg_t("--dimensions", 1000, &Args::dimensions, "the number of dimensions used for the random projection"));
+    x.push_back(new uarg_t("--seed", 1, &Args::seed, "seed for random projection and selecting the cluster leaders"));
 }
 
 Args::Args() : 
@@ -41,5 +42,6 @@ Args::Args() :
     _evalPath("./"),
     _results(20),
     _tiers(100),
-    _dimensions(5000)
+    _dimensions(5000),
+    _seed(1)
 {}

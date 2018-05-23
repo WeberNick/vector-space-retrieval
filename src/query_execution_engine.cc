@@ -27,6 +27,9 @@ const pair_sizet_float_vt QueryExecutionEngine::search(std::string& query, size_
 
 const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_t topK, IR_MODE searchType) {
 
+
+    std::cout << "Searchin in mode " << modeToString(searchType) << std::endl;
+
     pair_sizet_float_vt found_indices; // result vector
 
     if (queryDoc.getContent().size() == 0) { // if content is empty stop searching
@@ -202,7 +205,6 @@ const pair_sizet_float_vt QueryExecutionEngine::searchTieredCos(const Document* 
 const pair_sizet_float_vt QueryExecutionEngine::searchRandomProjCos(const Document* query, const sizet_vt& collectionIds, size_t topK) {
 
     std::map<size_t, float> docId2Scores;
-
     for (auto& elem : collectionIds) {
         docId2Scores[elem] = Util::calcHammingDist(query->getRandProjTiVec(),DocumentManager::getInstance().getDocumentMap().at(elem).getRandProjTiVec());
     }

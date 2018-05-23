@@ -14,7 +14,7 @@ function aggregateQueryTypes(){
     }
     files.forEach((file, index) => {
       var fromPath = path.join(eval_dir, file);
-      if (fs.lstatSync(fromPath).isDirectory()) {
+      if (fs.lstatSync(fromPath).isDirectory() || file.startsWith('.')) {
         console.log(`${file} is a directoy !`);
       } else {
         let fileData = require(fromPath);
@@ -32,7 +32,8 @@ function aggregateQueryTypes(){
   
             aggregatedMode.name = mode.name;
             aggregatedMode.map = mode.map;
-  
+            
+            
             aggregatedMode.average_rnt =
               mode.queries.reduce((sum, current) => {
                 return sum + current.perf_rnt;
@@ -140,7 +141,7 @@ function aggregateModes(){
     }
     files.forEach((file, index) => {
       var fromPath = path.join(eval_dir, file);
-      if (fs.lstatSync(fromPath).isDirectory()) {
+      if (fs.lstatSync(fromPath).isDirectory() || file.startsWith('.')) {
         console.log(`${file} is a directoy !`);
       } else {
         let fileData = require(fromPath);
@@ -161,6 +162,9 @@ function aggregateModes(){
   
             aggregatedMode.average_rnt =
               mode.queries.reduce((sum, current) => {
+                if (file === 'Comb_Tier100Dim5000.json' && mode.name === 'Cluster' ) {
+                  console.log(current.perf_rnt)
+                }
                 return sum + current.perf_rnt;
               }, 0) /
                 mode.queries.length >
@@ -317,4 +321,6 @@ function aggregateModes(){
 }
 
 aggregateQueryTypes();
+console.log("hallo")
+
 aggregateModes();

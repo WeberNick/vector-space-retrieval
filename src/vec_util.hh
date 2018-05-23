@@ -68,31 +68,15 @@ namespace Util {
     // template<typename T> size_t numberOfIntersections(std::vector<T>& v1, std::vector<T>& v2);
 
     /**
-     * @brief Generates a random normal distributed double number based on the Box muller method
-     * @see https://stackoverflow.com/a/28551411
-     * @param mean
-     * @param stddev
-     * @return normal distributed random value
-     */
-    double rand_normal(double mean, double stddev);
-
-    /**
-     * @brief Generates a random vector of floats with the given dimension and number in the range of min - max. Primarily used for testing
+     * @brief Generates a random vector of floats with the given dimension and number in the range of min - max
      *
      * @param dimension dimension of the created vector
      * @param min minimum number value
      * @param max maximum number value
+     * @param seed seed value for the random number generator
      * @return
      */
-    float_vt generateRandomVector(size_t dimension, int min, int max);
-
-    /**
-     * @brief Generates a random vector of size \dimension with random standard normal distributed values
-     *
-     * @param dimension
-     * @return
-     */
-    float_vt generateRandomVectorN(size_t dimension);
+    float_vt generateRandomVector(size_t dimension, int min, int max, uint& seed);
 
     /**
      * @brief Appends the second vector to the first one and returns a copy of a new combined vector

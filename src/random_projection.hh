@@ -53,6 +53,7 @@ class RandomProjection {
     inline const float_vector_vt& getRandomVectors() { return _randomVectors; }
     inline size_t getDimensions() { return _dimension; };
     inline size_t getOrigvectorSize() { return _origVectorSize; };
+    inline uint getSeed() { return _seed; };
 
     /**
      * @brief Set the Dimensions object, determines the dimension of the random projection vectors
@@ -110,7 +111,7 @@ class RandomProjection {
     inline bool initRandomVectors() {
         if (_dimension) {
             for (size_t i = 0; i < _dimension; ++i) {
-                _randomVectors.push_back(Util::generateRandomVectorN(_origVectorSize));
+                _randomVectors.push_back(Util::generateRandomVector(_origVectorSize, -1, 1, _seed));
             }
             return true;
         } else {
@@ -121,6 +122,7 @@ class RandomProjection {
   private:
     const CB* _cb;
 
+    uint            _seed;
     float_vector_vt _randomVectors;
     size_t _dimension;
     size_t _origVectorSize;
