@@ -1,5 +1,7 @@
 var fs = require('fs');
 var path = require('path');
+var util = require('util')
+
 
 let eval_dir = `${__dirname}/eval`;
 
@@ -162,9 +164,6 @@ function aggregateModes(){
   
             aggregatedMode.average_rnt =
               mode.queries.reduce((sum, current) => {
-                if (file === 'Comb_Tier100Dim5000.json' && mode.name === 'Cluster' ) {
-                  console.log(current.perf_rnt)
-                }
                 return sum + current.perf_rnt;
               }, 0) /
                 mode.queries.length >
@@ -248,41 +247,51 @@ function aggregateModes(){
           aggregated.push(aggregatedTypeData);
         });
 
+        
+        
+        //console.log(util.inspect(aggregated, {showHidden: false, depth: null}))
+
         let modes = new Array();
 
         let cluster = new Object();
         cluster.name = "Cluster";
+        
         let cluster_rand = new Object();
         cluster_rand.name = "Cluster_RAND";
+        
         let cluster_w2v = new Object();
         cluster_w2v.name = "Cluster_W2V";
         
 
         let tiered_index = new Object();
         tiered_index.name = "TieredIndex";
+        
         let tiered_index_rand = new Object();
         tiered_index_rand.name = "TieredIndex_RAND";
+        
         let tiered_index_w2v = new Object();
         tiered_index_w2v.name = "TieredIndex_W2V";
 
         let vanilla_vsm = new Object();
         vanilla_vsm.name = "VanillaVSM";
+        
         let vanilla_vsm_rand = new Object();
         vanilla_vsm_rand.name = "VanillaVSM_RAND";
+        
         let vanilla_vsm_w2v = new Object();
         vanilla_vsm_w2v.name = "VanillaVSM_W2V";
 
         
         modes.push(cluster, cluster_rand, cluster_w2v, tiered_index, tiered_index_rand, tiered_index_w2v, vanilla_vsm, vanilla_vsm_rand, vanilla_vsm_w2v);
 
-
         aggregated.map((queryType) => {
           queryType.modes.map((mode)=>{
             let foundIndex = modes.findIndex((mode_in_array) => {
               return mode_in_array.name === mode.name;
             });
-            
-            if (foundIndex) {
+
+          
+            if (foundIndex >= 0) {
               modes[foundIndex].average_rnt ? modes[foundIndex].average_rnt = (modes[foundIndex].average_rnt + mode.average_rnt) : modes[foundIndex].average_rnt =  mode.average_rnt;
               modes[foundIndex].average_acc ? modes[foundIndex].average_acc = (modes[foundIndex].average_acc + mode.average_acc) : modes[foundIndex].average_acc =  mode.average_acc;
               modes[foundIndex].average_avp ? modes[foundIndex].average_avp = (modes[foundIndex].average_avp + mode.average_avp) : modes[foundIndex].average_avp =  mode.average_avp;
@@ -321,6 +330,5 @@ function aggregateModes(){
 }
 
 aggregateQueryTypes();
-console.log("hallo")
-
+//console.log("hallo")
 aggregateModes();

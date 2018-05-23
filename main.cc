@@ -11,6 +11,7 @@
 #include "src/word_embeddings.hh"
 #include "src/string_util.hh"
 #include "src/vec_util.hh"
+#include "src/measure.hh"
 
 #include <experimental/filesystem>
 #include <iostream>
@@ -76,9 +77,14 @@ void evalMode(const control_block_t& aControlBlock) {
     docManager.init(aControlBlock);
     std::cout << "Document Manager initialized" << std::endl;
 
+    Measure m;
+    m.start();
     IndexManager& imInstance = IndexManager::getInstance();
     imInstance.init(aControlBlock, docManager.getDocumentMap());
+    m.stop();
+    std::cout << "Took " << m.mTotalTime() << std::endl;
     std::cout << "Index Manager initialized" << std::endl;
+    
 
     QueryManager& queryManager = QueryManager::getInstance();
     queryManager.init(aControlBlock);

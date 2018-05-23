@@ -21,7 +21,9 @@ void Cluster::init(const CB& aControlBlock)
 
 void Cluster::chooseLeaders()
 {
+    std::cout << "choose leaders" << std::endl;
     uint lSeed = _cb->seed();
+    std::cout << "Seed" << lSeed << std::endl;
     const doc_mt& lDocs = DocumentManager::getInstance().getDocumentMap();
     const size_t lMin = 0;                                    // random numbers between 0...
     const size_t lMax = Document::getDocumentCount() - 1;     // ...and the current highest doc ID
