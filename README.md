@@ -1,5 +1,5 @@
 # Vector Space Retrieval
-An efficient Vector Space Model (VSM) implementation for retrieving medical data, built within the team project for the course [Information Retrieval and Web Search](http://dws.informatik.uni-mannheim.de/en/teaching/courses-for-master-candidates/ie663websearchandinformationretrieval/). This is an active project and currently in development. Expect major changes in the comming weeks.
+An efficient Vector Space Model (VSM) implementation for retrieving medical data, built within the team project for the course [Information Retrieval and Web Search](http://dws.informatik.uni-mannheim.de/en/teaching/courses-for-master-candidates/ie663websearchandinformationretrieval/).
 
 ## Table of Contents
  * [Problem Description](#problem-description)
@@ -9,7 +9,6 @@ An efficient Vector Space Model (VSM) implementation for retrieving medical data
  
 ## Problem Description
 Describe the problem we want to solve in more detail here. Maybe just copy paste from report..
-
 
 ## Prerequisites
 There are several tools you will need to install and execute the application. In the following is a list with all required tools and technologies required for installing and running the system:
@@ -24,21 +23,7 @@ There are several tools you will need to install and execute the application. In
 ## Project Structure
 
 ### data/
- All data files required for the system are stored here. By default, the system will search here for the required data files. Optionally, you can provide your own file paths as command line argument (for more details see [Command Line Arguments](#command-line-arguments)). __Note__: For queries, it is not possible to provide a custom path for each query type (_all_, _nontopictitles_, _titles_, and so on...) but you can provide a path to the directory where all the query files are stored. It is __IMPORTANT__ to keep the same naming conventions otherwise the query files can not be found (The convention is: `q-[Query Type].queries`).
- * __NICO DESCRIBE THIS OR REFER TO README IN DATA__
- * dev/raw: 
- * test/raw: 
- * train/raw: 
- * collection\_test.docs:
- * collection\_test\_mwe.docs:
- * d-collection.docs:
- * q-all.queries:
- * q-nontopictitles.queries:
- * q-titles.queries:
- * q-viddesc.queries:
- * q-vidtitles.queries:
- * s-3.qrel:
- * stopwords.large:
+ All data files required for the system are stored here. We used the medical dataset [nfcorpus](http://www.cl.uni-heidelberg.de/statnlpgroup/nfcorpus/) from the Statistical NLP Group of the University of Heidelberg (a detailed description of the dataset can be found in [data/README.md](/data/README.md)). By default, the system will search here for the required data files. Optionally, you can provide your own file paths as command line argument (for more details see [Command Line Arguments](#command-line-arguments)). __Note__: For queries, it is not possible to provide a custom path for each query type (_all_, _nontopictitles_, _titles_, and so on...) but you can provide a path to the directory where all the query files are stored. It is __IMPORTANT__ to keep the same naming conventions otherwise the query files can not be found (The convention is: `q-[Query Type].queries`). Possible Query Types are `{'all', 'nontopictitles', 'titles', 'viddesc', 'vidtitles'}`.
 
 ### docs/
 (__ALEX DESCRIBE THIS__)
@@ -47,7 +32,11 @@ There are several tools you will need to install and execute the application. In
 (__ALEX DESCRIBE THIS__)
 
 ### python/
- * preprocessing/: (__NICO DESCRIBE THIS__)
+ * preprocessing/: The preprocess.py module provides methods to preprocess the data, namely queries and documents (for more information on the data see [data/](#data/). Basically, the queries and documents are tokenized, stemmed and stopwords are removed (according to the [stopwords.large](/data/stopwords.large) file from nfcorpus). Queries for which there are no query relevance score in the .qrel files are disregarded. To run it, you have to install the virtual environment using pipenv and run it afterwards:
+ ```
+ ~python/preprocessing$ pipenv install
+ ~python/preprocessing$ pipenv run python preprocess.py
+ ```
  * wiki-crawler/: (__ALEX DESCRIBE THIS__)
 
 ### src/
@@ -75,8 +64,14 @@ cd vector-space-retrieval
 ```
 
 4. Run
+To run the system:
 ```
 ./bin/evsr_run
+```
+
+To run the tests:
+```
+./bin/Unit_Tests_run
 ```
 
 ### Detailed Installation Guide
