@@ -206,7 +206,7 @@ const pair_sizet_float_vt QueryExecutionEngine::searchRandomProjCos(const Docume
 
     std::map<size_t, float> docId2Scores;
     for (auto& elem : collectionIds) {
-        docId2Scores[elem] = Util::calcHammingDist(query->getRandProjTiVec(),DocumentManager::getInstance().getDocumentMap().at(elem).getRandProjTiVec());
+        docId2Scores[elem] = Util::calcHammingDist(query->getRandProjVec(),DocumentManager::getInstance().getDocumentMap().at(elem).getRandProjVec());
     }
 
     // Convert map into vector of pairs
