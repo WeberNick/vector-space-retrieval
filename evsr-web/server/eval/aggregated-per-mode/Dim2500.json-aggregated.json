@@ -1,0 +1,92 @@
+[
+  {
+    "name": "Cluster",
+    "average_rnt": null,
+    "average_acc": null,
+    "average_avp": null,
+    "average_dcg": null,
+    "average_fms": null,
+    "average_pre": null,
+    "average_rec": null
+  },
+  {
+    "name": "Cluster_RAND",
+    "average_rnt": 0.0001734652465609895,
+    "average_acc": 0.98615285501839,
+    "average_avp": 0.1473016287902711,
+    "average_dcg": 0.1509104902967847,
+    "average_fms": 0.03216535949646501,
+    "average_pre": 0.04705872866071391,
+    "average_rec": 0.03632663548789651
+  },
+  {
+    "name": "Cluster_W2V",
+    "average_rnt": 0,
+    "average_acc": 0,
+    "average_avp": 0,
+    "average_dcg": 0,
+    "average_fms": 0,
+    "average_pre": 0,
+    "average_rec": 0
+  },
+  {
+    "name": "TieredIndex",
+    "average_rnt": 0,
+    "average_acc": 0,
+    "average_avp": 0,
+    "average_dcg": 0,
+    "average_fms": 0,
+    "average_pre": 0,
+    "average_rec": 0
+  },
+  {
+    "name": "TieredIndex_RAND",
+    "average_rnt": 0.00036861029233267305,
+    "average_acc": 0.9868867511720115,
+    "average_avp": 0.37862160611424145,
+    "average_dcg": 0.4025728618364651,
+    "average_fms": 0.07618258143094789,
+    "average_pre": 0.10225137870062437,
+    "average_rec": 0.11506298968650408
+  },
+  {
+    "name": "TieredIndex_W2V",
+    "average_rnt": 0,
+    "average_acc": 0,
+    "average_avp": 0,
+    "average_dcg": 0,
+    "average_fms": 0,
+    "average_pre": 0,
+    "average_rec": 0
+  },
+  {
+    "name": "VanillaVSM",
+    "average_rnt": 0,
+    "average_acc": 0,
+    "average_avp": 0,
+    "average_dcg": 0,
+    "average_fms": 0,
+    "average_pre": 0,
+    "average_rec": 0
+  },
+  {
+    "name": "VanillaVSM_RAND",
+    "average_rnt": 0.0037684200687810596,
+    "average_acc": 0.9875148848635792,
+    "average_avp": 0.407863891644982,
+    "average_dcg": 0.46647522259182955,
+    "average_fms": 0.11998935682295406,
+    "average_pre": 0.1593016212372838,
+    "average_rec": 0.1702968888346263
+  },
+  {
+    "name": "VanillaVSM_W2V",
+    "average_rnt": 0,
+    "average_acc": 0,
+    "average_avp": 0,
+    "average_dcg": 0,
+    "average_fms": 0,
+    "average_pre": 0,
+    "average_rec": 0
+  }
+]

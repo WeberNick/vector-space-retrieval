@@ -40,8 +40,10 @@ using pair_sizet_float_vt = std::vector<std::pair<size_t, float>>;
 using sizet_set = std::set<size_t>;
 
 struct control_block_t {
+    
     const bool _trace;   // indicate if tracing is activated
     const bool _measure; // indicate if measurement is activated
+    const bool _server;
 
     const std::string _collectionPath;     // the path to the document collection
     const std::string _queryPath;          // the path where the query files are stored
@@ -54,15 +56,11 @@ struct control_block_t {
     const uint _noResults;    // the number of results to return for each query
     const uint _noTiers;      // number of tiers for the tiered index
     const uint _noDimensions; // the number of dimensions for the random projection
-
-    /**REMOVE*/
-    const bool _rand;
-    const bool _tiered;
-    bool rand() const { return _rand; }
-    bool tiered() const { return _tiered; }
+    const uint _seed;         // seed for random projection and selecting the cluster leaders
 
     bool trace() const { return _trace; }
     bool measure() const { return _measure; }
+    bool server() const { return _server; }
     const std::string& collectionPath() const { return _collectionPath; }
     const std::string& queryPath() const { return _queryPath; }
     const std::string& relevanceScoresPath() const { return _relScoresPath; }
@@ -73,8 +71,29 @@ struct control_block_t {
     uint results() const { return _noResults; }
     uint tiers() const { return _noTiers; }
     uint dimensions() const { return _noDimensions; }
+    uint seed() const { return _seed; }
 };
 using CB = control_block_t;
+
+
+inline std::ostream& operator<<(std::ostream& strm, const CB& cb) {
+    strm << "The following parameters are set:\n"
+         << "Trace: " << ((cb.trace()) ? "True" : "False") << "\n"
+         << "Measure: " << ((cb.measure()) ? "True" : "False") << "\n"
+         << "Server: " << ((cb.server()) ? "True" : "False") << "\n"
+         << "Collection Path: " << cb.collectionPath() << "\n"
+         << "Query Path: " << cb.queryPath() << "\n"
+         << "Relevance Score Path: " << cb.relevanceScoresPath() << "\n"
+         << "Stopwords Path: " << cb.stopwordPath() << "\n"
+         << "Word Embeddings Path: " << cb.wordEmbeddingsPath() << "\n"
+         << "Trace Path: " << cb.tracePath() << "\n"
+         << "Evaluation Path: " << cb.evalPath() << "\n"
+         << "TopK: " << cb.results() << "\n"
+         << "Number of Tiers: " << cb.tiers() << "\n"
+         << "Number of Dimensions: " << cb.dimensions() << "\n"
+         << "Seed: " << cb.seed() << "\n";
+    return strm << std::endl;
+}
 
 enum IR_MODE {
     kNoMode = -1,
