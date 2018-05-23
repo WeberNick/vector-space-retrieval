@@ -1,6 +1,5 @@
 // Import React
 import React from 'react';
-import slidesMarkdown from 'raw-loader!../assets/markdown.md';
 
 // Import Spectacle Core tags
 import {
@@ -31,6 +30,7 @@ import {
 import createTheme from 'spectacle/lib/themes/default';
 
 import '../prism-atom-dark.css';
+import '../assets/custom.css';
 
 // Require CSS
 require('normalize.css');
@@ -47,13 +47,6 @@ const theme = createTheme(
     secondary: 'Helvetica',
   },
 );
-
-const images = {
-  city: require('../assets/city.jpg'),
-  kat: require('../assets/kat.png'),
-  logo: require('../assets/formidable-logo.svg'),
-  markdown: require('../assets/markdown.png'),
-};
 
 export default class Presentation extends React.Component {
   render() {
@@ -81,7 +74,7 @@ export default class Presentation extends React.Component {
             Agenda
           </Heading>
           <List>
-            <ListItem>Task</ListItem>
+            <ListItem>The Problem</ListItem>
             <ListItem>Implementation</ListItem>
             <ListItem>Additional Feature</ListItem>
             <ListItem>Results</ListItem>
@@ -89,7 +82,7 @@ export default class Presentation extends React.Component {
         </Slide>
         <Slide transition={['slide']} bgColor="tertiary">
           <Heading size={6} textColor="primary" caps>
-            The Task 📝
+            The Problem 📝
           </Heading>
         </Slide>
         <Slide transition={['slide']}>
@@ -99,11 +92,11 @@ export default class Presentation extends React.Component {
             caps
             style={{ marginBottom: '100px' }}
           >
-            The Task
+            The Problem
           </Heading>
           <List>
-            <ListItem>Implement fast VSM Model</ListItem>
-            <ListItem>Using following techniques
+            <ListItem>Vanilla Vector Space Model slow</ListItem>
+            <ListItem>Faster possibilites ?
               <List>
                 <ListItem>
                   Clustering
@@ -116,6 +109,8 @@ export default class Presentation extends React.Component {
                 </ListItem>
               </List>
             </ListItem>
+            <ListItem>What about retrieval performance ?</ListItem>
+            <ListItem>Find tradeoff</ListItem>
           </List>
         </Slide>
         <Slide transition={['slide']} bgColor="tertiary">
@@ -131,14 +126,29 @@ export default class Presentation extends React.Component {
               caps
               style={{ marginBottom: '100px' }}
             >
-              Application Structure
+             Core
             </Heading>
-            <List textColor="secondary">
-              <ListItem>Inverted Index</ListItem>
-              <ListItem>Tiered Index</ListItem>
-              <ListItem>Clustered Index</ListItem>
-              <ListItem>Results</ListItem>
-            </List>
+            <List>
+              <ListItem>Document & DocumentManager</ListItem>
+              <ListItem>QueryManager</ListItem>
+              <ListItem>IndexManager</ListItem>
+              <ListItem>QueryExecutionEngine</ListItem>
+          </List>
+          </div>
+        </Slide>
+        <Slide transition={['slide']}>
+          <div>
+            <Heading
+              size={6}
+              textColor="tertiary"
+              caps
+              style={{ marginBottom: '100px' }}
+            >
+             Application Structure
+            </Heading>
+          
+            <Image width="100%" src={require('../assets/IR.svg')} />
+            
           </div>
         </Slide>
         <Slide transition={['slide']} bgColor="tertiary">
@@ -156,15 +166,15 @@ export default class Presentation extends React.Component {
             Additional Feature
           </Heading>
           <List>
-            <ListItem>Pure VSM not suitable in this project case</ListItem>
-            <ListItem>Documents and queries are not sharing much of vocabulary</ListItem>
+            <ListItem>VSM has a fundamental problem</ListItem>
+            <ListItem>Documents and queries don't have a high term overlap</ListItem>
             <ListItem>Need some semantic relationship between words</ListItem>
-            <ListItem><strong>WordEmbeddings</strong> to the rescue... ⛑️</ListItem>
+            <ListItem><strong>Word Embeddings</strong> to the rescue...</ListItem>
           </List>
         </Slide>
         <Slide transition={['slide']} bgColor="tertiary">
           <Heading size={6} textColor="primary" caps >
-            Result 📊
+            Results 📊
           </Heading>
         </Slide>
         <Slide transition={['slide']}>
@@ -175,6 +185,60 @@ export default class Presentation extends React.Component {
             style={{ marginBottom: '100px' }}
           >
             Evaluation
+          </Heading>
+          <List>
+            <ListItem>As expected...
+              <List>
+                <ListItem>Cluster and Tiered Index fast</ListItem>
+                <ListItem>Random Projections add speed up</ListItem>
+                <ListItem>VSM best retrieval performance but slow</ListItem>
+              </List>
+            </ListItem>
+          </List>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation
+          </Heading>
+          <Text>Speed up images MAP/DCG/RNT</Text>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation
+          </Heading>
+          <List>
+            <ListItem>Did Word Embeddings help ? Problems:
+              <List>
+                <ListItem>Word Embeddings were built on non preprocessed words</ListItem>
+                <ListItem>Word Embeddings were not domain specific</ListItem>
+              </List>
+            </ListItem>
+          </List>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation
+          </Heading>
+          <Text>Graph mit word embeddings</Text>
+        </Slide>
+        <Slide transition={['slide']} bgColor="tertiary">
+          <Heading size={6} textColor="primary" caps >
+            Conclusion 📊
           </Heading>
         </Slide>
       </Deck>

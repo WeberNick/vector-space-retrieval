@@ -96,19 +96,21 @@ cd vector-space-retrieval
 #### Command Line Arguments
 In the following table we briefly introduce all the command line arguments.
 
-| Command Line Argument | Description                                         | Default                      | Expects parameter |
-|-----------------------|-----------------------------------------------------|------------------------------|-------------------|
-|                --help | Print all command line arguments                    | false                        | -                 |
-|               --trace | Activate tracing                                    | false                        | -                 |
-|             --measure | Activate the performance measurement                | false                        | -                 |
-|     --collection-path | Path to the collection file                         | ./data/d-collection.docs     | String Path       |
-|         --query--path | Path to the query directory                         | ./data/                      | String Path       |
-|         --scores-path | Path to the relevance score file                    | ./data/s-3.qrel              | String Path       |
-|       --stopword-path | Path to the stopword file                           | ./data/stopwords.large       | String Path       |
-|     --word-embeddings | Path to the word embeddings file                    | ./data/w2v/glove.6B.300d.txt | String Path       |
-|          --trace-path | Path to the log directory                           | ./                           | String Path       |
-|           --eval-path | Path to the evaluation directory                    | ./                           | String Path       |
-|                --topk | The top K results returned                          | 20                           | unsigned int      |
-|               --tiers | Number of tiers used by the  tiered index           | 50                           | unsigned int      |
-|          --dimensions | Number of dimensions used by the random projections | 1000                         | unsigned int      |
+| Command Line Argument | Description                                                   | Default                      | Expects parameter |
+|-----------------------|---------------------------------------------------------------|------------------------------|-------------------|
+|                --help | Print all command line arguments                              | false                        | -                 |
+|               --trace | Activate tracing                                              | false                        | -                 |
+|              --server | Start the binary in server mode                               | false                        | -                 |
+|             --measure | Activate the performance measurement                          | false                        | -                 |
+|     --collection-path | Path to the collection file                                   | ./data/d-collection.docs     | String Path       |
+|         --query--path | Path to the query directory                                   | ./data/                      | String Path       |
+|         --scores-path | Path to the relevance score file                              | ./data/s-3.qrel              | String Path       |
+|       --stopword-path | Path to the stopword file                                     | ./data/stopwords.large       | String Path       |
+|     --word-embeddings | Path to the word embeddings file                              | ./data/w2v/glove.6B.300d.txt | String Path       |
+|          --trace-path | Path to the log directory                                     | ./                           | String Path       |
+|           --eval-path | Path to the evaluation directory                              | ./                           | String Path       |
+|                --topk | The top K results returned                                    | 20                           | unsigned int      |
+|               --tiers | Number of tiers used by the  tiered index                     | 50                           | unsigned int      |
+|          --dimensions | Number of dimensions used by the random projections           | 1000                         | unsigned int      |
+|                --seed | Seed, used for random projections and cluster leader election | 1                            | unsigned int      |
 
