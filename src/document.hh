@@ -5,8 +5,7 @@
  *	@bugs 	Currently no bugs known
  *	@todos	Write DESCRIPTION
  *
- *	@section DESCRIPTION
- *	TODO
+ *	@section DESCRIPTION docto_
  */
 #pragma once
 

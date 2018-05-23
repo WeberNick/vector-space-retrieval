@@ -64,14 +64,9 @@ cd vector-space-retrieval
 ```
 
 4. Run
-To run the system:
 ```
-./bin/evsr_run
-```
-
-To run the tests:
-```
-./bin/Unit_Tests_run
+./bin/evsr_run       # Run the system
+./bin/Unit_Tests_run # Run the unit tests
 ```
 
 ### Detailed Installation Guide
