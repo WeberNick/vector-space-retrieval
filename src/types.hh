@@ -75,6 +75,26 @@ struct control_block_t {
 };
 using CB = control_block_t;
 
+
+inline std::ostream& operator<<(std::ostream& strm, const CB& cb) {
+    strm << "The following parameters are set:\n"
+         << "Trace: " << ((cb.trace()) ? "True" : "False") << "\n"
+         << "Measure: " << ((cb.measure()) ? "True" : "False") << "\n"
+         << "Server: " << ((cb.server()) ? "True" : "False") << "\n"
+         << "Collection Path: " << cb.collectionPath() << "\n"
+         << "Query Path: " << cb.queryPath() << "\n"
+         << "Relevance Score Path: " << cb.relevanceScoresPath() << "\n"
+         << "Stopwords Path: " << cb.stopwordPath() << "\n"
+         << "Word Embeddings Path: " << cb.wordEmbeddingsPath() << "\n"
+         << "Trace Path: " << cb.tracePath() << "\n"
+         << "Evaluation Path: " << cb.evalPath() << "\n"
+         << "TopK: " << cb.results() << "\n"
+         << "Number of Tiers: " << cb.tiers() << "\n"
+         << "Number of Dimensions: " << cb.dimensions() << "\n"
+         << "Seed: " << cb.seed() << "\n";
+    return strm << std::endl;
+}
+
 enum IR_MODE {
     kNoMode = -1,
     kVANILLA = 0,

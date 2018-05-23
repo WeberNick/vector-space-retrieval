@@ -107,16 +107,6 @@ class Args {
     uint _tiers;
     uint _dimensions;
     uint _seed;
-
-  public:
-    bool _rand;
-    bool _tiered;
-    inline bool rand() { return _rand; }
-    inline void rand(const bool& x) { _rand = x; }
-
-    inline bool tiered() { return _tiered; }
-    inline void tiered(const bool& x) { _tiered = x; }
-
 };
 using argdesc_vt = std::vector<argdescbase_t<Args>*>;
 void construct_arg_desc(argdesc_vt& aArgDesc);
