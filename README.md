@@ -20,6 +20,9 @@ There are several tools you will need to install and execute the application. In
  * [Node.js](https://nodejs.org/en/): If you want to use the system with a web interface you will need to have _Node.js_ installed. (more details alex..)
  * Other libraries used in our project are the [Oleander Stemming Library](http://www.oleandersolutions.com/stemming/stemming.html) and a [C++ JSON Library](https://nlohmann.github.io/json/). The source code of these libraries is automatically cloned when running our installation script.
 
+### System Requirements
+The retrieval system stores a lot of index structures in-memory. Depending on the settings and execution mode, the system might need up to 2GB of main memory.
+
 ## Project Structure
 
 ### data
