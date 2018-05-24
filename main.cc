@@ -70,7 +70,6 @@ void serverMode(const control_block_t& aControlBlock) {
 }
 
 void evalMode(const control_block_t& aControlBlock) {
-
     std::cout << "[Evaluation mode]" << std::endl;
 
     DocumentManager& docManager = DocumentManager::getInstance();
@@ -101,18 +100,18 @@ void evalMode(const control_block_t& aControlBlock) {
     std::cout << "[Ready]" << std::endl;
     std::cout << "[Start Evaluating]" << std::endl;
 
-     str_set queryNamesSet;
+    str_set queryNamesSet;
 
     /*for (int i = 0; i < kNumberOfTypes; ++i ) {
 
         QUERY_TYPE type = static_cast<QUERY_TYPE>(i);
-        
+
         for (int j = 0; j < kNumberOfModes; ++j) {
-            
+
             IR_MODE mode = static_cast<IR_MODE>(j);
 
-            std::cout <<  typeToString(type) << " for mode " << modeToString(mode) << std::endl; 
-            
+            std::cout <<  typeToString(type) << " for mode " << modeToString(mode) << std::endl;
+
             auto& queryForType = QueryManager::getInstance().getQueryMap(type);
             for (auto& [query_id, query] : queryForType) {
                 Document queryDoc = queryManager.createQueryDoc(query, query_id, true);
@@ -126,7 +125,7 @@ void evalMode(const control_block_t& aControlBlock) {
         }
     }*/
 
-    const std::vector<IR_MODE> modes{kVANILLA, kVANILLA_RAND, kVANILLA_W2V, kCLUSTER, kCLUSTER_RAND, kCLUSTER_W2V, kTIERED, kTIERED_RAND, kTIERED_W2V};
+    const std::vector<IR_MODE> modes{kTIERED};//, kVANILLA_RAND, kVANILLA_W2V, kCLUSTER, kCLUSTER_RAND, kCLUSTER_W2V, kTIERED, kTIERED_RAND, kTIERED_W2V};
     const std::vector<QUERY_TYPE> types{kALL, kNTT, kTITLES, kVIDDESC, kVIDTITLES};
 
     for(auto type : types){
