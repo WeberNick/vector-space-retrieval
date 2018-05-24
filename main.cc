@@ -102,30 +102,7 @@ void evalMode(const control_block_t& aControlBlock) {
 
     str_set queryNamesSet;
 
-    /*for (int i = 0; i < kNumberOfTypes; ++i ) {
-
-        QUERY_TYPE type = static_cast<QUERY_TYPE>(i);
-
-        for (int j = 0; j < kNumberOfModes; ++j) {
-
-            IR_MODE mode = static_cast<IR_MODE>(j);
-
-            std::cout <<  typeToString(type) << " for mode " << modeToString(mode) << std::endl;
-
-            auto& queryForType = QueryManager::getInstance().getQueryMap(type);
-            for (auto& [query_id, query] : queryForType) {
-                Document queryDoc = queryManager.createQueryDoc(query, query_id, true);
-
-                queryNamesSet.insert(queryDoc.getDocID());
-                e.start(type, mode, queryDoc.getDocID());
-                std::vector<std::pair<size_t, float>> result = qpe.search(queryDoc, aControlBlock.results(), mode);
-                e.stop();
-                e.evalIR(type, mode, queryDoc.getDocID(), result);
-            }
-        }
-    }*/
-
-    const std::vector<IR_MODE> modes{kTIERED};//, kVANILLA_RAND, kVANILLA_W2V, kCLUSTER, kCLUSTER_RAND, kCLUSTER_W2V, kTIERED, kTIERED_RAND, kTIERED_W2V};
+    const std::vector<IR_MODE> modes{kTIERED, kVANILLA_RAND, kVANILLA_W2V, kCLUSTER, kCLUSTER_RAND, kCLUSTER_W2V, kTIERED, kTIERED_RAND, kTIERED_W2V};
     const std::vector<QUERY_TYPE> types{kALL, kNTT, kTITLES, kVIDDESC, kVIDTITLES};
 
     for(auto type : types){
