@@ -87,6 +87,9 @@ const pair_sizet_float_vt QueryExecutionEngine::search(Document& queryDoc, size_
 }
 
 const pair_sizet_float_vt QueryExecutionEngine::searchCollectionCos(const Document* query, const sizet_vt& collectionIds, size_t topK, bool use_w2v) {
+            Measure m1;
+            m1.start(); 
+    
 
     std::map<size_t, float> docId2Length;
     for (auto& elem : collectionIds) { // Map of doc id to length og that doc
@@ -105,6 +108,7 @@ const pair_sizet_float_vt QueryExecutionEngine::searchCollectionCos(const Docume
     } else {
 
         for (auto& elem : collectionIds) {
+            
             float sim = Util::calcCosSim(*query, DocumentManager::getInstance().getDocument(elem));
             docId2Scores[elem] = sim;
         }
@@ -133,6 +137,8 @@ const pair_sizet_float_vt QueryExecutionEngine::searchCollectionCos(const Docume
 
     // Sort vector desc
     std::sort(results.begin(), results.end(), [](std::pair<size_t, float> elem1, std::pair<size_t, float> elem2) { return elem1.second > elem2.second; });
+     m1.stop();
+    std::cout << "Took " << m1.mTotalTime() << " seconds to calculate cos sim VanillaVSM" << std::endl;
     return (!topK || topK > results.size()) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
 }
 

@@ -28,7 +28,7 @@ include_directories(src)
 
 #Add subdirectories and execute their CmakeLists
 add_subdirectory(src)
-add_subdirectory(tests)
+#add_subdirectory(tests)
 #add_subdirectory(docs)
 
 #Link main executable with code lib

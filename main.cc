@@ -103,24 +103,12 @@ void evalMode(const control_block_t& aControlBlock) {
 
      str_set queryNamesSet;
 
-    /*
     for (int i = 0; i < kNumberOfTypes; ++i ) {
 
         QUERY_TYPE type = static_cast<QUERY_TYPE>(i);
         
         for (int j = 0; j < kNumberOfModes; ++j) {
             
-             REMOVE
-            if(aControlBlock.rand()){
-                if(!(j==1||j==4||j==7)){
-                    continue;
-                }
-            } else if(aControlBlock.tiered()){
-                if(!(j==3||j==4||j==5)){
-                    continue;
-                }
-            }
-
             IR_MODE mode = static_cast<IR_MODE>(j);
 
             std::cout <<  typeToString(type) << " for mode " << modeToString(mode) << std::endl; 
@@ -136,30 +124,7 @@ void evalMode(const control_block_t& aControlBlock) {
                 e.evalIR(type, mode, queryDoc.getDocID(), result);
             }
         }
-    }*/
-
-    const std::vector<IR_MODE> modes{kVANILLA, kVANILLA_RAND};
-    const std::vector<QUERY_TYPE> types{kALL, kTITLES};
-
-    for(auto type : types){
-        for(auto mode: modes) {
-            std::cout <<  typeToString(type) << " for mode " << modeToString(mode) << std::endl; 
-            
-            auto& queryForType = QueryManager::getInstance().getQueryMap(type);
-            for (auto& [query_id, query] : queryForType) {
-                Document queryDoc = queryManager.createQueryDoc(query, query_id, true);
-
-                queryNamesSet.insert(queryDoc.getDocID());
-                e.start(type, mode, queryDoc.getDocID());
-                std::vector<std::pair<size_t, float>> result = qpe.search(queryDoc, aControlBlock.results(), mode);
-                e.stop();
-                e.evalIR(type, mode, queryDoc.getDocID(), result);
-            }
-        }
     }
-    
-
-
 
     e.constructJSON(queryNamesSet);
     std::cout << "[Finish Evaluating]" << std::endl;
