@@ -37,8 +37,8 @@ cd ..
 echo "> [Eval] Tiers: 25, Dimensions: 10, Seed: 87693"
 ./bin/evsr_run --tiers 25 --dimensions 10 --seed 87693
 
-echo "> [Eval] Tiers: 50, Dimensions: 10, Seed: 87693"
-./bin/evsr_run --tiers 50 --dimensions 10 --seed 87693
+echo "> [Eval] Tiers: 100, Dimensions: 5000, Seed: 87693"
+./bin/evsr_run --tiers 100 --dimensions 5000 --seed 87693
 
 echo "> [Eval] Tiers: 100, Dimensions: 10, Seed: 87693"
 ./bin/evsr_run --tiers 100 --dimensions 10 --seed 87693

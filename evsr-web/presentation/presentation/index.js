@@ -173,6 +173,240 @@ export default class Presentation extends React.Component {
             style={{ marginBottom: '100px' }}
           >
             Evaluation
+            <Text style={{fontSize: '.5em'}}>Index combination</Text>
+          </Heading>
+          <Table>
+            <TableHeader>
+              <TableHeaderItem>Vanilla</TableHeaderItem>
+              <TableHeaderItem>Random Proj.</TableHeaderItem>
+              <TableHeaderItem>Word Emb.</TableHeaderItem>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableItem>
+                  VSM
+                </TableItem>
+                <TableItem>
+                  VSM_R
+                </TableItem>
+                <TableItem>
+                  VSM_W
+                </TableItem>
+              </TableRow>
+              <TableRow>
+                <TableItem>
+                  TieredIndex
+                </TableItem>
+                <TableItem>
+                TieredIndex_R
+                </TableItem>
+                <TableItem>
+                TieredIndex_W
+                </TableItem>
+              </TableRow><TableRow>
+                <TableItem>
+                  Cluster
+                </TableItem>
+                <TableItem>
+                Cluster_R
+                </TableItem>
+                <TableItem>
+                Cluster_W
+                </TableItem>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation
+          </Heading>
+          <Table>
+            <TableHeader>
+              <TableHeaderItem>Query Types</TableHeaderItem>
+            <TableHeaderItem># of Queries</TableHeaderItem>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableItem>
+                  all
+                </TableItem>
+                <TableItem>
+                  3.237
+                </TableItem>
+              </TableRow>
+              <TableRow>
+                <TableItem>
+                  titles
+                </TableItem>
+                <TableItem>
+                  1.429
+                </TableItem>
+              </TableRow>
+              <TableRow>
+                <TableItem>
+                  non-topic titles
+                </TableItem>
+                <TableItem>
+                  3.237
+                </TableItem>
+              </TableRow>
+              <TableRow>
+                <TableItem>
+                  video description
+                </TableItem>
+                <TableItem>
+                  1.016
+                </TableItem>
+              </TableRow>
+              <TableRow>
+                <TableItem>
+                  video titles
+                </TableItem>
+                <TableItem>
+                  1.016
+                </TableItem>
+              </TableRow>
+              <TableRow>
+                <TableItem>
+                  <strong>Total</strong>
+                </TableItem>
+                <TableItem>
+                  9.935
+                </TableItem>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <Text fit style={{marginTop: 50}}>9 (Index combinations) * 9.935  = 89, 415 evaluation results per test run</Text>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation <br />
+            <Text style={{fontSize: '.5em'}}>Choose Random projection Dimension</Text>
+          </Heading>
+        
+
+          <Table>
+            <TableHeader>
+              <TableHeaderItem>Dimensions</TableHeaderItem>
+              <TableHeaderItem>500</TableHeaderItem>
+              <TableHeaderItem>5000</TableHeaderItem>
+              <TableHeaderItem>10000</TableHeaderItem>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableItem>
+                  Runtime
+                </TableItem>
+                <TableItem>
+                  2.8ms
+                </TableItem>
+                <TableItem>
+                  3ms (<span style={{color: '#44bd32'}}>+7%</span>)
+                </TableItem>
+                <TableItem>
+                  4ms (<span style={{color: '#e84118'}}>+33%</span>)
+                </TableItem>
+              </TableRow>
+              <TableRow>
+                <TableItem>
+                  nDCG
+                </TableItem>
+                <TableItem>
+                  0.28
+                </TableItem>
+                <TableItem>
+                  0.43(<span style={{color: '#44bd32'}}>+35%</span>)
+                </TableItem>
+                <TableItem>
+                  0.49(<span style={{color: '#fbc531'}}>+12%</span>)
+                </TableItem>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <Text fit style={{marginTop: 50}}>5000 Dimensions results in the best tradeoff between runtime and nDCG</Text>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation <br />
+            <Text style={{fontSize: '.5em'}}>Choose Tier size</Text>
+          </Heading>
+        
+
+          <Table>
+            <TableHeader>
+              <TableHeaderItem>Tiers</TableHeaderItem>
+              <TableHeaderItem>10</TableHeaderItem>
+              <TableHeaderItem>25</TableHeaderItem>
+              <TableHeaderItem>50</TableHeaderItem>
+              <TableHeaderItem>100</TableHeaderItem>
+              <TableHeaderItem>250</TableHeaderItem>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableItem>
+                  Runtime
+                </TableItem>
+                <TableItem>
+                  34ms
+                </TableItem>
+                <TableItem>
+                  19ms (<span style={{color: '#44bd32'}}>-44%</span>)
+                </TableItem>
+                <TableItem>
+                  12ms (<span style={{color: '#44bd32'}}>-36%</span>)
+                </TableItem>
+                <TableItem>
+                  8ms (<span style={{color: '#44bd32'}}>-33%</span>)
+                </TableItem>
+                <TableItem>
+                  5ms (<span style={{color: '#44bd32'}}>-37.5%</span>)
+                </TableItem>
+              </TableRow>
+              <TableRow>
+                <TableItem>
+                  nDCG
+                </TableItem>
+                <TableItem>
+                  0.38
+                </TableItem>
+                <TableItem>
+                  0.36(<span style={{color: '#fbc531'}}>-5%</span>)
+                </TableItem>
+                <TableItem>
+                  0.32(<span style={{color: '#e84118'}}>-11%</span>)
+                </TableItem>
+                <TableItem>
+                  0.36(<span style={{color: '#44bd32'}}>+12%</span>)
+                </TableItem>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <Text fit style={{marginTop: 50}}>100 Tiers brings the best tradeoff between runtime and nDCG</Text>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation
           </Heading>
           <List>
             <ListItem>As expected...
@@ -184,6 +418,7 @@ export default class Presentation extends React.Component {
             </ListItem>
           </List>
         </Slide>
+        
         <Slide transition={['slide']}>
           <Heading
             size={6}
