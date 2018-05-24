@@ -103,24 +103,12 @@ void evalMode(const control_block_t& aControlBlock) {
 
      str_set queryNamesSet;
 
-    /*
-    for (int i = 0; i < kNumberOfTypes; ++i ) {
+    /*for (int i = 0; i < kNumberOfTypes; ++i ) {
 
         QUERY_TYPE type = static_cast<QUERY_TYPE>(i);
         
         for (int j = 0; j < kNumberOfModes; ++j) {
             
-             REMOVE
-            if(aControlBlock.rand()){
-                if(!(j==1||j==4||j==7)){
-                    continue;
-                }
-            } else if(aControlBlock.tiered()){
-                if(!(j==3||j==4||j==5)){
-                    continue;
-                }
-            }
-
             IR_MODE mode = static_cast<IR_MODE>(j);
 
             std::cout <<  typeToString(type) << " for mode " << modeToString(mode) << std::endl; 
@@ -157,9 +145,6 @@ void evalMode(const control_block_t& aControlBlock) {
             }
         }
     }
-    
-
-
 
     e.constructJSON(queryNamesSet);
     std::cout << "[Finish Evaluating]" << std::endl;

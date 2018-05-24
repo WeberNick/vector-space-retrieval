@@ -35,5 +35,5 @@ cd ..
 #./bin/evsr_run --tiers 250 --dimensions 10000
 
 
-echo "> [Eval] Test ./bin/evsr_run --seed 87693"
-./bin/evsr_run --seed 87693
+echo "> [Eval] Tiers: 100, Dimensions: 5000, Seed: 87693"
+./bin/evsr_run --tiers 100 --dimensions 5000 --seed 87693
