@@ -138,7 +138,6 @@ const pair_sizet_float_vt QueryExecutionEngine::searchCollectionCos(const Docume
     // Sort vector desc
     std::sort(results.begin(), results.end(), [](std::pair<size_t, float> elem1, std::pair<size_t, float> elem2) { return elem1.second > elem2.second; });
      m1.stop();
-    std::cout << "Took " << m1.mTotalTime() << " seconds to calculate cos sim VanillaVSM" << std::endl;
     return (!topK || topK > results.size()) ? results : std::vector<std::pair<size_t, float>>(results.begin(), results.begin() + topK);
 }
 
