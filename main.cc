@@ -138,8 +138,8 @@ void evalMode(const control_block_t& aControlBlock) {
         }
     }*/
 
-    const std::vector<IR_MODE> modes{kVANILLA, kVANILLA_RAND};
-    const std::vector<QUERY_TYPE> types{kALL, kTITLES};
+    const std::vector<IR_MODE> modes{kVANILLA, kVANILLA_RAND, kVANILLA_W2V, kCLUSTER, kCLUSTER_RAND, kCLUSTER_W2V, kTIERED, kTIERED_RAND, kTIERED_W2V};
+    const std::vector<QUERY_TYPE> types{kALL, kNTT, kTITLES, kVIDDESC, kVIDTITLES};
 
     for(auto type : types){
         for(auto mode: modes) {
