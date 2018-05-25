@@ -2,14 +2,10 @@
 An efficient Vector Space Model (VSM) implementation for retrieving medical data, built within the team project for the course [Information Retrieval and Web Search](http://dws.informatik.uni-mannheim.de/en/teaching/courses-for-master-candidates/ie663websearchandinformationretrieval/).
 
 ## Table of Contents
- * [Problem Description](#problem-description)
  * [Prerequisites](#prerequisites)
  * [Project Structure](#project-structure)
  * [Getting Started](#getting-started)
  
-## Problem Description
-Describe the problem we want to solve in more detail here. Maybe just copy paste from report..
-
 ## Prerequisites
 There are several tools you will need to install and execute the application. In the following is a list with all required tools and technologies required for installing and running the system:
  * _UNIX-like_ operating system: All development and testing was carried out on UNIX-like operating systems. On _Windows_ we encountered several compiler problems. Although fixed, we still strongly recommend to use a UNIX-like operating system (tested under _macOS High Sierra Version 10.13.4_, Arch Linux [Version..] and Ubuntu [Version...])
@@ -17,8 +13,9 @@ There are several tools you will need to install and execute the application. In
  * [GNU Make](https://www.gnu.org/software/make/): As development and testing was carried out on UNIX-like operating systems, the de-facto standard build and install system _GNU Make_ is used internally by CMake.
  * [_C++17_ compatible compiler](https://gcc.gnu.org): As all tests were carried out with _GCC 7.3.0_, we recommend to use this one or a never version
  * [_boost_](https://www.boost.org): We use the popular C++ library _boost_ for several convenience functionalities such as efficiently splitting strings or dynamically creating bit vectors. If not already installed on your system, you will need to download the _Header-Only Library_ part of _boost_.
- * [Node.js](https://nodejs.org/en/): If you want to use the system with a web interface you will need to have _Node.js_ installed. (more details alex..)
- * Other libraries used in our project are the [Oleander Stemming Library](http://www.oleandersolutions.com/stemming/stemming.html) and a [C++ JSON Library](https://nlohmann.github.io/json/). The source code of these libraries is automatically cloned when running our installation script.
+ * [Node.js](https://nodejs.org/en/): If you want to use the system with a web interface you will need to have _Node.js_ installed. The evsr-web part was tested under Node v10.1.0
+ * Other libraries used in our project are the [Oleander Stemming Library](http://www.oleandersolutions.com/stemming/stemming.html) and a [C++ JSON Library](https://nlohmann.github.io/json/). The source code of these libraries is included in the `.zip`.
+ * The application resides only in main memory so it can take up to 2GB of RAM while running. Hvaing less than 2GB RAM can lead to unexpected behavior which is not handled.
 
 ### System Requirements
 The retrieval system stores a lot of index structures in-memory. Depending on the settings and execution mode, the system might need up to 2GB of main memory.
@@ -26,7 +23,7 @@ The retrieval system stores a lot of index structures in-memory. Depending on th
 ## Project Structure
 
 ### data
-All data files required for the system are stored here. We used the medical dataset [nfcorpus](http://www.cl.uni-heidelberg.de/statnlpgroup/nfcorpus/) from the Statistical NLP Group of the University of Heidelberg (a detailed description of the dataset can be found in [data/README.md](/data/README.md)). By default, the system will search here for the required data files. Optionally, you can provide your own file paths as command line argument (for more details see [Command Line Arguments](#command-line-arguments)). __Note__: For queries, it is not possible to provide a custom path for each query type but you can provide a path to the directory where all the query files are stored. It is __IMPORTANT__ to keep the same naming conventions otherwise the query files can not be found (The convention is: `q-[Query Type].queries`; Possible Query Types are `{'all', 'nontopictitles', 'titles', 'viddesc', 'vidtitles'}`). Also, in our setting, the query document file uses a `'~'` delimiter between the query ID and its content. The delimiter is hard coded into the system and must therefore match.
+All data files required for the system are stored here. We used the medical dataset [nfcorpus](http://www.cl.uni-heidelberg.de/statnlpgroup/nfcorpus/) from the Statistical NLP Group at the University of Heidelberg (a detailed description of the dataset can be found in [data/README.md](/data/README.md)). By default, the system will search here for the required data files. Optionally, you can provide your own file paths as command line argument (for more details see [Command Line Arguments](#command-line-arguments)). __Note__: For queries, it is not possible to provide a custom path for each query type but you can provide a path to the directory where all the query files are stored. It is __IMPORTANT__ to keep the same naming conventions otherwise the query files can not be found (The convention is: `q-[Query Type].queries`; Possible Query Types are `{'all', 'nontopictitles', 'titles', 'viddesc', 'vidtitles'}`). Also, in our setting, the query document file uses a `'~'` delimiter between the query ID and its content. The delimiter is hard coded into the system and must therefore match.
 
 ### docs
 In this directory you can find the documentation of our source code. It was generated by using `doxygen`.

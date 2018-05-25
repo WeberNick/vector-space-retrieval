@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['document',['Document',['../class_document.html#afd444f60f1ffdcc0b7a3632904645323',1,'Document::Document(const std::string &amp;aDocID, const string_vt &amp;aContent)'],['../class_document.html#aabaf0a76699634b99d85730dea655f48',1,'Document::Document(const Document &amp;)']]]
+  ['calcwordembeddingsvector',['calcWordEmbeddingsVector',['../class_word_embeddings.html#a8dbe13f693f4aff6208dc4e43ad6dfd0',1,'WordEmbeddings']]],
+  ['constructjson',['constructJSON',['../class_evaluation.html#ab9e4039a6931b2e4c3362050c75e5d73',1,'Evaluation::constructJSON()'],['../class_evaluation.html#a42b3ecebe79ac11cdf96077a20371093',1,'Evaluation::constructJSON(const str_set &amp;aQueryNames)']]],
+  ['createquerydoc',['createQueryDoc',['../class_query_manager.html#a5e209df6a8b25e712f055d316fe7baf4',1,'QueryManager']]]
 ];

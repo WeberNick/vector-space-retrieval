@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['queryexecutionengine',['QueryExecutionEngine',['../class_query_execution_engine.html',1,'']]],
-  ['querymanager',['QueryManager',['../class_query_manager.html',1,'']]]
+  ['randomprojection',['RandomProjection',['../class_random_projection.html',1,'']]],
+  ['relscore',['RelScore',['../class_evaluation_1_1_i_r___performance_manager_1_1_rel_score.html',1,'Evaluation::IR_PerformanceManager']]]
 ];

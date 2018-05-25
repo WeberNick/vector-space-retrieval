@@ -28,8 +28,8 @@ include_directories(src)
 
 #Add subdirectories and execute their CmakeLists
 add_subdirectory(src)
-#add_subdirectory(tests)
-#add_subdirectory(docs)
+add_subdirectory(tests)
+add_subdirectory(docs)
 
 #Link main executable with code lib
 target_link_libraries(${CMAKE_PROJECT_NAME}_run ${CMAKE_PROJECT_NAME}_lib stdc++fs)

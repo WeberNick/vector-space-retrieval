@@ -8,6 +8,7 @@ import {
   CodePane,
   Cite,
   Deck,
+  Fill,
   Heading,
   ListItem,
   List,
@@ -225,6 +226,7 @@ export default class Presentation extends React.Component {
             style={{ marginBottom: '100px' }}
           >
             Evaluation
+            <Text style={{fontSize: '.5em'}}>Queries</Text>
           </Heading>
           <Table>
             <TableHeader>
@@ -291,6 +293,25 @@ export default class Presentation extends React.Component {
             caps
             style={{ marginBottom: '100px' }}
           >
+            Evaluation
+            <Text style={{fontSize: '.5em'}}>Runtime performance</Text>
+          </Heading>
+          <Layout>
+            <Fill>
+              <Image src={require('../assets/T100D5000_Graph_RNT_VANILLA.png')} />
+            </Fill>
+            <Fill>
+              <Image src={require('../assets/T100D5000_Graph_RNT_RAND.png')} />
+            </Fill>
+          </Layout>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
             Evaluation <br />
             <Text style={{fontSize: '.5em'}}>Choose Random projection Dimension</Text>
           </Heading>
@@ -344,7 +365,7 @@ export default class Presentation extends React.Component {
             style={{ marginBottom: '100px' }}
           >
             Evaluation <br />
-            <Text style={{fontSize: '.5em'}}>Choose Tier size</Text>
+            <Text style={{fontSize: '.5em'}}>Choose Tier size TODO hier fehlt was</Text>
           </Heading>
         
 
@@ -398,6 +419,18 @@ export default class Presentation extends React.Component {
             </TableBody>
           </Table>
           <Text fit style={{marginTop: 50}}>100 Tiers brings the best tradeoff between runtime and nDCG</Text>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation <br />
+            <Text style={{fontSize: '.5em'}}>Overview</Text>
+          </Heading>
+          <Image src={require('../assets/T100D5000_Graph_ndcg_ALL.png')} />
         </Slide>
         <Slide transition={['slide']}>
           <Heading

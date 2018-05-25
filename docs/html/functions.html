@@ -65,9 +65,15 @@ $(function() {
 <div class="contents">
 <div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
 
-<h3><a id="index__"></a>- _ -</h3><ul>
-<li>_rand
-: <a class="el" href="structcontrol__block__t.html#aa44f7407ee8ef151004a65f527b2f68a">control_block_t</a>
+<h3><a id="index_b"></a>- b -</h3><ul>
+<li>buildRandProjVector()
+: <a class="el" href="class_index_manager.html#a6ceda458988c7f11fc0772f8ac1c9bb5">IndexManager</a>
+</li>
+<li>buildTfIdfVector()
+: <a class="el" href="class_index_manager.html#aa5e382d3ed91c94aa6519492719abf7d">IndexManager</a>
+</li>
+<li>buildWordEmbeddingsVector()
+: <a class="el" href="class_index_manager.html#a926d1aea8e935a43601e4ba086d4a4f9">IndexManager</a>
 </li>
 </ul>
 
@@ -77,7 +83,7 @@ $(function() {
 : <a class="el" href="class_word_embeddings.html#a8dbe13f693f4aff6208dc4e43ad6dfd0">WordEmbeddings</a>
 </li>
 <li>constructJSON()
-: <a class="el" href="class_evaluation.html#a42b3ecebe79ac11cdf96077a20371093">Evaluation</a>
+: <a class="el" href="class_evaluation.html#ab9e4039a6931b2e4c3362050c75e5d73">Evaluation</a>
 </li>
 <li>createQueryDoc()
 : <a class="el" href="class_query_manager.html#a5e209df6a8b25e712f055d316fe7baf4">QueryManager</a>
@@ -116,11 +122,15 @@ $(function() {
 : <a class="el" href="class_inverted_index.html#a94c3bffa5c2c93362aac7105fa6ef587">InvertedIndex</a>
 , <a class="el" href="class_tiered_index.html#ac80e5cdcc616825d8fa97a383f523c9b">TieredIndex</a>
 </li>
+<li>getDimensions()
+: <a class="el" href="class_random_projection.html#ae6a68f0f741251e47b09252718a224fd">RandomProjection</a>
+</li>
 <li>getDocID()
 : <a class="el" href="class_document.html#a143a5c1e44cf9c9e0fe1da791af58dfa">Document</a>
 </li>
 <li>getDocIDList()
-: <a class="el" href="class_tiered_index.html#a816a5c100b28d412b13ab816f7d17b76">TieredIndex</a>
+: <a class="el" href="class_inverted_index.html#a98555e2a9126e5eb49659a3d3dbcafd6">InvertedIndex</a>
+, <a class="el" href="class_tiered_index.html#a816a5c100b28d412b13ab816f7d17b76">TieredIndex</a>
 </li>
 <li>getDocument()
 : <a class="el" href="class_document_manager.html#afa1eb02fa4622a071329bbaa077c0f67">DocumentManager</a>
@@ -176,6 +186,9 @@ $(function() {
 <li>getNumTiers()
 : <a class="el" href="class_tiered_index.html#a4377b6ebeeae4296fc5407acc86efcff">TieredIndex</a>
 </li>
+<li>getOrigvectorSize()
+: <a class="el" href="class_random_projection.html#ac6ab312a7fe505a4a1a5769ff765e94a">RandomProjection</a>
+</li>
 <li>getPosting()
 : <a class="el" href="class_posting_list.html#a67b0ce0db28900b62303ba1a43fc4188">PostingList</a>
 </li>
@@ -196,11 +209,14 @@ $(function() {
 <li>getQueryMap()
 : <a class="el" href="class_query_manager.html#af749997ef028e3d261062eb529da5cda">QueryManager</a>
 </li>
-<li>getRandProjTiVec()
-: <a class="el" href="class_document.html#af57994b34815381fcf9da85826754594">Document</a>
+<li>getRandomVectors()
+: <a class="el" href="class_random_projection.html#a7358d1b498e71206641a93496009755f">RandomProjection</a>
 </li>
-<li>getRandProjWeVec()
-: <a class="el" href="class_document.html#a417408d10e794738b43a7a0eb768e8fd">Document</a>
+<li>getRandProjVec()
+: <a class="el" href="class_document.html#a17191d92bf0726ee92b39fcde80ca5be">Document</a>
+</li>
+<li>getSeed()
+: <a class="el" href="class_random_projection.html#aa94b248ad52e3cf297b3544f90b37960">RandomProjection</a>
 </li>
 <li>getTermTfMap()
 : <a class="el" href="class_document.html#a9baf879e6754920e8c15672700740c9b">Document</a>
@@ -258,7 +274,8 @@ $(function() {
 
 <h3><a id="index_o"></a>- o -</h3><ul>
 <li>operator&lt;&lt;
-: <a class="el" href="class_document.html#aa41278f73b631c469d67a2f939a39002">Document</a>
+: <a class="el" href="class_cluster.html#a1cae4c018e4771b2d3abd63151af4ab6">Cluster</a>
+, <a class="el" href="class_document.html#aa41278f73b631c469d67a2f939a39002">Document</a>
 , <a class="el" href="class_inverted_index.html#a14d872e8c28944644a41a6ecc14d1ff8">InvertedIndex</a>
 , <a class="el" href="class_posting_list.html#a8d5536a56d70f166469fbb2f1c78830f">PostingList</a>
 , <a class="el" href="class_tiered_index.html#abfee6bf9657d6ba59055844748f341e9">TieredIndex</a>
@@ -307,8 +324,8 @@ $(function() {
 <li>setRandomVectors()
 : <a class="el" href="class_random_projection.html#ae9a736802283af23d3c5d9ecc1d4d2b7">RandomProjection</a>
 </li>
-<li>setRandProjTiVec()
-: <a class="el" href="class_document.html#a5597bc920a7675ebbb121e4aadff54d1">Document</a>
+<li>setRandProjVec()
+: <a class="el" href="class_document.html#a5bf1d08202fcf5f430813d255e3ba016">Document</a>
 </li>
 <li>setTermTfMap()
 : <a class="el" href="class_document.html#aa6d32cdbe945e941b2c235df3d269958">Document</a>

@@ -16,11 +16,11 @@ TEST(StringOp, Ends_With_Equals_Test) {
     EXPECT_EQ(true, Util::endsWith("Thisends", "sends"));
 }
 
-TEST(StringOp, Count_Word_Equals_Test) {
+/*TEST(StringOp, Count_Word_Equals_Test) {
 
     std::string sentence = "Hi how are you today, you look gorgeous";
     EXPECT_EQ(2, Util::countWordInString(sentence, "you", true));
-}
+}*/
 
 TEST(StringOp, Count_Word_Equals_Test_VT) {
 
