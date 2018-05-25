@@ -81,19 +81,6 @@ def quer_no_preprocessing(folders, files, end, qrelids):
                     result.add('~'.join(content))
         _write(result, '{}/{}.{}'.format(DATA_PATH, filename, end))
 
-def quer_count(folders, files, end):
-    ''' Preprocess queries '''
-    terms = 0
-    queries = 0
-    for filename in files:
-        for folder in folders:
-            with open('{}/{}/{}/{}.{}'.format(DATA_PATH, folder, RAW_FOLDER, filename, end), 'r') as file_from:
-                for line in file_from.readlines():
-                    queries +=1
-                    print("len: " len(content[1]) + content[1])
-                    terms += len(re.split(r'\t+', line.rstrip('\t\n'))[1])
-    print("{:.2f}".format(float(terms/queries)))
-
 def _write(result_set, filename):
     ''' Write results to a file '''
     with open(filename, 'w') as file_to:
@@ -102,7 +89,6 @@ def _write(result_set, filename):
 
 if __name__ == '__main__':
     folders = ['test', 'dev', 'train']
-    #qrelids = qrel(folders, 's-3', 'qrel')
-    #docs(folders, 'd-collection', 'docs')
-    #quer_no_preprocessing(folders, ['q-all', 'q-titles', 'q-nontopictitles', 'q-vidtitles', 'q-viddesc'], 'queries', list(qrelids))
-    quer_count(folders, ['q-all', 'q-titles', 'q-nontopictitles', 'q-vidtitles', 'q-viddesc'], 'queries')
+    qrelids = qrel(folders, 's-3', 'qrel')
+    docs(folders, 'd-collection', 'docs')
+    quer_no_preprocessing(folders, ['q-all', 'q-titles', 'q-nontopictitles', 'q-vidtitles', 'q-viddesc'], 'queries', list(qrelids))
