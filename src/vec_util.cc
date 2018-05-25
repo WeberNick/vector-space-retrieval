@@ -2,8 +2,7 @@
 
 namespace Util {
 
-    sizet_vt difference(const sizet_vt& v1, const sizet_vt& v2)
-    {
+    sizet_vt difference(const sizet_vt& v1, const sizet_vt& v2) {
         sizet_vt lDifference;
         sizet_vt lv1 = v1;
         sizet_vt lv2 = v2;
@@ -13,8 +12,7 @@ namespace Util {
         return lDifference;
     }
 
-    sizet_vt intersection(const sizet_vt& v1, const sizet_vt& v2)
-    {
+    sizet_vt intersection(const sizet_vt& v1, const sizet_vt& v2) {
         sizet_vt lIntersection;
         sizet_vt lv1 = v1;
         sizet_vt lv2 = v2;
@@ -24,13 +22,11 @@ namespace Util {
         return lIntersection;
     }
 
-    size_t numberOfDifferences(const sizet_vt& v1, const sizet_vt& v2) 
-    {
+    size_t numberOfDifferences(const sizet_vt& v1, const sizet_vt& v2) {
         return difference(v1, v2).size();
     }
 
-    size_t numberOfIntersections(const sizet_vt& v1, const sizet_vt& v2) 
-    {
+    size_t numberOfIntersections(const sizet_vt& v1, const sizet_vt& v2) {
         return intersection(v1, v2).size();
     }
 

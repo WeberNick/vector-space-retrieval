@@ -67,7 +67,7 @@ class DocumentManager {
         try {
             return _docs.at(aDocID);
         } catch (const std::out_of_range& ex) {
-            const std::string lErrMsg = std::string("The doc ID ')" + std::to_string(aDocID) + std::string("' does not appear in the document collection"));
+            const std::string lErrMsg = std::string("The doc ID '" + std::to_string(aDocID) + std::string("' does not appear in the document collection"));
             TRACE(lErrMsg);
             throw InvalidArgumentException(FLF, lErrMsg);
         }
