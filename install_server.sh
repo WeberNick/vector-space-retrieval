@@ -1,5 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
+echo "> [Installing] Server interface"
 if [ "$1" = "-rm" ] || [ "$1" = "--rm" ]; then
   echo "> [Removing all previous node_modules]"
   cd ./evsr-web/

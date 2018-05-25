@@ -365,7 +365,7 @@ export default class Presentation extends React.Component {
             style={{ marginBottom: '100px' }}
           >
             Evaluation <br />
-            <Text style={{fontSize: '.5em'}}>Choose Tier size TODO hier fehlt was</Text>
+            <Text style={{fontSize: '.5em'}}>Choose Tier size</Text>
           </Heading>
         
 
@@ -387,16 +387,16 @@ export default class Presentation extends React.Component {
                   34ms
                 </TableItem>
                 <TableItem>
-                  19ms (<span style={{color: '#44bd32'}}>-44%</span>)
+                  17ms 
                 </TableItem>
                 <TableItem>
-                  12ms (<span style={{color: '#44bd32'}}>-36%</span>)
+                  11ms 
                 </TableItem>
                 <TableItem>
-                  8ms (<span style={{color: '#44bd32'}}>-33%</span>)
+                  7ms (<span style={{color: '#44bd32'}}>-33%</span>)
                 </TableItem>
                 <TableItem>
-                  5ms (<span style={{color: '#44bd32'}}>-37.5%</span>)
+                  5ms 
                 </TableItem>
               </TableRow>
               <TableRow>
@@ -407,13 +407,16 @@ export default class Presentation extends React.Component {
                   0.38
                 </TableItem>
                 <TableItem>
-                  0.36(<span style={{color: '#fbc531'}}>-5%</span>)
+                  0.43
                 </TableItem>
                 <TableItem>
-                  0.32(<span style={{color: '#e84118'}}>-11%</span>)
+                  0.42
                 </TableItem>
                 <TableItem>
-                  0.36(<span style={{color: '#44bd32'}}>+12%</span>)
+                  0.43
+                </TableItem>
+                <TableItem>
+                  0.42
                 </TableItem>
               </TableRow>
             </TableBody>
@@ -451,7 +454,6 @@ export default class Presentation extends React.Component {
             </ListItem>
           </List>
         </Slide>
-        
         <Slide transition={['slide']}>
           <Heading
             size={6}
@@ -460,17 +462,7 @@ export default class Presentation extends React.Component {
             style={{ marginBottom: '100px' }}
           >
             Evaluation
-          </Heading>
-          <Text>Speed up images MAP/DCG/RNT</Text>
-        </Slide>
-        <Slide transition={['slide']}>
-          <Heading
-            size={6}
-            textColor="tertiary"
-            caps
-            style={{ marginBottom: '100px' }}
-          >
-            Evaluation
+            <Text style={{fontSize: '.5em'}}>Word Embeddings</Text>
           </Heading>
           <List>
             <ListItem>Did Word Embeddings help ? Problems:
@@ -489,12 +481,13 @@ export default class Presentation extends React.Component {
             style={{ marginBottom: '100px' }}
           >
             Evaluation
+            <Text style={{fontSize: '.5em'}}>Word Embeddings</Text>
           </Heading>
           <Image width={'100%'} src={require('../assets/T100D5000_Graph_ndcg_VANILLA_WITH_W2V.png')} />
         </Slide>
         <Slide transition={['slide']} bgColor="tertiary">
           <Heading size={6} textColor="primary" caps >
-            Conclusion 📊
+            Conclusion 🔚
           </Heading>
         </Slide>
         <Slide transition={['slide']}>

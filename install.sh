@@ -153,3 +153,5 @@ cd ../
 
 echo "> [Installing] Server interface"
 ./install_server.sh
+./download_glove.sh
+

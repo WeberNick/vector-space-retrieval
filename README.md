@@ -1,10 +1,26 @@
+Table of Contents
+=================
+
+   * [Vector Space Retrieval](#vector-space-retrieval)
+      * [Prerequisites](#prerequisites)
+         * [System Requirements](#system-requirements)
+      * [Project Structure](#project-structure)
+         * [data](#data)
+         * [docs](#docs)
+         * [evsr-web](#evsr-web)
+         * [python](#python)
+         * [src](#src)
+         * [test](#test)
+      * [Getting Started](#getting-started)
+         * [Quick Start Guide](#quick-start-guide)
+         * [Detailed Installation Guide](#detailed-installation-guide)
+            * [Set Up](#set-up)
+            * [Run](#run)
+               * [Command Line Arguments](#command-line-arguments)
+               * [Server mode](#server-mode)
+
 # Vector Space Retrieval
 An efficient Vector Space Model (VSM) implementation for retrieving medical data, built within the team project for the course [Information Retrieval and Web Search](http://dws.informatik.uni-mannheim.de/en/teaching/courses-for-master-candidates/ie663websearchandinformationretrieval/).
-
-## Table of Contents
- * [Prerequisites](#prerequisites)
- * [Project Structure](#project-structure)
- * [Getting Started](#getting-started)
  
 ## Prerequisites
 There are several tools you will need to install and execute the application. In the following is a list with all required tools and technologies required for installing and running the system:
@@ -46,7 +62,7 @@ The build and installation process will be described in the following. Follow th
 
 1. Make sure all the [Requirements](#prerequisites) are satisfied
 
-2. Clone the source with `git`:
+1. Clone the source with `git` (Can be omitted if you have a zipped version of the repository):
 ```
 git clone https://github.com/WeberNick/vector-space-retrieval.git
 ```
@@ -66,7 +82,7 @@ cd vector-space-retrieval
 ### Detailed Installation Guide
 
  * Make sure all the [Requirements](#prerequisites) are satisfied
- * Clone the source with `git`:
+ * Clone the source with `git` (Can be omitted if you have a zipped version of the repository):
 ```
 git clone https://github.com/WeberNick/vector-space-retrieval.git
 ```
@@ -83,8 +99,9 @@ cd vector-space-retrieval
 | Command Line Argument | Description                                                                     | Default                    | Expects parameter |
 |-----------------------|---------------------------------------------------------------------------------|----------------------------|-------------------|
 | -cxx/--cxx            | Set a custom C++ compiler path                                                  | Empty (Use system default) | String Path       |
-| -b/--boost            | Set a path to Boost include dir                                                   | Empty (Try standard paths) | String Path       |
+| -b/--boost            | Set a path to Boost include dir                                                 | Empty (Try standard paths) | String Path       |
 | -a/--all              | Deletes every generated directory as well as all cloning all external Libraries | false                      | -                 |
+| -h/--help             | Displays the help message                                                       | false                      | -                 |
 
 #### Run
  * To run the system, several additional command line arguments can be provided to the executable. A complete list of command line arguments is provided in the console by running
@@ -92,7 +109,7 @@ cd vector-space-retrieval
 ./bin/evsr_run --help
 ```
 
-#### Command Line Arguments
+##### Command Line Arguments
 In the following table we briefly introduce all the command line arguments.
 
 | Command Line Argument | Description                                                         | Default                      | Expects parameter |
@@ -113,3 +130,45 @@ In the following table we briefly introduce all the command line arguments.
 |          --dimensions | Number of dimensions used by the random projections                 | 1000                         | unsigned int      |
 |                --seed | Seed, used for random projections and cluster leader election       | 1                            | unsigned int      |
 
+The `run.sh` script executes the binary with our recommended parameters (`--dimensions 5000 --tiers 100`), initializes logging for the project (`--trace`) and starts the evaluation mode. In addition it takes an optional parameter `-t`, which will cause the unit test to be executed. If you want to run the application with your own parameters please run the binary without the `run.sh` script:
+
+```
+./bin/evsr_run [your command line arguments]
+```
+
+##### Server mode 
+
+Starting the application in server mode gives you the option to use a JSON formatted string to search. This mode is also used inside the `evsr-web` part. For example:
+
+```
+$ ./bib/evsr_run --server
+
+[Initalization...]
+
+[Ready]
+{"query":"why does deep fried food may cause cancer? ","topK":10,"mode":"kVANILLA"}
+[Your results]: ...
+
+```
+
+JSON format:
+
+```json
+{
+  query: string,
+  topK: number,
+  mode: ModeType
+}
+
+//enum strings for mode
+enum ModeType: {
+  kVANILLA,
+  kVANILLA_RAND,
+  kVANILLA_W2V,
+  kTIERED,
+  kTIERED_RAND,
+  kTIERED_W2V,
+  kCLUSTER,
+  kCLUSTER_RAND,
+  kCLUSTER_W2
+}

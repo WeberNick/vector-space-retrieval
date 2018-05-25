@@ -7,10 +7,11 @@ To use the UI to interact with the binary, you need to have `Node.js` and `npm` 
 
 Issue the following command to install all needed dependencies and build all staticly served files (__Note__ all paths are relative to the top level repository directory): If you previously executed `./install.sh` on the top root of this project this was already exectued.
 
-## Install:
+## Install & Start:
 
 ```
 $ ./install_server.sh
+$ ./start_server.sh
 ```
 
 Visit [localhost:8080](localhost:8080)

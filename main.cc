@@ -21,9 +21,9 @@
 namespace fs = std::experimental::filesystem;
 
 void search(std::string query, size_t topK, IR_MODE mode) {
-    QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
+    QueryExecutionEngine& qee = QueryExecutionEngine::getInstance();
 
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode);
+    std::vector<std::pair<size_t, float>> result = qee.search(query, topK, mode);
    
     using json = nlohmann::json;
     json json_result = json::array();
@@ -52,8 +52,8 @@ void serverMode(const control_block_t& aControlBlock) {
     //QueryManager& queryManager = QueryManager::getInstance();
     //queryManager.init(aControlBlock);
 
-    QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
-    qpe.init(aControlBlock);
+    QueryExecutionEngine& qee = QueryExecutionEngine::getInstance();
+    qee.init(aControlBlock);
 
     std::cout << "[Ready]" << std::endl;
 
@@ -89,8 +89,8 @@ void evalMode(const control_block_t& aControlBlock) {
     queryManager.init(aControlBlock);
     std::cout << "Query Manager initialized" << std::endl;
 
-    QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
-    qpe.init(aControlBlock);
+    QueryExecutionEngine& qee = QueryExecutionEngine::getInstance();
+    qee.init(aControlBlock);
     std::cout << "Query Execution Engine initialized" << std::endl;
 
     Evaluation& e = Evaluation::getInstance();
@@ -115,7 +115,7 @@ void evalMode(const control_block_t& aControlBlock) {
 
                 queryNamesSet.insert(queryDoc.getDocID());
                 e.start(type, mode, queryDoc.getDocID());
-                std::vector<std::pair<size_t, float>> result = qpe.search(queryDoc, aControlBlock.results(), mode);
+                std::vector<std::pair<size_t, float>> result = qee.search(queryDoc, aControlBlock.results(), mode);
                 e.stop();
                 e.evalIR(type, mode, queryDoc.getDocID(), result);
             }
