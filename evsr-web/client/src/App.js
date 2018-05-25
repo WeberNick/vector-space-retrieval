@@ -71,8 +71,8 @@ class App extends Component {
             <NotificationContainer />
             <Navigation />
             <Main>
-              <Route exact path="/app" component={Search} />
-              <Route path="/app/evaluation" component={Evaluation} />
+              <Route exact path="/app"  component={Search} />
+              <Route exact path="/app/evaluation" component={Evaluation} />
             </Main>
           </Page>
         </ThemeProvider>

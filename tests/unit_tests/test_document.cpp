@@ -13,18 +13,15 @@
 class DocumentTest : public testing::Test {
   protected:
     virtual void SetUp() {
-        const control_block_t lControlBlock = { false, false, false, "./data/data_test/collection_test_mwe.docs", "./data/" , "./data/s-3.qrel", "./data/stopwords.large", "./data/w2v/glove.6B.300d.txt", "./", "./", 10, 10, 100 };
+        const control_block_t lControlBlock = { false, false, false, "./tests/data/collection_test_mwe.docs", "./data/" , "./data/s-3.qrel", "./data/stopwords.large", "./data/w2v/glove.6B.300d.txt", "./", "./", 10, 10, 100 };
         Trace::getInstance().init(lControlBlock);
         
-        std::cout << "Hi" << std::endl;
         docMan = &(DocumentManager::getInstance());
         docMan->init(lControlBlock);
         docMap = &(docMan->getDocumentMap());
-        std::cout << "Hi" << std::endl;
         indexManager = &(IndexManager::getInstance());
         indexManager->init(lControlBlock, *docMap);
         RandomProjection::getInstance().init(lControlBlock, indexManager->getCollectionTerms().size());
-        std::cout << "Hi" << std::endl;
     }
 
     DocumentManager* docMan;

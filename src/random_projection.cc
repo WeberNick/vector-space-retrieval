@@ -18,7 +18,8 @@ void RandomProjection::init(const control_block_t& aCB, const size_t origVectorS
             if (_dimension == 0) throw "Random projection dimension equals 0, must be > 0 ";
 
             setOrigVectorSize(origVectorSize);
-            initRandomVectors();
+
+            initRandomVectors();;
         }
     }
 
@@ -31,6 +32,7 @@ void RandomProjection::init(const control_block_t& aCB, const size_t origVectorS
  */
 boost::dynamic_bitset<> RandomProjection::localitySensitiveHashProjection(std::vector<float>& vector,
                                                                           std::function<unsigned int(std::vector<float>&, std::vector<float>&)> hashFunc) {
+
 
     boost::dynamic_bitset<> result(_dimension);
     for (size_t j = 0; j < _dimension; ++j) {

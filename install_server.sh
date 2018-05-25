@@ -39,10 +39,14 @@ npm install
 echo "> [Build] evsr-presentation"
 npm run build
 
-cd ../../
+cd ../
+
+echo "> [Generate] esvr-web documentation"
+npm run doc
+
+cd ../
 
 echo "> [Copy] evsr-binary"
-
 cp ./bin/evsr_run ./evsr-web/server/evsr/bin/
 
 echo "> [Finished] installing and setting up evsr-server"

@@ -149,3 +149,7 @@ eval $command
 
 cmake --build ./ --target all --config Debug
 cd ../
+
+
+echo "> [Installing] Server interface"
+./install_server.sh

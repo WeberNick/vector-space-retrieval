@@ -430,7 +430,7 @@ export default class Presentation extends React.Component {
             Evaluation <br />
             <Text style={{fontSize: '.5em'}}>Overview</Text>
           </Heading>
-          <Image src={require('../assets/T100D5000_Graph_ndcg_ALL.png')} />
+          <Image width={'80%'} src={require('../assets/T100D5000_Graph_ndcg_WITHOUT_W2V.png')} />
         </Slide>
         <Slide transition={['slide']}>
           <Heading
@@ -490,7 +490,7 @@ export default class Presentation extends React.Component {
           >
             Evaluation
           </Heading>
-          <Text>Graph mit word embeddings</Text>
+          <Image width={'100%'} src={require('../assets/T100D5000_Graph_ndcg_VANILLA_WITH_W2V.png')} />
         </Slide>
         <Slide transition={['slide']} bgColor="tertiary">
           <Heading size={6} textColor="primary" caps >

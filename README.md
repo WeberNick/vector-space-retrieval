@@ -15,8 +15,7 @@ There are several tools you will need to install and execute the application. In
  * [_boost_](https://www.boost.org): We use the popular C++ library _boost_ for several convenience functionalities such as efficiently splitting strings or dynamically creating bit vectors. If not already installed on your system, you will need to download the _Header-Only Library_ part of _boost_.
  * [Node.js](https://nodejs.org/en/): If you want to use the system with a web interface you will need to have _Node.js_ installed. The evsr-web part was tested under Node v10.1.0
  * Other libraries used in our project are the [Oleander Stemming Library](http://www.oleandersolutions.com/stemming/stemming.html) and a [C++ JSON Library](https://nlohmann.github.io/json/). The source code of these libraries is included in the `.zip`.
- * The application resides only in main memory so it can take up to 2GB of RAM while running. Hvaing less than 2GB RAM can lead to unexpected behavior which is not handled.
-
+ 
 ### System Requirements
 The retrieval system stores a lot of index structures in-memory. Depending on the settings and execution mode, the system might need up to 2GB of main memory.
 
@@ -74,7 +73,7 @@ git clone https://github.com/WeberNick/vector-space-retrieval.git
 
 #### Set Up
  * To install and build the system, several additional options can be (and sometimes must be) provided to the installation process. A complete list of options is provided later.
- * If _boost_ is not located in the default search path (on Linux `/usr/include/boost`, `/usr/local/Cellar/boost` if installed using _homebrew_), you have to provide the absolute or relative path to the include directory of _boost_ via the `-b`option.
+ * If _boost_ is not located in the default search path (on Linux `/usr/include/boost`, `/usr/local/Cellar/boost` if installed using _homebrew_), you have to provide the absolute or relative path to the include directory of _boost_ via the `-b` option.
  * If _GCC_ is not the default compiler on your system (on macOS `g++` is often mapped to use `clang` instead) you may want to provide a path to the C++ compiler via the `-cxx` option (e.g., `/usr/bin/g++`)
 ```
 cd vector-space-retrieval
@@ -96,21 +95,21 @@ cd vector-space-retrieval
 #### Command Line Arguments
 In the following table we briefly introduce all the command line arguments.
 
-| Command Line Argument | Description                                                   | Default                      | Expects parameter |
-|-----------------------|---------------------------------------------------------------|------------------------------|-------------------|
-|                --help | Print all command line arguments                              | false                        | -                 |
-|               --trace | Activate tracing                                              | false                        | -                 |
-|              --server | Start the binary in server mode                               | false                        | -                 |
-|             --measure | Activate the performance measurement                          | false                        | -                 |
-|     --collection-path | Path to the collection file                                   | ./data/d-collection.docs     | String Path       |
-|         --query--path | Path to the query directory                                   | ./data/                      | String Path       |
-|         --scores-path | Path to the relevance score file                              | ./data/s-3.qrel              | String Path       |
-|       --stopword-path | Path to the stopword file                                     | ./data/stopwords.large       | String Path       |
-|     --word-embeddings | Path to the word embeddings file                              | ./data/w2v/glove.6B.300d.txt | String Path       |
-|          --trace-path | Path to the log directory                                     | ./                           | String Path       |
-|           --eval-path | Path to the evaluation directory                              | ./                           | String Path       |
-|                --topk | The top K results returned                                    | 20                           | unsigned int      |
-|               --tiers | Number of tiers used by the  tiered index                     | 50                           | unsigned int      |
-|          --dimensions | Number of dimensions used by the random projections           | 1000                         | unsigned int      |
-|                --seed | Seed, used for random projections and cluster leader election | 1                            | unsigned int      |
+| Command Line Argument | Description                                                         | Default                      | Expects parameter |
+|-----------------------|---------------------------------------------------------------------|------------------------------|-------------------|
+|                --help | Print all command line arguments                                    | false                        | -                 |
+|               --trace | Activate tracing                                                    | false                        | -                 |
+|              --server | Start the binary in server mode, if false the evaluation will start | false                        | -                 |
+|             --measure | Activate the performance measurement                                | false                        | -                 |
+|     --collection-path | Path to the collection file                                         | ./data/d-collection.docs     | String Path       |
+|         --query--path | Path to the query directory                                         | ./data/                      | String Path       |
+|         --scores-path | Path to the relevance score file                                    | ./data/s-3.qrel              | String Path       |
+|       --stopword-path | Path to the stopword file                                           | ./data/stopwords.large       | String Path       |
+|     --word-embeddings | Path to the word embeddings file                                    | ./data/w2v/glove.6B.300d.txt | String Path       |
+|          --trace-path | Path to the log directory                                           | ./                           | String Path       |
+|           --eval-path | Path to the evaluation directory                                    | ./                           | String Path       |
+|                --topk | The top K results returned                                          | 20                           | unsigned int      |
+|               --tiers | Number of tiers used by the  tiered index                           | 50                           | unsigned int      |
+|          --dimensions | Number of dimensions used by the random projections                 | 1000                         | unsigned int      |
+|                --seed | Seed, used for random projections and cluster leader election       | 1                            | unsigned int      |
 
