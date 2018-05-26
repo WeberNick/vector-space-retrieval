@@ -31,6 +31,17 @@ There are several tools you will need to install and execute the application. In
  * [_boost_](https://www.boost.org): We use the popular C++ library _boost_ for several convenience functionalities such as efficiently splitting strings or dynamically creating bit vectors. If not already installed on your system, you will need to download the _Header-Only Library_ part of _boost_.
  * [Node.js](https://nodejs.org/en/): If you want to use the system with a web interface you will need to have _Node.js_ installed. The evsr-web part was tested under Node v10.1.0
  * Other libraries used in our project are the [Oleander Stemming Library](http://www.oleandersolutions.com/stemming/stemming.html) and a [C++ JSON Library](https://nlohmann.github.io/json/). The source code of these libraries is included in the `.zip`.
+ * Since this projects relies on pre-created Word Embedding files from the [GloVe Project](https://nlp.stanford.edu/projects/glove/) it is needed to download the files from there. The `./install.sh` script will automatically take care of that. It uses `cURL` and `unzip` to do so. If you do not have those progams installed on your machine you have to download them manually. How you do so is described in 
+
+### Configuring GloVe
+
+1. Download [https://nlp.stanford.edu/data/glove.6B.zip](http://nlp.stanford.edu/data/glove.6B.zip)
+2. Unzip it, and copy the file `glove.6B.300d.txt` to
+  1. ./data/w2v
+  2. ./evsr-web/server/evsr/data
+3. You can also have a look at the script `download_glove.sh` to see what would have been executed by the script
+
+
  
 ### System Requirements
 The retrieval system stores a lot of index structures in-memory. Depending on the settings and execution mode, the system might need up to 2GB of main memory.

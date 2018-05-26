@@ -1,8 +1,18 @@
 #!/bin/bash
 
-echo "> [Installing] Server interface"
+#== colors ==#
+
+RCol='\033[0m'    # Text Reset
+# Regular
+Blu='\033[0;34m';
+Red='\033[0;31m'; 
+Gre='\033[0;32m'; 
+
+
+
+echo -e "${Blu}> [Installing] ${RCol} Server interface "
 if [ "$1" = "-rm" ] || [ "$1" = "--rm" ]; then
-  echo "> [Removing all previous node_modules]"
+  echo -e "${Blu}> [Deleting] ${RCol} all previous node_modules"
   cd ./evsr-web/
   rm -rf node_modules
 
@@ -18,37 +28,37 @@ if [ "$1" = "-rm" ] || [ "$1" = "--rm" ]; then
   cd ../../
 fi
 
-echo "> [Install] evsr-root"
+echo -e "${Blu}> [Install] ${RCol} evsr-web root"
 cd ./evsr-web/
 npm install
 
-echo "> [Install] evsr-server"
+echo -e "${Blu}> [Install] ${RCol} evsr-server"
 cd ./server
 npm install
 
-echo "> [Install] evsr-client"
+echo -e "${Blu}> [Install] ${RCol} evsr-client"
 cd ../client
 npm install
 
-echo "> [Build] evsr-client"
+echo -e "${Blu}> [Build] ${RCol} evsr-client"
 npm run build
 
-echo "> [Install] evsr-presentation"
+echo -e "${Blu}> [Install] ${RCol} evsr-presentation"
 cd ../presentation
 npm install
 
-echo "> [Build] evsr-presentation"
+echo -e "${Blu}> [Build] ${RCol} evsr-presentation"
 npm run build
 
 cd ../
 
-echo "> [Generate] esvr-web documentation"
+echo -e "${Blu}> [Generate] ${RCol} evsr-web documentation"
 npm run doc
 
 cd ../
 
-echo "> [Copy] evsr-binary"
+echo -e "${Blu}> [Copy] ${RCol} evsr-binary"
 cp ./bin/evsr_run ./evsr-web/server/evsr/bin/
 
-echo "> [Finished] installing and setting up evsr-server"
-echo "> Start by running ./start_server.sh"
+echo -e "${Blu}> [Info] ${RCol} start server by running ./start_server.sh"
+echo -e "${Gre}> [Finish] ${RCol} installing and setting up evsr-server"
