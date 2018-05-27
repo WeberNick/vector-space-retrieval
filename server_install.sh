@@ -58,7 +58,8 @@ npm run doc
 cd ../
 
 echo -e "${Blu}> [Copy] ${RCol} evsr-binary"
+mkdir ./evsr-web/server/evsr/bin
 cp ./bin/evsr_run ./evsr-web/server/evsr/bin/
 
-echo -e "${Blu}> [Info] ${RCol} start server by running ./start_server.sh"
+echo -e "${Blu}> [Info] ${RCol} start server by running ./server_start.sh"
 echo -e "${Gre}> [Finish] ${RCol} installing and setting up evsr-server"

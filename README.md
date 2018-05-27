@@ -24,7 +24,7 @@ An efficient Vector Space Model (VSM) implementation for retrieving medical data
  
 ## Prerequisites
 There are several tools you will need to install and execute the application. In the following is a list with all required tools and technologies required for installing and running the system:
- * _UNIX-like_ operating system: All development and testing was carried out on UNIX-like operating systems. On _Windows_ we encountered several compiler problems. Although fixed, we still strongly recommend to use a UNIX-like operating system (tested under _macOS High Sierra Version 10.13.4_, Arch Linux [Version..] and Ubuntu [Version...])
+ * _UNIX-like_ operating system: All development and testing was carried out on UNIX-like operating systems. On _Windows_ we encountered several compiler problems. Although fixed, we still strongly recommend to use a UNIX-like operating system (tested under _macOS High Sierra Version 10.13.4_, and _Ubuntu 16.04.4 LTS_)
  * [CMake](https://cmake.org): We use CMake as platform independent build system. Before compiling several requirements will be checked by CMake and the compilation process will either fail or a warning will be emitted if requirements are not satisfied.
  * [GNU Make](https://www.gnu.org/software/make/): As development and testing was carried out on UNIX-like operating systems, the de-facto standard build and install system _GNU Make_ is used internally by CMake.
  * [_C++17_ compatible compiler](https://gcc.gnu.org): As all tests were carried out with _GCC 7.3.0_, we recommend to use this one or a never version
@@ -67,7 +67,7 @@ Directory of the C++ source code of the system and its libraries. For further in
 Directory of the unit tests.
 
 ## Getting Started
-The build and installation process will be described in the following. Follow the [Quick Start Guide](#quick-start-guide) for a fast installation and get the system running. This works only if the _boost_ library can be located in its default path. For a more detailed installation guide or if you encounter problems, take a look at [Detailed Installation Guide](#detailed-installation-guide).
+The build and installation process will be described in the following. Follow the [Quick Start Guide](#quick-start-guide) for a fast installation and get the system running. This works only if the _boost_ library can be located in its default path. For a more detailed installation guide or if you encounter problems, take a look at [Detailed Installation Guide](#detailed-installation-guide). _Note:_ The installation process normally takes up to 10-15 minutes, since some dependencies need to be downloaded (depending on your broadbandwitdh, this process can take longer).
 
 ### Quick Start Guide
 
@@ -87,7 +87,6 @@ cd vector-space-retrieval
 4. Run
 ```
 ./bin/evsr_run       # Run the system
-./bin/Unit_Tests_run # Run the unit tests
 ```
 
 ### Detailed Installation Guide
@@ -141,7 +140,7 @@ In the following table we briefly introduce all the command line arguments.
 |          --dimensions | Number of dimensions used by the random projections                 | 1000                         | unsigned int      |
 |                --seed | Seed, used for random projections and cluster leader election       | 1                            | unsigned int      |
 
-The `run.sh` script executes the binary with our recommended parameters (`--dimensions 5000 --tiers 100`), initializes logging for the project (`--trace`) and starts the evaluation mode. In addition it takes an optional parameter `-t`, which will cause the unit test to be executed. If you want to run the application with your own parameters please run the binary without the `run.sh` script:
+The `run.sh` script executes the binary with our recommended parameters (`--dimensions 5000 --tiers 100`), initializes logging for the project (`--trace`) and starts the evaluation mode. If you want to run the application with your own parameters please run the binary without the `run.sh` script:
 
 ```
 ./bin/evsr_run [your command line arguments]

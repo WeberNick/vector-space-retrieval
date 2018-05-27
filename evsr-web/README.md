@@ -10,8 +10,8 @@ Issue the following command to install all needed dependencies and build all sta
 ## Install & Start:
 
 ```
-$ ./install_server.sh
-$ ./start_server.sh
+$ ./server_install.sh
+$ ./server_start.sh
 ```
 
 Visit [localhost:8080](localhost:8080)
@@ -46,7 +46,7 @@ Code for generating the documentation for the evsr-web part.
 
 ### client
 
-Contains the source code for the React application. Build during the `install_server.sh` or `instal.sh`script.
+Contains the source code for the React application. Build during the `server_install.sh` or `install.sh`script.
 
 ### docs
 
@@ -54,7 +54,7 @@ Contains the documentation of the evsr-web client and server.
 
 ### presentation
 
-Contains the source code for the presentation. Build during the `install_server.sh` or `instal.sh`script.
+Contains the source code for the presentation. Build during the `server_install.sh` or `install.sh`script.
 
 ### server
 

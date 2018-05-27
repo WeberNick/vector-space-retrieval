@@ -70,6 +70,9 @@ void serverMode(const control_block_t& aControlBlock) {
 }
 
 void evalMode(const control_block_t& aControlBlock) {
+
+    std::cout << aControlBlock;
+
     std::cout << "[Evaluation mode]" << std::endl;
 
     DocumentManager& docManager = DocumentManager::getInstance();
@@ -221,8 +224,6 @@ int main(const int argc, const char* argv[]) {
         lArgs.dimensions(),          // number of dimensions
         lArgs.seed()                 // seed for random projections and cluster leader election
     };
-
-    std::cout << lCB;
 
     // Init tracing
     Trace::getInstance().init(lCB);
