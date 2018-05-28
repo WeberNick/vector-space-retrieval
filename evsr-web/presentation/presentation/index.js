@@ -201,6 +201,17 @@ export default class Presentation extends React.Component {
           </Table>
         </Slide>
         <Slide transition={['slide']}>
+        <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation
+            </Heading>
+          <Image width={'60%'} src={require('../assets/ImprovementVsDegradation.png')} />
+        </Slide>
+        <Slide transition={['slide']}>
           <Heading
             size={6}
             textColor="tertiary"
@@ -251,72 +262,6 @@ export default class Presentation extends React.Component {
             </TableBody>
           </Table>
           <Text fit style={{marginTop: 50}}>5000 Dimensions results in the best tradeoff between runtime and nDCG</Text>
-        </Slide>
-        <Slide transition={['slide']}>
-          <Heading
-            size={6}
-            textColor="tertiary"
-            caps
-            style={{ marginBottom: '100px' }}
-          >
-            Evaluation <br />
-            <Text style={{fontSize: '.5em'}}>Choose Tier size</Text>
-          </Heading>
-        
-
-          <Table>
-            <TableHeader>
-              <TableHeaderItem>Tiers</TableHeaderItem>
-              <TableHeaderItem>10</TableHeaderItem>
-              <TableHeaderItem>25</TableHeaderItem>
-              <TableHeaderItem>50</TableHeaderItem>
-              <TableHeaderItem>100</TableHeaderItem>
-              <TableHeaderItem>250</TableHeaderItem>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableItem>
-                  Runtime
-                </TableItem>
-                <TableItem>
-                  34ms
-                </TableItem>
-                <TableItem>
-                  17ms <br />(<span style={{color: '#44bd32'}}>-50%</span>)
-                </TableItem>
-                <TableItem>
-                  11ms <br />(<span style={{color: '#44bd32'}}>-36%</span>)
-                </TableItem>
-                <TableItem>
-                  7ms<br /> (<span style={{color: '#44bd32'}}>-36%</span>)
-                </TableItem>
-                <TableItem>
-                  5ms <br />(<span style={{color: '#44bd32'}}>-29%</span>)
-                </TableItem>
-              </TableRow>
-              <TableRow>
-                <TableItem>
-                  nDCG
-                </TableItem>
-                <TableItem>
-                  0.38 
-                </TableItem>
-                <TableItem>
-                  0.43 <br />(<span style={{color: '#44bd32'}}>+13%</span>)
-                </TableItem>
-                <TableItem>
-                  0.42 <br />(<span style={{color: '#fbc531'}}>-2%</span>)
-                </TableItem>
-                <TableItem>
-                  0.43 <br />(<span style={{color: '#44bd32'}}>+2%</span>)
-                </TableItem>
-                <TableItem>
-                  0.42 <br />(<span style={{color: '#fbc531'}}>-2%</span>)
-                </TableItem>
-              </TableRow>
-            </TableBody>
-          </Table>
-          <Text fit style={{marginTop: 50}}>100 Tiers brings the best tradeoff between runtime and nDCG</Text>
         </Slide>
         <Slide transition={['slide']}>
           <Heading
@@ -488,6 +433,11 @@ export default class Presentation extends React.Component {
               </List>
             </ListItem>
           </List>
+        </Slide>
+        <Slide transition={['slide']} bgColor="tertiary">
+          <Heading size={6} textColor="primary" caps >
+            Questions ?
+          </Heading>
         </Slide>
       </Deck>
     );
