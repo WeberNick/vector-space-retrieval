@@ -1,27 +1,26 @@
-Table of Contents
-=================
-
-   * [Vector Space Retrieval](#vector-space-retrieval)
-      * [Prerequisites](#prerequisites)
-         * [System Requirements](#system-requirements)
-      * [Project Structure](#project-structure)
-         * [data](#data)
-         * [docs](#docs)
-         * [evsr-web](#evsr-web)
-         * [python](#python)
-         * [src](#src)
-         * [test](#test)
-      * [Getting Started](#getting-started)
-         * [Quick Start Guide](#quick-start-guide)
-         * [Detailed Installation Guide](#detailed-installation-guide)
-            * [Set Up](#set-up)
-            * [Run](#run)
-               * [Command Line Arguments](#command-line-arguments)
-               * [Server mode](#server-mode)
-
 # Vector Space Retrieval
 An efficient Vector Space Model (VSM) implementation for retrieving medical data, built within the team project for the course [Information Retrieval and Web Search](http://dws.informatik.uni-mannheim.de/en/teaching/courses-for-master-candidates/ie663websearchandinformationretrieval/).
  
+Table of Contents
+=================
+
+  * [Prerequisites](#prerequisites)
+     * [System Requirements](#system-requirements)
+  * [Project Structure](#project-structure)
+     * [data](#data)
+     * [docs](#docs)
+     * [evsr-web](#evsr-web)
+     * [python](#python)
+     * [src](#src)
+     * [test](#test)
+  * [Getting Started](#getting-started)
+     * [Quick Start Guide](#quick-start-guide)
+     * [Detailed Installation Guide](#detailed-installation-guide)
+        * [Set Up](#set-up)
+        * [Run](#run)
+           * [Command Line Arguments](#command-line-arguments)
+           * [Server mode](#server-mode)
+
 ## Prerequisites
 There are several tools you will need to install and execute the application. In the following is a list with all required tools and technologies required for installing and running the system:
  * _UNIX-like_ operating system: All development and testing was carried out on UNIX-like operating systems. On _Windows_ we encountered several compiler problems. Although fixed, we still strongly recommend to use a UNIX-like operating system (tested under _macOS High Sierra Version 10.13.4_, and _Ubuntu 16.04.4 LTS_)
