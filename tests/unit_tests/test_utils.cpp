@@ -3,8 +3,8 @@
 #include "gtest/gtest.h"
 
 TEST(Utils, Random_Vector_Size_Equals_Test) {
-
-    std::vector<float> vec = Util::generateRandomVector(10, 0, 1000);
+    uint seed = 123;
+    std::vector<float> vec = Util::generateRandomVector(10, 0, 1000, seed);
     EXPECT_EQ(10, vec.size());
 }
 

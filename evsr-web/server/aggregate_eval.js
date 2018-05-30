@@ -2,11 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var util = require('util')
 
-
 let eval_dir = `${__dirname}/eval`;
-
-
-
 
 function aggregateQueryTypes(){
   fs.readdir(eval_dir, (err, files) => {
@@ -330,5 +326,4 @@ function aggregateModes(){
 }
 
 aggregateQueryTypes();
-//console.log("hallo")
 aggregateModes();

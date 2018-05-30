@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['calcwordembeddingsvector',['calcWordEmbeddingsVector',['../class_word_embeddings.html#a8dbe13f693f4aff6208dc4e43ad6dfd0',1,'WordEmbeddings']]],
-  ['constructjson',['constructJSON',['../class_evaluation.html#a42b3ecebe79ac11cdf96077a20371093',1,'Evaluation']]],
-  ['createquerydoc',['createQueryDoc',['../class_query_manager.html#a5e209df6a8b25e712f055d316fe7baf4',1,'QueryManager']]]
+  ['buildrandprojvector',['buildRandProjVector',['../class_index_manager.html#a6ceda458988c7f11fc0772f8ac1c9bb5',1,'IndexManager']]],
+  ['buildtfidfvector',['buildTfIdfVector',['../class_index_manager.html#aa5e382d3ed91c94aa6519492719abf7d',1,'IndexManager']]],
+  ['buildwordembeddingsvector',['buildWordEmbeddingsVector',['../class_index_manager.html#a926d1aea8e935a43601e4ba086d4a4f9',1,'IndexManager']]]
 ];

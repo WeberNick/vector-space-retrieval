@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">evsr
-   &#160;<span id="projectnumber">@VERSION</span>
+   &#160;<span id="projectnumber">0.0.1</span>
    </div>
    <div id="projectbrief">Efficient Vector Space Retrieval</div>
   </td>
@@ -75,7 +75,7 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a740d9b6e25c6f8368e7a8ff46c1818f8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_query_execution_engine.html#a740d9b6e25c6f8368e7a8ff46c1818f8">init</a> (const <a class="el" href="structcontrol__block__t.html">CB</a> &amp;aControlBlock)</td></tr>
-<tr class="memdesc:a740d9b6e25c6f8368e7a8ff46c1818f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the singleton.  <a href="#a740d9b6e25c6f8368e7a8ff46c1818f8">More...</a><br /></td></tr>
+<tr class="memdesc:a740d9b6e25c6f8368e7a8ff46c1818f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize control block and query execution engine.  <a href="#a740d9b6e25c6f8368e7a8ff46c1818f8">More...</a><br /></td></tr>
 <tr class="separator:a740d9b6e25c6f8368e7a8ff46c1818f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af50cfca01692d07bbab7bcbdd36f7488"><td class="memItemLeft" align="right" valign="top">const pair_sizet_float_vt&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_query_execution_engine.html#af50cfca01692d07bbab7bcbdd36f7488">search</a> (std::string &amp;query, size_t topK, IR_MODE searchType)</td></tr>
 <tr class="memdesc:af50cfca01692d07bbab7bcbdd36f7488"><td class="mdescLeft">&#160;</td><td class="mdescRight">A top level implementation of the search function. Use a string and type to search for similar documents If search is called on a raw string preprocessing is always done, and then the raw string is converted into a document.  <a href="#af50cfca01692d07bbab7bcbdd36f7488">More...</a><br /></td></tr>
@@ -102,7 +102,7 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:afe6906935175985c919944a379048afb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_query_execution_engine.html">QueryExecutionEngine</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_query_execution_engine.html#afe6906935175985c919944a379048afb">getInstance</a> ()</td></tr>
-<tr class="memdesc:afe6906935175985c919944a379048afb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Instance object.  <a href="#afe6906935175985c919944a379048afb">More...</a><br /></td></tr>
+<tr class="memdesc:afe6906935175985c919944a379048afb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the query execution engine instance.  <a href="#afe6906935175985c919944a379048afb">More...</a><br /></td></tr>
 <tr class="separator:afe6906935175985c919944a379048afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -129,8 +129,8 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Get the Instance object. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_query_execution_engine.html">QueryExecutionEngine</a>&amp; </dd></dl>
+<p>Get the query execution engine instance. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="class_query_execution_engine.html">QueryExecutionEngine</a>&amp; the instance </dd></dl>
 
 </div>
 </div>
@@ -150,10 +150,10 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes the singleton. </p>
+<p>Initialize control block and query execution engine. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">aControlBlock</td><td></td></tr>
+    <tr><td class="paramname">aControlBlock</td><td>the control block </td></tr>
   </table>
   </dd>
 </dl>

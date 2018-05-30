@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">evsr
-   &#160;<span id="projectnumber">@VERSION</span>
+   &#160;<span id="projectnumber">0.0.1</span>
    </div>
    <div id="projectbrief">Efficient Vector Space Retrieval</div>
   </td>
@@ -77,13 +77,14 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a889e9af163619dcd7c2c79ca2bad693c"><td class="memItemLeft" align="right" valign="top">const sizet_vt &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cluster.html#a889e9af163619dcd7c2c79ca2bad693c">getLeaders</a> () const</td></tr>
 <tr class="memdesc:a889e9af163619dcd7c2c79ca2bad693c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the document IDs of the leader.  <a href="#a889e9af163619dcd7c2c79ca2bad693c">More...</a><br /></td></tr>
 <tr class="separator:a889e9af163619dcd7c2c79ca2bad693c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3cec823920527e9de2200211a0474a8"><td class="memItemLeft" align="right" valign="top"><a id="ad3cec823920527e9de2200211a0474a8"></a>
-const sizet_vt &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getLeaders</b> ()</td></tr>
+<tr class="memitem:ad3cec823920527e9de2200211a0474a8"><td class="memItemLeft" align="right" valign="top">const sizet_vt &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cluster.html#ad3cec823920527e9de2200211a0474a8">getLeaders</a> ()</td></tr>
+<tr class="memdesc:ad3cec823920527e9de2200211a0474a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the document IDs of the leader.  <a href="#ad3cec823920527e9de2200211a0474a8">More...</a><br /></td></tr>
 <tr class="separator:ad3cec823920527e9de2200211a0474a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9d1e9d55cccdcb38e036a1dfcf8486ca"><td class="memItemLeft" align="right" valign="top">cluster_mt &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cluster.html#a9d1e9d55cccdcb38e036a1dfcf8486ca">getCluster</a> ()</td></tr>
 <tr class="memdesc:a9d1e9d55cccdcb38e036a1dfcf8486ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Getter for the cluster map.  <a href="#a9d1e9d55cccdcb38e036a1dfcf8486ca">More...</a><br /></td></tr>
 <tr class="separator:a9d1e9d55cccdcb38e036a1dfcf8486ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06e9640924d522f4e851c6bf3aa7c13f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cluster.html#a06e9640924d522f4e851c6bf3aa7c13f">getIDs</a> (const std::vector&lt; std::pair&lt; size_t, float &gt;&gt; &amp;aLeaders, const size_t aTopK, sizet_vt &amp;aOutputVec)</td></tr>
+<tr class="memdesc:a06e9640924d522f4e851c6bf3aa7c13f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the topK ids for the given leaders and write them to aOutputVec.  <a href="#a06e9640924d522f4e851c6bf3aa7c13f">More...</a><br /></td></tr>
 <tr class="separator:a06e9640924d522f4e851c6bf3aa7c13f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
@@ -91,8 +92,8 @@ Friends</h2></td></tr>
 <tr class="memitem:a9ceccca3ed43946bea9a0cbb210c916c"><td class="memItemLeft" align="right" valign="top"><a id="a9ceccca3ed43946bea9a0cbb210c916c"></a>
 class&#160;</td><td class="memItemRight" valign="bottom"><b>IndexManager</b></td></tr>
 <tr class="separator:a9ceccca3ed43946bea9a0cbb210c916c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cae4c018e4771b2d3abd63151af4ab6"><td class="memItemLeft" align="right" valign="top"><a id="a1cae4c018e4771b2d3abd63151af4ab6"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator&lt;&lt;</b> (std::ostream &amp;strm, const <a class="el" href="class_cluster.html">Cluster</a> &amp;clust)</td></tr>
+<tr class="memitem:a1cae4c018e4771b2d3abd63151af4ab6"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cluster.html#a1cae4c018e4771b2d3abd63151af4ab6">operator&lt;&lt;</a> (std::ostream &amp;strm, const <a class="el" href="class_cluster.html">Cluster</a> &amp;clust)</td></tr>
+<tr class="memdesc:a1cae4c018e4771b2d3abd63151af4ab6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override the &lt;&lt;operator for clustered index.  <a href="#a1cae4c018e4771b2d3abd63151af4ab6">More...</a><br /></td></tr>
 <tr class="separator:a1cae4c018e4771b2d3abd63151af4ab6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -155,19 +156,21 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Get the topK ids for the given leaders and write them to aOutputVec. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">aLeaders</td><td></td></tr>
-    <tr><td class="paramname">aTopK</td><td></td></tr>
+    <tr><td class="paramname">aLeaders</td><td>the leaders </td></tr>
+    <tr><td class="paramname">aTopK</td><td>the amount of results (ids) requested </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>const sizet_vt </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>const sizet_vt the output vector </dd></dl>
 
 </div>
 </div>
 <a id="a889e9af163619dcd7c2c79ca2bad693c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a889e9af163619dcd7c2c79ca2bad693c">&#9670;&nbsp;</a></span>getLeaders()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a889e9af163619dcd7c2c79ca2bad693c">&#9670;&nbsp;</a></span>getLeaders() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -191,6 +194,81 @@ std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operato
 
 <p>Get the document IDs of the leader. </p>
 <dl class="section return"><dt>Returns</dt><dd>a vector containing all document IDs </dd></dl>
+
+</div>
+</div>
+<a id="ad3cec823920527e9de2200211a0474a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3cec823920527e9de2200211a0474a8">&#9670;&nbsp;</a></span>getLeaders() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const sizet_vt&amp; Cluster::getLeaders </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the document IDs of the leader. </p>
+<dl class="section return"><dt>Returns</dt><dd>a vector containing all document IDs </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Function Documentation</h2>
+<a id="a1cae4c018e4771b2d3abd63151af4ab6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1cae4c018e4771b2d3abd63151af4ab6">&#9670;&nbsp;</a></span>operator&lt;&lt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream&amp; operator&lt;&lt; </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>strm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="class_cluster.html">Cluster</a> &amp;&#160;</td>
+          <td class="paramname"><em>clust</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Override the &lt;&lt;operator for clustered index. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">strm</td><td>the output stream </td></tr>
+    <tr><td class="paramname">clust</td><td>the cluster instance </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>std::ostream&amp; the modified output stream </dd></dl>
 
 </div>
 </div>

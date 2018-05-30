@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">evsr
-   &#160;<span id="projectnumber">@VERSION</span>
+   &#160;<span id="projectnumber">0.0.1</span>
    </div>
    <div id="projectbrief">Efficient Vector Space Retrieval</div>
   </td>
@@ -126,18 +126,12 @@ float_vt &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getTfIdfVec
 <tr class="memitem:a60ec3255d43926933f0100e34237be87"><td class="memItemLeft" align="right" valign="top"><a id="a60ec3255d43926933f0100e34237be87"></a>
 float_vt &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getWordEmbeddingsVector</b> ()</td></tr>
 <tr class="separator:a60ec3255d43926933f0100e34237be87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af57994b34815381fcf9da85826754594"><td class="memItemLeft" align="right" valign="top">const boost::dynamic_bitset &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#af57994b34815381fcf9da85826754594">getRandProjTiVec</a> () const</td></tr>
-<tr class="memdesc:af57994b34815381fcf9da85826754594"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the random projection vector of the document.  <a href="#af57994b34815381fcf9da85826754594">More...</a><br /></td></tr>
-<tr class="separator:af57994b34815381fcf9da85826754594"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c1949da438cba1401ef4bd24203cdf0"><td class="memItemLeft" align="right" valign="top"><a id="a3c1949da438cba1401ef4bd24203cdf0"></a>
-boost::dynamic_bitset &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getRandProjTiVec</b> ()</td></tr>
-<tr class="separator:a3c1949da438cba1401ef4bd24203cdf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a417408d10e794738b43a7a0eb768e8fd"><td class="memItemLeft" align="right" valign="top">const boost::dynamic_bitset &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#a417408d10e794738b43a7a0eb768e8fd">getRandProjWeVec</a> () const</td></tr>
-<tr class="memdesc:a417408d10e794738b43a7a0eb768e8fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the random projection vector of the document.  <a href="#a417408d10e794738b43a7a0eb768e8fd">More...</a><br /></td></tr>
-<tr class="separator:a417408d10e794738b43a7a0eb768e8fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b2fc8181f946403e803503142dce849"><td class="memItemLeft" align="right" valign="top"><a id="a2b2fc8181f946403e803503142dce849"></a>
-boost::dynamic_bitset &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getRandProjWeVec</b> ()</td></tr>
-<tr class="separator:a2b2fc8181f946403e803503142dce849"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17191d92bf0726ee92b39fcde80ca5be"><td class="memItemLeft" align="right" valign="top">const boost::dynamic_bitset &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#a17191d92bf0726ee92b39fcde80ca5be">getRandProjVec</a> () const</td></tr>
+<tr class="memdesc:a17191d92bf0726ee92b39fcde80ca5be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the random projection vector of the document.  <a href="#a17191d92bf0726ee92b39fcde80ca5be">More...</a><br /></td></tr>
+<tr class="separator:a17191d92bf0726ee92b39fcde80ca5be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaffa8bfad290234a0dfa00593a3c4afb"><td class="memItemLeft" align="right" valign="top"><a id="aaffa8bfad290234a0dfa00593a3c4afb"></a>
+boost::dynamic_bitset &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getRandProjVec</b> ()</td></tr>
+<tr class="separator:aaffa8bfad290234a0dfa00593a3c4afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa427aa80500771a3d45de40c2ffed313"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#aa427aa80500771a3d45de40c2ffed313">getNormLength</a> () const</td></tr>
 <tr class="memdesc:aa427aa80500771a3d45de40c2ffed313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the normalization factor of the document.  <a href="#aa427aa80500771a3d45de40c2ffed313">More...</a><br /></td></tr>
 <tr class="separator:aa427aa80500771a3d45de40c2ffed313"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -162,12 +156,9 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>getTf</b> (const std
 <tr class="memitem:a7f5a25ed17aaa19cf21f984b9f151678"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#a7f5a25ed17aaa19cf21f984b9f151678">setWordEmbeddingsVector</a> (const float_vt &amp;vec)</td></tr>
 <tr class="memdesc:a7f5a25ed17aaa19cf21f984b9f151678"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the tfidf vector of this document.  <a href="#a7f5a25ed17aaa19cf21f984b9f151678">More...</a><br /></td></tr>
 <tr class="separator:a7f5a25ed17aaa19cf21f984b9f151678"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5597bc920a7675ebbb121e4aadff54d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#a5597bc920a7675ebbb121e4aadff54d1">setRandProjTiVec</a> (const boost::dynamic_bitset&lt;&gt; &amp;rand_proj)</td></tr>
-<tr class="memdesc:a5597bc920a7675ebbb121e4aadff54d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Rand Proj Vec object.  <a href="#a5597bc920a7675ebbb121e4aadff54d1">More...</a><br /></td></tr>
-<tr class="separator:a5597bc920a7675ebbb121e4aadff54d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f5a0d46fe046c9f8d7b890cf48656c8"><td class="memItemLeft" align="right" valign="top"><a id="a8f5a0d46fe046c9f8d7b890cf48656c8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setRandProjWeVec</b> (const boost::dynamic_bitset&lt;&gt; &amp;rand_proj)</td></tr>
-<tr class="separator:a8f5a0d46fe046c9f8d7b890cf48656c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bf1d08202fcf5f430813d255e3ba016"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#a5bf1d08202fcf5f430813d255e3ba016">setRandProjVec</a> (const boost::dynamic_bitset&lt;&gt; &amp;rand_proj)</td></tr>
+<tr class="memdesc:a5bf1d08202fcf5f430813d255e3ba016"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the random projection vector of this document.  <a href="#a5bf1d08202fcf5f430813d255e3ba016">More...</a><br /></td></tr>
+<tr class="separator:a5bf1d08202fcf5f430813d255e3ba016"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -178,7 +169,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
 <tr class="memitem:aa41278f73b631c469d67a2f939a39002"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_document.html#aa41278f73b631c469d67a2f939a39002">operator&lt;&lt;</a> (std::ostream &amp;strm, const <a class="el" href="class_document.html">Document</a> &amp;doc)</td></tr>
-<tr class="memdesc:aa41278f73b631c469d67a2f939a39002"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override operator&lt;&lt; for pretty printing a <a class="el" href="class_document.html">Document</a> object.  <a href="#aa41278f73b631c469d67a2f939a39002">More...</a><br /></td></tr>
+<tr class="memdesc:aa41278f73b631c469d67a2f939a39002"><td class="mdescLeft">&#160;</td><td class="mdescRight">Override operator&lt;&lt; for pretty printing a document object.  <a href="#aa41278f73b631c469d67a2f939a39002">More...</a><br /></td></tr>
 <tr class="separator:aa41278f73b631c469d67a2f939a39002"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -402,8 +393,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="af57994b34815381fcf9da85826754594"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af57994b34815381fcf9da85826754594">&#9670;&nbsp;</a></span>getRandProjTiVec()</h2>
+<a id="a17191d92bf0726ee92b39fcde80ca5be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17191d92bf0726ee92b39fcde80ca5be">&#9670;&nbsp;</a></span>getRandProjVec()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -412,35 +403,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">const boost::dynamic_bitset&amp; Document::getRandProjTiVec </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get the random projection vector of the document. </p>
-<dl class="section return"><dt>Returns</dt><dd>boost::dynamic_bitset&lt;&gt;&amp; the random projection vector </dd></dl>
-
-</div>
-</div>
-<a id="a417408d10e794738b43a7a0eb768e8fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a417408d10e794738b43a7a0eb768e8fd">&#9670;&nbsp;</a></span>getRandProjWeVec()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const boost::dynamic_bitset&amp; Document::getRandProjWeVec </td>
+          <td class="memname">const boost::dynamic_bitset&amp; Document::getRandProjVec </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -603,8 +566,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a5597bc920a7675ebbb121e4aadff54d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5597bc920a7675ebbb121e4aadff54d1">&#9670;&nbsp;</a></span>setRandProjTiVec()</h2>
+<a id="a5bf1d08202fcf5f430813d255e3ba016"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bf1d08202fcf5f430813d255e3ba016">&#9670;&nbsp;</a></span>setRandProjVec()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -613,7 +576,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Document::setRandProjTiVec </td>
+          <td class="memname">void Document::setRandProjVec </td>
           <td>(</td>
           <td class="paramtype">const boost::dynamic_bitset&lt;&gt; &amp;&#160;</td>
           <td class="paramname"><em>rand_proj</em></td><td>)</td>
@@ -627,10 +590,10 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Set the Rand Proj Vec object. </p>
+<p>Set the random projection vector of this document. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rand_proj</td><td></td></tr>
+    <tr><td class="paramname">rand_proj</td><td>the random projection vector </td></tr>
   </table>
   </dd>
 </dl>
@@ -774,11 +737,11 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Override operator&lt;&lt; for pretty printing a <a class="el" href="class_document.html">Document</a> object. </p>
+<p>Override operator&lt;&lt; for pretty printing a document object. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">strm</td><td>the output stream </td></tr>
-    <tr><td class="paramname">doc</td><td>the <a class="el" href="class_document.html">Document</a> Object </td></tr>
+    <tr><td class="paramname">doc</td><td>the document </td></tr>
   </table>
   </dd>
 </dl>

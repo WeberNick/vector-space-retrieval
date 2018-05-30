@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">evsr
-   &#160;<span id="projectnumber">@VERSION</span>
+   &#160;<span id="projectnumber">0.0.1</span>
    </div>
    <div id="projectbrief">Efficient Vector Space Retrieval</div>
   </td>
@@ -86,6 +86,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a902154dfc21e2e049b1803debdecff18"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_inverted_index.html#a902154dfc21e2e049b1803debdecff18">getNoDocs</a> (const std::string &amp;aTerm)</td></tr>
 <tr class="memdesc:a902154dfc21e2e049b1803debdecff18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of documents in which aTerm appears.  <a href="#a902154dfc21e2e049b1803debdecff18">More...</a><br /></td></tr>
 <tr class="separator:a902154dfc21e2e049b1803debdecff18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98555e2a9126e5eb49659a3d3dbcafd6"><td class="memItemLeft" align="right" valign="top">sizet_vt&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_inverted_index.html#a98555e2a9126e5eb49659a3d3dbcafd6">getDocIDList</a> (const string_vt &amp;terms) const</td></tr>
+<tr class="memdesc:a98555e2a9126e5eb49659a3d3dbcafd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the doc id list for a given term (so the list of all documents where this term appears)  <a href="#a98555e2a9126e5eb49659a3d3dbcafd6">More...</a><br /></td></tr>
+<tr class="separator:a98555e2a9126e5eb49659a3d3dbcafd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -93,6 +96,7 @@ Friends</h2></td></tr>
 class&#160;</td><td class="memItemRight" valign="bottom"><b>IndexManager</b></td></tr>
 <tr class="separator:a9ceccca3ed43946bea9a0cbb210c916c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14d872e8c28944644a41a6ecc14d1ff8"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_inverted_index.html#a14d872e8c28944644a41a6ecc14d1ff8">operator&lt;&lt;</a> (std::ostream &amp;strm, const <a class="el" href="class_inverted_index.html">InvertedIndex</a> &amp;ii)</td></tr>
+<tr class="memdesc:a14d872e8c28944644a41a6ecc14d1ff8"><td class="mdescLeft">&#160;</td><td class="mdescRight">override the &lt;&lt;operator for inverted index  <a href="#a14d872e8c28944644a41a6ecc14d1ff8">More...</a><br /></td></tr>
 <tr class="separator:a14d872e8c28944644a41a6ecc14d1ff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -121,6 +125,33 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>IndexManager</b></td
 
 <p>Get the size of the dictionary. </p>
 <dl class="section return"><dt>Returns</dt><dd>size_t the distinct number of vocab terms </dd></dl>
+
+</div>
+</div>
+<a id="a98555e2a9126e5eb49659a3d3dbcafd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98555e2a9126e5eb49659a3d3dbcafd6">&#9670;&nbsp;</a></span>getDocIDList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">sizet_vt InvertedIndex::getDocIDList </td>
+          <td>(</td>
+          <td class="paramtype">const string_vt &amp;&#160;</td>
+          <td class="paramname"><em>terms</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the doc id list for a given term (so the list of all documents where this term appears) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">terms</td><td>the term to get the ids for </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>sizet_vt the list of ids </dd></dl>
 
 </div>
 </div>
@@ -240,14 +271,16 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>IndexManager</b></td
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>override the &lt;&lt;operator for inverted index </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">strm</td><td></td></tr>
-    <tr><td class="paramname">ii</td><td></td></tr>
+    <tr><td class="paramname">strm</td><td>the output stream </td></tr>
+    <tr><td class="paramname">ii</td><td>the inverted index instance </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>std::ostream&amp; </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>std::ostream&amp; the modified output stream </dd></dl>
 
 </div>
 </div>

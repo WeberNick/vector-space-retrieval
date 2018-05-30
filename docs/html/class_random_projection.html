@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">evsr
-   &#160;<span id="projectnumber">@VERSION</span>
+   &#160;<span id="projectnumber">0.0.1</span>
    </div>
    <div id="projectbrief">Efficient Vector Space Retrieval</div>
   </td>
@@ -75,32 +75,37 @@ $(function() {
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a4987cbd2eae9e3f321694cd49f063a97"><td class="memItemLeft" align="right" valign="top">boost::dynamic_bitset&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_random_projection.html#a4987cbd2eae9e3f321694cd49f063a97">localitySensitiveHashProjection</a> (std::vector&lt; float &gt; &amp;vector, std::function&lt; unsigned int(std::vector&lt; float &gt; &amp;, std::vector&lt; float &gt; &amp;)&gt;)</td></tr>
-<tr class="memdesc:a4987cbd2eae9e3f321694cd49f063a97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implements a hash function which determines the value of an random projection vector at a given position The implemented hash function is simple: if scalar_product(vec_a, vec_b) &gt; 0 ? return 1 : return 0;.  <a href="#a4987cbd2eae9e3f321694cd49f063a97">More...</a><br /></td></tr>
 <tr class="separator:a4987cbd2eae9e3f321694cd49f063a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7358d1b498e71206641a93496009755f"><td class="memItemLeft" align="right" valign="top"><a id="a7358d1b498e71206641a93496009755f"></a>
-const float_vector_vt &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getRandomVectors</b> ()</td></tr>
+<tr class="memitem:a7358d1b498e71206641a93496009755f"><td class="memItemLeft" align="right" valign="top">const float_vector_vt &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_random_projection.html#a7358d1b498e71206641a93496009755f">getRandomVectors</a> ()</td></tr>
+<tr class="memdesc:a7358d1b498e71206641a93496009755f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the random vectors.  <a href="#a7358d1b498e71206641a93496009755f">More...</a><br /></td></tr>
 <tr class="separator:a7358d1b498e71206641a93496009755f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6a68f0f741251e47b09252718a224fd"><td class="memItemLeft" align="right" valign="top"><a id="ae6a68f0f741251e47b09252718a224fd"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getDimensions</b> ()</td></tr>
+<tr class="memitem:ae6a68f0f741251e47b09252718a224fd"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_random_projection.html#ae6a68f0f741251e47b09252718a224fd">getDimensions</a> ()</td></tr>
+<tr class="memdesc:ae6a68f0f741251e47b09252718a224fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dimensions.  <a href="#ae6a68f0f741251e47b09252718a224fd">More...</a><br /></td></tr>
 <tr class="separator:ae6a68f0f741251e47b09252718a224fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6ab312a7fe505a4a1a5769ff765e94a"><td class="memItemLeft" align="right" valign="top"><a id="ac6ab312a7fe505a4a1a5769ff765e94a"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>getOrigvectorSize</b> ()</td></tr>
+<tr class="memitem:ac6ab312a7fe505a4a1a5769ff765e94a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_random_projection.html#ac6ab312a7fe505a4a1a5769ff765e94a">getOrigvectorSize</a> ()</td></tr>
+<tr class="memdesc:ac6ab312a7fe505a4a1a5769ff765e94a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the orig vector size.  <a href="#ac6ab312a7fe505a4a1a5769ff765e94a">More...</a><br /></td></tr>
 <tr class="separator:ac6ab312a7fe505a4a1a5769ff765e94a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa94b248ad52e3cf297b3544f90b37960"><td class="memItemLeft" align="right" valign="top">uint&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_random_projection.html#aa94b248ad52e3cf297b3544f90b37960">getSeed</a> ()</td></tr>
+<tr class="memdesc:aa94b248ad52e3cf297b3544f90b37960"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the seed.  <a href="#aa94b248ad52e3cf297b3544f90b37960">More...</a><br /></td></tr>
+<tr class="separator:aa94b248ad52e3cf297b3544f90b37960"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac163996d87169b35d4cb0bef312bb5ba"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_random_projection.html#ac163996d87169b35d4cb0bef312bb5ba">setDimensions</a> (const size_t dimensions)</td></tr>
-<tr class="memdesc:ac163996d87169b35d4cb0bef312bb5ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Dimensions object, determines the dimension of the random projection vectors.  <a href="#ac163996d87169b35d4cb0bef312bb5ba">More...</a><br /></td></tr>
+<tr class="memdesc:ac163996d87169b35d4cb0bef312bb5ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the dimensions attribute, determines the dimension of the random projection vectors.  <a href="#ac163996d87169b35d4cb0bef312bb5ba">More...</a><br /></td></tr>
 <tr class="separator:ac163996d87169b35d4cb0bef312bb5ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9a736802283af23d3c5d9ecc1d4d2b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_random_projection.html#ae9a736802283af23d3c5d9ecc1d4d2b7">setRandomVectors</a> (float_vector_vt randomVectors)</td></tr>
-<tr class="memdesc:ae9a736802283af23d3c5d9ecc1d4d2b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Random Vectors object.  <a href="#ae9a736802283af23d3c5d9ecc1d4d2b7">More...</a><br /></td></tr>
+<tr class="memdesc:ae9a736802283af23d3c5d9ecc1d4d2b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the random vectors.  <a href="#ae9a736802283af23d3c5d9ecc1d4d2b7">More...</a><br /></td></tr>
 <tr class="separator:ae9a736802283af23d3c5d9ecc1d4d2b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1df10b29476a26c5eeb2ff91d81cff58"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_random_projection.html#a1df10b29476a26c5eeb2ff91d81cff58">setOrigVectorSize</a> (const size_t origVectorSize)</td></tr>
-<tr class="memdesc:a1df10b29476a26c5eeb2ff91d81cff58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Orig Vector Size object.  <a href="#a1df10b29476a26c5eeb2ff91d81cff58">More...</a><br /></td></tr>
+<tr class="memdesc:a1df10b29476a26c5eeb2ff91d81cff58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the orig vector size.  <a href="#a1df10b29476a26c5eeb2ff91d81cff58">More...</a><br /></td></tr>
 <tr class="separator:a1df10b29476a26c5eeb2ff91d81cff58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14c581ae5b82d1efc234c5f8ceca4952"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_random_projection.html#a14c581ae5b82d1efc234c5f8ceca4952">init</a> (const <a class="el" href="structcontrol__block__t.html">CB</a> &amp;aCB, const size_t origVectorSize)</td></tr>
-<tr class="memdesc:a14c581ae5b82d1efc234c5f8ceca4952"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the <a class="el" href="class_random_projection.html">RandomProjection</a> object with the control block.  <a href="#a14c581ae5b82d1efc234c5f8ceca4952">More...</a><br /></td></tr>
+<tr class="memdesc:a14c581ae5b82d1efc234c5f8ceca4952"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize control block and the random projection.  <a href="#a14c581ae5b82d1efc234c5f8ceca4952">More...</a><br /></td></tr>
 <tr class="separator:a14c581ae5b82d1efc234c5f8ceca4952"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac25e60879e104e44ec59c9f7a2cce2d2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_random_projection.html#ac25e60879e104e44ec59c9f7a2cce2d2">initRandomVectors</a> ()</td></tr>
-<tr class="memdesc:ac25e60879e104e44ec59c9f7a2cce2d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the random vectors.  <a href="#ac25e60879e104e44ec59c9f7a2cce2d2">More...</a><br /></td></tr>
+<tr class="memdesc:ac25e60879e104e44ec59c9f7a2cce2d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the random vectors.  <a href="#ac25e60879e104e44ec59c9f7a2cce2d2">More...</a><br /></td></tr>
 <tr class="separator:ac25e60879e104e44ec59c9f7a2cce2d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad64c72fb2b0b0cdbd2f22573c9f34eca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_random_projection.html#ad64c72fb2b0b0cdbd2f22573c9f34eca">reset</a> (const size_t origVectorSize)</td></tr>
+<tr class="memdesc:ad64c72fb2b0b0cdbd2f22573c9f34eca"><td class="mdescLeft">&#160;</td><td class="mdescRight">reset the random projections and set a new vector size  <a href="#ad64c72fb2b0b0cdbd2f22573c9f34eca">More...</a><br /></td></tr>
+<tr class="separator:ad64c72fb2b0b0cdbd2f22573c9f34eca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -109,6 +114,118 @@ static <a class="el" href="class_random_projection.html">RandomProjection</a> &a
 <tr class="separator:a4e16b1ec92b247fda88253f897492fd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae6a68f0f741251e47b09252718a224fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6a68f0f741251e47b09252718a224fd">&#9670;&nbsp;</a></span>getDimensions()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t RandomProjection::getDimensions </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the dimensions. </p>
+<dl class="section return"><dt>Returns</dt><dd>size_t the dimensions </dd></dl>
+
+</div>
+</div>
+<a id="ac6ab312a7fe505a4a1a5769ff765e94a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6ab312a7fe505a4a1a5769ff765e94a">&#9670;&nbsp;</a></span>getOrigvectorSize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t RandomProjection::getOrigvectorSize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the orig vector size. </p>
+<dl class="section return"><dt>Returns</dt><dd>size_t the orig vector size </dd></dl>
+
+</div>
+</div>
+<a id="a7358d1b498e71206641a93496009755f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7358d1b498e71206641a93496009755f">&#9670;&nbsp;</a></span>getRandomVectors()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const float_vector_vt&amp; RandomProjection::getRandomVectors </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the random vectors. </p>
+<dl class="section return"><dt>Returns</dt><dd>const float_vector_vt&amp; the random vectors </dd></dl>
+
+</div>
+</div>
+<a id="aa94b248ad52e3cf297b3544f90b37960"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa94b248ad52e3cf297b3544f90b37960">&#9670;&nbsp;</a></span>getSeed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint RandomProjection::getSeed </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the seed. </p>
+<dl class="section return"><dt>Returns</dt><dd>uint the seed </dd></dl>
+
+</div>
+</div>
 <a id="a14c581ae5b82d1efc234c5f8ceca4952"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a14c581ae5b82d1efc234c5f8ceca4952">&#9670;&nbsp;</a></span>init()</h2>
 
@@ -135,15 +252,14 @@ static <a class="el" href="class_random_projection.html">RandomProjection</a> &a
       </table>
 </div><div class="memdoc">
 
-<p>Initializes the <a class="el" href="class_random_projection.html">RandomProjection</a> object with the control block. </p>
+<p>Initialize control block and the random projection. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">aCB</td><td></td></tr>
-    <tr><td class="paramname">origVectorSize</td><td></td></tr>
+    <tr><td class="paramname">aCB</td><td>the control block </td></tr>
+    <tr><td class="paramname">origVectorSize</td><td>the orig vector size </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -170,7 +286,7 @@ static <a class="el" href="class_random_projection.html">RandomProjection</a> &a
 </table>
 </div><div class="memdoc">
 
-<p>Initializes the random vectors. </p>
+<p>Initialize the random vectors. </p>
 <dl class="section return"><dt>Returns</dt><dd>true </dd>
 <dd>
 bool indicating whether the random vectors have been set </dd></dl>
@@ -202,15 +318,6 @@ bool indicating whether the random vectors have been set </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>Implements a hash function which determines the value of an random projection vector at a given position The implemented hash function is simple: if scalar_product(vec_a, vec_b) &gt; 0 ? return 1 : return 0;. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">vector</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>boost::dynamic_bitset&lt;&gt;</dd></dl>
 <p>Use random projections to reduce the number of dimensions of a vector</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -220,6 +327,40 @@ bool indicating whether the random vectors have been set </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>boost::dynamic_bitset bitvector </dd></dl>
+
+</div>
+</div>
+<a id="ad64c72fb2b0b0cdbd2f22573c9f34eca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad64c72fb2b0b0cdbd2f22573c9f34eca">&#9670;&nbsp;</a></span>reset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RandomProjection::reset </td>
+          <td>(</td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>origVectorSize</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>reset the random projections and set a new vector size </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">origVectorSize</td><td>the new vector size </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -247,16 +388,14 @@ bool indicating whether the random vectors have been set </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Set the Dimensions object, determines the dimension of the random projection vectors. </p>
+<p>Set the dimensions attribute, determines the dimension of the random projection vectors. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dimensions</td><td></td></tr>
+    <tr><td class="paramname">dimensions</td><td>the dimensions </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true </dd>
-<dd>
-false </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>whether the dimension has been set </dd></dl>
 
 </div>
 </div>
@@ -284,10 +423,10 @@ false </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Set the Orig Vector Size object. </p>
+<p>Set the orig vector size. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">origVectorSize</td><td></td></tr>
+    <tr><td class="paramname">origVectorSize</td><td>the orig vector size </td></tr>
   </table>
   </dd>
 </dl>
@@ -319,10 +458,10 @@ false </dd></dl>
 </table>
 </div><div class="memdoc">
 
-<p>Set the Random Vectors object. </p>
+<p>Set the random vectors. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">randomVectors</td><td></td></tr>
+    <tr><td class="paramname">randomVectors</td><td>the random vectors </td></tr>
   </table>
   </dd>
 </dl>

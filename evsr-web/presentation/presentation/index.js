@@ -8,6 +8,7 @@ import {
   CodePane,
   Cite,
   Deck,
+  Fill,
   Heading,
   ListItem,
   List,
@@ -119,24 +120,6 @@ export default class Presentation extends React.Component {
           </Heading>
         </Slide>
         <Slide transition={['slide']}>
-          <div>
-            <Heading
-              size={6}
-              textColor="tertiary"
-              caps
-              style={{ marginBottom: '100px' }}
-            >
-             Core
-            </Heading>
-            <List>
-              <ListItem>Document & DocumentManager</ListItem>
-              <ListItem>QueryManager</ListItem>
-              <ListItem>IndexManager</ListItem>
-              <ListItem>QueryExecutionEngine</ListItem>
-          </List>
-          </div>
-        </Slide>
-        <Slide transition={['slide']}>
           <Image src={require('../assets/IR.png')} />
         </Slide>
         <Slide transition={['slide']} bgColor="tertiary">
@@ -155,8 +138,8 @@ export default class Presentation extends React.Component {
           </Heading>
           <List>
             <ListItem>VSM has a fundamental problem</ListItem>
-            <ListItem>Documents and queries don't have a high term overlap</ListItem>
-            <ListItem>Need some semantic relationship between words</ListItem>
+            <ListItem>Only focuses on term overlap</ListItem>
+            <ListItem>Also want to capture semantic relationship between query and documents</ListItem>
             <ListItem><strong>Word Embeddings</strong> to the rescue...</ListItem>
           </List>
         </Slide>
@@ -173,16 +156,211 @@ export default class Presentation extends React.Component {
             style={{ marginBottom: '100px' }}
           >
             Evaluation
+            <Text style={{fontSize: '.5em'}}>Index combination</Text>
           </Heading>
-          <List>
-            <ListItem>As expected...
-              <List>
-                <ListItem>Cluster and Tiered Index fast</ListItem>
-                <ListItem>Random Projections add speed up</ListItem>
-                <ListItem>VSM best retrieval performance but slow</ListItem>
-              </List>
-            </ListItem>
-          </List>
+          <Table>
+            <TableHeader>
+              <TableHeaderItem>Vanilla</TableHeaderItem>
+              <TableHeaderItem>Random Projection</TableHeaderItem>
+              <TableHeaderItem>Word Embeddings</TableHeaderItem>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableItem>
+                  VSM
+                </TableItem>
+                <TableItem>
+                  VSM_R
+                </TableItem>
+                <TableItem>
+                  VSM_W
+                </TableItem>
+              </TableRow>
+              <TableRow>
+                <TableItem>
+                  TieredIndex
+                </TableItem>
+                <TableItem>
+                TieredIndex_R
+                </TableItem>
+                <TableItem>
+                TieredIndex_W
+                </TableItem>
+              </TableRow><TableRow>
+                <TableItem>
+                  Cluster
+                </TableItem>
+                <TableItem>
+                Cluster_R
+                </TableItem>
+                <TableItem>
+                Cluster_W
+                </TableItem>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Slide>
+        <Slide transition={['slide']}>
+        <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation
+            </Heading>
+          <Image width={'60%'} src={require('../assets/ImprovementVsDegradation.png')} />
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation <br />
+            <Text style={{fontSize: '.5em'}}>Choose Random projection Dimension</Text>
+          </Heading>
+        
+
+          <Table>
+            <TableHeader>
+              <TableHeaderItem>Dimensions</TableHeaderItem>
+              <TableHeaderItem>500</TableHeaderItem>
+              <TableHeaderItem>5000</TableHeaderItem>
+              <TableHeaderItem>10000</TableHeaderItem>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableItem>
+                  Runtime
+                </TableItem>
+                <TableItem>
+                  2.8ms
+                </TableItem>
+                <TableItem>
+                  3ms (<span style={{color: '#fbc531'}}>+7%</span>)
+                </TableItem>
+                <TableItem>
+                  4ms (<span style={{color: '#e84118'}}>+33%</span>)
+                </TableItem>
+              </TableRow>
+              <TableRow>
+                <TableItem>
+                  nDCG
+                </TableItem>
+                <TableItem>
+                  0.28
+                </TableItem>
+                <TableItem>
+                  0.43(<span style={{color: '#44bd32'}}>+54%</span>)
+                </TableItem>
+                <TableItem>
+                  0.49(<span style={{color: '#fbc531'}}>+14%</span>)
+                </TableItem>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <Text fit style={{marginTop: 50}}>5000 Dimensions results in the best tradeoff between runtime and nDCG</Text>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation
+            <Text style={{fontSize: '.5em'}}>Queries</Text>
+          </Heading>
+          <Table>
+            <TableHeader>
+              <TableHeaderItem>Query Types</TableHeaderItem>
+            <TableHeaderItem># of Queries</TableHeaderItem>
+            </TableHeader>
+            <TableBody>
+              <TableRow>
+                <TableItem>
+                  all
+                </TableItem>
+                <TableItem>
+                  3,237
+                </TableItem>
+              </TableRow>
+              <TableRow>
+                <TableItem>
+                  titles
+                </TableItem>
+                <TableItem>
+                  1,429
+                </TableItem>
+              </TableRow>
+              <TableRow>
+                <TableItem>
+                  non-topic titles
+                </TableItem>
+                <TableItem>
+                  3,237
+                </TableItem>
+              </TableRow>
+              <TableRow>
+                <TableItem>
+                  video description
+                </TableItem>
+                <TableItem>
+                  1,016
+                </TableItem>
+              </TableRow>
+              <TableRow>
+                <TableItem>
+                  video titles
+                </TableItem>
+                <TableItem>
+                  1,016
+                </TableItem>
+              </TableRow>
+              <TableRow>
+                <TableItem>
+                  <strong>Total</strong>
+                </TableItem>
+                <TableItem>
+                <strong>9,935</strong>
+                </TableItem>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <Text fit style={{marginTop: 50}}>9 (Index combinations) * 9,935  = 89,415 evaluation results</Text>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation
+            <Text style={{fontSize: '.5em'}}>Runtime performance</Text>
+          </Heading>
+          <Layout>
+            <Fill>
+              <Image src={require('../assets/T100D5000_Graph_RNT_VANILLA.png')} />
+            </Fill>
+            <Fill>
+              <Image src={require('../assets/T100D5000_Graph_RNT_RAND.png')} />
+            </Fill>
+          </Layout>
+        </Slide>
+        <Slide transition={['slide']}>
+          <Heading
+            size={6}
+            textColor="tertiary"
+            caps
+            style={{ marginBottom: '100px' }}
+          >
+            Evaluation <br />
+            <Text style={{fontSize: '.5em'}}>Overview</Text>
+          </Heading>
+          <Image width={'80%'} src={require('../assets/T100D5000_Graph_ndcg_WITHOUT_W2V.png')} />
         </Slide>
         <Slide transition={['slide']}>
           <Heading
@@ -193,7 +371,8 @@ export default class Presentation extends React.Component {
           >
             Evaluation
           </Heading>
-          <Text>Speed up images MAP/DCG/RNT</Text>
+          <Text>Best index in terms of <br />runtime & retrieval performance tradeoff: <br/>
+          <strong>Tiered Index in combination with Random Projections <br/>(with tiers: 100, dimensions: 5000)</strong></Text>
         </Slide>
         <Slide transition={['slide']}>
           <Heading
@@ -203,11 +382,15 @@ export default class Presentation extends React.Component {
             style={{ marginBottom: '100px' }}
           >
             Evaluation
+            <Text style={{fontSize: '.5em'}}>Word Embeddings</Text>
           </Heading>
           <List>
-            <ListItem>Did Word Embeddings help ? Problems:
+            <ListItem>Did Word Embeddings help ? </ListItem>
+            <ListItem>Using pre-built Word Embeddings from GloVe project (Stanford NLP)</ListItem>
+            <ListItem> Problems:
               <List>
-                <ListItem>Word Embeddings were built on non preprocessed words</ListItem>
+                <ListItem>Word Embeddings were built on non-preprocessed terms...</ListItem>
+                <ListItem>...but were applied on preprocessed terms</ListItem>
                 <ListItem>Word Embeddings were not domain specific</ListItem>
               </List>
             </ListItem>
@@ -221,12 +404,13 @@ export default class Presentation extends React.Component {
             style={{ marginBottom: '100px' }}
           >
             Evaluation
+            <Text style={{fontSize: '.5em'}}>Word Embeddings</Text>
           </Heading>
-          <Text>Graph mit word embeddings</Text>
+          <Image width={'100%'} src={require('../assets/T100D5000_Graph_ndcg_VANILLA_WITH_W2V.png')} />
         </Slide>
         <Slide transition={['slide']} bgColor="tertiary">
           <Heading size={6} textColor="primary" caps >
-            Conclusion 📊
+            Conclusion 🔚
           </Heading>
         </Slide>
         <Slide transition={['slide']}>
@@ -238,9 +422,22 @@ export default class Presentation extends React.Component {
           >
             Conclusion
           </Heading>
-          <Text fit>Best index in terms of runtime & retrieval performance: <br/>
-          <strong>Tiered Index with 100 Tiers and Random Projection</strong></Text>
-          
+          <List>
+            <ListItem>Tiered Index yields the best tradeoff between runtime and retrieval perfomance</ListItem>
+            <ListItem>For additional speed up, one can use Random Projections, with a minimal loss on retrieval perfomance</ListItem>
+            <ListItem>Word Embeddings could be improved by
+              <List>
+                <ListItem>Applying on non-preprocessed terms</ListItem>
+                <ListItem>Using domain specific ones</ListItem>
+                <ListItem>IDF-weighted average of word vectors</ListItem>
+              </List>
+            </ListItem>
+          </List>
+        </Slide>
+        <Slide transition={['slide']} bgColor="tertiary">
+          <Heading size={6} textColor="primary" caps >
+            Questions ?
+          </Heading>
         </Slide>
       </Deck>
     );

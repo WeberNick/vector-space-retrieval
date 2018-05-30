@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['calcwordembeddingsvector',['calcWordEmbeddingsVector',['../class_word_embeddings.html#a8dbe13f693f4aff6208dc4e43ad6dfd0',1,'WordEmbeddings']]],
-  ['cluster',['Cluster',['../class_cluster.html',1,'']]],
-  ['cluster_2ehh',['cluster.hh',['../cluster_8hh.html',1,'']]],
-  ['constructjson',['constructJSON',['../class_evaluation.html#a42b3ecebe79ac11cdf96077a20371093',1,'Evaluation']]],
-  ['control_5fblock_5ft',['control_block_t',['../structcontrol__block__t.html',1,'']]],
-  ['createquerydoc',['createQueryDoc',['../class_query_manager.html#a5e209df6a8b25e712f055d316fe7baf4',1,'QueryManager']]]
+  ['document',['Document',['../class_document.html',1,'Document'],['../class_document.html#afd444f60f1ffdcc0b7a3632904645323',1,'Document::Document(const std::string &amp;aDocID, const string_vt &amp;aContent)'],['../class_document.html#aabaf0a76699634b99d85730dea655f48',1,'Document::Document(const Document &amp;)']]],
+  ['document_2ehh',['document.hh',['../document_8hh.html',1,'']]],
+  ['document_5fmanager_2ehh',['document_manager.hh',['../document__manager_8hh.html',1,'']]],
+  ['documentmanager',['DocumentManager',['../class_document_manager.html',1,'']]]
 ];

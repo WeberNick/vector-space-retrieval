@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">evsr
-   &#160;<span id="projectnumber">@VERSION</span>
+   &#160;<span id="projectnumber">0.0.1</span>
    </div>
    <div id="projectbrief">Efficient Vector Space Retrieval</div>
   </td>
@@ -83,10 +83,8 @@ $(function() {
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getID</b>() (defined in <a class="el" href="class_document.html">Document</a>)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="class_document.html#aa427aa80500771a3d45de40c2ffed313">getNormLength</a>() const</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getNormLength</b>() (defined in <a class="el" href="class_document.html">Document</a>)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_document.html#af57994b34815381fcf9da85826754594">getRandProjTiVec</a>() const</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getRandProjTiVec</b>() (defined in <a class="el" href="class_document.html">Document</a>)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_document.html#a417408d10e794738b43a7a0eb768e8fd">getRandProjWeVec</a>() const</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getRandProjWeVec</b>() (defined in <a class="el" href="class_document.html">Document</a>)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_document.html#a17191d92bf0726ee92b39fcde80ca5be">getRandProjVec</a>() const</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getRandProjVec</b>() (defined in <a class="el" href="class_document.html">Document</a>)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="class_document.html#a9baf879e6754920e8c15672700740c9b">getTermTfMap</a>() const</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>getTermTfMap</b>() (defined in <a class="el" href="class_document.html">Document</a>)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr><td class="entry"><a class="el" href="class_document.html#a8c86b7e9b5e708965d6ec8b246483f22">getTf</a>(const std::string &amp;aTerm) const</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"></td></tr>
@@ -99,12 +97,11 @@ $(function() {
   <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>operator=</b>(const Document &amp;doc)=delete (defined in <a class="el" href="class_document.html">Document</a>)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>operator=</b>(Document &amp;&amp;)=delete (defined in <a class="el" href="class_document.html">Document</a>)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="class_document.html#ad4a2bb58a6b461200d219fbdb6ae6763">setNormLength</a>(float nl)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_document.html#a5597bc920a7675ebbb121e4aadff54d1">setRandProjTiVec</a>(const boost::dynamic_bitset&lt;&gt; &amp;rand_proj)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>setRandProjWeVec</b>(const boost::dynamic_bitset&lt;&gt; &amp;rand_proj) (defined in <a class="el" href="class_document.html">Document</a>)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_document.html#aa6d32cdbe945e941b2c235df3d269958">setTermTfMap</a>(const str_float_mt &amp;termTFMap)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="class_document.html#aa1d5bb6342ef571fae8dc4505bd7c54f">setTfIdfVector</a>(const float_vt &amp;vec)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="class_document.html#a7f5a25ed17aaa19cf21f984b9f151678">setWordEmbeddingsVector</a>(const float_vt &amp;vec)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>~Document</b>()=default (defined in <a class="el" href="class_document.html">Document</a>)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="class_document.html#a5bf1d08202fcf5f430813d255e3ba016">setRandProjVec</a>(const boost::dynamic_bitset&lt;&gt; &amp;rand_proj)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_document.html#aa6d32cdbe945e941b2c235df3d269958">setTermTfMap</a>(const str_float_mt &amp;termTFMap)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr><td class="entry"><a class="el" href="class_document.html#aa1d5bb6342ef571fae8dc4505bd7c54f">setTfIdfVector</a>(const float_vt &amp;vec)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="class_document.html#a7f5a25ed17aaa19cf21f984b9f151678">setWordEmbeddingsVector</a>(const float_vt &amp;vec)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>~Document</b>()=default (defined in <a class="el" href="class_document.html">Document</a>)</td><td class="entry"><a class="el" href="class_document.html">Document</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

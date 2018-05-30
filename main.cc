@@ -21,9 +21,9 @@
 namespace fs = std::experimental::filesystem;
 
 void search(std::string query, size_t topK, IR_MODE mode) {
-    QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
+    QueryExecutionEngine& qee = QueryExecutionEngine::getInstance();
 
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode);
+    std::vector<std::pair<size_t, float>> result = qee.search(query, topK, mode);
    
     using json = nlohmann::json;
     json json_result = json::array();
@@ -52,8 +52,8 @@ void serverMode(const control_block_t& aControlBlock) {
     //QueryManager& queryManager = QueryManager::getInstance();
     //queryManager.init(aControlBlock);
 
-    QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
-    qpe.init(aControlBlock);
+    QueryExecutionEngine& qee = QueryExecutionEngine::getInstance();
+    qee.init(aControlBlock);
 
     std::cout << "[Ready]" << std::endl;
 
@@ -70,6 +70,8 @@ void serverMode(const control_block_t& aControlBlock) {
 }
 
 void evalMode(const control_block_t& aControlBlock) {
+
+    std::cout << aControlBlock;
 
     std::cout << "[Evaluation mode]" << std::endl;
 
@@ -90,8 +92,8 @@ void evalMode(const control_block_t& aControlBlock) {
     queryManager.init(aControlBlock);
     std::cout << "Query Manager initialized" << std::endl;
 
-    QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
-    qpe.init(aControlBlock);
+    QueryExecutionEngine& qee = QueryExecutionEngine::getInstance();
+    qee.init(aControlBlock);
     std::cout << "Query Execution Engine initialized" << std::endl;
 
     Evaluation& e = Evaluation::getInstance();
@@ -101,33 +103,10 @@ void evalMode(const control_block_t& aControlBlock) {
     std::cout << "[Ready]" << std::endl;
     std::cout << "[Start Evaluating]" << std::endl;
 
-     str_set queryNamesSet;
-
-    /*for (int i = 0; i < kNumberOfTypes; ++i ) {
-
-        QUERY_TYPE type = static_cast<QUERY_TYPE>(i);
-        
-        for (int j = 0; j < kNumberOfModes; ++j) {
-            
-            IR_MODE mode = static_cast<IR_MODE>(j);
-
-            std::cout <<  typeToString(type) << " for mode " << modeToString(mode) << std::endl; 
-            
-            auto& queryForType = QueryManager::getInstance().getQueryMap(type);
-            for (auto& [query_id, query] : queryForType) {
-                Document queryDoc = queryManager.createQueryDoc(query, query_id, true);
-
-                queryNamesSet.insert(queryDoc.getDocID());
-                e.start(type, mode, queryDoc.getDocID());
-                std::vector<std::pair<size_t, float>> result = qpe.search(queryDoc, aControlBlock.results(), mode);
-                e.stop();
-                e.evalIR(type, mode, queryDoc.getDocID(), result);
-            }
-        }
-    }*/
+    str_set queryNamesSet;
 
     const std::vector<IR_MODE> modes{kVANILLA, kVANILLA_RAND, kVANILLA_W2V, kCLUSTER, kCLUSTER_RAND, kCLUSTER_W2V, kTIERED, kTIERED_RAND, kTIERED_W2V};
-    const std::vector<QUERY_TYPE> types{kALL, kNTT, kTITLES, kVIDDESC, kVIDTITLES};
+    const std::vector<QUERY_TYPE> types{kNTT};
 
     for(auto type : types){
         for(auto mode: modes) {
@@ -135,13 +114,16 @@ void evalMode(const control_block_t& aControlBlock) {
             
             auto& queryForType = QueryManager::getInstance().getQueryMap(type);
             for (auto& [query_id, query] : queryForType) {
-                Document queryDoc = queryManager.createQueryDoc(query, query_id, true);
+                if(query_id == "PLAIN-408") {
+                    Document queryDoc = queryManager.createQueryDoc(query, query_id, true);
 
-                queryNamesSet.insert(queryDoc.getDocID());
-                e.start(type, mode, queryDoc.getDocID());
-                std::vector<std::pair<size_t, float>> result = qpe.search(queryDoc, aControlBlock.results(), mode);
-                e.stop();
-                e.evalIR(type, mode, queryDoc.getDocID(), result);
+                    queryNamesSet.insert(queryDoc.getDocID());
+                    e.start(type, mode, queryDoc.getDocID());
+                    std::vector<std::pair<size_t, float>> result = qee.search(queryDoc, aControlBlock.results(), mode);
+                    e.stop();
+                    e.evalIR(type, mode, queryDoc.getDocID(), result);
+                }
+                
             }
         }
     }
@@ -245,8 +227,6 @@ int main(const int argc, const char* argv[]) {
         lArgs.dimensions(),          // number of dimensions
         lArgs.seed()                 // seed for random projections and cluster leader election
     };
-
-    std::cout << lCB;
 
     // Init tracing
     Trace::getInstance().init(lCB);

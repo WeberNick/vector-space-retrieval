@@ -25,11 +25,6 @@ void IndexManager::init(const CB& aControlBlock, doc_mt& aDocMap) {
         _wordEmbeddingsIndex.init(aControlBlock);
         _docs = &aDocMap;
 
-        _invertedIndex.init(aControlBlock);
-        _tieredIndex.init(aControlBlock);
-        _clusteredIndex.init(aControlBlock);
-        _wordEmbeddingsIndex.init(aControlBlock);
-
         _collection_terms.reserve(_docs->size());
         _clusteredIndex.chooseLeaders();
         const sizet_vt& leaders = _clusteredIndex.getLeaders();

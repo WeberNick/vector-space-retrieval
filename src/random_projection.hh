@@ -34,12 +34,11 @@ class RandomProjection {
   public:
     static RandomProjection& getInstance();
     /**
-     * @brief Implements a hash function which determines the value of an random projection vector at a given position
-     * The implemented hash function is simple:
-     *      if scalar_product(vec_a, vec_b) > 0 ? return 1 : return 0;
+     * Use random projections to reduce the number of dimensions of a vector
      *
-     * @param vector
-     * @return boost::dynamic_bitset<>
+     * @param vector original vector
+     * @param hashFunc hash function to use to combine original vector and random vectors
+     * @return boost::dynamic_bitset bitvector
      */
     boost::dynamic_bitset<> localitySensitiveHashProjection(std::vector<float>& vector, std::function<unsigned int(std::vector<float>&, std::vector<float>&)>);
 
@@ -129,11 +128,21 @@ class RandomProjection {
         }
     }
 
+    /**
+     * @brief reset the random projections and set a new vector size
+     * 
+     * @param origVectorSize the new vector size
+     */
+    inline void reset(const size_t origVectorSize) {
+        _origVectorSize = origVectorSize;
+        _randomVectors.clear();
+    }
+
   private:
     const CB* _cb;
 
     uint            _seed;
     float_vector_vt _randomVectors;
-    size_t _dimension;
-    size_t _origVectorSize;
+    size_t          _dimension;
+    size_t          _origVectorSize;
 };

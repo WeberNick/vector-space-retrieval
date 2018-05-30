@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">evsr
-   &#160;<span id="projectnumber">@VERSION</span>
+   &#160;<span id="projectnumber">0.0.1</span>
    </div>
    <div id="projectbrief">Efficient Vector Space Retrieval</div>
   </td>
@@ -74,18 +74,15 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af69f8336bf85046a3415893c54f4be9f"><td class="memItemLeft" align="right" valign="top"><a id="af69f8336bf85046a3415893c54f4be9f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>rand</b> () const</td></tr>
-<tr class="separator:af69f8336bf85046a3415893c54f4be9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a602b63ce94fbe182f7f5d8d2d6e55dad"><td class="memItemLeft" align="right" valign="top"><a id="a602b63ce94fbe182f7f5d8d2d6e55dad"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>tiered</b> () const</td></tr>
-<tr class="separator:a602b63ce94fbe182f7f5d8d2d6e55dad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab23d7ce64066a15beceec6a9b4d04ffa"><td class="memItemLeft" align="right" valign="top"><a id="ab23d7ce64066a15beceec6a9b4d04ffa"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>trace</b> () const</td></tr>
 <tr class="separator:ab23d7ce64066a15beceec6a9b4d04ffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48ac2c82b9aaa7014b72ac7ad58c06a4"><td class="memItemLeft" align="right" valign="top"><a id="a48ac2c82b9aaa7014b72ac7ad58c06a4"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>measure</b> () const</td></tr>
 <tr class="separator:a48ac2c82b9aaa7014b72ac7ad58c06a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abed432fc7adddfc491a522486343415d"><td class="memItemLeft" align="right" valign="top"><a id="abed432fc7adddfc491a522486343415d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>server</b> () const</td></tr>
+<tr class="separator:abed432fc7adddfc491a522486343415d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a954b7262621c07349c11aa0a129c1602"><td class="memItemLeft" align="right" valign="top"><a id="a954b7262621c07349c11aa0a129c1602"></a>
 const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>collectionPath</b> () const</td></tr>
 <tr class="separator:a954b7262621c07349c11aa0a129c1602"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -116,6 +113,9 @@ uint&#160;</td><td class="memItemRight" valign="bottom"><b>tiers</b> () const</t
 <tr class="memitem:a86d862d7b5fcdf7486f73d0a50f4e69f"><td class="memItemLeft" align="right" valign="top"><a id="a86d862d7b5fcdf7486f73d0a50f4e69f"></a>
 uint&#160;</td><td class="memItemRight" valign="bottom"><b>dimensions</b> () const</td></tr>
 <tr class="separator:a86d862d7b5fcdf7486f73d0a50f4e69f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae17ac794d426c3392894c3295c44b0db"><td class="memItemLeft" align="right" valign="top"><a id="ae17ac794d426c3392894c3295c44b0db"></a>
+uint&#160;</td><td class="memItemRight" valign="bottom"><b>seed</b> () const</td></tr>
+<tr class="separator:ae17ac794d426c3392894c3295c44b0db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -125,6 +125,9 @@ const bool&#160;</td><td class="memItemRight" valign="bottom"><b>_trace</b></td>
 <tr class="memitem:a3408433435819f815031246cc87193a7"><td class="memItemLeft" align="right" valign="top"><a id="a3408433435819f815031246cc87193a7"></a>
 const bool&#160;</td><td class="memItemRight" valign="bottom"><b>_measure</b></td></tr>
 <tr class="separator:a3408433435819f815031246cc87193a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43921e1b303a425113c25ab24111b278"><td class="memItemLeft" align="right" valign="top"><a id="a43921e1b303a425113c25ab24111b278"></a>
+const bool&#160;</td><td class="memItemRight" valign="bottom"><b>_server</b></td></tr>
+<tr class="separator:a43921e1b303a425113c25ab24111b278"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b3a0d13ba09371d26a7c9946c75dd35"><td class="memItemLeft" align="right" valign="top"><a id="a1b3a0d13ba09371d26a7c9946c75dd35"></a>
 const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>_collectionPath</b></td></tr>
 <tr class="separator:a1b3a0d13ba09371d26a7c9946c75dd35"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,28 +158,10 @@ const uint&#160;</td><td class="memItemRight" valign="bottom"><b>_noTiers</b></t
 <tr class="memitem:a035c74b85b25034c3fef31c261e5e392"><td class="memItemLeft" align="right" valign="top"><a id="a035c74b85b25034c3fef31c261e5e392"></a>
 const uint&#160;</td><td class="memItemRight" valign="bottom"><b>_noDimensions</b></td></tr>
 <tr class="separator:a035c74b85b25034c3fef31c261e5e392"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa44f7407ee8ef151004a65f527b2f68a"><td class="memItemLeft" align="right" valign="top">const bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcontrol__block__t.html#aa44f7407ee8ef151004a65f527b2f68a">_rand</a></td></tr>
-<tr class="separator:aa44f7407ee8ef151004a65f527b2f68a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3198e0724494dee4d7a804c4a2aa388"><td class="memItemLeft" align="right" valign="top"><a id="ab3198e0724494dee4d7a804c4a2aa388"></a>
-const bool&#160;</td><td class="memItemRight" valign="bottom"><b>_tiered</b></td></tr>
-<tr class="separator:ab3198e0724494dee4d7a804c4a2aa388"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87e97c7407e40c0b264cc64fb1ac0542"><td class="memItemLeft" align="right" valign="top"><a id="a87e97c7407e40c0b264cc64fb1ac0542"></a>
+const uint&#160;</td><td class="memItemRight" valign="bottom"><b>_seed</b></td></tr>
+<tr class="separator:a87e97c7407e40c0b264cc64fb1ac0542"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="aa44f7407ee8ef151004a65f527b2f68a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa44f7407ee8ef151004a65f527b2f68a">&#9670;&nbsp;</a></span>_rand</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const bool control_block_t::_rand</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>REMOVE </p>
-
-</div>
-</div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>/Users/alexanderweiss/Documents/Programming/C++Projects/vector-space-retrieval/src/<a class="el" href="types_8hh_source.html">types.hh</a></li>
 </ul>

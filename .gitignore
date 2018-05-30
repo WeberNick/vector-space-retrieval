@@ -180,7 +180,7 @@ evsr-web/client/build
 .env.production.local
 
 evsr-web/server/evsr/data/**
-evsr-web/server/server.log*
+evsr-web/server/logs/**
 evsr-web/npm-debug.log*
 evsr-web/yarn-debug.log*
 evsr-web/yarn-error.log*
