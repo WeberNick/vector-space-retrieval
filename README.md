@@ -1,5 +1,5 @@
 # Vector Space Retrieval
-An efficient Vector Space Model (VSM) implementation for retrieving medical data, built within the team project for the course [Information Retrieval and Web Search](http://dws.informatik.uni-mannheim.de/en/teaching/courses-for-master-candidates/ie663websearchandinformationretrieval/).
+An efficient Vector Space Model (VSM) implementation for retrieving medical data. Built within the team project for the course [Information Retrieval and Web Search](http://dws.informatik.uni-mannheim.de/en/teaching/courses-for-master-candidates/ie663websearchandinformationretrieval/) at the University of Mannheim.
  
 Table of Contents
 =================
