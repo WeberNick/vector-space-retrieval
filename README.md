@@ -67,20 +67,20 @@ The build and installation process will be described in the following. Follow th
 
 ### Quick Start Guide
 
-1. Make sure all the [Requirements](#prerequisites) are satisfied
+ * Make sure all the [Requirements](#prerequisites) are satisfied
 
-1. Clone the source with `git` (Can be omitted if you have a zipped version of the repository):
+ * Clone the source with `git` :
 ```
 git clone https://github.com/WeberNick/vector-space-retrieval.git
 ```
 
-3. Build and install:
+ * Build and install:
 ```
 cd vector-space-retrieval
 ./install.sh
 ```
 
-4. Run
+ * Run
 ```
 ./bin/evsr_run       # Run the system
 ```
@@ -88,7 +88,7 @@ cd vector-space-retrieval
 ### Detailed Installation Guide
 
  * Make sure all the [Requirements](#prerequisites) are satisfied
- * Clone the source with `git` (Can be omitted if you have a zipped version of the repository):
+ * Clone the source with `git` :
 ```
 git clone https://github.com/WeberNick/vector-space-retrieval.git
 ```
