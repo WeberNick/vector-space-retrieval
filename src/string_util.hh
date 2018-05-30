@@ -1,17 +1,12 @@
-/*********************************************************************
+/*
  * @file    string_util.hh
- * @author 	Nick Weber
+ * @author  Nick Weber
+ *          Alexander Weiß
+ *          Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
  * @date    Mai 18, 2018
- * @brief 	
- * @bugs 	TBD
- * @todos 	TBD
  * 
- * @section	DESCRIPTION
- * TBD
- * 
- * @section USE
- * TBD
- ********************************************************************/
+ * @section DESCRIPTION docto_
+ */
 #pragma once
 
 #include "types.hh"

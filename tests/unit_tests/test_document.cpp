@@ -13,18 +13,16 @@
 class DocumentTest : public testing::Test {
   protected:
     virtual void SetUp() {
-        const control_block_t lControlBlock = { false, false, "./data/collection_test.docs", "./data/" , "./data/s-3.qrel", "./data/stopwords.large", "./data/w2v/glove.6B.300d.txt", "./", "./", 10, 10, 100 };
+        const control_block_t lControlBlock = { false, false, false, "./tests/data/collection_test_mwe.docs", "./data/" , "./data/s-3.qrel", "./data/stopwords.large", "./data/w2v/glove.6B.300d.txt", "./", "./", 10, 10, 100 };
         Trace::getInstance().init(lControlBlock);
-        
-        std::cout << "Hi" << std::endl;
+        RandomProjection::getInstance().reset(0);
+
         docMan = &(DocumentManager::getInstance());
         docMan->init(lControlBlock);
         docMap = &(docMan->getDocumentMap());
-        std::cout << "Hi" << std::endl;
+        
         indexManager = &(IndexManager::getInstance());
         indexManager->init(lControlBlock, *docMap);
-        RandomProjection::getInstance().init(lControlBlock, indexManager->getCollectionTerms().size());
-        std::cout << "Hi" << std::endl;
     }
 
     DocumentManager* docMan;
@@ -35,21 +33,21 @@ class DocumentTest : public testing::Test {
 /**
  * @brief Content of collection_test_mwe.docs:
  *
- * D-1 ~ today sun jon lemon food
- * D-2 ~ today we go ski outside food
- * D-3 ~ today tomorrow no go sun lemon lemon
+ * D-1 ~ today sun jon lemon food hi
+ * D-2 ~ today we go ski outside food hi go
+ * D-3 ~ today tomorrow tomorrow no go sun lemon lemon lemon
  */
 
 TEST_F(DocumentTest, Tf_Equals_Test) {
 
-    float tf_jon = docMan->getDocument(1).getTf("jon");
-    float tf_sun = docMan->getDocument(3).getTf("sun");
-    float tf_lemon = docMan->getDocument(3).getTf("lemon");
-    float tf_tomorrow = docMan->getDocument(3).getTf("tomorrow");
+    float tf_jon = docMan->getDocument(0).getTf("jon");
+    float tf_sun = docMan->getDocument(2).getTf("sun");
+    float tf_lemon = docMan->getDocument(2).getTf("lemon");
+    float tf_tomorrow = docMan->getDocument(2).getTf("tomorrow");
     EXPECT_EQ(tf_jon, 1);
-    EXPECT_EQ(tf_sun, Util::calcTf(1, Util::getMaxWordFrequency(docMan->getDocument(3).getContent())));
+    EXPECT_EQ(tf_sun, Util::calcTf(1, Util::getMaxWordFrequency(docMan->getDocument(2).getContent())));
     EXPECT_EQ(tf_lemon, 1);
-    EXPECT_EQ(tf_tomorrow, Util::calcTf(2, Util::getMaxWordFrequency(docMan->getDocument(3).getContent())));
+    EXPECT_EQ(tf_tomorrow, Util::calcTf(2, Util::getMaxWordFrequency(docMan->getDocument(2).getContent())));
 }
 
 TEST_F(DocumentTest, Idf_Equals_Test) {

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['localitysensitivehashprojection',['localitySensitiveHashProjection',['../class_random_projection.html#a4987cbd2eae9e3f321694cd49f063a97',1,'RandomProjection']]]
+  ['measure',['Measure',['../class_measure.html',1,'']]],
+  ['measure_2ehh',['measure.hh',['../measure_8hh.html',1,'']]]
 ];

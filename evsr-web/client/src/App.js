@@ -34,8 +34,8 @@ const Main = styled.main`
   grid-area: content;
   align-self: center;
   justify-self: center;
-  min-width: 960px;
-  max-width: 960px;
+  min-width: 1200px;
+  max-width: 1200px;
   min-height: calc(100vh - 50px);
   padding-top: 50px;
   ${media.desktop`
@@ -71,8 +71,8 @@ class App extends Component {
             <NotificationContainer />
             <Navigation />
             <Main>
-              <Route exact path="/app" component={Search} />
-              <Route path="/app/evaluation" component={Evaluation} />
+              <Route exact path="/app"  component={Search} />
+              <Route exact path="/app/evaluation" component={Evaluation} />
             </Main>
           </Page>
         </ThemeProvider>

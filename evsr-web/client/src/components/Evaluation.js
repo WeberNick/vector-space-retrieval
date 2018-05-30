@@ -1,6 +1,7 @@
 import * as Chartjs from 'react-chartjs';
 
 import React, { Component } from 'react';
+import { ScrollSync, ScrollSyncPane } from 'react-scroll-sync';
 
 import socket from '../socket';
 
@@ -39,13 +40,12 @@ class Evaluation extends Component {
     var legendBar = (this.state && this.state.legendBar) || '';
 
     const { data, filename } = this.state;
-   
-    
+
 
     if (data) {
-      
       var queryTypeBars = new Array();
-      data.map((queryType) => {
+
+      /*data.map(queryType => {
         var queryTypeData = {};
         queryTypeData.name = queryType.name;
 
@@ -58,13 +58,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[0].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[0].queries.length) > 0 ? (queryType.modes[0].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[0].queries.length) : 0,
-              ],
+              data: [queryType.modes[0].average_rnt],
             },
             {
               label: queryType.modes[1].name,
@@ -72,13 +66,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[1].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[1].queries.length) > 0 ? (queryType.modes[1].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[1].queries.length) : 0,
-              ],
+              data: [queryType.modes[1].average_rnt],
             },
             {
               label: queryType.modes[2].name,
@@ -86,13 +74,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[2].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[2].queries.length) > 0 ? (queryType.modes[2].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[2].queries.length) : 0,
-              ],
+              data: [queryType.modes[2].average_rnt],
             },
             {
               label: queryType.modes[3].name,
@@ -100,13 +82,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[3].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[3].queries.length) > 0 ? (queryType.modes[3].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[3].queries.length) : 0,
-              ],
+              data: [queryType.modes[3].average_rnt],
             },
             {
               label: queryType.modes[4].name,
@@ -114,13 +90,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[4].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[4].queries.length) > 0 ? (queryType.modes[4].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[4].queries.length) : 0,
-              ],
+              data: [queryType.modes[4].average_rnt],
             },
             {
               label: queryType.modes[5].name,
@@ -128,13 +98,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[5].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[5].queries.length) > 0 ? (queryType.modes[5].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[5].queries.length) : 0,
-              ],
+              data: [queryType.modes[5].average_rnt],
             },
             {
               label: queryType.modes[6].name,
@@ -142,13 +106,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[6].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[6].queries.length) > 0 ? (queryType.modes[6].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[6].queries.length) : 0,
-              ],
+              data: [queryType.modes[6].average_rnt],
             },
             {
               label: queryType.modes[7].name,
@@ -156,13 +114,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[7].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[7].queries.length) > 0 ? (queryType.modes[7].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[7].queries.length) : 0,
-              ],
+              data: [queryType.modes[7].average_rnt],
             },
             {
               label: queryType.modes[8].name,
@@ -170,13 +122,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[8].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[8].queries.length) > 0 ? (queryType.modes[8].queries.reduce((sum, current) => {
-                  return sum + current.perf_rnt;
-                }, 0) / queryType.modes[8].queries.length) : 0,
-              ],
+              data: [queryType.modes[8].average_rnt],
             },
           ],
         };
@@ -190,13 +136,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[0].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[0].queries.length) > 0 ? (queryType.modes[0].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[0].queries.length) : 0,
-              ],
+              data: [queryType.modes[0].average_acc],
             },
             {
               label: queryType.modes[1].name,
@@ -204,13 +144,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[1].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[1].queries.length) > 0 ? (queryType.modes[1].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[1].queries.length) : 0,
-              ],
+              data: [queryType.modes[1].average_acc],
             },
             {
               label: queryType.modes[2].name,
@@ -218,13 +152,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[2].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[2].queries.length) > 0 ? (queryType.modes[2].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[2].queries.length) : 0,
-              ],
+              data: [queryType.modes[2].average_acc],
             },
             {
               label: queryType.modes[3].name,
@@ -232,13 +160,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[3].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[3].queries.length) > 0 ? (queryType.modes[3].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[3].queries.length) : 0,
-              ],
+              data: [queryType.modes[3].average_acc],
             },
             {
               label: queryType.modes[4].name,
@@ -246,13 +168,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[4].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[4].queries.length) > 0 ? (queryType.modes[4].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[4].queries.length) : 0,
-              ],
+              data: [queryType.modes[4].average_acc],
             },
             {
               label: queryType.modes[5].name,
@@ -260,13 +176,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[5].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[5].queries.length) > 0 ? (queryType.modes[5].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[5].queries.length) : 0,
-              ],
+              data: [queryType.modes[5].average_acc],
             },
             {
               label: queryType.modes[6].name,
@@ -274,13 +184,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[6].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[6].queries.length) > 0 ? (queryType.modes[6].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[6].queries.length) : 0,
-              ],
+              data: [queryType.modes[6].average_acc],
             },
             {
               label: queryType.modes[7].name,
@@ -288,13 +192,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[7].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[7].queries.length) > 0 ? (queryType.modes[7].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[7].queries.length) : 0,
-              ],
+              data: [queryType.modes[7].average_acc],
             },
             {
               label: queryType.modes[8].name,
@@ -302,13 +200,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[8].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[8].queries.length) > 0 ? (queryType.modes[8].queries.reduce((sum, current) => {
-                  return sum + current.perf_acc;
-                }, 0) / queryType.modes[8].queries.length) : 0,
-              ],
+              data: [queryType.modes[8].average_acc],
             },
           ],
         };
@@ -322,13 +214,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[0].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[0].queries.length) > 0 ? (queryType.modes[0].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[0].queries.length) : 0,
-              ],
+              data: [queryType.modes[0].average_avp],
             },
             {
               label: queryType.modes[1].name,
@@ -336,13 +222,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[1].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[1].queries.length) > 0 ? (queryType.modes[1].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[1].queries.length) : 0,
-              ],
+              data: [queryType.modes[1].average_avp],
             },
             {
               label: queryType.modes[2].name,
@@ -350,13 +230,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[2].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[2].queries.length) > 0 ? (queryType.modes[2].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[2].queries.length) : 0,
-              ],
+              data: [queryType.modes[2].average_avp],
             },
             {
               label: queryType.modes[3].name,
@@ -364,13 +238,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[3].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[3].queries.length) > 0 ? (queryType.modes[3].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[3].queries.length) : 0,
-              ],
+              data: [queryType.modes[3].average_avp],
             },
             {
               label: queryType.modes[4].name,
@@ -378,13 +246,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[4].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[4].queries.length) > 0 ? (queryType.modes[4].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[4].queries.length) : 0,
-              ],
+              data: [queryType.modes[4].average_avp],
             },
             {
               label: queryType.modes[5].name,
@@ -392,13 +254,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[5].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[5].queries.length) > 0 ? (queryType.modes[5].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[5].queries.length) : 0,
-              ],
+              data: [queryType.modes[5].average_avp],
             },
             {
               label: queryType.modes[6].name,
@@ -406,13 +262,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[6].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[6].queries.length) > 0 ? (queryType.modes[6].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[6].queries.length) : 0,
-              ],
+              data: [queryType.modes[6].average_avp],
             },
             {
               label: queryType.modes[7].name,
@@ -420,13 +270,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[7].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[7].queries.length) > 0 ? (queryType.modes[7].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[7].queries.length) : 0,
-              ],
+              data: [queryType.modes[7].average_avp],
             },
             {
               label: queryType.modes[8].name,
@@ -434,13 +278,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[8].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[8].queries.length) > 0 ? (queryType.modes[8].queries.reduce((sum, current) => {
-                  return sum + current.perf_avp;
-                }, 0) / queryType.modes[8].queries.length) : 0,
-              ],
+              data: [queryType.modes[8].average_avp],
             },
           ],
         };
@@ -454,13 +292,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[0].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[0].queries.length) > 0 ? (queryType.modes[0].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[0].queries.length) : 0,
-              ],
+              data: [queryType.modes[0].average_dcg],
             },
             {
               label: queryType.modes[1].name,
@@ -468,13 +300,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[1].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[1].queries.length) > 0 ? (queryType.modes[1].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[1].queries.length) : 0,
-              ],
+              data: [queryType.modes[1].average_dcg],
             },
             {
               label: queryType.modes[2].name,
@@ -482,13 +308,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[2].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[2].queries.length) > 0 ? (queryType.modes[2].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[2].queries.length) : 0,
-              ],
+              data: [queryType.modes[2].average_dcg],
             },
             {
               label: queryType.modes[3].name,
@@ -496,13 +316,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[3].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[3].queries.length) > 0 ? (queryType.modes[3].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[3].queries.length) : 0,
-              ],
+              data: [queryType.modes[3].average_dcg],
             },
             {
               label: queryType.modes[4].name,
@@ -510,13 +324,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[4].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[4].queries.length) > 0 ? (queryType.modes[4].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[4].queries.length) : 0,
-              ],
+              data: [queryType.modes[4].average_dcg],
             },
             {
               label: queryType.modes[5].name,
@@ -524,13 +332,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[5].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[5].queries.length) > 0 ? (queryType.modes[5].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[5].queries.length) : 0,
-              ],
+              data: [queryType.modes[5].average_dcg],
             },
             {
               label: queryType.modes[6].name,
@@ -538,13 +340,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[6].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[6].queries.length) > 0 ? (queryType.modes[6].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[6].queries.length) : 0,
-              ],
+              data: [queryType.modes[6].average_dcg],
             },
             {
               label: queryType.modes[7].name,
@@ -552,13 +348,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[7].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[7].queries.length) > 0 ? (queryType.modes[7].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[7].queries.length) : 0,
-              ],
+              data: [queryType.modes[7].average_dcg],
             },
             {
               label: queryType.modes[8].name,
@@ -566,13 +356,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[8].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[8].queries.length) > 0 ? (queryType.modes[8].queries.reduce((sum, current) => {
-                  return sum + current.perf_dcg;
-                }, 0) / queryType.modes[8].queries.length) : 0,
-              ],
+              data: [queryType.modes[8].average_dcg],
             },
           ],
         };
@@ -586,13 +370,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[0].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[0].queries.length) > 0 ? (queryType.modes[0].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[0].queries.length) : 0,
-              ],
+              data: [queryType.modes[0].average_fms],
             },
             {
               label: queryType.modes[1].name,
@@ -600,13 +378,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[1].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[1].queries.length) > 0 ? (queryType.modes[1].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[1].queries.length) : 0,
-              ],
+              data: [queryType.modes[1].average_fms],
             },
             {
               label: queryType.modes[2].name,
@@ -614,13 +386,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[2].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[2].queries.length) > 0 ? (queryType.modes[2].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[2].queries.length) : 0,
-              ],
+              data: [queryType.modes[2].average_fms],
             },
             {
               label: queryType.modes[3].name,
@@ -628,13 +394,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[3].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[3].queries.length) > 0 ? (queryType.modes[3].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[3].queries.length) : 0,
-              ],
+              data: [queryType.modes[3].average_fms],
             },
             {
               label: queryType.modes[4].name,
@@ -642,13 +402,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[4].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[4].queries.length) > 0 ? (queryType.modes[4].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[4].queries.length) : 0,
-              ],
+              data: [queryType.modes[4].average_fms],
             },
             {
               label: queryType.modes[5].name,
@@ -656,13 +410,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[5].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[5].queries.length) > 0 ? (queryType.modes[5].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[5].queries.length) : 0,
-              ],
+              data: [queryType.modes[5].average_fms],
             },
             {
               label: queryType.modes[6].name,
@@ -670,13 +418,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[6].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[6].queries.length) > 0 ? (queryType.modes[6].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[6].queries.length) : 0,
-              ],
+              data: [queryType.modes[6].average_fms],
             },
             {
               label: queryType.modes[7].name,
@@ -684,13 +426,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[7].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[7].queries.length) > 0 ? (queryType.modes[7].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[7].queries.length) : 0,
-              ],
+              data: [queryType.modes[7].average_fms],
             },
             {
               label: queryType.modes[8].name,
@@ -698,13 +434,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[8].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[8].queries.length) > 0 ? (queryType.modes[8].queries.reduce((sum, current) => {
-                  return sum + current.perf_fms;
-                }, 0) / queryType.modes[8].queries.length) : 0,
-              ],
+              data: [queryType.modes[8].average_fms],
             },
           ],
         };
@@ -718,13 +448,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[0].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[0].queries.length) > 0 ? (queryType.modes[0].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[0].queries.length) : 0,
-              ],
+              data: [queryType.modes[0].average_pre],
             },
             {
               label: queryType.modes[1].name,
@@ -732,13 +456,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[1].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[1].queries.length) > 0 ? (queryType.modes[1].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[1].queries.length) : 0,
-              ],
+              data: [queryType.modes[1].average_pre],
             },
             {
               label: queryType.modes[2].name,
@@ -746,13 +464,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[2].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[2].queries.length) > 0 ? (queryType.modes[2].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[2].queries.length) : 0,
-              ],
+              data: [queryType.modes[2].average_pre],
             },
             {
               label: queryType.modes[3].name,
@@ -760,13 +472,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[3].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[3].queries.length) > 0 ? (queryType.modes[3].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[3].queries.length) : 0,
-              ],
+              data: [queryType.modes[3].average_pre],
             },
             {
               label: queryType.modes[4].name,
@@ -774,13 +480,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[4].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[4].queries.length) > 0 ? (queryType.modes[4].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[4].queries.length) : 0,
-              ],
+              data: [queryType.modes[4].average_pre],
             },
             {
               label: queryType.modes[5].name,
@@ -788,13 +488,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[5].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[5].queries.length) > 0 ? (queryType.modes[5].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[5].queries.length) : 0,
-              ],
+              data: [queryType.modes[5].average_pre],
             },
             {
               label: queryType.modes[6].name,
@@ -802,13 +496,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[6].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[6].queries.length) > 0 ? (queryType.modes[6].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[6].queries.length) : 0,
-              ],
+              data: [queryType.modes[6].average_pre],
             },
             {
               label: queryType.modes[7].name,
@@ -816,13 +504,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[7].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[7].queries.length) > 0 ? (queryType.modes[7].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[7].queries.length) : 0,
-              ],
+              data: [queryType.modes[7].average_pre],
             },
             {
               label: queryType.modes[8].name,
@@ -830,13 +512,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[8].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[8].queries.length) > 0 ? (queryType.modes[8].queries.reduce((sum, current) => {
-                  return sum + current.perf_pre;
-                }, 0) / queryType.modes[8].queries.length) : 0,
-              ],
+              data: [queryType.modes[8].average_pre],
             },
           ],
         };
@@ -850,13 +526,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[0].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[0].queries.length) > 0 ? (queryType.modes[0].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[0].queries.length) : 0,
-              ],
+              data: [queryType.modes[0].average_rec],
             },
             {
               label: queryType.modes[1].name,
@@ -864,13 +534,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[1].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[1].queries.length) > 0 ? (queryType.modes[1].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[1].queries.length) : 0,
-              ],
+              data: [queryType.modes[1].average_rec],
             },
             {
               label: queryType.modes[2].name,
@@ -878,13 +542,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(231, 76, 60,0.8)',
               highlightFill: 'rgba(231, 76, 60,0.75)',
               highlightStroke: 'rgba(231, 76, 60,1)',
-              data: [
-                (queryType.modes[2].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[2].queries.length) > 0 ? (queryType.modes[2].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[2].queries.length) : 0,
-              ],
+              data: [queryType.modes[2].average_rec],
             },
             {
               label: queryType.modes[3].name,
@@ -892,13 +550,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[3].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[3].queries.length) > 0 ? (queryType.modes[3].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[3].queries.length) : 0,
-              ],
+              data: [queryType.modes[3].average_rec],
             },
             {
               label: queryType.modes[4].name,
@@ -906,13 +558,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[4].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[4].queries.length) > 0 ? (queryType.modes[4].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[4].queries.length) : 0,
-              ],
+              data: [queryType.modes[4].average_rec],
             },
             {
               label: queryType.modes[5].name,
@@ -920,13 +566,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(46, 204, 115,0.8)',
               highlightFill: 'rgba(46, 204, 115,0.75)',
               highlightStroke: 'rgba(46, 204, 115,1)',
-              data: [
-                (queryType.modes[5].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[5].queries.length) > 0 ? (queryType.modes[5].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[5].queries.length) : 0,
-              ],
+              data: [queryType.modes[5].average_rec],
             },
             {
               label: queryType.modes[6].name,
@@ -934,13 +574,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[6].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[6].queries.length) > 0 ? (queryType.modes[6].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[6].queries.length) : 0,
-              ],
+              data: [queryType.modes[6].average_rec],
             },
             {
               label: queryType.modes[7].name,
@@ -948,13 +582,7 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[7].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[7].queries.length) > 0 ? (queryType.modes[7].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[7].queries.length) : 0,
-              ],
+              data: [queryType.modes[7].average_rec],
             },
             {
               label: queryType.modes[8].name,
@@ -962,16 +590,12 @@ class Evaluation extends Component {
               strokeColor: 'rgba(52, 153, 219,0.8)',
               highlightFill: 'rgba(52, 153, 219,0.75)',
               highlightStroke: 'rgba(52, 153, 219,1)',
-              data: [
-                (queryType.modes[8].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[8].queries.length) > 0 ? (queryType.modes[8].queries.reduce((sum, current) => {
-                  return sum + current.perf_rec;
-                }, 0) / queryType.modes[8].queries.length) : 0,
-              ],
+              data: [queryType.modes[8].average_rec],
             },
           ],
         };
+
+        
 
         queryTypeData.average_rnt_per_mode = average_rnt_per_mode;
         queryTypeData.average_acc_per_mode = average_acc_per_mode;
@@ -981,147 +605,721 @@ class Evaluation extends Component {
         queryTypeData.average_pre_per_mode = average_pre_per_mode;
         queryTypeData.average_rec_per_mode = average_rec_per_mode;
         queryTypeBars.push(queryTypeData);
-
-
-
       });
-
-        console.log(queryTypeBars);
-
+      */
 
 
+     var average_rnt_per_mode = {
+      labels: ['Type'],
+      datasets: [
+        {
+          label: data[0].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[0].average_rnt],
+        },
+        {
+          label: data[1].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[1].average_rnt],
+        },
+        {
+          label: data[2].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[2].average_rnt],
+        },
+        {
+          label: data[3].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[3].average_rnt],
+        },
+        {
+          label: data[4].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[4].average_rnt],
+        },
+        {
+          label: data[5].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[5].average_rnt],
+        },
+        {
+          label: data[6].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[6].average_rnt],
+        },
+        {
+          label: data[7].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[7].average_rnt],
+        },
+        {
+          label: data[8].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[8].average_rnt],
+        },
+      ],
+    };
 
-        
 
+    var average_acc_per_mode = {
+      labels: ['Type'],
+      datasets: [
+        {
+          label: data[0].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[0].average_acc],
+        },
+        {
+          label: data[1].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[1].average_acc],
+        },
+        {
+          label: data[2].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[2].average_acc],
+        },
+        {
+          label: data[3].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[3].average_acc],
+        },
+        {
+          label: data[4].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[4].average_acc],
+        },
+        {
+          label: data[5].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[5].average_acc],
+        },
+        {
+          label: data[6].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[6].average_acc],
+        },
+        {
+          label: data[7].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[7].average_acc],
+        },
+        {
+          label: data[8].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[8].average_acc],
+        },
+      ],
+    };
+
+    var average_avp_per_mode = {
+      labels: ['Type'],
+      datasets: [
+        {
+          label: data[0].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[0].average_avp],
+        },
+        {
+          label: data[1].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[1].average_avp],
+        },
+        {
+          label: data[2].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[2].average_avp],
+        },
+        {
+          label: data[3].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[3].average_avp],
+        },
+        {
+          label: data[4].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[4].average_avp],
+        },
+        {
+          label: data[5].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[5].average_avp],
+        },
+        {
+          label: data[6].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[6].average_avp],
+        },
+        {
+          label: data[7].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[7].average_avp],
+        },
+        {
+          label: data[8].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[8].average_avp],
+        },
+      ],
+    };
+
+    var average_dcg_per_mode = {
+      labels: ['Type'],
+      datasets: [
+        {
+          label: data[0].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[0].average_dcg],
+        },
+        {
+          label: data[1].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[1].average_dcg],
+        },
+        {
+          label: data[2].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[2].average_dcg],
+        },
+        {
+          label: data[3].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[3].average_dcg],
+        },
+        {
+          label: data[4].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[4].average_dcg],
+        },
+        {
+          label: data[5].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[5].average_dcg],
+        },
+        {
+          label: data[6].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[6].average_dcg],
+        },
+        {
+          label: data[7].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[7].average_dcg],
+        },
+        {
+          label: data[8].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[8].average_dcg],
+        },
+      ],
+    };
+
+    var average_fms_per_mode = {
+      labels: ['Type'],
+      datasets: [
+        {
+          label: data[0].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[0].average_fms],
+        },
+        {
+          label: data[1].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[1].average_fms],
+        },
+        {
+          label: data[2].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[2].average_fms],
+        },
+        {
+          label: data[3].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[3].average_fms],
+        },
+        {
+          label: data[4].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[4].average_fms],
+        },
+        {
+          label: data[5].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[5].average_fms],
+        },
+        {
+          label: data[6].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[6].average_fms],
+        },
+        {
+          label: data[7].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[7].average_fms],
+        },
+        {
+          label: data[8].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[8].average_fms],
+        },
+      ],
+    };
+
+    var average_pre_per_mode = {
+      labels: ['Type'],
+      datasets: [
+        {
+          label: data[0].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[0].average_pre],
+        },
+        {
+          label: data[1].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[1].average_pre],
+        },
+        {
+          label: data[2].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[2].average_pre],
+        },
+        {
+          label: data[3].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[3].average_pre],
+        },
+        {
+          label: data[4].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[4].average_pre],
+        },
+        {
+          label: data[5].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[5].average_pre],
+        },
+        {
+          label: data[6].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[6].average_pre],
+        },
+        {
+          label: data[7].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[7].average_pre],
+        },
+        {
+          label: data[8].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[8].average_pre],
+        },
+      ],
+    };
+
+    var average_rec_per_mode = {
+      labels: ['Type'],
+      datasets: [
+        {
+          label: data[0].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[0].average_rec],
+        },
+        {
+          label: data[1].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[1].average_rec],
+        },
+        {
+          label: data[2].name,
+          fillColor: 'rgba(231, 76, 60,0.5)',
+          strokeColor: 'rgba(231, 76, 60,0.8)',
+          highlightFill: 'rgba(231, 76, 60,0.75)',
+          highlightStroke: 'rgba(231, 76, 60,1)',
+          data: [data[2].average_rec],
+        },
+        {
+          label: data[3].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[3].average_rec],
+        },
+        {
+          label: data[4].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[4].average_rec],
+        },
+        {
+          label: data[5].name,
+          fillColor: 'rgba(46, 204, 115,0.5)',
+          strokeColor: 'rgba(46, 204, 115,0.8)',
+          highlightFill: 'rgba(46, 204, 115,0.75)',
+          highlightStroke: 'rgba(46, 204, 115,1)',
+          data: [data[5].average_rec],
+        },
+        {
+          label: data[6].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[6].average_rec],
+        },
+        {
+          label: data[7].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[7].average_rec],
+        },
+        {
+          label: data[8].name,
+          fillColor: 'rgba(52, 153, 219,0.5)',
+          strokeColor: 'rgba(52, 153, 219,0.8)',
+          highlightFill: 'rgba(52, 153, 219,0.75)',
+          highlightStroke: 'rgba(52, 153, 219,1)',
+          data: [data[8].average_rec],
+        },
+      ],
+    };
+
+    var queryTypeData = {};
+    queryTypeData.average_rnt_per_mode = average_rnt_per_mode;
+    queryTypeData.average_acc_per_mode = average_acc_per_mode;
+    queryTypeData.average_avp_per_mode = average_avp_per_mode;
+    queryTypeData.average_dcg_per_mode = average_dcg_per_mode;
+    queryTypeData.average_fms_per_mode = average_fms_per_mode;
+    queryTypeData.average_pre_per_mode = average_pre_per_mode;
+    queryTypeData.average_rec_per_mode = average_rec_per_mode;
+    queryTypeBars.push(queryTypeData);
+
+
+
+      console.log(queryTypeBars);
 
       return (
         <div>
           <h2 className="title is-1">{filename}</h2>
-          {queryTypeBars.map((queryTypeData)=>{
-            return (
-              <div key={queryTypeData.name}>
-                <h2 className="title is-2">{queryTypeData.name}</h2>
 
-                <h3 className="title is-3">Runtime Performance (Averaged)</h3>
-                <BarChart
-                data={queryTypeData.average_rnt_per_mode}
-                ref={element => (this.barChart = element)}
-                options={{
-                  scaleShowGridLines: true,
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  scaleLabel: f => {
-                    return f.value + ' sec';
-                  },
-                }}
-                />
-              <div dangerouslySetInnerHTML={{ __html: legendBar }} />
+          <ScrollSync>
+            <div style={{ position: 'relative', height: 300 }}>
+              {queryTypeBars.map(queryTypeData => {
+                return (
+                  <ScrollSyncPane>
+                    <div key={queryTypeData.name} className="query-type-data">
+                      <div style={{ position: 'sticky', left: 0 }}>
+                        <strong>{queryTypeData.name}</strong>
+                      </div>
+                      <div className="per-measure">
+                        <p>Runtime Performance (Averaged)</p>
+                        <BarChart
+                          data={queryTypeData.average_rnt_per_mode}
+                          ref={element => (this.barChart = element)}
+                          height={250}
+                          width={500}
+                          options={{
+                            scaleShowGridLines: true,
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            scaleLabel: f => {
+                              return f.value + ' sec';
+                            },
+                          }}
+                        />
+                        <div dangerouslySetInnerHTML={{ __html: legendBar }} />
+                      </div>
+                      
+                      {/*<div className="per-measure">
+                        <p>Accuracy (Averaged)</p>
+                        <BarChart
+                          data={queryTypeData.average_acc_per_mode}
+                          ref={element => (this.barChart = element)}
+                          height={250}
+                          width={500}
+                          options={{
+                            scaleShowGridLines: true,
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            scaleLabel: f => {
+                              return f.value;
+                            },
+                          }}
+                        />
+                        <div dangerouslySetInnerHTML={{ __html: legendBar }} />
+                        
+                       
+                      </div>*/}
+                      <div className="per-measure">
+                        <p>Average Precision (Averaged)</p>
+                        <BarChart
+                          data={queryTypeData.average_avp_per_mode}
+                          ref={element => (this.barChart = element)}
+                          height={250}
+                          width={500}
+                          options={{
+                            scaleShowGridLines: true,
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            scaleLabel: f => {
+                              return f.value;
+                            },
+                          }}
+                        />
+                        <div dangerouslySetInnerHTML={{ __html: legendBar }} />
+                      </div>
+                      <div className="per-measure">
+                        <p>nDCG (Averaged)</p>
+                        <BarChart
+                          data={queryTypeData.average_dcg_per_mode}
+                          ref={element => (this.barChart = element)}
+                          height={250}
+                          width={500}
+                          options={{
+                            scaleShowGridLines: true,
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            scaleLabel: f => {
+                              return f.value;
+                            },
+                          }}
+                        />
+                        <div dangerouslySetInnerHTML={{ __html: legendBar }} />
+                      </div>
+                      {/*
+                      <div className="per-measure">
+                        <p>F-Measure (Averaged)</p>
+                        <BarChart
+                          data={queryTypeData.average_fms_per_mode}
+                          ref={element => (this.barChart = element)}
+                          height={250}
+                          width={500}
+                          options={{
+                            scaleShowGridLines: true,
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            scaleLabel: f => {
+                              return f.value;
+                            },
+                          }}
+                        />
+                        <div dangerouslySetInnerHTML={{ __html: legendBar }} />
+                      </div>
+                      <div className="per-measure">
+                        <p>Precision (Averaged)</p>
+                        <BarChart
+                          data={queryTypeData.average_pre_per_mode}
+                          ref={element => (this.barChart = element)}
+                          height={250}
+                          width={500}
+                          options={{
+                            scaleShowGridLines: true,
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            scaleLabel: f => {
+                              return f.value;
+                            },
+                          }}
+                        />
+                        <div dangerouslySetInnerHTML={{ __html: legendBar }} />
+                      </div>
 
-
-                
-                {/*<h3 className="title is-3">Accuracy (Averaged)</h3>
-                <BarChart
-                data={queryTypeData.average_acc_per_mode}
-                ref={element => (this.barChart = element)}
-                options={{
-                  scaleShowGridLines: true,
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  scaleLabel: f => {
-                    return f.value;
-                  },
-                }}
-                />
-                <div dangerouslySetInnerHTML={{ __html: legendBar }} />
-                
-                <h3 className="title is-3">Average Precision (Averaged)</h3>
-                <BarChart
-                data={queryTypeData.average_avp_per_mode}
-                ref={element => (this.barChart = element)}
-                options={{
-                  scaleShowGridLines: true,
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  scaleLabel: f => {
-                    return f.value;
-                  },
-                }}
-                />
-              <div dangerouslySetInnerHTML={{ __html: legendBar }} />
-
-               <h3 className="title is-3">nDCG (Averaged)</h3>
-                <BarChart
-                data={queryTypeData.average_dcg_per_mode}
-                ref={element => (this.barChart = element)}
-                options={{
-                  scaleShowGridLines: true,
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  scaleLabel: f => {
-                    return f.value;
-                  },
-                }}
-                />
-                <div dangerouslySetInnerHTML={{ __html: legendBar }} />
-
-                {/*<h3 className="title is-3">F-Measure (Averaged)</h3>
-                <BarChart
-                data={queryTypeData.average_fms_per_mode}
-                ref={element => (this.barChart = element)}
-                options={{
-                  scaleShowGridLines: true,
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  scaleLabel: f => {
-                    return f.value;
-                  },
-                }}
-                />
-                <div dangerouslySetInnerHTML={{ __html: legendBar }} />
-
-                <h3 className="title is-3">Precision (Averaged)</h3>
-                <BarChart
-                data={queryTypeData.average_pre_per_mode}
-                ref={element => (this.barChart = element)}
-                options={{
-                  scaleShowGridLines: true,
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  scaleLabel: f => {
-                    return f.value;
-                  },
-                }}
-                />
-                <div dangerouslySetInnerHTML={{ __html: legendBar }} />
-
-                <h3 className="title is-3">Recall (Averaged)</h3>
-                <BarChart
-                data={queryTypeData.average_rec_per_mode}
-                ref={element => (this.barChart = element)}
-                options={{
-                  scaleShowGridLines: true,
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  scaleLabel: f => {
-                    return f.value;
-                  },
-                }}
-                />
-                <div dangerouslySetInnerHTML={{ __html: legendBar }} />
-                */}
-
-
-
-              </div>
-              
-            )
-
-
-
-          })}
-
-
-
+                      <div className="per-measure">
+                        <p>Recall (Averaged)</p>
+                        <BarChart
+                          data={queryTypeData.average_rec_per_mode}
+                          ref={element => (this.barChart = element)}
+                          height={250}
+                          width={500}
+                          options={{
+                            scaleShowGridLines: true,
+                            responsive: true,
+                            maintainAspectRatio: true,
+                            scaleLabel: f => {
+                              return f.value;
+                            },
+                          }}
+                        />
+                        <div dangerouslySetInnerHTML={{ __html: legendBar }} />
+                      </div>*/}
+                    </div>
+                  </ScrollSyncPane>
+                );
+              })}
+            </div>
+          </ScrollSync>
         </div>
       );
     } else {

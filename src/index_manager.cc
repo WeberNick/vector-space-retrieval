@@ -19,6 +19,10 @@ IndexManager::IndexManager() :
 void IndexManager::init(const CB& aControlBlock, doc_mt& aDocMap) {
     if (!_cb) {
         _cb = &aControlBlock;
+        _clusteredIndex.init(aControlBlock);
+        _invertedIndex.init(aControlBlock);
+        _tieredIndex.init(aControlBlock);
+        _wordEmbeddingsIndex.init(aControlBlock);
         _docs = &aDocMap;
 
         _collection_terms.reserve(_docs->size());
@@ -27,11 +31,6 @@ void IndexManager::init(const CB& aControlBlock, doc_mt& aDocMap) {
         cluster_mt* cluster_out = &_clusteredIndex.getCluster();
         str_postinglist_mt* postinglist_out = _invertedIndex.getTermPostingMap();
         str_tierplmap_mt* tieredpostinglist_out = _tieredIndex.getTermTierPostingMap();
-
-        _invertedIndex.init(aControlBlock);
-        _tieredIndex.init(aControlBlock);
-        _clusteredIndex.init(aControlBlock);
-        _wordEmbeddingsIndex.init(aControlBlock);
 
         this->buildIndices(postinglist_out, tieredpostinglist_out, cluster_out, leaders);
         TRACE("IndexManager: Initialized");
@@ -87,8 +86,7 @@ void IndexManager::buildWordEmbeddingsVector(Document& doc) {
     float_vt& wevec = doc.getWordEmbeddingsVector();
     wevec.resize(300);
     const string_vt& content = doc.getContent();
-    // TODO:
-    // test make_unique
+    // OptionalTodo: test make_unique
     this->getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, wevec);
     doc.setWordEmbeddingsVector(wevec);
 }
@@ -111,5 +109,5 @@ void IndexManager::buildRandProjVector(Document& doc) {
     const boost::dynamic_bitset<>& rand_proj =
         RandomProjection::getInstance().localitySensitiveHashProjection(doc.getTfIdfVector(),
                                                                         Util::randomProjectionHash);
-    doc.setRandProjTiVec(rand_proj);
+    doc.setRandProjVec(rand_proj);
 }

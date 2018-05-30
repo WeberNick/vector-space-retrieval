@@ -22,7 +22,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">evsr
-   &#160;<span id="projectnumber">@VERSION</span>
+   &#160;<span id="projectnumber">0.0.1</span>
    </div>
    <div id="projectbrief">Efficient Vector Space Retrieval</div>
   </td>
@@ -73,11 +73,6 @@ $(function() {
 <div class="title">Evaluation Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
-<p>This singleton class is used for evaluating runtime and information retrieval performance.  
- <a href="class_evaluation.html#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="evaluation_8hh_source.html">evaluation.hh</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
@@ -97,49 +92,64 @@ using&#160;</td><td class="memItemRight" valign="bottom"><b>type_results_mt</b> 
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae810d5d9a3a5cacbe49d148d38058b8b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_evaluation.html#ae810d5d9a3a5cacbe49d148d38058b8b">init</a> (const <a class="el" href="structcontrol__block__t.html">CB</a> &amp;aControlBlock)</td></tr>
-<tr class="memdesc:ae810d5d9a3a5cacbe49d148d38058b8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes the single <a class="el" href="class_evaluation.html" title="This singleton class is used for evaluating runtime and information retrieval performance. ">Evaluation</a> instance.  <a href="#ae810d5d9a3a5cacbe49d148d38058b8b">More...</a><br /></td></tr>
+<tr class="memdesc:ae810d5d9a3a5cacbe49d148d38058b8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the control block and evaluation instance.  <a href="#ae810d5d9a3a5cacbe49d148d38058b8b">More...</a><br /></td></tr>
 <tr class="separator:ae810d5d9a3a5cacbe49d148d38058b8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5f17ed50298fc2500ebdc3dd136787e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_evaluation.html#ae5f17ed50298fc2500ebdc3dd136787e">start</a> (const QUERY_TYPE aQueryType, const IR_MODE aMode, const std::string &amp;aQueryName)</td></tr>
-<tr class="memdesc:ae5f17ed50298fc2500ebdc3dd136787e"><td class="mdescLeft">&#160;</td><td class="mdescRight">starts the run time performance measurement  <a href="#ae5f17ed50298fc2500ebdc3dd136787e">More...</a><br /></td></tr>
+<tr class="memdesc:ae5f17ed50298fc2500ebdc3dd136787e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts the run time performance measurement.  <a href="#ae5f17ed50298fc2500ebdc3dd136787e">More...</a><br /></td></tr>
 <tr class="separator:ae5f17ed50298fc2500ebdc3dd136787e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8808df65a288b572d6e472a7a3aaa7b"><td class="memItemLeft" align="right" valign="top"><a id="ab8808df65a288b572d6e472a7a3aaa7b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_evaluation.html#ab8808df65a288b572d6e472a7a3aaa7b">stop</a> ()</td></tr>
-<tr class="memdesc:ab8808df65a288b572d6e472a7a3aaa7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">stops the run time performance measurement and inserts the measurement result into an internal data structure <br /></td></tr>
+<tr class="memdesc:ab8808df65a288b572d6e472a7a3aaa7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops the run time performance measurement and inserts the measurement result into an internal data structure. <br /></td></tr>
 <tr class="separator:ab8808df65a288b572d6e472a7a3aaa7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a54f06b4ca983c871bd90cbf4604e53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_evaluation.html#a0a54f06b4ca983c871bd90cbf4604e53">evalIR</a> (const QUERY_TYPE aQueryType, const IR_MODE aMode, const std::string &amp;aQueryName, const pair_sizet_float_vt &amp;aRanking)</td></tr>
-<tr class="memdesc:a0a54f06b4ca983c871bd90cbf4604e53"><td class="mdescLeft">&#160;</td><td class="mdescRight">evaluates the information retrieval performance and stores results in an internal data structure  <a href="#a0a54f06b4ca983c871bd90cbf4604e53">More...</a><br /></td></tr>
+<tr class="memdesc:a0a54f06b4ca983c871bd90cbf4604e53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates the information retrieval performance and stores results in an internal data structure.  <a href="#a0a54f06b4ca983c871bd90cbf4604e53">More...</a><br /></td></tr>
 <tr class="separator:a0a54f06b4ca983c871bd90cbf4604e53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa18fb2306bcab4e4fe74a9e96112156b"><td class="memItemLeft" align="right" valign="top"><a id="aa18fb2306bcab4e4fe74a9e96112156b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>evalIR</b> (const QUERY_TYPE aQueryType, const IR_MODE aMode, const std::string &amp;aQueryName, const sizet_vt &amp;aRanking)</td></tr>
+<tr class="memitem:aa18fb2306bcab4e4fe74a9e96112156b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_evaluation.html#aa18fb2306bcab4e4fe74a9e96112156b">evalIR</a> (const QUERY_TYPE aQueryType, const IR_MODE aMode, const std::string &amp;aQueryName, const sizet_vt &amp;aRanking)</td></tr>
+<tr class="memdesc:aa18fb2306bcab4e4fe74a9e96112156b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Evaluates the information retrieval performance and stores results in an internal data structure.  <a href="#aa18fb2306bcab4e4fe74a9e96112156b">More...</a><br /></td></tr>
 <tr class="separator:aa18fb2306bcab4e4fe74a9e96112156b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42b3ecebe79ac11cdf96077a20371093"><td class="memItemLeft" align="right" valign="top"><a id="a42b3ecebe79ac11cdf96077a20371093"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_evaluation.html#a42b3ecebe79ac11cdf96077a20371093">constructJSON</a> (const str_set &amp;aQueryNames)</td></tr>
-<tr class="memdesc:a42b3ecebe79ac11cdf96077a20371093"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructs the physical JSON object with all evaluation results <br /></td></tr>
+<tr class="memitem:ab9e4039a6931b2e4c3362050c75e5d73"><td class="memItemLeft" align="right" valign="top"><a id="ab9e4039a6931b2e4c3362050c75e5d73"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_evaluation.html#ab9e4039a6931b2e4c3362050c75e5d73">constructJSON</a> ()</td></tr>
+<tr class="memdesc:ab9e4039a6931b2e4c3362050c75e5d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the physical JSON object with all evaluation results. <br /></td></tr>
+<tr class="separator:ab9e4039a6931b2e4c3362050c75e5d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42b3ecebe79ac11cdf96077a20371093"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_evaluation.html#a42b3ecebe79ac11cdf96077a20371093">constructJSON</a> (const str_set &amp;aQueryNames)</td></tr>
+<tr class="memdesc:a42b3ecebe79ac11cdf96077a20371093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the physical JSON object with all evaluation results.  <a href="#a42b3ecebe79ac11cdf96077a20371093">More...</a><br /></td></tr>
 <tr class="separator:a42b3ecebe79ac11cdf96077a20371093"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a849933545daa83d23274cd63535a9c00"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="class_evaluation.html">Evaluation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_evaluation.html#a849933545daa83d23274cd63535a9c00">getInstance</a> ()</td></tr>
-<tr class="memdesc:a849933545daa83d23274cd63535a9c00"><td class="mdescLeft">&#160;</td><td class="mdescRight">This <a class="el" href="class_evaluation.html#a849933545daa83d23274cd63535a9c00" title="This getInstance() call is the only way to access the single instance of the Evaluation&#39;s object...">getInstance()</a> call is the only way to access the single instance of the <a class="el" href="class_evaluation.html" title="This singleton class is used for evaluating runtime and information retrieval performance. ">Evaluation</a>'s object.  <a href="#a849933545daa83d23274cd63535a9c00">More...</a><br /></td></tr>
+<tr class="memdesc:a849933545daa83d23274cd63535a9c00"><td class="mdescLeft">&#160;</td><td class="mdescRight">This <a class="el" href="class_evaluation.html#a849933545daa83d23274cd63535a9c00" title="This getInstance() call is the only way to access the single instance of the Evaluation&#39;s object...">getInstance()</a> call is the only way to access the single instance of the <a class="el" href="class_evaluation.html">Evaluation</a>'s object.  <a href="#a849933545daa83d23274cd63535a9c00">More...</a><br /></td></tr>
 <tr class="separator:a849933545daa83d23274cd63535a9c00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>This singleton class is used for evaluating runtime and information retrieval performance. </p>
-<h1><a class="anchor" id="DESCRIPTION"></a>
-DESCRIPTION</h1>
-<p>This class consists of several nested classes not visible to the outside. The nested classes all handle different functionalities of evaluation. The nested class IR_PerformanceManager provides several IR evaluation methods such as accuracy, F-measure, MAP and DCG. For more details, read the description of the nested class. Users of this class do not have to worry about the internal details. A simple call to start/stop measures the runtime performance between the start and stop call. To Evaluate IR performance, a call to evalIR is enough to evaluate the ranking with all implemented IR evaluation techniques (as named above).</p>
-<h1><a class="anchor" id="USE"></a>
-USE</h1>
-<ol type="1">
-<li>By calling <a class="el" href="class_evaluation.html#a849933545daa83d23274cd63535a9c00" title="This getInstance() call is the only way to access the single instance of the Evaluation&#39;s object...">Evaluation::getInstance()</a>, the caller gets access to the evaluation instance.</li>
-<li>Calling start on the evaluation object, starts run time measurement. Two arguments have to be provided: the enum value of the current IR mode to measure and a query name</li>
-<li>Calling stop on the evaluation object, stops the runtime measurement and persists the measurement results in an internal data structure</li>
-<li>Calling evalIR with the same arguments as start plus a ranking will calculate all IR evaluation methods and persist them in an internal data structure</li>
-<li>A call to constructJSON will create the JSON object which can be used to parse the results etc.. </li>
-</ol>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a42b3ecebe79ac11cdf96077a20371093"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42b3ecebe79ac11cdf96077a20371093">&#9670;&nbsp;</a></span>constructJSON()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Evaluation::constructJSON </td>
+          <td>(</td>
+          <td class="paramtype">const str_set &amp;&#160;</td>
+          <td class="paramname"><em>aQueryNames</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructs the physical JSON object with all evaluation results. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aQueryNames</td><td>the query names of the current setting </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a0a54f06b4ca983c871bd90cbf4604e53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a54f06b4ca983c871bd90cbf4604e53">&#9670;&nbsp;</a></span>evalIR()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a54f06b4ca983c871bd90cbf4604e53">&#9670;&nbsp;</a></span>evalIR() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,7 +186,57 @@ USE</h1>
       </table>
 </div><div class="memdoc">
 
-<p>evaluates the information retrieval performance and stores results in an internal data structure </p>
+<p>Evaluates the information retrieval performance and stores results in an internal data structure. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aMode</td><td>the mode for which the evaluation is done (enum representing vanilla, tiered, etc..) </td></tr>
+    <tr><td class="paramname">aQueryName</td><td>the name of the current query to evaluate </td></tr>
+    <tr><td class="paramname">aRanking</td><td>the ranking to evaluate </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa18fb2306bcab4e4fe74a9e96112156b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa18fb2306bcab4e4fe74a9e96112156b">&#9670;&nbsp;</a></span>evalIR() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Evaluation::evalIR </td>
+          <td>(</td>
+          <td class="paramtype">const QUERY_TYPE&#160;</td>
+          <td class="paramname"><em>aQueryType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const IR_MODE&#160;</td>
+          <td class="paramname"><em>aMode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>aQueryName</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const sizet_vt &amp;&#160;</td>
+          <td class="paramname"><em>aRanking</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Evaluates the information retrieval performance and stores results in an internal data structure. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">aMode</td><td>the mode for which the evaluation is done (enum representing vanilla, tiered, etc..) </td></tr>
@@ -211,8 +271,8 @@ USE</h1>
 </table>
 </div><div class="memdoc">
 
-<p>This <a class="el" href="class_evaluation.html#a849933545daa83d23274cd63535a9c00" title="This getInstance() call is the only way to access the single instance of the Evaluation&#39;s object...">getInstance()</a> call is the only way to access the single instance of the <a class="el" href="class_evaluation.html" title="This singleton class is used for evaluating runtime and information retrieval performance. ">Evaluation</a>'s object. </p>
-<dl class="section return"><dt>Returns</dt><dd>the single instance of the <a class="el" href="class_evaluation.html" title="This singleton class is used for evaluating runtime and information retrieval performance. ">Evaluation</a> object </dd></dl>
+<p>This <a class="el" href="class_evaluation.html#a849933545daa83d23274cd63535a9c00" title="This getInstance() call is the only way to access the single instance of the Evaluation&#39;s object...">getInstance()</a> call is the only way to access the single instance of the <a class="el" href="class_evaluation.html">Evaluation</a>'s object. </p>
+<dl class="section return"><dt>Returns</dt><dd>the single instance of the <a class="el" href="class_evaluation.html">Evaluation</a> object </dd></dl>
 
 </div>
 </div>
@@ -232,7 +292,7 @@ USE</h1>
       </table>
 </div><div class="memdoc">
 
-<p>Initializes the single <a class="el" href="class_evaluation.html" title="This singleton class is used for evaluating runtime and information retrieval performance. ">Evaluation</a> instance. </p>
+<p>Initialize the control block and evaluation instance. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">aControlBlock</td><td>the control block containing specific runtime information </td></tr>
@@ -274,7 +334,7 @@ USE</h1>
       </table>
 </div><div class="memdoc">
 
-<p>starts the run time performance measurement </p>
+<p>Starts the run time performance measurement. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">aMode</td><td>the mode for which the measurement is done (enum representing vanilla, tiered, etc..)  aQueryName the name of the current query to evaluate </td></tr>

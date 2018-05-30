@@ -111,7 +111,7 @@ CTestTestfile.cmake
 build
 
 ### macOS ###
-*.DS_Store
+.DS_Store
 .AppleDouble
 .LSOverride
 
@@ -179,10 +179,12 @@ evsr-web/client/build
 .env.test.local
 .env.production.local
 
-evsr-web/server/server.log*
+evsr-web/server/evsr/data/**
+evsr-web/server/logs/**
 evsr-web/npm-debug.log*
 evsr-web/yarn-debug.log*
 evsr-web/yarn-error.log*
 
 # JSON
 *.json
+

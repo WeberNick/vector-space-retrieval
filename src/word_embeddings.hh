@@ -1,18 +1,12 @@
-/*********************************************************************
+/*
  * @file    word_embeddings.hh
  * @author 	Alexander Weiß
  * @date    April 27, 2018
  * @brief 	Implements the word embeddings which are used as additional features to
  *          improve the retrieval results
- * @bugs 	  Currently no bugs known 
- * @todos 	Currently no todos
  * 
- * @section	DESCRIPTION
- * TBD
- * 
- * @section USE
- * TBD
- ********************************************************************/
+ * @section	DESCRIPTION docto_
+ */
 
 #pragma once
 
@@ -100,7 +94,7 @@ class WordEmbeddings {
     /**
      * @brief
      *
-     * @param aControlBlock
+     * @param aControlBlock the control block
      */
     void init(const control_block_t& aControlBlock);
 

@@ -3,10 +3,8 @@
  *	@author	Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
  *	@brief  Implements the postingList with idf and posting (docID, tf)
  *	@bugs 	Currently no bugs known
- *	@todos	Write DESCRIPTION
  *
- *	@section DESCRIPTION
- *	TODO
+ *	@section DESCRIPTION docto_
  */
 #pragma once
 
@@ -70,7 +68,7 @@ class PostingList {
     inline void setIdf(float aIdf) { _idf = aIdf; }
 
     /**
-     * @brief Override operator<< for pretty printing a PostingList object
+     * @brief Override operator<< for pretty printing a posting list object
      *
      * @param strm the output stream
      * @param pl the PostingList Object

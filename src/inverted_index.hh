@@ -4,10 +4,8 @@
  *	@brief  Implements the inverted index represented by a map of string -> PostingList
  *          The PostingList contains the idf and posting for a term
  *	@bugs 	Currently no bugs known
- *	@todos	Write DESCRIPTION
  *
- *	@section DESCRIPTION
- *	TODO
+ *	@section DESCRIPTION doc_to
  */
 #pragma once
 
@@ -16,6 +14,7 @@
 #include "trace.hh"
 #include "document.hh"
 #include "posting_list.hh"
+#include "ir_util.hh"
 
 #include <map>
 #include <string>
@@ -71,18 +70,17 @@ class InvertedIndex {
         return instance;
     }
     /**
-     * @brief initialize control block and inverted index
+     * @brief Initialize control block and inverted index
      *
      * @param aControlBlock the control block
      * @param aPostingList the posting lists
      */
     void init(const control_block_t& aControlBlock);
 
-    //TODO docs
     /**
-     * @brief Get the Term Posting Map object
+     * @brief Get the term posting map
      * 
-     * @return str_postinglist_mt* 
+     * @return str_postinglist_mt* the term posting map
      */
     inline str_postinglist_mt* getTermPostingMap() { return &_term_posting_map; }
 
@@ -114,14 +112,21 @@ class InvertedIndex {
      * @return size_t the number of documents in which aTerm appears
      */
     size_t getNoDocs(const std::string& aTerm);
-    
-    // TODO docs
     /**
-     * @brief 
+     * @brief Get the doc id list for a given term (so the list of all 
+     *        documents where this term appears)
      * 
-     * @param strm 
-     * @param ii 
-     * @return std::ostream& 
+     * @param terms the term to get the ids for
+     * @return sizet_vt the list of ids
+     */
+    sizet_vt getDocIDList(const string_vt& terms) const;
+    
+    /**
+     * @brief override the <<operator for inverted index
+     * 
+     * @param strm the output stream
+     * @param ii the inverted index instance
+     * @return std::ostream& the modified output stream
      */
     friend std::ostream& operator<<(std::ostream& strm, const InvertedIndex& ii);
 

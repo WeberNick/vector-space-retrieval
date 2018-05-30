@@ -10,6 +10,8 @@
 #include "src/types.hh"
 #include "src/word_embeddings.hh"
 #include "src/string_util.hh"
+#include "src/vec_util.hh"
+#include "src/measure.hh"
 
 #include <experimental/filesystem>
 #include <iostream>
@@ -18,45 +20,11 @@
 #include <vector>
 namespace fs = std::experimental::filesystem;
 
-// insert everything here what is not actually meant to be in main
-void test(const control_block_t& aControlBlock) {
-    /* Example how to use Measurement class (also described in measure.hh) */
-
-    /*Evaluation& e = Evaluation::getInstance();
-
-    e.start(kVANILLA, "Med1");
-
-    std::this_thread::sleep_for(std::chrono::seconds(3));
-
-    e.stop();
-
-    e.start(kTIERED, "Med2");
-
-    std::this_thread::sleep_for(std::chrono::seconds(4));
-
-    e.stop();
-
-    e.start(kCLUSTER, "Med3");
-
-    std::this_thread::sleep_for(std::chrono::seconds(2));
-
-    e.stop();
-
-    str_set set = {"Med-1", "Med-2", "Med-3"};
-    e.constructJSON(set);*/
-}
-
 void search(std::string query, size_t topK, IR_MODE mode) {
-    QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
+    QueryExecutionEngine& qee = QueryExecutionEngine::getInstance();
 
-    Measure lMeasureQuery;
-    lMeasureQuery.start();
-    std::vector<std::pair<size_t, float>> result = qpe.search(query, topK, mode);
-    lMeasureQuery.stop();
-
-    double lSecondsQuery = lMeasureQuery.mTotalTime();
-    // std::cout << "Search took " << lSecondsQuery << " sec." << std::endl;
-
+    std::vector<std::pair<size_t, float>> result = qee.search(query, topK, mode);
+   
     using json = nlohmann::json;
     json json_result = json::array();
 
@@ -73,125 +41,59 @@ void search(std::string query, size_t topK, IR_MODE mode) {
     std::cout << "[Your result]:" << json_result << std::endl;
 }
 
-void testNico() {
-
-    const control_block_t& aControlBlock = {false, false, "./data/collection_test.docs", "", "", "./data/stopwords.large", "", "./tests/_trace_test/", "", 0,
-                                            3,     1000};
-    // assert(aNumTiers > 1);
-    Measure lMeasure;
-    lMeasure.start();
-    DocumentManager& docManager = DocumentManager::getInstance();
-    // docManager.init(aControlBlock);
-    docManager.init(aControlBlock);
-
-    doc_mt& docMap = docManager.getDocumentMap();
-
-    IndexManager& imInstance = IndexManager::getInstance();
-    imInstance.init(aControlBlock, docMap);
-    lMeasure.stop();
-    double lSeconds = lMeasure.mTotalTime();
-    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
-    const InvertedIndex& ii = imInstance.getInvertedIndex();
-    const TieredIndex& ti = imInstance.getTieredIndex();
-    std::cout << ii << std::endl;
-    std::cout << ti << std::endl;
-
-    std::cout << std::endl;
-    const Document& d = docManager.getDocument(0);
-    const Document& d2 = docManager.getDocument(1);
-    const Document& d3 = docManager.getDocument(2);
-
-    QueryExecutionEngine::getInstance().init(aControlBlock);
-
-    std::string qs = "Util";
-    search(qs, 10, IR_MODE::kTIERED);
-
-}
-
-void testAlex(const control_block_t& aControlBlock) {
-
-    /*Measure lMeasureIndexing;
-    lMeasureIndexing.start();
-
+void serverMode(const control_block_t& aControlBlock) {
+    
     DocumentManager& docManager = DocumentManager::getInstance();
     docManager.init(aControlBlock);
 
-    doc_mt& docMap = docManager.getDocumentMap();
-
     IndexManager& imInstance = IndexManager::getInstance();
-    imInstance.init(aControlBlock, docMap);
+    imInstance.init(aControlBlock, docManager.getDocumentMap());
 
-    std::cout << "after index manager init" << std::endl;
+    //QueryManager& queryManager = QueryManager::getInstance();
+    //queryManager.init(aControlBlock);
 
-    lMeasureIndexing.stop();
-    double lSeconds = lMeasureIndexing.mTotalTime();
-    std::cout << "Index creation took " << lSeconds << " sec." << std::endl;
-
-    std::cout << "number of embeddings: " << imInstance.getWordEmbeddingsIndex().getNoWordEmbeddings() << std::endl;
-
-    float_vt result;
-    result.resize(300);
-    string_vt content = {"the", "to"};
-
-    imInstance.getWordEmbeddingsIndex().calcWordEmbeddingsVector(content, result);
-
-
-    std::cout << result.size() << std::endl;
-
-    for (auto& elem : result) {
-        std::cout << elem << ",";
-    for(auto& elem: docManager.getDocument("MED-241").getWordEmbeddingsVector()) {
-        std::cout << elem  << ",";
-    }
-    std::cout << std::endl;
-
-    /*std::string word = "the";
-
-    for(auto& elem: imInstance.getWordEmbeddingsIndex().getWordEmbeddings(word)) {
-        std::cout << elem  << ",";
-    }
-    std::cout << std::endl;
-
-    std::cout << imInstance.getWordEmbeddingsIndex().getWordEmbeddings(word).size() << std::endl;*/
-
-    //
-
-    /*QueryExecutionEngine::getInstance().init(aControlBlock);
+    QueryExecutionEngine& qee = QueryExecutionEngine::getInstance();
+    qee.init(aControlBlock);
 
     std::cout << "[Ready]" << std::endl;
 
-    // search("Why breast cancer", 10, IR_MODE::kCLUSTER);
-
     while (true) {
         json j;
-        std::cin >> j;
-        search(j["query"].get<std::string>(), j["topK"].get<size_t>(), stringToMode(j["mode"].get<std::string>()), j["lsh"].get<bool>());
-    }*/
+        try {
+            std::cin >> j;
+            search(j["query"].get<std::string>(), j["topK"].get<size_t>(), stringToMode(j["mode"].get<std::string>()));
+        }catch (std::exception& e) {
+            std::cout << "Malformated JSON" << std::endl;
+        }
+        
+    }
 }
 
-void testEval(const control_block_t& aControlBlock) {
+void evalMode(const control_block_t& aControlBlock) {
+
+    std::cout << aControlBlock;
+
+    std::cout << "[Evaluation mode]" << std::endl;
+
     DocumentManager& docManager = DocumentManager::getInstance();
     docManager.init(aControlBlock);
     std::cout << "Document Manager initialized" << std::endl;
 
-    Measure mes2;
-    mes2.start();
+    Measure m;
+    m.start();
     IndexManager& imInstance = IndexManager::getInstance();
     imInstance.init(aControlBlock, docManager.getDocumentMap());
+    m.stop();
+    std::cout << "Took " << m.mTotalTime() << std::endl;
     std::cout << "Index Manager initialized" << std::endl;
-    mes2.stop();
-    std::cout << "IndexManager took " << mes2.mTotalTime() << std::endl;
+    
 
-    Measure mes;
-    mes.start();
     QueryManager& queryManager = QueryManager::getInstance();
     queryManager.init(aControlBlock);
     std::cout << "Query Manager initialized" << std::endl;
-    mes.stop();
-    std::cout << "QueryManager took " << mes.mTotalTime() << std::endl;
 
-    QueryExecutionEngine& qpe = QueryExecutionEngine::getInstance();
-    qpe.init(aControlBlock);
+    QueryExecutionEngine& qee = QueryExecutionEngine::getInstance();
+    qee.init(aControlBlock);
     std::cout << "Query Execution Engine initialized" << std::endl;
 
     Evaluation& e = Evaluation::getInstance();
@@ -199,43 +101,35 @@ void testEval(const control_block_t& aControlBlock) {
     std::cout << "Evaluation initialized" << std::endl;
 
     std::cout << "[Ready]" << std::endl;
+    std::cout << "[Start Evaluating]" << std::endl;
 
     str_set queryNamesSet;
 
-    std::cout << "Start eval " << std::endl;
-    // hier kommt die for schleife über die enums type
+    const std::vector<IR_MODE> modes{kVANILLA, kVANILLA_RAND, kVANILLA_W2V, kCLUSTER, kCLUSTER_RAND, kCLUSTER_W2V, kTIERED, kTIERED_RAND, kTIERED_W2V};
+    const std::vector<QUERY_TYPE> types{kNTT};
 
-
-    for (int i = 0; i < kNumberOfTypes; ++i ) {
-
-        QUERY_TYPE type = static_cast<QUERY_TYPE>(i);
-        
-        for (int j = 0; j < kNumberOfModes; ++j) {
-            
-            /*REMOVE*/
-            if(aControlBlock.tiered()){
-                if(!(j==3||j==4||j==5)){
-                    continue;
-                }
-            }
-
-            IR_MODE mode = static_cast<IR_MODE>(j);
-
+    for(auto type : types){
+        for(auto mode: modes) {
             std::cout <<  typeToString(type) << " for mode " << modeToString(mode) << std::endl; 
             
             auto& queryForType = QueryManager::getInstance().getQueryMap(type);
             for (auto& [query_id, query] : queryForType) {
-                Document queryDoc = queryManager.createQueryDoc(query, query_id, true);
+                if(query_id == "PLAIN-408") {
+                    Document queryDoc = queryManager.createQueryDoc(query, query_id, true);
 
-                queryNamesSet.insert(queryDoc.getDocID());
-                e.start(type, mode, queryDoc.getDocID());
-                std::vector<std::pair<size_t, float>> result = qpe.search(queryDoc, 30, mode);
-                e.stop();
-                e.evalIR(type, mode, queryDoc.getDocID(), result);
+                    queryNamesSet.insert(queryDoc.getDocID());
+                    e.start(type, mode, queryDoc.getDocID());
+                    std::vector<std::pair<size_t, float>> result = qee.search(queryDoc, aControlBlock.results(), mode);
+                    e.stop();
+                    e.evalIR(type, mode, queryDoc.getDocID(), result);
+                }
+                
             }
         }
     }
+
     e.constructJSON(queryNamesSet);
+    std::cout << "[Finish Evaluating]" << std::endl;
 }
 
 /**
@@ -263,7 +157,7 @@ int main(const int argc, const char* argv[]) {
 
     if(!Util::endsWith(fs::current_path().string(), "vector-space-retrieval")) 
     {
-        std::cerr << " ## Warning : Programm was not executed from the recommended directory " 
+        std::cout << " ## Warning : Programm was not executed from the recommended directory " 
             << "'vector-space-retrieval'. Make sure to provide all necessary file "
             << "paths as command line argument. For further information, start the executable with '--help'."
             << "\n            ## Current Working Directory: " << fs::current_path() << std::endl;
@@ -274,14 +168,14 @@ int main(const int argc, const char* argv[]) {
         std::cerr << "Given path to the data collection is invalid." << std::endl;
         return -1;
     }
- 
-    if(!fs::exists(lArgs.queryPath()))
+
+    if(!lArgs.server() && !fs::exists(lArgs.queryPath()))
     {
         std::cerr << "Given path to the query collection is invalid." << std::endl;
         return -1;
     }
  
-    if(!fs::exists(lArgs.relevanceScoresPath()))
+    if(!lArgs.server() && !fs::exists(lArgs.relevanceScoresPath()))
     {
         std::cerr << "Given path to the relevance scores is invalid." << std::endl;
         return -1;
@@ -320,6 +214,7 @@ int main(const int argc, const char* argv[]) {
     const control_block_t lCB = {
         lArgs.trace(),               // trace activated?
         lArgs.measure(),             // measure runtime/IR performance?
+        lArgs.server(),              // Starting the binary in server mode (free text search) ?
         lArgs.collectionPath(),      // path to doc collection file
         lArgs.queryPath(),           // path to directory with query files
         lArgs.relevanceScoresPath(), // path to relevance score path
@@ -330,19 +225,17 @@ int main(const int argc, const char* argv[]) {
         lArgs.results(),             // topK argument
         lArgs.tiers(),               // number of tiers
         lArgs.dimensions(),          // number of dimensions
-        /*REMOVE*/
-        lArgs.rand(),
-        lArgs.tiered()
+        lArgs.seed()                 // seed for random projections and cluster leader election
     };
 
+    // Init tracing
     Trace::getInstance().init(lCB);
-    Evaluation::getInstance().init(lCB);
-
-    // insert everything here what is not actually meant to be in main
-    // test(lCB);
-    // testNico();
-    // testAlex(lCB);
-    testEval(lCB);
-
+    
+    if (lCB.server()){
+        serverMode(lCB);
+    } else {
+        evalMode(lCB);
+    }
+    
     return 0;
 }

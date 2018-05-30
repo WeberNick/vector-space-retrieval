@@ -4,10 +4,8 @@
  *	@brief  The document manager handles everything regarding the document collection. It parses the
  *          document collection and creates a document map
  *	@bugs 	Currently no bugs known
- *	@todos	Write DESCRIPTION, implement a datastructure with mapping from doc string id to doc size_t id
  *
- *	@section DESCRIPTION
- *	TODO
+ *	@section DESCRIPTION docto_
  */
 #pragma once
 
@@ -69,7 +67,7 @@ class DocumentManager {
         try {
             return _docs.at(aDocID);
         } catch (const std::out_of_range& ex) {
-            const std::string lErrMsg = std::string("The doc ID ')" + std::to_string(aDocID) + std::string("' does not appear in the document collection"));
+            const std::string lErrMsg = std::string("The doc ID '" + std::to_string(aDocID) + std::string("' does not appear in the document collection"));
             TRACE(lErrMsg);
             throw InvalidArgumentException(FLF, lErrMsg);
         }
@@ -118,9 +116,9 @@ class DocumentManager {
         return lInstance;
     }
     /**
-     * @brief
+     * @brief Initialize control block and document manager
      *
-     * @param aControlBlock
+     * @param aControlBlock the control block
      */
     void init(const CB& aControlBlock);
 

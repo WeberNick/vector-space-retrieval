@@ -93,6 +93,11 @@ export function listenToSockets(httpServer) {
         './evsr/data/collection.docs',
         '--stopword-path',
         './evsr/data/stopwords.large',
+        '--word-embeddings-path',
+        './evsr/data/glove.6B.300d.txt',
+        '--server',
+        '--seed',
+        '1'
       ]);
 
       //Call the process
@@ -157,13 +162,13 @@ export function listenToSockets(httpServer) {
      */
     socket.on('client:getEvalData', data => {
       logger.info('Client requested evaluation data');
-      let file = `${__dirname}/../eval/tier10.json`;
-      fs.readFile(file, 'utf8', function(
-        err,
-        data,
-      ) {
+      let file = `${__dirname}/../eval/aggregated-per-mode/T100D5000.json-aggregated.json`;
+      fs.readFile(file, 'utf8', function(err, data) {
         if (err) throw err;
-        socket.emit('server:returnEvalData', {filename: file.split('/').pop(), data: JSON.parse(data)});
+        socket.emit('server:returnEvalData', {
+          filename: file.split('/').pop(),
+          data: JSON.parse(data),
+        });
       });
     });
   });

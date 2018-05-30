@@ -1,28 +1,39 @@
-/*********************************************************************
+/*
  * @file    evaluation.hh
  * @author 	Nick Weber
  * @date    Apr 29, 2018
- * @brief 	Class handles the evaluation of query performance
- * @bugs 	TBD
- * @todos 	TBD
+ * @brief   This singleton class is used for evaluating runtime and information retrieval performance.
  *
  * @section	DESCRIPTION
- * TBD
+ *          This class consists of several nested classes not visible to the outside. The nested classes all
+ *          handle different functionalities of evaluation. The nested class IR_PerformanceManager provides
+ *          several IR evaluation methods such as accuracy, F-measure, MAP and DCG. For more details, read
+ *          the description of the nested class. Users of this class do not have to worry about the internal
+ *          details. A simple call to start/stop measures the runtime performance between the start and stop
+ *          call. To Evaluate IR performance, a call to evalIR is enough to evaluate the ranking with all
+ *          implemented IR evaluation techniques (as named above).
  *
  * @section USE
- * TBD
- ********************************************************************/
+ *          1. By calling Evaluation::getInstance(), the caller gets access to the evaluation instance.
+ *          2. Calling start on the evaluation object, starts run time measurement. Two arguments have to be
+ *          provided: the enum value of the current IR mode to measure and a query name
+ *          3. Calling stop on the evaluation object, stops the runtime measurement and persists the
+ *          measurement results in an internal data structure
+ *          4. Calling evalIR with the same arguments as start plus a ranking will calculate all IR evaluation
+ *          methods and persist them in an internal data structure
+ *          5. A call to constructJSON will create the JSON object which can be used to parse the results etc..
+ */
 #pragma once
 
+#include "document.hh"
+#include "document_manager.hh"
+#include "exception.hh"
+#include "file_util.hh"
+#include "lib/nlohmann/single_include/nlohmann/json.hpp"
 #include "measure.hh"
 #include "trace.hh"
 #include "types.hh"
-#include "exception.hh"
 #include "vec_util.hh"
-#include "file_util.hh"
-#include "document.hh"
-#include "document_manager.hh"
-#include "lib/nlohmann/single_include/nlohmann/json.hpp"
 using json = nlohmann::json;
 
 #include <algorithm>
@@ -30,9 +41,9 @@ using json = nlohmann::json;
 #include <ctime>
 #include <experimental/filesystem>
 #include <fstream>
+#include <functional>
 #include <ios>
 #include <iostream>
-#include <functional>
 #include <iterator>
 #include <string>
 #include <unordered_map>
@@ -40,28 +51,6 @@ using json = nlohmann::json;
 #include <vector>
 namespace fs = std::experimental::filesystem;
 
-/**
- * @brief This singleton class is used for evaluating runtime and information retrieval performance.
- *
- * @section	DESCRIPTION
- * This class consists of several nested classes not visible to the outside. The nested classes all
- * handle different functionalities of evaluation. The nested class IR_PerformanceManager provides
- * several IR evaluation methods such as accuracy, F-measure, MAP and DCG. For more details, read
- * the description of the nested class. Users of this class do not have to worry about the internal
- * details. A simple call to start/stop measures the runtime performance between the start and stop
- * call. To Evaluate IR performance, a call to evalIR is enough to evaluate the ranking with all
- * implemented IR evaluation techniques (as named above).
- *
- * @section USE
- * 1. By calling Evaluation::getInstance(), the caller gets access to the evaluation instance.
- * 2. Calling start on the evaluation object, starts run time measurement. Two arguments have to be
- * provided: the enum value of the current IR mode to measure and a query name
- * 3. Calling stop on the evaluation object, stops the runtime measurement and persists the
- * measurement results in an internal data structure
- * 4. Calling evalIR with the same arguments as start plus a ranking will calculate all IR evaluation
- * methods and persist them in an internal data structure
- * 5. A call to constructJSON will create the JSON object which can be used to parse the results etc..
- */
 class Evaluation {
   private:
     /**
@@ -211,7 +200,7 @@ class Evaluation {
          * @param aRanking  a ranking of documents produced for the respective query
          * @return the calculated normalized DCG
          */
-        double nDCG(const std::string& aQueryID, const sizet_vt& aRanking, const bool aBDCG = true);
+        double nDCG(const std::string& aQueryID, const sizet_vt& aRanking, const bool aBDCG = false);
 
       private:
         const scores_vt& getQueryScores(const std::string& aQueryID);
@@ -249,7 +238,8 @@ class Evaluation {
         ~EvalResults() = default;
 
         /**
-         * @brief Initializes the EvalResults object with its corresponding mode 
+         * @brief Initialize the eval results object with its corresponding mode
+         * 
          * @param aMode the mode to initialize the EvalResult object with
          */
         inline void init(QUERY_TYPE aQueryType, IR_MODE aMode) 
@@ -466,43 +456,57 @@ class Evaluation {
     }
 
     /**
-     * @brief Initializes the single Evaluation instance 
+     * @brief Initialize the control block and evaluation instance 
+     * 
      * @param aControlBlock the control block containing specific runtime information
      */
     void init(const CB& aControlBlock);
 
   public:
     /**
-     * @brief starts the run time performance measurement
+     * @brief Starts the run time performance measurement
      * @param aMode the mode for which the measurement is done (enum representing vanilla, tiered, etc..)
      * @pram aQueryName the name of the current query to evaluate
      */
     void start(const QUERY_TYPE aQueryType, const IR_MODE aMode, const std::string& aQueryName);
 
     /**
-     * @brief stops the run time performance measurement and inserts the measurement result into
+     * @brief Stops the run time performance measurement and inserts the measurement result into
      *        an internal data structure
      */
     void stop();
 
     /**
-     * @brief evaluates the information retrieval performance and stores results in an internal data structure
+     * @brief Evaluates the information retrieval performance and stores results in an internal data structure
+     * 
      * @param aMode the mode for which the evaluation is done (enum representing vanilla, tiered, etc..)
      * @param aQueryName the name of the current query to evaluate
      * @param aRanking the ranking to evaluate
      */
     void evalIR(const QUERY_TYPE aQueryType, const IR_MODE aMode, const std::string& aQueryName, const pair_sizet_float_vt& aRanking);
+    /**
+     * @brief Evaluates the information retrieval performance and stores results in an internal data structure
+     * 
+     * @param aMode the mode for which the evaluation is done (enum representing vanilla, tiered, etc..)
+     * @param aQueryName the name of the current query to evaluate
+     * @param aRanking the ranking to evaluate
+     */
     void evalIR(const QUERY_TYPE aQueryType, const IR_MODE aMode, const std::string& aQueryName, const sizet_vt& aRanking);
 
     /**
-     * @brief constructs the physical JSON object with all evaluation results
+     * @brief Constructs the physical JSON object with all evaluation results
+     */
+    void constructJSON();
+    /**
+     * @brief Constructs the physical JSON object with all evaluation results
+     * 
+     * @param aQueryNames the query names of the current setting
      */
     void constructJSON(const str_set& aQueryNames);
 
   private:
     inline EvalResults& getEvalResult(const QUERY_TYPE aQueryType, const IR_MODE aMode) {
         try {
-            //return _evalResults.at(aMode);
             return _qTypeToEvalResults.at(aQueryType).at(aMode);
         } catch (const std::out_of_range& ex) {
             const std::string lErrMsg = std::string("Query Type '") + typeToString(aQueryType) + std::string("' or IR mode '") + modeToString(aMode) + std::string("' not found in evaluation data");
@@ -513,16 +517,17 @@ class Evaluation {
 
   private:
     IR_PerformanceManager& _irpm;
-    results_mt      _evalResults;
-    type_results_mt _qTypeToEvalResults;
-    QUERY_TYPE      _type;
-    IR_MODE         _mode;
-    std::string     _queryName;
-    std::string     _evalPath;
-    Measure*        _measureInstance;
-    double          _time;
-    bool            _started;
+    type_results_mt        _qTypeToEvalResults;
+    QUERY_TYPE             _type;
+    IR_MODE                _mode;
+    str_set                _measuredQueries;
+    std::string            _queryName;
+    std::string            _evalPath;
+    Measure*               _measureInstance;
+    double                 _time;
+    bool                   _started;
 
     const CB*       _cb;
 };
+
 using IRPM = Evaluation::IR;

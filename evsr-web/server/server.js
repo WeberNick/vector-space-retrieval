@@ -21,20 +21,23 @@ app.use(
   }),
 );
 
+// Set up routes
 
-router.get('/presentation/', (req, res) => {
+router.get('/', function (req, res) { 
+  logger.info("Requesting: /") 
+  res.redirect('/app')
+});
+
+
+router.get('/presentation', (req, res) => {
+  logger.info("Requesting: /presentation")
   res.sendFile(path.join(__dirname + '/../presentation/index.html'));
 });
 
-app.get('/app*', (req, res) => {
+router.get('/app*', (req, res) => {
+  logger.info("Requesting: /app*")
   res.sendFile(path.join(__dirname + '/../client/build/index.html'));
 });
-
-router.get('/', function (req, res) {  
-  res.send('HEllo World');
-});
-
-
 
 
 // Set up socket.io

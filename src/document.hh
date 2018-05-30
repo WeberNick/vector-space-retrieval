@@ -3,10 +3,8 @@
  *	@author	Nicolas Wipfler (nwipfler@mail.uni-mannheim.de)
  *	@brief  Implements the document
  *	@bugs 	Currently no bugs known
- *	@todos	Write DESCRIPTION
  *
- *	@section DESCRIPTION
- *	TODO
+ *	@section DESCRIPTION docto_
  */
 #pragma once
 
@@ -84,15 +82,8 @@ class Document {
      *
      * @return boost::dynamic_bitset<>& the random projection vector
      */
-    inline const boost::dynamic_bitset<>& getRandProjTiVec() const { return _rand_proj_ti_vec; }
-    inline boost::dynamic_bitset<>& getRandProjTiVec() { return const_cast<boost::dynamic_bitset<>&>(static_cast<const Document&>(*this).getRandProjTiVec()); }
-    /**
-     * @brief Get the random projection vector of the document
-     *
-     * @return boost::dynamic_bitset<>& the random projection vector
-     */
-    inline const boost::dynamic_bitset<>& getRandProjWeVec() const { return _rand_proj_we_vec; }
-    inline boost::dynamic_bitset<>& getRandProjWeVec() { return const_cast<boost::dynamic_bitset<>&>(static_cast<const Document&>(*this).getRandProjWeVec()); }
+    inline const boost::dynamic_bitset<>& getRandProjVec() const { return _rand_proj_vec; }
+    inline boost::dynamic_bitset<>& getRandProjVec() { return const_cast<boost::dynamic_bitset<>&>(static_cast<const Document&>(*this).getRandProjVec()); }
     /**
      * @brief Get the normalization factor of the document
      *
@@ -134,21 +125,18 @@ class Document {
      * @param vec the tfidf vector
      */
     inline void setWordEmbeddingsVector(const float_vt& vec) { _wordembeddings_vec = vec; }
-    // TODO docs
     /**
-     * @brief Set the Rand Proj Vec object
+     * @brief Set the random projection vector of this document
      *
-     * @param rand_proj
+     * @param rand_proj the random projection vector
      */
-    inline void setRandProjTiVec(const boost::dynamic_bitset<>& rand_proj) { _rand_proj_ti_vec = rand_proj; }
-
-  inline void setRandProjWeVec(const boost::dynamic_bitset<>& rand_proj) { _rand_proj_we_vec = rand_proj; }
+    inline void setRandProjVec(const boost::dynamic_bitset<>& rand_proj) { _rand_proj_vec = rand_proj; }
 
     /**
-     * @brief Override operator<< for pretty printing a Document object
+     * @brief Override operator<< for pretty printing a document object
      *
      * @param strm the output stream
-     * @param doc the Document Object
+     * @param doc the document
      * @return std::ostream& the output stream to be returned
      */
     friend std::ostream& operator<<(std::ostream& strm, const Document& doc);
@@ -162,11 +150,9 @@ class Document {
     str_float_mt _term_tf_map;                 // stores TF values
     float_vt _tf_idf_vec;                      // e.g. <0, 2, 1.5, 3, .84, ..>
     float_vt _wordembeddings_vec;           
-    boost::dynamic_bitset<> _rand_proj_ti_vec; // e.g. <0, 1, 1, 1, 0, 1, ..>
-    boost::dynamic_bitset<> _rand_proj_we_vec; // e.g. <0, 1, 1, 1, 0, 1, ..>
+    boost::dynamic_bitset<> _rand_proj_vec; // e.g. <0, 1, 1, 1, 0, 1, ..>
     float _norm_length;                        // normalization factor of _tf_idf_vec
 };
-
 
 using doc_mt = std::map<size_t, Document>;
 using doc_map_elem_t = std::pair<size_t, Document>;

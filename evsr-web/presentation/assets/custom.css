@@ -1,0 +1,9 @@
+.spectacle-content {
+  max-width: 1400px !important;
+  max-height: 1400px !important;
+}
+
+
+.spectacle-content > table > thead > td {background-color: #a9a9a9 }
+.spectacle-content > table > tbody > tr:nth-child(even){background-color: #f2f2f2 }
+.spectacle-content > table > tbody > tr:last-child(){border-top: 1px solid #000; background-color: #f2f2f2 }

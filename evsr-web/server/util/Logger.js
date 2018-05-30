@@ -3,6 +3,7 @@
  *  @see File /server/server.log
  */
 import logger from 'winston';
+import * as fs from 'fs';
 
 logger.setLevels({
   debug: 0,
@@ -24,8 +25,14 @@ logger.add(logger.transports.Console, {
   level: 'error',
   colorize: true,
 });
+
+
+if (!fs.existsSync(`${__dirname}/../logs/`)) {
+  fs.mkdirSync(`${__dirname}/../logs/`);
+}
+
 logger.add(logger.transports.File, {
-  filename: 'server.log',
+  filename: `${__dirname}/../logs/server.log`,
 });
 
 export default logger;
